@@ -1,0 +1,33 @@
+{
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vue-tsc && vite build && vite build --ssr"
+    },
+    "devDependencies": {
+        "@inertiajs/vue3": "^1.0.0",
+        "@tailwindcss/forms": "^0.5.3",
+        "@vitejs/plugin-vue": "^5.0.0",
+        "@vue/server-renderer": "^3.4.0",
+        "autoprefixer": "^10.4.12",
+        "axios": "^1.6.4",
+        "laravel-vite-plugin": "^1.0",
+        "postcss": "^8.4.31",
+        "sass": "^1.77.8",
+        "tailwindcss": "^3.2.1",
+        "typescript": "^5.5.3",
+        "vite": "^5.0",
+        "vue": "^3.4.0",
+        "vue-tsc": "^2.0.24"
+    },
+    "dependencies": {
+        "@flaticon/flaticon-uicons": "^3.3.1",
+        "moment": "^2.30.1",
+        "moment-timezone": "^0.5.45",
+        "moment-with-locales-es6": "^1.0.1",
+        "primeicons": "^7.0.0",
+        "primevue": "^4.0.4",
+        "tailwindcss-primeui": "^0.3.4"
+    }
+}
