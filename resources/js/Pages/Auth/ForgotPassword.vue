@@ -28,9 +28,10 @@ const submit = () => {
         <div
             class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg"
         >
+            <h1 class="font-bold uppercase text-lg mb-2 text-gray-700">Cambio de contraseña</h1>
             <div class="mb-4 text-sm text-gray-600">
-                Forgot your password? No problem. Just let us know your email address and we will email you a password reset
-                link that will allow you to choose a new one.
+                <h3 class="font-bold">¿Olvidaste tu contraseña? No hay problema.</h3>
+                <p>Simplemente dinos tu dirección de correo electrónico y te enviaremos un enlace para restablecerla.</p>
             </div>
 
             <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
@@ -56,7 +57,7 @@ const submit = () => {
 
                 <div class="flex items-center justify-end mt-4">
                     <Button :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                        Email Password Reset Link
+                        Enviar enlace para restablecer
                     </Button>
                 </div>
             </form>

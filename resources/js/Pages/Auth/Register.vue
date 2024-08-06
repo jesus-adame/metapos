@@ -5,6 +5,7 @@ import InputLabel from '@/Components/InputLabel.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
+import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 
 const form = useForm({
     name: '',
@@ -29,6 +30,13 @@ const submit = () => {
         <div
             class="w-full sm:max-w-lg mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg"
         >
+            <div class="w-full flex justify-center">
+                <Link href="/">
+                    <ApplicationLogo class="w-20 h-20 fill-current text-gray-600" />
+                    <h1 class="font-bold text-xl text-gray-600 mt-3 mb-1">META POS</h1>
+                </Link>
+            </div>
+            <h1 class="font-bold uppercase text-lg mb-2">Ingresa tus datos</h1>
             <form @submit.prevent="submit">
                 <div class="flex">
                     <div class="mr-2 w-1/2">

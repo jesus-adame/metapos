@@ -1,5 +1,4 @@
 <script setup>
-import Checkbox from '@/Components/Checkbox.vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
@@ -9,6 +8,7 @@ import InputText from 'primevue/inputtext';
 import axios from 'axios';
 import { reactive } from 'vue';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
+import Checkbox from 'primevue/checkbox';
 
 defineProps({
     canResetPassword: {
@@ -72,7 +72,6 @@ const submit = async () => {
                         type="email"
                         class="mt-1 block w-full"
                         v-model="form.email"
-                        required
                         autocomplete="username"
                     />
                     <InputError class="mt-2" :message="form.errors.email" />
@@ -85,14 +84,13 @@ const submit = async () => {
                         type="password"
                         class="mt-1 block w-full"
                         v-model="form.password"
-                        required
                     />
                     <InputError class="mt-2" :message="form.errors.password" />
                 </div>
 
                 <div class="block mt-4">
                     <label class="flex items-center">
-                        <Checkbox name="remember" v-model:checked="form.remember" />
+                        <Checkbox name="remember" v-model="form.remember" :binary="true"/>
                         <span class="ms-2 text-sm text-gray-600">Remember me</span>
                     </label>
                 </div>

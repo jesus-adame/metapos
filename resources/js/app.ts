@@ -53,12 +53,14 @@ import DatePicker from 'primevue/datepicker';
 import Avatar from 'primevue/avatar';
 import AvatarGroup from 'primevue/avatargroup';
 import Menu from 'primevue/menu';
+import Drawer from 'primevue/drawer';
+import PanelMenu from 'primevue/panelmenu';
+import Panel from 'primevue/panel';
 
 import ToastService from 'primevue/toastservice';
 import DialogService from 'primevue/dialogservice';
 import ConfirmationService from 'primevue/confirmationservice';
 
-import Panel from 'primevue/panel';
 import primeOptions from './presets/languages'
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
@@ -113,6 +115,8 @@ createInertiaApp({
             .component("AvatarGroup", AvatarGroup)
             .component("Menu", Menu)
             .component("Panel", Panel)
+            .component("PanelMenu", PanelMenu)
+            .component("Drawer", Drawer)
 
         app.use(plugin)
             .use(ZiggyVue)
