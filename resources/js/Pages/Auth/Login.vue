@@ -8,6 +8,7 @@ import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 import axios from 'axios';
 import { reactive } from 'vue';
+import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 
 defineProps({
     canResetPassword: {
@@ -56,11 +57,13 @@ const submit = async () => {
     <GuestLayout>
         <Head title="Log in" />
 
-        <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
-            <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
-                {{ status }}
+        <div class="w-full sm:max-w-md mt-6 px-6 py-5 bg-white shadow-md overflow-hidden sm:rounded-lg">
+            <div class="w-full flex justify-center">
+                <Link href="/">
+                    <ApplicationLogo class="w-20 h-20 fill-current text-gray-600" />
+                    <h1 class="font-bold text-xl text-gray-600 my-3">META POS</h1>
+                </Link>
             </div>
-
             <form @submit.prevent="submit">
                 <div>
                     <InputLabel for="email" value="Email" />
@@ -70,7 +73,6 @@ const submit = async () => {
                         class="mt-1 block w-full"
                         v-model="form.email"
                         required
-                        autofocus
                         autocomplete="username"
                     />
                     <InputError class="mt-2" :message="form.errors.email" />
