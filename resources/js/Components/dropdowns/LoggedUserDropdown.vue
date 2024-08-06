@@ -36,7 +36,7 @@ const hideModal = () => {
 </script>
 <template>
     <Dialog v-model:visible="modalCashRegister" header="Cambiar caja" modal>
-        <Select v-model="selectedCashRegister" :options="page.props.cashRegisters" optionLabel="name" class="w-56 my-4"></Select>
+        <Select v-model="selectedCashRegister" :options="page.props.cashRegisters" optionLabel="name" class="w-60 my-4"></Select>
 
         <div class="text-end">
             <Button label="Aplicar" @click="changeCashRegister"></Button>
@@ -47,7 +47,7 @@ const hideModal = () => {
         <template #trigger>
             <span class="inline-flex rounded-md">
                 <button type="button">
-                    <div class="text-gray-700 px-4 py-2 shadow-md flex items-center justify-between w-56 cursor-pointer rounded-md">
+                    <div class="text-gray-700 px-4 py-2 shadow-md flex items-center justify-between w-60 cursor-pointer rounded-md">
                         <div class="flex items-center">
                             <div class="py-2 px-3 bg-gray-300 rounded-full mr-1 text-gray-500">
                                 <i class="pi pi-building"></i>

@@ -116,8 +116,8 @@ const closeDialogResponse = () => {
 
 <template>
   <Dialog v-model:visible="modalResponse" modal :header="dialogResponseData.header">
-    <Message class="mt-4" :closable="false" :severity="dialogResponseData.type">{{ dialogResponseData.message }}</Message>
-    <p class="my-4">
+    <Message :closable="false" :severity="dialogResponseData.type">{{ dialogResponseData.message }}</Message>
+    <p class="mt-2">
       <strong>{{ dialogResponseData.content }}</strong>
     </p>
     <div class="flex w-full">
@@ -125,10 +125,10 @@ const closeDialogResponse = () => {
     </div>
   </Dialog>
 
-  <div class="w-full text-center mt-4">
+  <div class="w-full text-center mt-2">
     <SelectButton v-model="selectedPayment" :options="paymentMethods" aria-labelledby="basic" @change="clearPayments" />
   </div>
-  <div class="w-full shadow-sm rounded-md px-3 mt-4">
+  <div class="w-full shadow-sm rounded-md px-3 mt-2">
     <div v-for="(payment, index) in payments" :key="index" class="flex w-full items-center">
       <div v-if="selectedPayment == payment.label || selectedPayment == 'Mixto'" class="w-full">
         <div class="flex items-center justify-between">

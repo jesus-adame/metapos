@@ -46,7 +46,6 @@ export default {
 
             // Colors
             'text-surface-700 dark:text-surface-0/80',
-            'border border-b-1',
             'border-surface-200 dark:border-surface-700'
         ]
     },
