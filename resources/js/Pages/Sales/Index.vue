@@ -25,7 +25,7 @@ const printTicket = async (saleId) => {
 
     <UserLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ title }}</h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Ventas</h2>
         </template>
 
         <div class="mt-6 mb-4">

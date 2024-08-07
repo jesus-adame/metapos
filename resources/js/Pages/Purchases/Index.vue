@@ -28,7 +28,7 @@ const formatNumber = (numb) => {
 
         <div class="mt-4 bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <DataTable :value="purchases">
-                <Column field="id" header="Id"></Column>
+                <Column field="id" header="#"></Column>
                 <Column header="Fecha">
                     <template #body="slot">
                         {{ moment(slot.data.purchase_date).calendar() }}

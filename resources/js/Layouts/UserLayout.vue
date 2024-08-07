@@ -6,21 +6,21 @@ import Toast from 'primevue/toast';
 </script>
 
 <template>
-    <!-- component -->
-<div class="min-h-screen bg-gray-100">
+  <!-- component -->
+  <div class="min-h-screen bg-gray-100">
     <Sidebar></Sidebar>
-  <div class="py-4 px-10 xl:ml-10">
-    <Breadcrumb>
-      <slot name="header" />
-    </Breadcrumb>
+    <div class="py-4 px-10 xl:ml-10">
+      <Breadcrumb>
+        <slot name="header" />
+      </Breadcrumb>
 
-    <!-- Page Content -->
-    <main>
-        <slot />
-    </main>
+      <!-- Page Content -->
+      <main>
+          <slot />
+      </main>
 
-    <DynamicDialog />
-    <Toast position="bottom-right" />
+      <DynamicDialog />
+      <Toast position="bottom-right" />
+    </div>
   </div>
-</div>
 </template>
