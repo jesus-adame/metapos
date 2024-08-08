@@ -11,9 +11,11 @@ class SupplierController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $suppliers = Supplier::all();
+        $perPage = $request->input('rows', 10);
+        $suppliers = Supplier::orderBy('updated_at', 'desc')->paginate($perPage);
+
         return response()->json($suppliers);
     }
 

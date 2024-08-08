@@ -18,6 +18,14 @@ export default class SupplierService {
         return response
     }
 
+    async paginate(page, rows) {
+        const url = `/api/suppliers`;
+        const response = await axios.get(url, { params: { page, rows: rows } });
+        this.suppliers.value = response.data
+
+        return response
+    }
+
     async fetchAll() {
         const url = '/api/suppliers';
         const response = await axios.get(url);

@@ -18,6 +18,14 @@ export default class CustomerService {
         return response
     }
 
+    async paginate(page, rows) {
+        const url = `/api/customers`;
+        const response = await axios.get(url, { params: { page, rows: rows } });
+        this.customers.value = response.data
+
+        return response
+    }
+
     async fetchAll() {
         const url = '/api/customers';
         const response = await axios.get(url);

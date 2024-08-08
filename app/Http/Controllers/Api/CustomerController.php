@@ -11,9 +11,11 @@ class CustomerController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $customers = Customer::all();
+        $perPage = $request->input('rows', 10);
+        $customers = Customer::orderBy('updated_at', 'desc')->paginate($perPage);
+
         return response()->json($customers);
     }
 

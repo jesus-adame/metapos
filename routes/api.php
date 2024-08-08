@@ -4,6 +4,7 @@ use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\SupplierController;
 use App\Http\Controllers\Api\SaleController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\InventoryTransactionController;
@@ -26,6 +27,9 @@ Route::middleware(['auth:sanctum', InitializeTenancyByDomain::class])->group(fun
 
     Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
     Route::post('/customers/search', [CustomerController::class, 'search'])->name('customers.search');
+
+    Route::get('/suppliers', [SupplierController::class, 'index'])->name('suppliers.index');
+    Route::post('/suppliers/search', [SupplierController::class, 'search'])->name('suppliers.search');
 
     Route::post('/sales', [SaleController::class, 'store'])->name('sale.store');
 

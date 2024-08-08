@@ -35,6 +35,6 @@ class SupplierController extends Controller
 
         Supplier::create($request->all());
 
-        return redirect()->route('suppliers.index')->with('success', 'Supplier created successfully.');
+        return redirect()->route('users.index')->with('success', 'Supplier created successfully.');
     }
 }
