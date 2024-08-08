@@ -10,9 +10,9 @@ export default class CashRegisterService {
         return this.cashRegisters;
     }
 
-    async findByCode(code) {
+    async search(params) {
         const url = '/api/cash-registers/search';
-        const response = await axios.post(url, { code: code });
+        const response = await axios.post(url, { params: params });
         this.cashRegisters.value = response.data
 
         return response

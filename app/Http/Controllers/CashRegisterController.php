@@ -11,9 +11,13 @@ class CashRegisterController extends Controller
 {
     public function select(Request $request)
     {
+        $request->validate([
+            'cash_register_id' => 'required'
+        ]);
+
         /** @var User */
         $user = Auth::user();
-        $cashRegister = CashRegister::find($request->cashRegisterId);
+        $cashRegister = CashRegister::find($request->cash_register_id);
 
         $user->update([
             'branch_id' => $cashRegister->branch->id,

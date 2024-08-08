@@ -15,4 +15,16 @@ class CashRegisterController extends Controller
 
         return response()->json($cashRegisters);
     }
+
+    public function search(Request $request)
+    {
+        $params = $request->params;
+        $cashRegisters = CashRegister::with('branch')
+            ->orderBy('updated_at', 'desc')
+            ->where($params)
+            ->limit(10)
+            ->get();
+
+        return response()->json($cashRegisters);
+    }
 }

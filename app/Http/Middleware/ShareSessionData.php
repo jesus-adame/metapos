@@ -24,6 +24,7 @@ class ShareSessionData
 
             inertia()->share([
                 'branch' => $branch,
+                'branches' => Branch::all(),
                 'cashRegister' => $cashRegister,
                 'cashRegisters' => CashRegister::all(),
                 // Agrega aquí otras variables de sesión que necesites

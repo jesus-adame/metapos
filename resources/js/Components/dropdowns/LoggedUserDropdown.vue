@@ -1,24 +1,27 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
-import axios from 'axios';
-import Button from 'primevue/button';
-import Dialog from 'primevue/dialog';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useToast } from 'primevue/usetoast';
 import { router, usePage } from '@inertiajs/vue3'
-import { CashRegister } from '@/types';
+import { Branch, CashRegister, ErrorResponse } from '@/types';
+import CashRegisterService from '@/Services/CashRegisterService';
+import Button from 'primevue/button';
 
-const selectedCashRegister = ref<CashRegister | null>(null)
-const toast = useToast()
 const page = usePage()
+const toast = useToast()
+const selectedCashRegister = ref<CashRegister | null>(null)
+const selectedBranch = ref<Branch | null>(page.props.branch)
+const cashRegisters = ref<CashRegister[]>([])
+const cashRegisterService = new CashRegisterService
 
 const modalCashRegister = ref(false)
 
 const changeCashRegister = () => {
     const url = route('cashRegisters.select')
 
-    axios.post(url, {cashRegisterId: selectedCashRegister.value?.id})
+    axios.post(url, {'cash_register_id': selectedCashRegister.value?.id})
     .then(response => {
         hideModal()
         toast.add({ severity: 'success', summary: 'Completado', detail: 'Se ha cambiado la caja', life: 1100 });
@@ -33,10 +36,32 @@ const hideModal = () => {
     modalCashRegister.value = false;
     router.visit(route('sales.create'));
 }
+
+const searchCashRegisters = () => {
+    cashRegisterService.search({
+        branch_id: selectedBranch.value?.id
+    })
+    .then((response: AxiosResponse) => {
+        cashRegisters.value = response.data
+    })
+    .catch((reject: AxiosError<ErrorResponse>) => {
+        const message = reject.response?.data?.message || 'Error desconocido'
+        toast.add({ severity: 'error', summary: 'Error', detail: message, life: 1500 })
+    })
+}
+
+onMounted(() => {
+    searchCashRegisters()
+})
 </script>
 <template>
     <Dialog v-model:visible="modalCashRegister" header="Cambiar caja" modal>
-        <Select v-model="selectedCashRegister" :options="page.props.cashRegisters" optionLabel="name" class="w-60 my-4"></Select>
+        <div class="d-block">
+            <Select placeholder="Sucursal" id="branch" v-model="selectedBranch" :options="page.props.branches" optionLabel="name" class="w-60 my-4" @change="searchCashRegisters"></Select>
+        </div>
+        <div class="d-block">
+            <Select placeholder="- Elegir -" id="cashRegister" v-model="selectedCashRegister" :options="cashRegisters" optionLabel="name" class="w-60 my-4"></Select>
+        </div>
 
         <div class="text-end">
             <Button label="Aplicar" @click="changeCashRegister"></Button>

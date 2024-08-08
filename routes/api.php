@@ -34,6 +34,7 @@ Route::middleware(['auth:sanctum', InitializeTenancyByDomain::class])->group(fun
     Route::post('/sales', [SaleController::class, 'store'])->name('sale.store');
 
     Route::get('/cash-registers', [CashRegisterController::class, 'index'])->name('sale.index');
+    Route::post('/cash-registers/search', [CashRegisterController::class, 'search'])->name('sale.search');
     Route::get('/cash-cuts', [CashCutController::class, 'index'])->name('cash-cuts.index');
     Route::get('/branches', [BranchController::class, 'index'])->name('branches.index');
     Route::get('/cash-flows', [CashFlowController::class, 'index'])->name('cash-flows.index');

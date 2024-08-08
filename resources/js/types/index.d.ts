@@ -93,5 +93,6 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
 
     cashRegister: CashRegister,
     cashRegisters: CashRegister[],
-    branch: Branch
+    branch: Branch,
+    branches: Branch[],
 };
