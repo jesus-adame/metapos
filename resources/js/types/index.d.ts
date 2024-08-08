@@ -42,7 +42,22 @@ export interface Product {
     image_url: string
     quantity: number
     stock: number
+    unit_type: string
+    tax: number
     description?: string
+}
+
+export interface CartItem {
+    id?: number
+    name: string
+    code: string
+    price: number
+    image: string
+    image_url: string
+    quantity: number
+    stock: number
+    unit_type: string
+    tax: number
 }
 
 export interface CashFlow {

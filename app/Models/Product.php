@@ -19,9 +19,15 @@ class Product extends Model
         'image_url',
         'unit_type',
         'tax',
+        'branch_id',
     ];
 
     protected $casts = [
         'price' => 'float',
     ];
+
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class, 'branch_id');
+    }
 }

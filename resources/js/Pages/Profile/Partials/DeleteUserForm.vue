@@ -47,12 +47,12 @@ const closeModal = () => {
             </p>
         </header>
 
-        <Button @click="confirmUserDeletion" severity="danger" label="Delete Account"></Button>
+        <Button @click="confirmUserDeletion" severity="danger" label="Eliminar Cuenta"></Button>
 
         <Modal :show="confirmingUserDeletion" @close="closeModal">
             <div class="p-6">
                 <h2 class="text-lg font-medium text-gray-900">
-                    Are you sure you want to delete your account?
+                    ¿Estás seguro de eliminar tu cuenta?
                 </h2>
 
                 <p class="mt-1 text-sm text-gray-600">
@@ -69,7 +69,7 @@ const closeModal = () => {
                         v-model="form.password"
                         type="password"
                         class="mt-1 block w-3/4"
-                        placeholder="Password"
+                        placeholder="Contraseña"
                         @keyup.enter="deleteUser"
                     />
 
@@ -77,10 +77,10 @@ const closeModal = () => {
                 </div>
 
                 <div class="mt-6 flex justify-end">
-                    <Button @click="closeModal" label="Cancel"></Button>
+                    <Button @click="closeModal" label="Cancelar"></Button>
 
                     <Button
-                        label="Delete Account"
+                        label="Eliminar Cuenta"
                         severity="danger"
                         class="ms-3"
                         :class="{ 'opacity-25': form.processing }"

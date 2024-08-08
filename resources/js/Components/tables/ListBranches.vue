@@ -6,6 +6,7 @@ import { onMounted, ref } from 'vue';
 import BranchService from "@/Services/BranchService";
 import { AxiosResponse } from 'axios';
 import { DataTablePageEvent } from 'primevue/datatable';
+import Tag from 'primevue/tag';
 
 const branchService: BranchService = new BranchService()
 const items = ref([])
@@ -44,15 +45,43 @@ const onPage = (event: DataTablePageEvent) => {
 onMounted(() => {
     fetchItems(page.value)
 })
+
+const calculateTypeLabel = (type: string) => {
+    switch (type) {
+        case 'branch': {
+            return 'Sucursal';
+        }
+        case 'warehouse': {
+            return 'Almacen';
+        }
+    }
+}
 </script>
 <template>
     <DataTable :value="items" paginator lazy :rows="rows" @page="onPage" :totalRecords="totalRecords">
         <Column field="id" header="#"></Column>
-        <Column field="name" header="Nombre"></Column>
+        <Column field="name" header="Nombre">
+            <template #body="slot">
+                <span>{{ slot.data.name }}</span>
+                <Tag class="ml-2" v-if="slot.data.is_default" :value="'default'" severity="info"></Tag>
+            </template>
+        </Column>
         <Column field="address" header="Ubicación"></Column>
+        <Column field="type" header="Tipo">
+            <template #body="slot">
+                {{ calculateTypeLabel(slot.data.type) }}
+            </template>
+        </Column>
         <Column field="" header="">
             <template #header>
-                <Button icon="pi pi-plus" rounded severity="success" raised @click="showModalCreate"></Button>
+                <div class="w-full flex justify-center">
+                    <Button icon="pi pi-plus" rounded severity="success" raised @click="showModalCreate"></Button>
+                </div>
+            </template>
+            <template #body>
+                <div class="w-full flex justify-center">
+                    <Button icon="pi pi-trash" severity="danger"></Button>
+                </div>
             </template>
         </Column>
     </DataTable>

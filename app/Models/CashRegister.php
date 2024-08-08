@@ -9,7 +9,7 @@ class CashRegister extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'branch_id'];
+    protected $fillable = ['name', 'branch_id', 'is_default'];
 
     public function branch()
     {

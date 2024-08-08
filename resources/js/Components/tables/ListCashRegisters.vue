@@ -47,7 +47,12 @@ onMounted(() => {
 <template>
     <DataTable :value="items" paginator :rows="rows" lazy @page="onPage" :totalRecords="totalRecords">
         <Column field="id" header="#"></Column>
-        <Column field="name" header="Nombre"></Column>
+        <Column field="name" header="Nombre">
+            <template #body="slot">
+                <span>{{ slot.data.name }}</span>
+                <Tag class="ml-2" v-if="slot.data.is_default" :value="'default'" severity="info"></Tag>
+            </template>
+        </Column>
         <Column field="branch" header="Ubicación">
             <template #body="slot">
                 <div class="flex items-center">

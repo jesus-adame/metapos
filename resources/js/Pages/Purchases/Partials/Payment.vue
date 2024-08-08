@@ -2,6 +2,7 @@
 import { formatMoneyNumber } from '@/helpers';
 import axios from 'axios';
 import Button from 'primevue/button';
+import DatePicker from 'primevue/datepicker';
 import { computed, ref } from 'vue';
 
 const emit = defineEmits(['cancel', 'save']);
@@ -74,7 +75,7 @@ const applyPayment = () => {
 
   formData.payment_methods = payments.value;
 
-  axios.post(route('sales.store'), formData)
+  axios.post(route('purchases.store'), formData)
   .then(response => {
     saleStatus.value = 'paid';
     openDialogResponse({
@@ -125,50 +126,14 @@ const closeDialogResponse = () => {
     </div>
   </Dialog>
 
-  <div class="w-full text-center mt-2">
-    <SelectButton v-model="selectedPayment" :options="paymentMethods" aria-labelledby="basic" @change="clearPayments" />
-  </div>
   <div class="w-full shadow-sm rounded-md px-3 mt-2">
-    <div v-for="(payment, index) in payments" :key="index" class="flex w-full items-center">
-      <div v-if="selectedPayment == payment.label || selectedPayment == 'Mixto'" class="w-full">
-        <div class="flex items-center justify-between">
-          <span class="mr-4 flex items-center">
-            <i :class="payment.icon" class="pi px-4 pt-3 pb-2 text-2xl text-blue-400"></i>
-            <strong>{{ payment.label }}</strong>
-          </span>
-          <InputNumber
-            v-model="payment.amount"
-            required
-            :min="0"
-            :max="(payment.label === 'Efectivo' || payment.label === 'Mixto') ? null: props.totalSale"
-            class="my-2 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-60"
-            mode="currency"
-            currency="MXN"
-            placeholder="$0.00"
-            showButtons
-          />
-        </div>
-        <!-- TODO: Comision por pago con tajeta -->
-        <!-- <div class="flex items-center justify-between">
-          <div class="flex my-2" v-if="payment.label === 'Tarjeta'">
-            <span id="switch2" class="mr-3">Agregar comisión</span>
-            <ToggleSwitch v-model="payment.hasComision"></ToggleSwitch>
-          </div>
-          <div v-if="payment.hasComision">
-            <InputNumber class="w-60" v-model="payment.comision" placeholder="%0.0" prefix="%" showButtons></InputNumber>
-          </div>
-        </div> -->
-      </div>
-    </div>
+    <label for="purchase_date">Fecha de compra</label>
+    <DatePicker class="d-block w-full" date-format="dd/mm/yy" v-model="form.purchase_date"></DatePicker>
     <div class="flex justify-end flex-wrap w-full text-right">
       <div class="mb-6">
         <div class="mt-6 text-2xl font-bold">
           <span class="mr-4">Saldo</span>
           <span>{{ formatMoneyNumber(totalPurchase) }}</span>
-        </div>
-        <div class="text-2xl font-bold" v-if="selectedPayment == 'Mixto' || selectedPayment == 'Efectivo'">
-          <span class="mr-4">Cambio</span>
-          <span>{{ formatMoneyNumber(change) }}</span>
         </div>
       </div>
     </div>

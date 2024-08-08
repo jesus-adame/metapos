@@ -34,12 +34,14 @@ class RegisteredUserController extends Controller
         $branch = Branch::create([
             'name' => $request->branch,
             'address' => $request->address,
-            'type' => 'branch'
+            'type' => 'branch',
+            'is_default' => true
         ]);
 
         $cashRegister = CashRegister::create([
             'name' => 'Mostrador',
-            'branch_id' => $branch->id
+            'branch_id' => $branch->id,
+            'is_default' => true
         ]);
 
         $user = User::create([

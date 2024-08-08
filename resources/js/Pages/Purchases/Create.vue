@@ -31,11 +31,13 @@ const modalPayments = ref(false)
 
 // Initialize the form
 const form = useForm<{
-    supplier_id: number | null; // Assuming customer_id is a number
-    products: Product[];
+    supplier_id: number | null, // Assuming customer_id is a number
+    products: Product[],
+    purchase_date: string | null,
 }>({
     supplier_id: null,
     products: [],
+    purchase_date: null,
 });
 
 // Add a product to the form
@@ -93,7 +95,9 @@ const pushProduct = (product: Product) => {
         image_url: product.image_url,
         price: product.price,
         quantity: 1,
-        stock: product.stock
+        stock: product.stock,
+        tax: product.tax,
+        unit_type: product.unit_type,
     })
 }
 
@@ -116,12 +120,21 @@ onMounted(() => {
 const totalPurchase = computed(() => {
     return form.products.reduce((acc, product) => acc + (product.price * product.quantity), 0);
 });
+
+const clearPurchaseComponent = () => {
+    form.products = [];
+}
+
+const setSuccessPayment = () => {
+    hideModalPayments();
+    clearPurchaseComponent();
+}
 </script>
 <template>
     <Head title="Registrar Compra" />
 
-    <Dialog v-model:visible="modalPayments">
-        <Payment :form="form" :totalPurchase="totalPurchase"></Payment>
+    <Dialog v-model:visible="modalPayments" modal header="Registrar compra">
+        <Payment :form="form" :totalPurchase="totalPurchase" @cancel="hideModalPayments" @save="setSuccessPayment"></Payment>
     </Dialog>
 
     <UserLayout>

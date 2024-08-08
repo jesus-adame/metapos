@@ -48,6 +48,7 @@ onMounted(() => {
 </script>
 <template>
     <DataTable :value="items" class="shadow-md" :paginator="true" :rows="rows" :lazy="true" :totalRecords="totalRecords" @page="onPage">
+        <Column field="id" header="#"></Column>
         <Column field="name" header="Nombre"></Column>
         <Column field="email" header="Email"></Column>
         <Column field="created_at" header="Creación">
@@ -62,7 +63,14 @@ onMounted(() => {
         </Column>
         <Column field="" header="">
             <template #header>
-                <Button icon="pi pi-plus" rounded severity="success" raised @click="showModalCreate"></Button>
+                <div class="w-full flex justify-center">
+                    <Button icon="pi pi-plus" rounded severity="success" raised @click="showModalCreate"></Button>
+                </div>
+            </template>
+            <template #body>
+                <div class="w-full flex justify-center">
+                    <Button icon="pi pi-trash" severity="danger"></Button>
+                </div>
             </template>
         </Column>
     </DataTable>

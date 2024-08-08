@@ -9,10 +9,20 @@ class Branch extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'address', 'type'];
+    protected $fillable = [
+        'name',
+        'address',
+        'type',
+        'is_default'
+    ];
 
     public function cashRegisters()
     {
         return $this->hasMany(CashRegister::class);
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
     }
 }

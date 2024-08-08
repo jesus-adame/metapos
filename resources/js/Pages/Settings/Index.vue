@@ -64,16 +64,16 @@ const items = ref([
             }
         ]
     },
-    {
-        label: 'Ajustes',
-        items: [
-            {
-                label: 'Settings',
-                icon: 'pi pi-cog',
-                module: 'settings'
-            }
-        ]
-    }
+    // {
+    //     label: 'Ajustes',
+    //     items: [
+    //         {
+    //             label: 'Settings',
+    //             icon: 'pi pi-cog',
+    //             module: 'settings'
+    //         }
+    //     ]
+    // }
 ]);
 </script>
 

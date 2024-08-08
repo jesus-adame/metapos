@@ -13,12 +13,23 @@ const axiosOptions = {
     }
 }
 
+const unities = ref([
+    {label: 'Unidad', value: 'unity'},
+    {label: 'Bolsa', value: 'bag'},
+    {label: 'Caja', value: 'box'},
+    {label: 'Kilo', value: 'kg'},
+    {label: 'Litro', value: 'l'},
+    {label: 'Gramos', value: 'g'},
+    {label: 'Metros', value: 'meters'},
+])
+
 const form = ref({
     code: null,
     name: null,
     description: null,
     price: null,
     image: null as File | null,
+    unit_type: null,
 })
 
 function submit() {
@@ -55,9 +66,15 @@ function setImage($event: Event) {
             <label for="description" class="block">Descripción</label>
             <Textarea v-model="form.description" rows="5" class="w-full"></Textarea>
         </div>
-        <div>
-            <label for="price" class="block">Precio</label>
-            <InputNumber v-model="form.price" showButtons class="w-full"></InputNumber>
+        <div class="flex justify-between">
+            <div class="mr-2">
+                <label for="price" class="block">Precio</label>
+                <InputNumber v-model="form.price" showButtons class="w-full"></InputNumber>
+            </div>
+            <div>
+                <label for="unit_type" class="block">Unidad</label>
+                <Select v-model="form.unit_type" class="w-full" :options="unities" optionLabel="label" optionValue="label"></Select>
+            </div>
         </div>
         <div>
             <label for="image" class="block">Imagen</label>

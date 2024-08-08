@@ -14,6 +14,7 @@ import axios, { AxiosResponse } from 'axios';
 import { useToast } from 'primevue/usetoast';
 import { useConfirm } from 'primevue/useconfirm';
 import EditProduct from '../forms/EditProduct.vue';
+import { Link } from '@inertiajs/vue3';
 
 const createModal = ref<Boolean>(false)
 const editModal = ref<Boolean>(false)
@@ -121,6 +122,7 @@ const onPage = (event: DataTablePageEvent) => {
     <ConfirmDialog></ConfirmDialog>
 
     <DataTable :value="items" paginator :rows="rows" @page="onPage" :totalRecords="totalRecords">
+        <Column field="id" header="#"></Column>
         <Column field="name" header="Producto">
             <template #body="slot">
                 <div class="flex items-center">
@@ -128,33 +130,54 @@ const onPage = (event: DataTablePageEvent) => {
                         :src="`${slot.data.image_url}`"
                         :alt="slot.data.image"
                         v-if="slot.data.image"
-                        class="w-24 text-white shadow-lg mr-8"
+                        class="w-24 text-white shadow-md mr-8 rounded-md overflow-hidden"
                         preview
                     />
                     <div>
-                        <p class="text-lg">{{ slot.data.name }}</p>
-                        <span>{{ slot.data.code }}</span>
+                        <Link :href="route('products.edit', {product: slot.data.id})"><p class="text-lg font-semibold">{{ slot.data.name }}</p></Link>
+                        <span>Code: {{ slot.data.code }}</span>
                     </div>
                 </div>
             </template>
         </Column>
         <Column field="description" header="Descrición"></Column>
-        <Column field="price" header="Precio" class="text-right">
-            <template #body="slot">
-                {{ formatMoneyNumber(slot.data.price) }}
+        <Column field="price" header="">
+            <template #header>
+                <div class="w-full text-center">
+                    Precio
+                </div>
             </template>
-        </Column>
-        <Column header="Inventario" class="text-center">
             <template #body="slot">
-                <Tag :value="slot.data.stock || 'Sin inventario'" :severity="getSeverity(slot.data)"></Tag>
+                <div class="w-full text-center">
+                    {{ formatMoneyNumber(slot.data.price) }}
+                </div>
             </template>
         </Column>
         <Column header="">
             <template #header>
-                <Button icon="pi pi-plus" severity="success" rounded raised @click="openModalCreate"></Button>
+                <div class="w-full text-center">
+                    Inventario
+                </div>
             </template>
             <template #body="slot">
-                <div class="flex">
+                <div class="text-center w-full">
+                    <Tag :value="slot.data.stock || 'Sin inventario'" :severity="getSeverity(slot.data)"></Tag>
+                </div>
+            </template>
+        </Column>
+        <Column field="unit" header="Unidad">
+            <template #body="slot">
+                {{ slot.data.unit_type }}
+            </template>
+        </Column>
+        <Column header="">
+            <template #header>
+                <div class="flex justify-center w-full">
+                    <Button icon="pi pi-plus" severity="success" rounded raised @click="openModalCreate"></Button>
+                </div>
+            </template>
+            <template #body="slot">
+                <div class="flex justify-center">
                     <Button icon="pi pi-pencil" class="mr-1" @click="openModalEdit(slot.data)"></Button>
                     <Button icon="pi pi-trash" severity="danger" @click="confirmDelete(route('products.destroy', { product: slot.data.id }))"></Button>
                 </div>

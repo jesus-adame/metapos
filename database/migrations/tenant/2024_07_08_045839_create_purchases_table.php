@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('purchases', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('supplier_id');
+            $table->unsignedBigInteger('supplier_id')->nullable();
             $table->decimal('total', 10, 2);
             $table->enum('status', ['pending', 'paid', 'canceled']);
             $table->dateTime('purchase_date');

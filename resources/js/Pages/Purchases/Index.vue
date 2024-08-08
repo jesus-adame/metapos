@@ -2,14 +2,10 @@
 import { usePage, Head, Link } from '@inertiajs/vue3';
 import UserLayout from '@/Layouts/UserLayout.vue';
 import Button from 'primevue/button';
-import moment from 'moment/moment';
+import { formatDate, formatMoneyNumber } from '@/helpers';
 
 const { props } = usePage();
 const purchases = props.purchases;
-
-const formatNumber = (numb) => {
-    return new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(numb);
-}
 </script>
 
 <template>
@@ -31,22 +27,22 @@ const formatNumber = (numb) => {
                 <Column field="id" header="#"></Column>
                 <Column header="Fecha">
                     <template #body="slot">
-                        {{ moment(slot.data.purchase_date).calendar() }}
+                        {{ formatDate(slot.data.purchase_date) }}
                     </template>
                 </Column>
                 <Column header="Proveedor">
                     <template #body="slot">
-                        {{ slot.data.supplier.first_name }} {{ slot.data.supplier.last_name }}
+                        {{ slot.data.supplier?.first_name }} {{ slot.data.supplier?.last_name }}
                     </template>
                 </Column>
                 <Column header="Comprador">
                     <template #body="slot">
-                        {{ slot.data.supplier.first_name }} {{ slot.data.supplier.last_name }}
+                        {{ slot.data.buyer?.name }} {{ slot.data.buyer?.lastname }}
                     </template>
                 </Column>
                 <Column field="total" header="Total">
                     <template #body="slot">
-                        {{ formatNumber(slot.data.total) }}
+                        {{ formatMoneyNumber(slot.data.total) }}
                     </template>
                 </Column>
                 <Column header="">

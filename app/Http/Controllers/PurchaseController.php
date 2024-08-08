@@ -2,45 +2,41 @@
 
 namespace App\Http\Controllers;
 
-use Inertia\Inertia;
-use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Carbon\Carbon;
-use App\Models\Supplier;
+use App\Services\InventoryTransacctions\CreateInventoryTransaction;
 use App\Models\Purchase;
 use App\Models\Product;
+use App\Http\Requests\CreatePurchaseRequest;
 
 class PurchaseController extends Controller
 {
     public function index()
     {
-        $purchases = Purchase::with('supplier')->get();
-        return Inertia::render('Purchases/Index', ['purchases' => $purchases]);
+        $purchases = Purchase::with('supplier', 'buyer', 'branch')
+            ->orderBy('updated_at', 'desc')
+            ->get();
+
+        return inertia('Purchases/Index', ['purchases' => $purchases]);
     }
 
     public function create()
     {
-        $suppliers = Supplier::all();
-        $products = Product::all();
-        return Inertia::render('Purchases/Create', [
-            'suppliers' => $suppliers,
-            'products' => $products,
-        ]);
+        return inertia('Purchases/Create');
     }
 
-    public function store(Request $request)
+    public function store(CreatePurchaseRequest $request, CreateInventoryTransaction $inventoryService)
     {
-        $request->validate([
-            'supplier_id' => 'required|exists:suppliers,id',
-            'products' => 'required|array',
-            'products.*.id' => 'required|exists:products,id',
-            'products.*.quantity' => 'required|integer|min:1',
-            'products.*.price' => 'required|numeric|min:0',
-        ]);
+        $purchaseDate = Carbon::createFromTimeString($request->purchase_date);
+        $buyerId = auth()->user()->id;
+        $branchId = auth()->user()->branch_id;
 
         $purchase = Purchase::create([
             'supplier_id' => $request->supplier_id,
+            'buyer_id' => $buyerId,
+            'branch_d' => $branchId,
             'total' => 0, // Calcularemos el total a continuación
-            'purchase_date' => Carbon::now(),
+            'purchase_date' => $purchaseDate->format('Y-m-d'),
         ]);
 
         $total = 0;
@@ -55,11 +51,15 @@ class PurchaseController extends Controller
             ]);
 
             $total += $price * $quantity;
+
+            $inventoryService->execute('entry', $product['id'], $quantity,  $purchaseDate->format('Y-m-d'), 'Carga por compra');
         }
 
         // Actualizar el total de la compra
         $purchase->update(['total' => $total]);
 
-        return redirect()->route('purchases.index')->with('success', 'Purchase created successfully.');
+        return response()->json([
+            'messsage' => 'Compra registrada correctamente.'
+        ], Response::HTTP_CREATED);
     }
 }

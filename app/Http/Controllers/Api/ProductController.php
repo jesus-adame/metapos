@@ -13,8 +13,12 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
+        $branchId = auth()->user()->branch->id;
+
         $perPage = $request->input('rows', 10);
-        $products = Product::orderBy('updated_at', 'desc')->paginate($perPage);
+        $products = Product::orderBy('updated_at', 'desc')
+            ->where('branch_id', $branchId)
+            ->paginate($perPage);
 
         return response()->json($products);
     }

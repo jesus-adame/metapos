@@ -69,7 +69,9 @@ const pushProduct = (product: Product) => {
         image_url: product.image_url,
         price: product.price,
         quantity: 1,
-        stock: product.stock
+        stock: product.stock,
+        tax: product.tax,
+        unit_type: product.unit_type,
     })
 }
 
@@ -124,7 +126,6 @@ const hideModalMovements = () => {
 const setSuccessPayment = () => {
     hideModalPayments();
     clearSaleComponent();
-    toast.add({ severity: 'success', summary: 'Correcto', detail: 'Venta saldada correctamente', life: 1200 });
 }
 </script>
 

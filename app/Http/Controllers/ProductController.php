@@ -38,8 +38,11 @@ class ProductController extends Controller
             'code' => 'required|string|unique:products,code',
             'description' => 'nullable|string',
             'price' => 'required|numeric',
+            'unit_type' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
+        $branchId = auth()->user()->branch_id;
 
         if ($request->hasFile('image')) {
             // $file = $request->file('image'); // Add name file
@@ -58,6 +61,8 @@ class ProductController extends Controller
             'price' => $request->price,
             'image' => $imagePath,
             'image_url' => $imageUrl,
+            'branch_id' => $branchId,
+            'unit_type' => $request->unit_type,
         ]);
 
         return response()->json([
@@ -73,6 +78,7 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric',
+            'unit_type' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -96,6 +102,7 @@ class ProductController extends Controller
             'name' => $request->name,
             'description' => $request->description,
             'price' => $request->price,
+            'unit_type' => $request->unit_type,
             'image' => $imagePath,
             'image_url' => $imageUrl,
         ]);
