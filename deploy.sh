@@ -2,6 +2,8 @@
 git pull origin main
 composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 chmod -R 777 storage bootstrap/cache
+php artisan optimize:clear
+php artisan optimize
 php artisan key:generate
 php artisan migrate
 php artisan tenants:migrate
