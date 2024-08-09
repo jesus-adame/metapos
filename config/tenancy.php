@@ -11,7 +11,7 @@ return [
 
     'domain_model' => Domain::class,
 
-    'app_domain' => 'metapos.test',
+    'app_domain' => env('APP_DOMAIN'),
 
     /**
      * The list of domains hosting your central app.
@@ -19,7 +19,7 @@ return [
      * Only relevant if you're using the domain or subdomain identification middleware.
      */
     'central_domains' => [
-        'metapos.test',
+        env('APP_DOMAIN'),
     ],
 
     /**
