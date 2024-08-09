@@ -134,7 +134,7 @@ const setSuccessPayment = () => {
     <Head title="Registrar Compra" />
 
     <Dialog v-model:visible="modalPayments" modal header="Registrar compra">
-        <Payment :form="form" :totalPurchase="totalPurchase" @cancel="hideModalPayments" @save="setSuccessPayment"></Payment>
+        <Payment :form="form" :totalPurchase="totalPurchase" :supplier="selectedSupplier" @cancel="hideModalPayments" @save="setSuccessPayment"></Payment>
     </Dialog>
 
     <UserLayout>
@@ -149,7 +149,7 @@ const setSuccessPayment = () => {
                         <InputIcon>
                             <i class="pi pi-search" />
                         </InputIcon>
-                        <InputText type="text" v-model="searchQuery" class="mr-2" placeholder="Producto"/>
+                        <InputText type="text" v-model="searchQuery" class="mr-2 w-full" placeholder="Producto"/>
                     </IconField>
                     <button type="submit" label="Buscar" class="ml-2"/>
                 </form>

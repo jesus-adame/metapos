@@ -1,6 +1,11 @@
 <script setup>
+import Card from '@/Components/Card.vue';
+import { formatMoneyNumber } from '@/helpers';
 import UserLayout from '@/Layouts/UserLayout.vue';
 import { Head } from '@inertiajs/vue3';
+import Column from 'primevue/column';
+import DataTable from 'primevue/datatable';
+import Image from 'primevue/image';
 
 defineProps({
     title: {
@@ -17,43 +22,53 @@ defineProps({
 
     <UserLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ title }}</h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Compra # {{ purchase.id }}</h2>
         </template>
 
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900">
-                        <div class="mb-4">
-                            <p>
-                                <strong>Venta</strong> {{  purchase.id }}
-                            </p>
-                            <p>
-                                <strong>Proveedor</strong> {{ purchase.supplier.first_name }} {{ purchase.supplier.last_name }}
-                            </p>
-                        </div>
-                        <table class="min-w-full bg-white border border-gray-200">
-                            <thead>
-                                <tr class="w-full bg-gray-100 text-left text-gray-600">
-                                    <th class="py-2 px-4 border-b">Producto</th>
-                                    <th class="py-2 px-4 border-b">Precio</th>
-                                    <th class="py-2 px-4 border-b">Cantidad</th>
-                                    <th class="py-2 px-4 border-b">Subtotal</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="product in purchase.products" :key="purchase.id" class="hover:bg-gray-50">
-                                    <td class="py-2 px-4 border-b">
-                                        {{ product.name }}
-                                    </td>
-                                    <td class="py-2 px-4 border-b">${{ product.pivot.price }}</td>
-                                    <td class="py-2 px-4 border-b">{{ product.pivot.quantity }}</td>
-                                    <td class="py-2 px-4 border-b">${{ parseFloat(product.pivot.price * product.pivot.quantity).toFixed(2) }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
+        <div class="flex mt-4">
+            <div class="w-2/3">
+                <Card class="mb-4 text-lg">
+                    <div>
+                        <strong>Compra #</strong> {{  purchase.id }}
                     </div>
-                </div>
+                    <div>
+                        <strong>Proveedor</strong> {{ purchase.supplier?.first_name }} {{ purchase.supplier?.last_name }}
+                    </div>
+                    <div>
+                        <strong>Estatus</strong> {{ purchase.status }}
+                    </div>
+                    <div>
+                        <strong>Total Compra</strong> {{ formatMoneyNumber(purchase.total) }}
+                    </div>
+                </Card>
+                <DataTable :value="purchase.products">
+                    <Column field="name" header="Producto">
+                        <template #body="slot">
+                            <div class="flex">
+                                <Image :src="slot.data.image_url" :alt="slot.data.name" class="shadow-lg rounded-md overflow-hidden" width="64" />
+                                <div class="text-left ml-5">
+                                    <span class="font-bold">{{ slot.data.name }}</span>
+                                    <p>{{ slot.data.code }}</p>
+                                </div>
+                            </div>
+                        </template>
+                    </Column>
+                    <Column header="Precio">
+                        <template #body="slot">
+                            {{ formatMoneyNumber(slot.data.pivot.price) }}
+                        </template>
+                    </Column>
+                    <Column header="Cantidad">
+                        <template #body="slot">
+                            {{ slot.data.pivot.quantity }}
+                        </template>
+                    </Column>
+                    <Column header="Subtotal">
+                        <template #body="slot">
+                            {{ formatMoneyNumber(slot.data.pivot.price * slot.data.pivot.quantity) }}
+                        </template>
+                    </Column>
+                </DataTable>
             </div>
         </div>
     </UserLayout>

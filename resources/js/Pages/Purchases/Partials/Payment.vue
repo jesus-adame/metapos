@@ -3,22 +3,21 @@ import { formatMoneyNumber } from '@/helpers';
 import axios from 'axios';
 import Button from 'primevue/button';
 import DatePicker from 'primevue/datepicker';
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 
 const emit = defineEmits(['cancel', 'save']);
-const selectedPayment = ref('Efectivo');
-const saleStatus = ref('pending');
+const purchaseStatus = ref('pending');
 
 const props = defineProps({
   totalPurchase: Number,
   form: Object,
+  supplier: Object,
 });
 
 const modalResponse = ref(false);
 const dialogResponseData = ref({
     type: null,
     header: null,
-    content: null,
     message: null
 })
 
@@ -27,62 +26,21 @@ const cancelPayment = () => {
 };
 
 const submitPayment = () => {
-  saleStatus.value = 'pending';
+  purchaseStatus.value = 'pending';
   emit('save');
 };
 
-const payments = ref([
-  { icon: 'pi-money-bill', label: 'Efectivo', method: 'cash', amount: null, hasComision: false, comision: null },
-  { icon: 'pi-credit-card', label: 'Tarjeta', method: 'card', amount: null, hasComision: false, comision: null },
-  { icon: 'pi-arrow-right', label: 'Transferencia', method: 'transfer', amount: null, hasComision: false, comision: null },
-]);
-
-const paymentMethods = ref([
-  'Efectivo',
-  'Tarjeta',
-  'Transferencia',
-  'Mixto',
-]);
-
-const change = computed(() => {
-  const totalPurchase = props.totalPurchase;
-  const cashPayment = totalCashPayment.value;
-  const otherPayments = totalPayment.value - cashPayment;
-  const remainingBalance = totalPurchase - otherPayments;
-
-  return cashPayment > remainingBalance ? cashPayment - remainingBalance : 0;
-});
-
-const totalPayment = computed(() => {
-  return payments.value.reduce((acc, payment) => acc + (payment.amount || 0), 0);
-});
-
-const totalCashPayment = computed(() => {
-  return payments.value.filter(payment => payment.method === 'cash')
-                       .reduce((acc, payment) => acc + (payment.amount || 0), 0);
-});
-
-const clearPayments = () => {
-  payments.value = [
-    { icon: 'pi-money-bill', label: 'Efectivo', method: 'cash', amount: null, hasComision: false, comision: null },
-    { icon: 'pi-credit-card', label: 'Tarjeta', method: 'card', amount: null, hasComision: false, comision: null },
-    { icon: 'pi-arrow-right', label: 'Transferencia', method: 'transfer', amount: null, hasComision: false, comision: null },
-  ];
-}
-
 const applyPayment = () => {
   const formData = props.form.data();
-
-  formData.payment_methods = payments.value;
+  formData.supplier_id = props.supplier?.id;
 
   axios.post(route('purchases.store'), formData)
   .then(response => {
-    saleStatus.value = 'paid';
+    purchaseStatus.value = 'paid';
     openDialogResponse({
       type: 'success',
       header: 'Correcto',
-      message: response.data.message,
-      content: response.data.content
+      message: response.data.message
     });
   })
   .catch(({response}) => {
@@ -90,7 +48,6 @@ const applyPayment = () => {
       type: 'error',
       header: 'No se pudo registrar',
       message: response.data.message,
-      content: null
     });
   })
 };
@@ -105,11 +62,10 @@ const closeDialogResponse = () => {
   dialogResponseData.value = {
     type: null,
     header: null,
-    content: null,
     message: null
   }
 
-  if (saleStatus.value == 'paid') {
+  if (purchaseStatus.value == 'paid') {
     submitPayment();
   }
 }
@@ -117,9 +73,9 @@ const closeDialogResponse = () => {
 
 <template>
   <Dialog v-model:visible="modalResponse" modal :header="dialogResponseData.header">
-    <Message :closable="false" :severity="dialogResponseData.type">{{ dialogResponseData.message }}</Message>
+    <Message class="mt-2" :closable="false" :severity="dialogResponseData.type">{{ dialogResponseData.header }}</Message>
     <p class="mt-2">
-      <strong>{{ dialogResponseData.content }}</strong>
+      <strong>{{ dialogResponseData.message }}</strong>
     </p>
     <div class="flex w-full">
       <Button class="ml-auto" @click="closeDialogResponse">Aceptar</Button>

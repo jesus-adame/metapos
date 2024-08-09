@@ -40,6 +40,11 @@ const purchases = props.purchases;
                         {{ slot.data.buyer?.name }} {{ slot.data.buyer?.lastname }}
                     </template>
                 </Column>
+                <Column header="Estatus">
+                    <template #body="slot">
+                        {{ slot.data.status }}
+                    </template>
+                </Column>
                 <Column field="total" header="Total">
                     <template #body="slot">
                         {{ formatMoneyNumber(slot.data.total) }}
