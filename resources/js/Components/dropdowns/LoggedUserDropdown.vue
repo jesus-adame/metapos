@@ -8,6 +8,7 @@ import { router, usePage } from '@inertiajs/vue3'
 import { Branch, CashRegister, ErrorResponse } from '@/types';
 import CashRegisterService from '@/Services/CashRegisterService';
 import Button from 'primevue/button';
+import { locationIcon } from '@/helpers';
 
 const page = usePage()
 const toast = useToast()
@@ -74,10 +75,10 @@ onMounted(() => {
                     <div class="text-gray-700 px-4 py-2 shadow-md flex items-center justify-between w-62 cursor-pointer rounded-md">
                         <div class="flex items-center">
                             <div class="py-2 px-3 bg-gray-300 rounded-full mr-1 text-gray-500">
-                                <i class="pi pi-building"></i>
+                                <i :class="locationIcon(page.props.location)"></i>
                             </div>
                             <div class="ml-2 text-left">
-                                <p>{{ page.props.branch?.name }}</p>
+                                <p>{{ page.props.location?.name }}</p>
                                 <span class="rounded-lg bg-green-500 px-2 text-sm text-green-100">{{ page.props.cashRegister?.name }}</span>
                             </div>
                         </div>

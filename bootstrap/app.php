@@ -18,7 +18,6 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->appendToGroup('cash-register', [
-            \App\Http\Middleware\EnsureBranchAndCashRegisterAreSet::class,
             \App\Http\Middleware\ShareSessionData::class,
         ]);
     })

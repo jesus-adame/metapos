@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Contracts\Locationable;
 
-class Branch extends Model implements Locationable
+class Warehouse extends Model implements Locationable
 {
     use HasFactory;
 
@@ -14,18 +14,7 @@ class Branch extends Model implements Locationable
         'name',
         'address',
         'type',
-        'is_default'
     ];
-
-    public function cashRegisters()
-    {
-        return $this->hasMany(CashRegister::class);
-    }
-
-    public function products()
-    {
-        return $this->hasMany(Product::class);
-    }
 
     public function inventories()
     {

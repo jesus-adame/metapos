@@ -48,7 +48,8 @@ class AuthenticatedSessionController extends Controller
                 ->first();
 
             $user->update([
-                'branch_id' => $defaultBranch->id,
+                'location_id' => $defaultBranch->id,
+                'location_type' => $defaultBranch::class,
                 'cash_register_id' => $defaultCashRegister->id,
             ]);
         }

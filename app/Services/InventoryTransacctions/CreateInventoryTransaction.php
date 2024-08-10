@@ -2,29 +2,40 @@
 
 namespace App\Services\InventoryTransacctions;
 
-use App\Models\Product;
 use App\Models\InventoryTransaction;
+use App\Models\Inventory;
+use App\Contracts\Locationable;
 
 class CreateInventoryTransaction
 {
-    public function execute(string $type, int $productId, int $quantity, mixed $date, string $description = '')
-    {
+    public function execute(
+        Locationable $location,
+        string $type,
+        int $productId,
+        int $amount,
+        mixed $date,
+        string $description = ''
+    ) {
         $transaction = InventoryTransaction::create([
             'product_id' => $productId,
             'type' => $type,
-            'quantity' => $quantity,
+            'quantity' => $amount,
             'transaction_date' => $date,
             'description' => $description,
         ]);
 
+        $inventory = Inventory::where('product_id', $productId)
+            ->where('location_id', $location->id)
+            ->where('location_type', $location::class)
+            ->first();
+
         // Actualizar el stock del producto
-        $product = Product::find($productId);
         if ($type == 'entry') {
-            $product->stock += $quantity;
+            $inventory->quantity += $amount;
         } else {
-            $product->stock -= $quantity;
+            $inventory->quantity -= $amount;
         }
-        $product->save();
+        $inventory->save();
 
         return $transaction;
     }

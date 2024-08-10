@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Auth\Events\Registered;
-use App\Models\User;
+use App\Models\Central\User;
 use App\Http\Controllers\Controller;
 
 class RegisteredUserController extends Controller

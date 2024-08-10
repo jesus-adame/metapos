@@ -7,6 +7,7 @@ import BranchService from "@/Services/BranchService";
 import { AxiosResponse } from 'axios';
 import { DataTablePageEvent } from 'primevue/datatable';
 import Tag from 'primevue/tag';
+import { locationIcon } from '@/helpers';
 
 const branchService: BranchService = new BranchService()
 const items = ref([])
@@ -62,8 +63,15 @@ const calculateTypeLabel = (type: string) => {
         <Column field="id" header="#"></Column>
         <Column field="name" header="Nombre">
             <template #body="slot">
-                <span>{{ slot.data.name }}</span>
-                <Tag class="ml-2" v-if="slot.data.is_default" :value="'default'" severity="info"></Tag>
+                <div class="flex items-center">
+                    <div class="py-2 px-3 bg-gray-300 rounded-full mr-3 text-gray-500">
+                        <i :class="locationIcon(slot.data)"></i>
+                    </div>
+                    <div>
+                        <span>{{ slot.data.name }}</span>
+                        <Tag class="ml-2" v-if="slot.data.is_default" :value="'default'" severity="info"></Tag>
+                    </div>
+                </div>
             </template>
         </Column>
         <Column field="address" header="Ubicación"></Column>

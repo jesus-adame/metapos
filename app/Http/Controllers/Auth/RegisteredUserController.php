@@ -46,7 +46,8 @@ class RegisteredUserController extends Controller
             'lastname' => $request->lastname,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'branch_id' => $branch->id,
+            'location_id' => $branch->id,
+            'location_type' => $branch::class,
             'cash_register_id' => $cashRegister->id,
         ]);
 

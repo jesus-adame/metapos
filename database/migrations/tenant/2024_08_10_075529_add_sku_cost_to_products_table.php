@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::table('products', function (Blueprint $table) {
             $table->decimal('cost', 8, 2);
-            $table->string('sku');
-            $table->boolean('has_taxes');
+            $table->string('sku')->nullable();
+            $table->boolean('has_taxes')->default(false);
         });
     }
 

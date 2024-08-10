@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Branch;
 use App\Http\Controllers\Controller;
 
 class ProductController extends Controller
@@ -14,11 +15,11 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $branchId = Auth::user()->branch->id;
-
         $perPage = $request->input('rows', 10);
-        $products = Product::orderBy('updated_at', 'desc')
-            ->where('branch_id', $branchId)
+        $location = Branch::find(Auth::user()->branch_id);
+
+        $products = Product::withStock($location)
+            ->orderBy('updated_at', 'desc')
             ->paginate($perPage);
 
         return response()->json($products);
@@ -33,7 +34,8 @@ class ProductController extends Controller
             return response()->json([]);
         }
 
-        $products = Product::where('code', $request->code)
+        $products = Product::withTotalQuantity()
+            ->where('code', $request->code)
             ->orWhere('name', $request->code)
             ->get();
 

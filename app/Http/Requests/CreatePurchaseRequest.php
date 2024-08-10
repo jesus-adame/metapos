@@ -28,13 +28,18 @@ class CreatePurchaseRequest extends FormRequest
             'products.*.id' => 'required|exists:products,id',
             'products.*.quantity' => 'required|integer|min:1',
             'products.*.price' => 'required|numeric|min:0',
+            'location_id' => 'required|integer',
+            'location_type' => 'required|string',
         ];
     }
 
     public function messages()
     {
         return [
-            'products.required' => 'Debes cargar al menos un producto.'
+            'products.required' => 'Debes cargar al menos un producto.',
+            'purchase_date.required' => 'Elijar una fecha.',
+            'location_id.required' => 'Elija una ubicación.',
+            'location_type.required' => 'Elija un tipo de ubicación.',
         ];
     }
 }

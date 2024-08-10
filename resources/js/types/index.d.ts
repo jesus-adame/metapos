@@ -33,11 +33,19 @@ export interface Branch {
     name?: string
 }
 
+export interface Location {
+    id?: string
+    name?: string
+    type?: string
+}
+
 export interface Product {
     id?: number
     name: string
     code: string
+    sku: ?string
     price: number
+    cost: number
     image: string
     image_url: string
     quantity: number
@@ -45,6 +53,7 @@ export interface Product {
     unit_type: string
     tax: number
     description?: string
+    inventories_sum_quantity: number
 }
 
 export interface CartItem {
@@ -96,5 +105,8 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
     cashRegisters: CashRegister[],
     branch: Branch,
     branches: Branch[],
-    csrf_token: string
+    csrf_token: string,
+    location: Location,
+    location_id: number,
+    location_type: string,
 };

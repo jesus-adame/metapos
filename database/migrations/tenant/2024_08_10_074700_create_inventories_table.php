@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('location_id');
             $table->string('location_type');
             $table->integer('quantity');
+            $table->string('status');
             $table->timestamps();
 
             $table->foreign('product_id')->references('id')->on('products')->onDelete('set null');

@@ -134,13 +134,15 @@ const onPage = (event: DataTablePageEvent) => {
                         preview
                     />
                     <div>
-                        <Link :href="route('products.edit', {product: slot.data.id})"><p class="text-lg font-semibold">{{ slot.data.name }}</p></Link>
+                        <Link :href="route('products.edit', {product: slot.data.id})">
+                            <p class="text-lg font-semibold">{{ slot.data.name }}</p>
+                        </Link>
                         <span>Code: {{ slot.data.code }}</span>
                     </div>
                 </div>
             </template>
         </Column>
-        <Column field="description" header="Descrición"></Column>
+        <Column field="description" header="Descripción"></Column>
         <Column field="price" header="">
             <template #header>
                 <div class="w-full text-center">
@@ -161,7 +163,7 @@ const onPage = (event: DataTablePageEvent) => {
             </template>
             <template #body="slot">
                 <div class="text-center w-full">
-                    <Tag :value="slot.data.stock || 'Sin inventario'" :severity="getSeverity(slot.data)"></Tag>
+                    <Tag :value="slot.data.stock || 0" :severity="getSeverity(slot.data)"></Tag>
                 </div>
             </template>
         </Column>

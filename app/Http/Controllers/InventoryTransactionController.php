@@ -31,6 +31,8 @@ class InventoryTransactionController extends Controller
         $transaction = $service->execute(
             $request->type,
             $request->product_id,
+            $request->location_id,
+            $request->location_type,
             $request->quantity,
             $request->transaction_date,
             $request->description,

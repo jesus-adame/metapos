@@ -10,7 +10,14 @@ class Purchase extends Model
     use HasFactory;
 
     protected $fillable = [
-        'supplier_id', 'buyer_id', 'branch_id', 'total', 'status', 'purchase_date',
+        'supplier_id',
+        'buyer_id',
+        'branch_id',
+        'total',
+        'status',
+        'purchase_date',
+        'location_id',
+        'location_type',
     ];
 
     public function supplier()
@@ -26,6 +33,11 @@ class Purchase extends Model
     public function branch()
     {
         return $this->belongsTo(Branch::class);
+    }
+
+    public function location()
+    {
+        return $this->morphTo();
     }
 
     public function products()

@@ -1,3 +1,4 @@
+import { Location } from '@/types';
 import moment from 'moment-timezone';
 
 export const formatMoneyNumber = (numb: number) => {
@@ -50,4 +51,12 @@ export const formatDate = (date: string, local: boolean = false) => { // Asegúr
     }
 
     return dateTime.tz(timezone).format('DD/MM/YYYY');
+}
+
+export const locationIcon = (location: Location) => {
+    if (location.type == 'branch') {
+        return 'pi pi-building'
+    }
+
+    return 'pi pi-box'
 }

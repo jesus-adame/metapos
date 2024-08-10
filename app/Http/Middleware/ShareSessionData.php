@@ -3,8 +3,10 @@
 namespace App\Http\Middleware;
 
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Closure;
+use App\Models\User;
 use App\Models\CashRegister;
 use App\Models\Branch;
 
@@ -17,13 +19,18 @@ class ShareSessionData
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (auth()->check()) {
-            $user = auth()->user();
+        if (Auth::check()) {
+            /** @var User */
+            $user = Auth::user();
             $cashRegister = CashRegister::find($user?->cash_register_id);
             $branch = Branch::find($user?->branch_id);
+            $location = $user->location;
 
             inertia()->share([
                 'branch' => $branch,
+                'location_id' => $location->id,
+                'location_type' => $location::class,
+                'location' => $location,
                 'branches' => Branch::all(),
                 'cashRegister' => $cashRegister,
                 'cashRegisters' => CashRegister::all(),

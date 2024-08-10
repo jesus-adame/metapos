@@ -27,17 +27,21 @@ class StoreInventoryRequest extends FormRequest
             'quantity' => 'required|integer|min:1',
             'transaction_date' => 'required|date',
             'description' => 'required|string|max:255',
+            'location_id' => 'required|integer',
+            'location_type' => 'required|string',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'product_id.required' => 'El producto es obligatorio.',
+            'product_id.required' => 'Elija un producto.',
             'type.required' => 'El tipo de transacción es obligatorio.',
             'quantity.required' => 'La cantidad es obligatoria.',
             'transaction_date.required' => 'La fecha de transacción es requerida.',
             'description.required' => 'Debes agregar una descripción.',
+            'location_id.required' => 'Elija una ubicación.',
+            'location_type.required' => 'Elija un tipo de ubicación.',
         ];
     }
 }

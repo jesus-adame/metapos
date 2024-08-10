@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Contracts\Database\Eloquent\Builder;
+use App\Contracts\Locationable;
 
 class Product extends Model
 {
@@ -14,20 +16,41 @@ class Product extends Model
         'name',
         'description',
         'price',
-        'stock',
+        'cost',
         'image',
         'image_url',
         'unit_type',
         'tax',
-        'branch_id',
+        'has_taxes',
     ];
 
     protected $casts = [
         'price' => 'float',
+        'cost' => 'float',
+        'stock' => 'integer',
+        'tax' => 'float',
     ];
 
-    public function branch()
+    public function scopeWithStock(Builder $query, ?Locationable $location = null): Builder
     {
-        return $this->belongsTo(Branch::class, 'branch_id');
+        return $query->withSum(['inventories as stock' => function ($query) use ($location) {
+            if (!is_null($location)) {
+                $query->where('location_id', $location->id)
+                    ->where('location_type', $location::class);
+            }
+        }], 'quantity');
+    }
+
+    public function scopeWhereLocation(Builder $query, Locationable $location)
+    {
+        return $query->whereHas('inventories', function ($query) use ($location) {
+            $query->where('location_id', $location->id)
+                ->where('location_type', $location::class);
+        });
+    }
+
+    public function inventories()
+    {
+        return $this->hasMany(Inventory::class);
     }
 }

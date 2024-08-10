@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Response;
 use Carbon\Carbon;
 use App\Services\InventoryTransacctions\CreateInventoryTransaction;
 use App\Models\Purchase;
 use App\Models\Product;
+use App\Models\Branch;
 use App\Http\Requests\CreatePurchaseRequest;
 
 class PurchaseController extends Controller
@@ -37,31 +39,39 @@ class PurchaseController extends Controller
     public function store(CreatePurchaseRequest $request, CreateInventoryTransaction $inventoryService)
     {
         $purchaseDate = Carbon::createFromTimeString($request->purchase_date);
-        $buyerId = auth()->user()->id;
-        $branchId = auth()->user()->branch_id;
+        $buyerId = Auth::user()->id;
+        $branch = Branch::find(Auth::user()->branch_id);
 
         $purchase = Purchase::create([
             'supplier_id' => $request->supplier_id,
             'buyer_id' => $buyerId,
-            'branch_d' => $branchId,
+            'branch_d' => $branch->id,
             'total' => 0, // Calcularemos el total a continuación
             'purchase_date' => $purchaseDate->format('Y-m-d'),
+            'status' => 'paid',
         ]);
 
         $total = 0;
-        foreach ($request->products as $product) {
-            $productData = Product::find($product['id']);
-            $quantity = $product['quantity'];
-            $price = $product['price'];
+        foreach ($request->products as $productData) {
+            $product = Product::find($productData['id']);
+            $quantity = $productData['quantity'];
+            $price = $productData['price'];
 
-            $purchase->products()->attach($productData, [
+            $purchase->products()->attach($product, [
                 'quantity' => $quantity,
                 'price' => $price,
             ]);
 
             $total += $price * $quantity;
 
-            $inventoryService->execute('entry', $product['id'], $quantity,  $purchaseDate->format('Y-m-d'), 'Carga por compra');
+            $inventoryService->execute(
+                $branch,
+                'entry',
+                $product->id,
+                $quantity,
+                $purchaseDate->format('Y-m-d'),
+                'Carga por compra #' . $purchase->id
+            );
         }
 
         // Actualizar el total de la compra

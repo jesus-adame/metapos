@@ -10,21 +10,20 @@ use App\Models\Product;
 use App\Models\Payment;
 use App\Models\CashRegister;
 use App\Models\CashFlow;
+use App\Models\Branch;
 use App\Models\BankTransaction;
 use App\Contracts\Cashable;
 
 class RegisterSaleService
 {
-    public function __construct(private CreateInventoryTransaction $inventoryTransactionService)
-    {
-    }
+    public function __construct(private CreateInventoryTransaction $inventoryTransactionService) {}
 
     public function execute(?int $customerId, int $sellerId, array $products, array $paymentMethods, int $cashRegisterId): array
     {
         DB::beginTransaction();
 
-        $sale = $this->createSale($customerId, $sellerId, $products, $cashRegisterId);
         $cashRegister = CashRegister::find($cashRegisterId);
+        $sale = $this->createSale($customerId, $sellerId, $products, $cashRegister);
 
         // Guardar los métodos de pago
         $paymentsAmount = $this->setPayments($sale, $paymentMethods, $cashRegister);
@@ -132,13 +131,16 @@ class RegisterSaleService
         ];
     }
 
-    private function createSale(?int $customerId, int $sellerId, array $products, int $cashRegisterId): Sale
+    private function createSale(?int $customerId, int $sellerId, array $products, CashRegister $cashRegister): Sale
     {
+        /** @var Branch */
+        $branch = $cashRegister->branch;
+
         /** @var Sale */
         $sale = Sale::create([
             'customer_id' => $customerId,
             'seller_id' => $sellerId,
-            'cash_register_id' => $cashRegisterId,
+            'cash_register_id' => $cashRegister->id,
             'status' => 'pending',
             'total' => 0, // We will calculate the total below
         ]);
@@ -159,6 +161,7 @@ class RegisterSaleService
 
             $totalSale += $price * $quantity;
             $this->inventoryTransactionService->execute(
+                $branch,
                 'exit',
                 $product->id,
                 $quantity,

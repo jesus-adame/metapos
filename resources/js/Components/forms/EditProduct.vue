@@ -31,8 +31,10 @@ const { product } = defineProps<{
 const form = ref({
     name: product?.name,
     code: product?.code,
+    sku: product?.sku,
     description: product?.description,
     price: product?.price,
+    cost: product?.cost,
     image: null as File | null,
     unit_type: product?.unit_type,
     _method: 'put'
@@ -74,11 +76,21 @@ function setImage($event: Event) {
         <div class="flex justify-between">
             <div class="mr-2">
                 <label for="price" class="block">Precio</label>
-                <InputNumber v-model="form.price" showButtons class="w-full"></InputNumber>
+                <InputNumber v-model="form.price" showButtons class="w-full" placeholder="0.00"></InputNumber>
             </div>
             <div>
+                <label for="cost" class="block">Costo</label>
+                <InputNumber v-model="form.cost" showButtons class="w-full" placeholder="0.00"></InputNumber>
+            </div>
+        </div>
+        <div class="flex justify-between">
+            <div class="w-full mr-2">
                 <label for="unit_type" class="block">Unidad</label>
                 <Select v-model="form.unit_type" class="w-full" :options="unities" optionLabel="label" optionValue="label"></Select>
+            </div>
+            <div class="w-full">
+                <label for="sku" class="block">SKU (Opcional)</label>
+                <InputText v-model="form.sku" class="w-full"></InputText>
             </div>
         </div>
         <div>

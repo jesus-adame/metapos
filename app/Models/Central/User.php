@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Central;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Laravel\Sanctum\HasApiTokens;
@@ -47,20 +47,5 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
-    }
-
-    public function location()
-    {
-        return $this->morphTo();
-    }
-
-    public function branch()
-    {
-        return $this->belongsTo(Branch::class);
-    }
-
-    public function cashRegister()
-    {
-        return $this->belongsTo(CashRegister::class);
     }
 }
