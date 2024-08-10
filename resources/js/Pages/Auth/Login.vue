@@ -27,7 +27,6 @@ const form = reactive({
     remember: false,
     errors: {},
     processing: false,
-    _token: page.props.csrf_token,
 });
 
 const submit = async () => {
@@ -37,6 +36,7 @@ const submit = async () => {
             email: form.email,
             password: form.password,
             remember: form.remember,
+            _token: page.props.csrf_token,
         });
 
         const token = response.data.token;
