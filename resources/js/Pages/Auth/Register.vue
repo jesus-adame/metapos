@@ -68,7 +68,6 @@ const submit = () => {
                         type="email"
                         class="mt-1 block w-full"
                         v-model="form.email"
-                        required
                         autocomplete="username"
                     />
 
@@ -81,7 +80,6 @@ const submit = () => {
                         id="branch"
                         class="mt-1 block w-full"
                         v-model="form.branch"
-                        required
                     />
 
                     <InputError class="mt-2" :message="form.errors.branch" />
@@ -93,7 +91,6 @@ const submit = () => {
                         id="address"
                         class="mt-1 block w-full"
                         v-model="form.address"
-                        required
                     />
 
                     <InputError class="mt-2" :message="form.errors.address" />
@@ -107,7 +104,6 @@ const submit = () => {
                             type="password"
                             class="mt-1 block w-full"
                             v-model="form.password"
-                            required
                             autocomplete="new-password"
                         />
 
@@ -121,7 +117,6 @@ const submit = () => {
                             type="password"
                             class="mt-1 block w-full"
                             v-model="form.password_confirmation"
-                            required
                             autocomplete="new-password"
                         />
 

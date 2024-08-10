@@ -25,6 +25,7 @@ const form = reactive({
     remember: false,
     errors: {},
     processing: false,
+    _token: page.props.csrf_token,
 });
 
 const submit = async () => {
