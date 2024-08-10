@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\CashFlow;
@@ -11,12 +11,12 @@ class CashFlowController extends Controller
 {
     public function index()
     {
-        return Inertia::render('CashFlows/Index');
+        return inertia('CashFlows/Index');
     }
 
     public function create()
     {
-        return Inertia::render('CashFlows/Create');
+        return inertia('CashFlows/Create');
     }
 
     public function store(Request $request)
@@ -29,7 +29,7 @@ class CashFlowController extends Controller
             'date' => 'required|date',
         ]);
 
-        $cashRegisterId = auth()->user()->cash_register_id;
+        $cashRegisterId = Auth::user()->cash_register_id;
 
         CashFlow::create([
             'type' => $request->type,

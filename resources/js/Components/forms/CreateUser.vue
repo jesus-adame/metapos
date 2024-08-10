@@ -5,7 +5,9 @@ import InputLabel from '@/Components/InputLabel.vue';
 import axios from 'axios';
 import { ref } from 'vue';
 import { useToast } from 'primevue/usetoast';
+import { usePage } from '@inertiajs/vue3';
 
+const page = usePage()
 const toast = useToast();
 const form = ref({
     name: '',
@@ -26,13 +28,11 @@ const submit = () => {
             password_confirmation: '',
         };
 
-        toast.add({ severity: 'success', summary: 'Correcto', detail: 'Registrado correctamente', life: 1200 });
-
+        toast.add({ severity: 'success', summary: 'Correcto', detail: response.data.message, life: 1200 });
         emit('save')
     })
     .catch(({ response }) => {
         console.log(response);
-
         toast.add({ severity: 'error', summary: 'Error', detail: response.data.message, life: 2100 });
     })
 };

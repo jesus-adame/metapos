@@ -25,6 +25,7 @@ class RegisterRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
+            'lastname' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:' . User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'branch' => ['required', 'string', 'unique:branches,name'],
@@ -36,6 +37,7 @@ class RegisterRequest extends FormRequest
     {
         return [
             'name.required' => 'El nombre es obligatorio.',
+            'lastname.required' => 'El apellido es obligatorio.',
             'email.required' => 'El email es obligatorio.',
             'branch.required' => 'La sucursal es obligatorio.',
             'address.required' => 'La dirección es obligatoria.',

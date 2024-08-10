@@ -1,8 +1,9 @@
 <script setup>
-import { useForm } from '@inertiajs/vue3';
+import { useForm, usePage } from '@inertiajs/vue3';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 
+const page = usePage()
 const emit = defineEmits(['save'])
 const form = useForm({
     first_name: null,

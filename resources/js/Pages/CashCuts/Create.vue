@@ -1,9 +1,9 @@
 <script setup>
-import { ref } from 'vue';
-import { useForm, Head } from '@inertiajs/vue3';
+import { useForm, Head, usePage } from '@inertiajs/vue3';
 import UserLayout from '@/Layouts/UserLayout.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 
+const page = usePage()
 const form = useForm({
     cut_date: '',
 });

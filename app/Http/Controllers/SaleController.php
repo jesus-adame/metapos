@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Services\Sales\RegisterSaleService;
 use App\Services\Sales\AllSalesService;
@@ -43,8 +44,8 @@ class SaleController extends Controller
 
     public function store(StoreSaleRequest $request, RegisterSaleService $service): Response
     {
-        $sellerId = auth()->id();
-        $cash_register_id = auth()->user()->cash_register_id;
+        $sellerId = Auth::id();
+        $cash_register_id = Auth::user()->cash_register_id;
 
         $response = $service->execute(
             $request->customer_id,

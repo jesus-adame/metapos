@@ -7,12 +7,15 @@ import { onMounted, ref } from 'vue';
 import { useToast } from 'primevue/usetoast';
 import Select from 'primevue/select';
 import BranchService from "@/Services/BranchService";
+import { usePage } from '@inertiajs/vue3';
 
+const page = usePage()
 const branchService: BranchService = new BranchService()
 const toast = useToast();
 const form = ref({
     name: '',
-    branch_id: ''
+    branch_id: '',
+    _token: page.props.csrf_token
 });
 const branches = ref([])
 
@@ -23,10 +26,11 @@ const submit = () => {
     .then(response => {
         form.value = {
             name: '',
-            branch_id: ''
+            branch_id: '',
+            _token: page.props.csrf_token
         };
 
-        toast.add({ severity: 'success', summary: 'Correcto', detail: 'Registrado correctamente', life: 1200 });
+        toast.add({ severity: 'success', summary: 'Correcto', detail: response.data.message, life: 1200 });
         emit('save')
     })
     .catch(({ response }) => {

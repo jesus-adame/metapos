@@ -1,8 +1,6 @@
 <script setup>
-import { Head, Link } from '@inertiajs/vue3';
+import { Head } from '@inertiajs/vue3';
 import UserLayout from '@/Layouts/UserLayout.vue';
-import moment from 'moment/moment';
-import Button from 'primevue/button';
 import Card from 'primevue/card';
 import ListCustomers from '@/Components/tables/ListCustomers.vue';
 import ListSuppliers from '@/Components/tables/ListSuppliers.vue';

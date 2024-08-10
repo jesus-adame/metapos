@@ -3,9 +3,10 @@ import GuestLayout from '@/Layouts/GuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
-import { Head, useForm } from '@inertiajs/vue3';
+import { Head, useForm, usePage } from '@inertiajs/vue3';
 import Button from 'primevue/button';
 
+const page = usePage()
 defineProps({
     status: {
         type: String,
@@ -14,6 +15,7 @@ defineProps({
 
 const form = useForm({
     email: '',
+    _token: page.props.csrf_token,
 });
 
 const submit = () => {

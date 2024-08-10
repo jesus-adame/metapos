@@ -2,15 +2,16 @@
 import { computed } from 'vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
 
+const page = usePage();
 const props = defineProps({
     status: {
         type: String,
     },
 });
 
-const form = useForm({});
+const form = useForm({_token: page.props.csrf_token});
 
 const submit = () => {
     form.post(route('verification.send'));

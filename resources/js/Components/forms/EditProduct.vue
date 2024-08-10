@@ -1,11 +1,13 @@
 <script lang="ts" setup>
 import { Product } from '@/types';
+import { usePage } from '@inertiajs/vue3';
 import axios, { AxiosResponse } from 'axios';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 import { useToast } from 'primevue/usetoast';
 import { ref } from 'vue';
 
+const page = usePage()
 const emit = defineEmits(['save'])
 const toast = useToast()
 const axiosOptions = {

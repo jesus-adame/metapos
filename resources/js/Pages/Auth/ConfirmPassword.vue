@@ -4,10 +4,12 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
-import { Head, useForm } from '@inertiajs/vue3';
+import { Head, useForm, usePage } from '@inertiajs/vue3';
 
+const page = usePage()
 const form = useForm({
     password: '',
+    _token: page.props.csrf_token,
 });
 
 const submit = () => {

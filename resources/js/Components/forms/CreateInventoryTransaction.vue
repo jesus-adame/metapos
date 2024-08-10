@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import ProductService from '@/Services/ProductService';
 import { ErrorResponse, Product } from '@/types';
+import { usePage } from '@inertiajs/vue3';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import Button from 'primevue/button';
 import Select from 'primevue/select';
@@ -8,6 +9,7 @@ import Textarea from 'primevue/textarea';
 import { useToast } from 'primevue/usetoast';
 import { onMounted, reactive, ref } from 'vue';
 
+const page = usePage()
 const toast = useToast();
 const products = ref<Product[]>([]);
 const productService = new ProductService();

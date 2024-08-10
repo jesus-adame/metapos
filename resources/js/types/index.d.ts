@@ -82,6 +82,7 @@ export interface SuccessResponse {
 
 export interface ErrorResponse {
     message: string;
+    errors: {};
     // Other error properties as needed
 }
 

@@ -1,6 +1,8 @@
 <script setup>
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import { Link } from '@inertiajs/vue3';
+import DynamicDialog from 'primevue/dynamicdialog';
+import Toast from 'primevue/toast';
 </script>
 
 <template>
@@ -17,4 +19,6 @@ import { Link } from '@inertiajs/vue3';
             <slot />
         </div>
     </div>
+    <DynamicDialog />
+    <Toast position="bottom-right" />
 </template>

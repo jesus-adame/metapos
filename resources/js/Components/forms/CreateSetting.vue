@@ -1,9 +1,10 @@
 <script lang="ts" setup>
-import { useForm } from '@inertiajs/vue3';
+import { useForm, usePage } from '@inertiajs/vue3';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 import Textarea from 'primevue/textarea';
 
+const page = usePage()
 const form = useForm({
     key: null,
     label: null,

@@ -1,6 +1,5 @@
-<script setup>
+<script setup lang="ts">
 import GuestLayout from '@/Layouts/GuestLayout.vue';
-import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import { Head, Link, router, usePage } from '@inertiajs/vue3';
 import Button from 'primevue/button';
@@ -8,13 +7,14 @@ import InputText from 'primevue/inputtext';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import { reactive } from 'vue';
 import { useToast } from 'primevue/usetoast';
-import axios from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
+import { ErrorResponse, SuccessResponse } from '@/types';
 
 const page = usePage();
 const toast = useToast();
-
 const form = reactive({
     name: '',
+    lastname: '',
     email: '',
     password: '',
     password_confirmation: '',
@@ -36,17 +36,13 @@ const submit = () => {
         address: form.address,
         _token: page.props.csrf_token,
     })
-    .then(response => {
-        toast.add({ summary: 'Correcto', detail: response.data.message, severity: 'success' })
+    .then((response: AxiosResponse<SuccessResponse>) => {
+        toast.add({ summary: 'Correcto', detail: response.data.message, severity: 'success', life: 1200 })
         // Redirigir o actualizar la vista
         router.visit(route('dashboard'));
     })
-    .catch(error => {
-        if (error.response && error.response.data.errors) {
-            form.errors = error.response.data.errors;
-        } else {
-            console.error('Error logging in:', error);
-        }
+    .catch((error: AxiosError<ErrorResponse>) => {
+        toast.add({ summary: 'Error', detail: error.response?.data.message, severity: 'error', life: 1500 })
     })
     .then(() => {
         form.processing = false;
@@ -58,9 +54,7 @@ const submit = () => {
     <GuestLayout>
         <Head title="Register" />
 
-        <div
-            class="w-full sm:max-w-lg mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg"
-        >
+        <div class="w-full sm:max-w-lg mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
             <div class="w-full flex justify-center">
                 <Link href="/">
                     <ApplicationLogo class="w-20 h-20 fill-current text-gray-600" />
@@ -78,7 +72,6 @@ const submit = () => {
                             v-model="form.name"
                             autocomplete="name"
                         />
-                        <InputError class="mt-2" :message="form.errors.name" />
                     </div>
                     <div class="w-1/2">
                         <InputLabel for="lastname" value="Apellidos" />
@@ -88,10 +81,8 @@ const submit = () => {
                             v-model="form.lastname"
                             autocomplete="lastname"
                         />
-                        <InputError class="mt-2" :message="form.errors.lastname" />
                     </div>
                 </div>
-
                 <div class="mt-4">
                     <InputLabel for="email" value="Email" />
                     <InputText
@@ -101,10 +92,7 @@ const submit = () => {
                         v-model="form.email"
                         autocomplete="username"
                     />
-
-                    <InputError class="mt-2" :message="form.errors.email" />
                 </div>
-
                 <div class="mt-4">
                     <InputLabel for="branch" value="Sucursal" />
                     <InputText
@@ -112,10 +100,7 @@ const submit = () => {
                         class="mt-1 block w-full"
                         v-model="form.branch"
                     />
-
-                    <InputError class="mt-2" :message="form.errors.branch" />
                 </div>
-
                 <div class="mt-4">
                     <InputLabel for="address" value="Dirección" />
                     <InputText
@@ -123,10 +108,7 @@ const submit = () => {
                         class="mt-1 block w-full"
                         v-model="form.address"
                     />
-
-                    <InputError class="mt-2" :message="form.errors.address" />
                 </div>
-
                 <div class="flex">
                     <div class="mt-4 w-1/2 mr-2">
                         <InputLabel for="password" value="Contraseña" />
@@ -137,10 +119,7 @@ const submit = () => {
                             v-model="form.password"
                             autocomplete="new-password"
                         />
-
-                        <InputError class="mt-2" :message="form.errors.password" />
                     </div>
-
                     <div class="mt-4 w-1/2">
                         <InputLabel for="password_confirmation" value="Confirmar Contraseña" />
                         <InputText
@@ -150,11 +129,8 @@ const submit = () => {
                             v-model="form.password_confirmation"
                             autocomplete="new-password"
                         />
-
-                        <InputError class="mt-2" :message="form.errors.password_confirmation" />
                     </div>
                 </div>
-
                 <div class="flex items-center justify-end mt-6">
                     <Link
                         :href="route('login')"
@@ -162,7 +138,6 @@ const submit = () => {
                     >
                         ¿Ya está registrado?
                     </Link>
-
                     <Button class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing" label="Registrar" type="submit"></Button>
                 </div>
             </form>

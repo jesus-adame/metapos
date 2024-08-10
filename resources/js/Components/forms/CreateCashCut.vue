@@ -6,6 +6,7 @@ import { useToast } from 'primevue/usetoast';
 import { ref } from 'vue';
 import moment from 'moment-timezone';
 
+const page = usePage()
 const toast = useToast();
 const emit = defineEmits(['cancel', 'save']);
 const form = ref({

@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Inertia\Response;
-use Inertia\Inertia;
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Auth\Events\Registered;
 use App\Models\User;
 use App\Models\CashRegister;
@@ -19,9 +16,9 @@ class RegisteredUserController extends Controller
     /**
      * Display the registration view.
      */
-    public function create(): Response
+    public function create()
     {
-        return Inertia::render('Auth/Register');
+        return inertia('Auth/Register');
     }
 
     /**
@@ -29,7 +26,7 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(RegisterRequest $request): RedirectResponse
+    public function store(RegisterRequest $request): Response
     {
         $branch = Branch::create([
             'name' => $request->branch,
@@ -46,6 +43,7 @@ class RegisteredUserController extends Controller
 
         $user = User::create([
             'name' => $request->name,
+            'lastname' => $request->lastname,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'branch_id' => $branch->id,
@@ -54,6 +52,6 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        return redirect(route('dashboard', absolute: false));
+        return response()->json(['message' => 'Usuario registrado correctamente.']);
     }
 }
