@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import BranchService from '@/Services/BranchService';
 import ProductService from '@/Services/ProductService';
-import { ErrorResponse, Product } from '@/types';
+import { Branch, ErrorResponse, Product } from '@/types';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import Button from 'primevue/button';
 import Select from 'primevue/select';
@@ -10,7 +11,9 @@ import { onMounted, reactive, ref } from 'vue';
 
 const toast = useToast();
 const products = ref<Product[]>([]);
+const branches = ref<Branch[]>([]);
 const productService = new ProductService();
+const branchService = new BranchService();
 const emit = defineEmits(['save', 'cancel'])
 
 const form = reactive({
@@ -19,6 +22,8 @@ const form = reactive({
     quantity: null,
     transaction_date: '',
     description: '',
+    location_id: null,
+    location_type: 'App\\Models\\Branch',
     processing: false
 });
 
@@ -38,25 +43,47 @@ const submit = () => {
     })
 };
 
+const fetchLocations = () => {
+    branchService.fetchAll()
+    .then((response: AxiosResponse) => {
+        const paginate = response.data
+        branches.value = paginate.data
+    })
+}
+
 onMounted(() => {
     productService.fetchAll()
     .then((response: AxiosResponse) => {
         const paginate = response.data
         products.value = paginate.data
-
     })
+
+    fetchLocations()
 })
 
 const types = ref([
     { label: 'Entrada', value: 'entry' },
     { label: 'Salida', value: 'exit' },
 ])
+
+// const location_types = ref([
+//     { label: 'Sucursal', value: 'App\\Models\\Branch' },
+//     { label: 'Almacén', value: 'App\\Models\\Warehouse' },
+// ])
 </script>
 <template>
     <form @submit.prevent="submit">
         <div class="my-4">
             <label for="type" class="block">Tipo</label>
             <Select v-model="form.type" :options="types" optionLabel="label" optionValue="value" class="w-full"></Select>
+        </div>
+        <!-- <div class="my-4">
+            <label for="location_id" class="block">Tipo de ubicación</label>
+            <Select v-model="form.location_type" :options="location_types" optionLabel="label" optionValue="value" class="w-full"></Select>
+        </div> -->
+        <div class="my-4">
+            <label for="location_id" class="block">Ubicación</label>
+            <Select v-model="form.location_id" :options="branches" optionLabel="name" optionValue="id" class="w-full"></Select>
         </div>
         <div class="mb-4">
             <label for="product_id" class="block">Producto</label>
@@ -75,7 +102,7 @@ const types = ref([
             <Textarea v-model="form.description" id="description" class="w-full" rows="4"></Textarea>
         </div>
         <div class="mt-6">
-            <Button type="submit" :disabled="form.processing" label="Registrar"></Button>
+            <Button type="submit" :disabled="form.processing" label="Registrar" severity="success"></Button>
         </div>
     </form>
 </template>

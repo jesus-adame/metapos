@@ -23,6 +23,8 @@ class User extends Authenticatable
         'email',
         'password',
         'branch_id',
+        'location_id',
+        'location_type',
         'cash_register_id',
     ];
 

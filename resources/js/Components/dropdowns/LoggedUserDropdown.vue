@@ -5,7 +5,7 @@ import DropdownLink from '@/Components/DropdownLink.vue';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useToast } from 'primevue/usetoast';
 import { router, usePage } from '@inertiajs/vue3'
-import { Branch, CashRegister, ErrorResponse } from '@/types';
+import { Branch, CashRegister, ErrorResponse, Location } from '@/types';
 import CashRegisterService from '@/Services/CashRegisterService';
 import Button from 'primevue/button';
 import { locationIcon } from '@/helpers';
@@ -13,16 +13,19 @@ import { locationIcon } from '@/helpers';
 const page = usePage()
 const toast = useToast()
 const selectedCashRegister = ref<CashRegister | null>(null)
-const selectedBranch = ref<Branch | null>(page.props.branch)
+const selectedBranch = ref<Location | null>(page.props.location)
 const cashRegisters = ref<CashRegister[]>([])
 const cashRegisterService = new CashRegisterService
 
 const modalCashRegister = ref(false)
 
 const changeCashRegister = () => {
-    const url = route('api.cash-registers.select')
+    const url = route('cash-registers.select')
 
-    axios.post(url, {'cash_register_id': selectedCashRegister.value?.id})
+    axios.post(url, {
+        cash_register_id: selectedCashRegister.value?.id,
+        _token: page.props.csrf_token
+    })
     .then(response => {
         hideModal()
         toast.add({ severity: 'success', summary: 'Completado', detail: 'Se ha cambiado la caja', life: 1100 });

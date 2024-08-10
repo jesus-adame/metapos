@@ -20,7 +20,7 @@ class ProductController extends Controller
     public function index(Request $request): JsonResponse
     {
         $perPage = $request->input('rows', 10);
-        $location = Branch::find(Auth::user()->branch_id);
+        $location = Branch::find(Auth::user()->location_id);
 
         $products = Product::withStock($location)
             ->orderBy('updated_at', 'desc')
@@ -58,7 +58,7 @@ class ProductController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $branchId = Auth::user()->branch_id;
+        $branchId = Auth::user()->location_id;
 
         if ($request->hasFile('image')) {
             // $file = $request->file('image'); // Add name file

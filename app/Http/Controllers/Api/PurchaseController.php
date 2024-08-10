@@ -18,7 +18,7 @@ class PurchaseController extends Controller
     {
         $purchaseDate = Carbon::createFromTimeString($request->purchase_date);
         $buyerId = Auth::user()->id;
-        $branch = Branch::find(Auth::user()->branch_id);
+        $branch = Branch::find(Auth::user()->location_id);
 
         $purchase = Purchase::create([
             'supplier_id' => $request->supplier_id,
