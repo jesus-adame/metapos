@@ -11,12 +11,6 @@ window.axios.defaults.withCredentials = true;
 
 // Interceptor para incluir el token CSRF en cada petición
 window.axios.interceptors.request.use(config => {
-    const tokenElement = document.querySelector('meta[name="csrf-token"]');
-    if (tokenElement && tokenElement instanceof HTMLMetaElement) {
-        const token = tokenElement.content;
-        config.headers['X-CSRF-TOKEN'] = token;
-    }
-
     // Agregar token de autenticación
     const authToken = localStorage.getItem('auth_token');
     if (authToken) {
