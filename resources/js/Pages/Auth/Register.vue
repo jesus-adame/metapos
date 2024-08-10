@@ -2,24 +2,54 @@
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Head, Link, router, usePage } from '@inertiajs/vue3';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
+import { reactive } from 'vue';
+import { useToast } from 'primevue/usetoast';
 
-const form = useForm({
+const page = usePage();
+const toast = useToast();
+
+const form = reactive({
     name: '',
     email: '',
     password: '',
     password_confirmation: '',
     branch: '',
     address: '',
+    errors: {},
+    processing: false,
 });
 
 const submit = () => {
-    form.post(route('register'), {
-        onFinish: () => form.reset('password', 'password_confirmation'),
-    });
+    form.processing = true;
+    axios.post(route('register'), {
+        name: form.name,
+        lastname: form.lastname,
+        email: form.email,
+        password: form.password,
+        password_confirmation: form.password_confirmation,
+        branch: form.branch,
+        address: form.address,
+        _token: page.props.csrf_token,
+    })
+    .then(response => {
+        toast.add({ summary: 'Correcto', detail: response.data.message, severity: 'success' })
+        // Redirigir o actualizar la vista
+        router.visit(route('dashboard'));
+    })
+    .catch(error => {
+        if (error.response && error.response.data.errors) {
+            form.errors = error.response.data.errors;
+        } else {
+            console.error('Error logging in:', error);
+        }
+    })
+    .then(() => {
+        form.processing = false;
+    })
 };
 </script>
 
