@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Http\Controllers\Controller;
@@ -13,7 +14,7 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $branchId = auth()->user()->branch->id;
+        $branchId = Auth::user()->branch->id;
 
         $perPage = $request->input('rows', 10);
         $products = Product::orderBy('updated_at', 'desc')

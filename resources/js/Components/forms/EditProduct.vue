@@ -1,13 +1,11 @@
 <script lang="ts" setup>
-import { Product } from '@/types';
-import { usePage } from '@inertiajs/vue3';
-import axios, { AxiosResponse } from 'axios';
+import { ErrorResponse, Product } from '@/types';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 import { useToast } from 'primevue/usetoast';
 import { ref } from 'vue';
 
-const page = usePage()
 const emit = defineEmits(['save'])
 const toast = useToast()
 const axiosOptions = {
@@ -43,13 +41,12 @@ const form = ref({
 function submit() {
     axios.post(route('products.update', { product: product?.id }), form.value, axiosOptions)
     .then((response: AxiosResponse) => {
-        console.log(response);
         toast.add({ summary: 'Correcto', detail: response.data.message, severity: 'success', life: 1500 })
         emit('save')
     })
-    .catch(reject => {
-        console.error(reject.response.data.errors);
-        toast.add({ summary: 'Error', detail: reject.response.data.message, severity: 'error', life: 3000 })
+    .catch((reject: AxiosError<ErrorResponse>) => {
+        console.error(reject.response?.data);
+        toast.add({ summary: 'Error', detail: reject.response?.data.message, severity: 'error', life: 3000 })
     })
 }
 

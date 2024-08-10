@@ -1,12 +1,11 @@
 <script setup>
-import { useForm, usePage } from '@inertiajs/vue3';
+import { useForm } from '@inertiajs/vue3';
 import Button from 'primevue/button';
 import DatePicker from 'primevue/datepicker';
 import InputNumber from 'primevue/inputnumber';
 import Select from 'primevue/select';
 import Textarea from 'primevue/textarea';
 
-const page = usePage()
 const emit = defineEmits(['save', 'cancel'])
 const form = useForm({
     type: 'entry',

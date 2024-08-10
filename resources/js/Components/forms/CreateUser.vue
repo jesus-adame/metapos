@@ -5,9 +5,7 @@ import InputLabel from '@/Components/InputLabel.vue';
 import axios from 'axios';
 import { ref } from 'vue';
 import { useToast } from 'primevue/usetoast';
-import { usePage } from '@inertiajs/vue3';
 
-const page = usePage()
 const toast = useToast();
 const form = ref({
     name: '',
