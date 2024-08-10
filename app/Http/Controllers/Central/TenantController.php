@@ -53,7 +53,7 @@ class TenantController extends Controller
 
         $tenant->domains()->create(['domain' => $domainUrl]);
 
-        return redirect()->route('tenants.index');
+        return redirect()->route('central.tenants.index');
     }
 
     /**
@@ -87,6 +87,6 @@ class TenantController extends Controller
     {
         $tenant->delete();
 
-        return redirect()->route('tenants.index');
+        return redirect()->route('central.tenants.index');
     }
 }
