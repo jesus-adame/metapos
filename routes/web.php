@@ -7,7 +7,7 @@ use App\Http\Controllers\Central\ProfileController;
 use App\Http\Controllers\Central\DashboardController;
 
 foreach (config('tenancy.central_domains') as $domain) {
-    Route::domain($domain)->name('central')->group(function () {
+    Route::domain($domain)->name('central.')->group(function () {
         Route::redirect('/', '/login');
 
         Route::middleware(['auth', 'verified'])->group(function () {
