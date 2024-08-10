@@ -12,7 +12,7 @@ const form = ref({
 })
 
 function submit() {
-    router.post(route('tenants.store'), form.value)
+    router.post(route('central.tenants.store'), form.value)
 }
 </script>
 

@@ -10,7 +10,7 @@ defineProps({
 })
 
 function sendForm(tenant) {
-    router.post(route('tenants.destroy', { tenant: tenant.id }), { _method: 'delete' })
+    router.post(route('central.tenants.destroy', { tenant: tenant.id }), { _method: 'delete' })
 }
 </script>
 

@@ -11,7 +11,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.put(route('settings.update', setting.id), {
+    form.put(route('central.settings.update', setting.id), {
         onSuccess: () => form.reset(),
     });
 };

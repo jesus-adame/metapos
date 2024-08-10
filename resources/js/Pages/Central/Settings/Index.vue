@@ -31,7 +31,7 @@ const settings = props.settings;
                                     <td class="border px-4 py-2">{{ setting.key }}</td>
                                     <td class="border px-4 py-2">{{ setting.value }}</td>
                                     <td class="border px-4 py-2">
-                                        <inertia-link :href="route('settings.edit', setting.id)" class="text-indigo-600 hover:text-indigo-900">Edit</inertia-link>
+                                        <inertia-link :href="route('central.settings.edit', setting.id)" class="text-indigo-600 hover:text-indigo-900">Edit</inertia-link>
                                     </td>
                                 </tr>
                             </tbody>

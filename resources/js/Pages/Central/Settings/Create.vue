@@ -10,7 +10,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post(route('settings.store'), {
+    form.post(route('central.settings.store'), {
         onSuccess: () => form.reset(),
     });
 };

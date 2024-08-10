@@ -13,7 +13,7 @@ const props = defineProps({
 const form = useForm({});
 
 const submit = () => {
-    form.post(route('verification.send'));
+    form.post(route('central.verification.send'));
 };
 
 const verificationLinkSent = computed(() => props.status === 'verification-link-sent');
@@ -39,7 +39,7 @@ const verificationLinkSent = computed(() => props.status === 'verification-link-
                 </PrimaryButton>
 
                 <Link
-                    :href="route('logout')"
+                    :href="route('central.logout')"
                     method="post"
                     as="button"
                     class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
