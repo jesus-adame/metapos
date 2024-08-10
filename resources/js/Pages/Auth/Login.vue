@@ -36,6 +36,7 @@ const submit = async () => {
             email: form.email,
             password: form.password,
             remember: form.remember,
+            _token: page.props.csrf_token,
         });
 
         const token = response.data.token;
