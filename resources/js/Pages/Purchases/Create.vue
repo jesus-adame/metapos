@@ -90,10 +90,12 @@ const pushProduct = (product: Product) => {
     form.products.push({
         id: product?.id,
         code: product.code,
+        sku: product.sku,
         name: product.name,
         image: product.image,
         image_url: product.image_url,
         price: product.price,
+        cost: product.cost,
         quantity: 1,
         stock: product.stock,
         tax: product.tax,
