@@ -95,4 +95,5 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
     cashRegisters: CashRegister[],
     branch: Branch,
     branches: Branch[],
+    csrf_token: string
 };
