@@ -53,7 +53,6 @@ export interface Product {
     unit_type: string
     tax: number
     description?: string
-    inventories_sum_quantity: number
 }
 
 export interface CartItem {
