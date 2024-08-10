@@ -8,6 +8,7 @@ import InputText from 'primevue/inputtext';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import { reactive } from 'vue';
 import { useToast } from 'primevue/usetoast';
+import axios from 'axios';
 
 const page = usePage();
 const toast = useToast();
