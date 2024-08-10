@@ -2,13 +2,15 @@
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
-import { Head, Link, router } from '@inertiajs/vue3';
+import { Head, Link, router, usePage } from '@inertiajs/vue3';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 import axios from 'axios';
 import { reactive } from 'vue';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import Checkbox from 'primevue/checkbox';
+
+const page = usePage();
 
 defineProps({
     canResetPassword: {
