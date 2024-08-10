@@ -39,7 +39,7 @@ const submit = () => {
     .then((response: AxiosResponse<SuccessResponse>) => {
         toast.add({ summary: 'Correcto', detail: response.data.message, severity: 'success', life: 1200 })
         // Redirigir o actualizar la vista
-        router.visit(route('dashboard'));
+        router.visit(route('home'));
     })
     .catch((error: AxiosError<ErrorResponse>) => {
         toast.add({ summary: 'Error', detail: error.response?.data.message, severity: 'error', life: 1500 })

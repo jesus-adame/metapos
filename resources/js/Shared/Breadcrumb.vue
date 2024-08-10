@@ -19,7 +19,7 @@ function toggleFullScreen() {
           <nav aria-label="breadcrumb" class="w-max mt-2">
             <ol class="flex flex-wrap items-center w-full bg-opacity-60 rounded-md bg-transparent p-0 transition-all">
               <li class="flex items-center text-gray-gray-900 antialiased font-sans text-sm font-normal leading-normal cursor-pointer transition-colors duration-300 hover:text-light-gray-500">
-                <Link :href="route('dashboard')" class="block antialiased font-sans text-sm leading-normal text-gray-900 font-normal opacity-50 transition-all hover:text-gray-500 hover:opacity-100">
+                <Link :href="route('home')" class="block antialiased font-sans text-sm leading-normal text-gray-900 font-normal opacity-50 transition-all hover:text-gray-500 hover:opacity-100">
                   Panel
                 </Link>
               </li>

@@ -43,8 +43,8 @@ const items = ref([
     {
         icon: 'pi pi-th-large',
         label: 'Panel',
-        route: route('dashboard'),
-        active: route().current('dashboard')
+        route: route('home'),
+        active: route().current('home')
     },
     {
         icon: 'pi pi-shopping-cart',

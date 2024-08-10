@@ -8,8 +8,8 @@ const tabItems = [
   {
     icon: 'fi fi-sr-apps',
     label: 'Panel',
-    route: route('dashboard'),
-    active: route().current('dashboard')
+    route: route('home'),
+    active: route().current('home')
   },
   {
     icon: 'fi fi-sr-shopping-cart',

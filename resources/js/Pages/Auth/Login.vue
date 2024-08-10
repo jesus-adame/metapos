@@ -43,7 +43,7 @@ const submit = async () => {
         localStorage.setItem('auth_token', token);
 
         // Redirigir o actualizar la vista
-        router.visit(route('dashboard'));
+        router.visit(route('home'));
     } catch (error) {
         if (error.response && error.response.data.errors) {
             form.errors = error.response.data.errors;
