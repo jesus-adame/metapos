@@ -36,4 +36,19 @@ class SupplierController extends Controller
 
         return response()->json($suppliers);
     }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'nullable|email',
+            'phone' => 'nullable',
+            'address' => 'nullable',
+        ]);
+
+        Supplier::create($request->all());
+
+        return redirect()->route('users.index')->with('success', 'Supplier created successfully.');
+    }
 }

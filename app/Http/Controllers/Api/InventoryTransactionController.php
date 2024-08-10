@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
+use App\Services\InventoryTransacctions\CreateInventoryTransaction;
 use App\Models\InventoryTransaction;
+use App\Http\Requests\StoreInventoryRequest;
 use App\Http\Controllers\Controller;
 
 class InventoryTransactionController extends Controller
@@ -27,6 +29,24 @@ class InventoryTransactionController extends Controller
         return response()->json([
             'paginate' => $paginate,
             'balance' => $balance,
+        ]);
+    }
+
+    public function store(StoreInventoryRequest $request, CreateInventoryTransaction $service)
+    {
+        $transaction = $service->execute(
+            $request->type,
+            $request->product_id,
+            $request->location_id,
+            $request->location_type,
+            $request->quantity,
+            $request->transaction_date,
+            $request->description,
+        );
+
+        return response()->json([
+            'message' => 'Transacción registrada correctamente',
+            'transaction' => $transaction,
         ]);
     }
 }

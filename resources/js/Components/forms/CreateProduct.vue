@@ -35,7 +35,7 @@ const form = ref({
 })
 
 function submit() {
-    axios.post(route('products.store'), form.value, axiosOptions)
+    axios.post(route('api.products.store'), form.value, axiosOptions)
     .then((response: AxiosResponse) => {
         toast.add({ summary: 'Correcto', detail: response.data.message, severity: 'success', life: 1500 })
         emit('save')

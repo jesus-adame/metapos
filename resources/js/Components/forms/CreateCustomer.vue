@@ -13,7 +13,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post(route('customers.store'), {
+    form.post(route('api.customers.store'), {
         onSuccess: () => {
             emit('save')
             form.reset()

@@ -36,4 +36,19 @@ class CustomerController extends Controller
 
         return response()->json($customers);
     }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'nullable|email',
+            'phone' => 'nullable',
+            'address' => 'nullable',
+        ]);
+
+        Customer::create($request->all());
+
+        return redirect()->route('users.index')->with('success', 'Customer created successfully.');
+    }
 }

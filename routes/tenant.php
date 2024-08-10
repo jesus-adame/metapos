@@ -46,7 +46,6 @@ Route::middleware([
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
         Route::get('/sales/{id}/ticket', [SaleController::class, 'generateTicket'])->name('sales.ticket');
-        Route::post('/cash-registers/select', [CashRegisterController::class, 'select'])->name('cashRegisters.select');
 
         Route::resource('users', UserController::class);
         Route::resource('settings', SettingController::class);

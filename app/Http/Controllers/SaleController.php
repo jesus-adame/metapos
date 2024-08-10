@@ -2,13 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
-use App\Services\Sales\RegisterSaleService;
 use App\Services\Sales\AllSalesService;
 use App\Models\Sale;
-use App\Http\Requests\StoreSaleRequest;
 
 class SaleController extends Controller
 {
@@ -40,26 +36,6 @@ class SaleController extends Controller
         return inertia('Sales/Show', [
             'sale' => $sale,
         ]);
-    }
-
-    public function store(StoreSaleRequest $request, RegisterSaleService $service): Response
-    {
-        $sellerId = Auth::id();
-        $cash_register_id = Auth::user()->cash_register_id;
-
-        $response = $service->execute(
-            $request->customer_id,
-            $sellerId,
-            $request->products,
-            $request->payment_methods,
-            $cash_register_id,
-        );
-
-        if ($response['status'] == 'error') {
-            return response()->json($response, Response::HTTP_BAD_REQUEST);
-        }
-
-        return response()->json($response, Response::HTTP_CREATED);
     }
 
     public function generateTicket($id)

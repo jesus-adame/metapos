@@ -41,7 +41,7 @@ const form = ref({
 })
 
 function submit() {
-    axios.post(route('products.update', { product: product?.id }), form.value, axiosOptions)
+    axios.post(route('api.products.update', { product: product?.id }), form.value, axiosOptions)
     .then((response: AxiosResponse) => {
         toast.add({ summary: 'Correcto', detail: response.data.message, severity: 'success', life: 1500 })
         emit('save')
@@ -96,7 +96,7 @@ function setImage($event: Event) {
         <div>
             <label for="image" class="block">Imagen</label>
             <div v-if="product?.image" class="my-2">
-                <img :src="product?.image_url" alt="Product Image" width="100">
+                <img :src="product?.image_url" alt="Product Image" width="100" class="rounded-md">
             </div>
             <input type="file" @input="setImage" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"/>
         </div><br>

@@ -17,7 +17,7 @@ const form = ref({
 const emit = defineEmits(['save', 'cancel'])
 
 const submit = () => {
-    axios.post(route('users.store'), form.value)
+    axios.post(route('api.users.store'), form.value)
     .then(response => {
         form.value = {
             name: '',

@@ -23,7 +23,7 @@ const save = () => {
 }
 
 const submit = () => {
-    axios.post(route('cash-cuts.store'), form.value)
+    axios.post(route('api.cash-cuts.store'), form.value)
     .then(response => {
         form.value.cut_date = '';
         save();

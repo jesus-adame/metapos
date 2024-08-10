@@ -20,7 +20,7 @@ const cashRegisterService = new CashRegisterService
 const modalCashRegister = ref(false)
 
 const changeCashRegister = () => {
-    const url = route('cashRegisters.select')
+    const url = route('api.cash-registers.select')
 
     axios.post(url, {'cash_register_id': selectedCashRegister.value?.id})
     .then(response => {

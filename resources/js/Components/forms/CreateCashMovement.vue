@@ -16,7 +16,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post(route('cash-flows.store'), {
+    form.post(route('api.cash-flows.store'), {
         onSuccess: () => {
             emit('save')
             form.reset()

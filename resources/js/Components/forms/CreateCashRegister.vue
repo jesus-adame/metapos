@@ -19,7 +19,7 @@ const branches = ref([])
 const emit = defineEmits(['save', 'cancel'])
 
 const submit = () => {
-    axios.post(route('cash-registers.store'), form.value)
+    axios.post(route('api.cash-registers.store'), form.value)
     .then(response => {
         form.value = {
             name: '',

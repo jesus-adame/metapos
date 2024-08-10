@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\SupplierController;
 use App\Http\Controllers\Api\SaleController;
+use App\Http\Controllers\Api\PurchaseController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\InventoryTransactionController;
 use App\Http\Controllers\Api\CustomerController;
@@ -19,25 +20,23 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::middleware(['auth:sanctum', InitializeTenancyByDomain::class])->name('api.')->group(function () {
-    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-    Route::post('/products/search', [ProductController::class, 'search'])->name('products.search');
-
-    Route::get('/users', [UserController::class, 'index'])->name('users.index');
-    Route::post('/users/search', [UserController::class, 'search'])->name('users.search');
-
-    Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
-    Route::post('/customers/search', [CustomerController::class, 'search'])->name('customers.search');
-
-    Route::get('/suppliers', [SupplierController::class, 'index'])->name('suppliers.index');
-    Route::post('/suppliers/search', [SupplierController::class, 'search'])->name('suppliers.search');
-
-    Route::resource('sales', SaleController::class)->only(['store']);
-
-    Route::get('/cash-registers', [CashRegisterController::class, 'index'])->name('sale.index');
-    Route::post('/cash-registers/search', [CashRegisterController::class, 'search'])->name('sale.search');
-    Route::get('/cash-cuts', [CashCutController::class, 'index'])->name('cash-cuts.index');
-    Route::get('/branches', [BranchController::class, 'index'])->name('branches.index');
-    Route::get('/cash-flows', [CashFlowController::class, 'index'])->name('cash-flows.index');
-    Route::get('/cash-flows', [CashFlowController::class, 'index'])->name('cash-flows.index');
+    Route::resource('users', UserController::class);
+    Route::resource('products', ProductController::class);
+    Route::resource('sales', SaleController::class);
+    Route::resource('purchases', PurchaseController::class);
+    Route::resource('customers', CustomerController::class);
+    Route::resource('suppliers', SupplierController::class);
+    Route::resource('cash-flows', CashFlowController::class);
+    Route::resource('cash-cuts', CashCutController::class);
     Route::resource('inventory-transactions', InventoryTransactionController::class);
+    Route::resource('branches', BranchController::class);
+    Route::resource('cash-registers', CashRegisterController::class);
+
+    Route::post('/products/search', [ProductController::class, 'search'])->name('products.search');
+    Route::post('/users/search', [UserController::class, 'search'])->name('users.search');
+    Route::post('/customers/search', [CustomerController::class, 'search'])->name('customers.search');
+    Route::post('/suppliers/search', [SupplierController::class, 'search'])->name('suppliers.search');
+    Route::post('/cash-registers/search', [CashRegisterController::class, 'search'])->name('sale.search');
+
+    Route::post('/cash-registers/select', [CashRegisterController::class, 'select'])->name('cash-registers.select');
 });

@@ -25,7 +25,7 @@ const form = reactive({
 const submit = () => {
     form.processing = true
 
-    axios.post(route('inventory-transactions.store'), form)
+    axios.post(route('api.inventory-transactions.store'), form)
     .then((response: AxiosResponse) => {
         form.processing = false
         toast.add({ severity: 'success', summary: 'Correcto', detail: response.data.message, life: 1500 })
