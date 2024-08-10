@@ -74,7 +74,7 @@ const applyPayment = () => {
 
   formData.payment_methods = payments.value;
 
-  axios.post(route('sales.store'), formData)
+  axios.post(route('api.sales.store'), formData)
   .then(response => {
     saleStatus.value = 'paid';
     openDialogResponse({

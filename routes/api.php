@@ -18,7 +18,7 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::middleware(['auth:sanctum', InitializeTenancyByDomain::class])->name('api')->group(function () {
+Route::middleware(['auth:sanctum', InitializeTenancyByDomain::class])->name('api.')->group(function () {
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
     Route::post('/products/search', [ProductController::class, 'search'])->name('products.search');
 
@@ -31,7 +31,7 @@ Route::middleware(['auth:sanctum', InitializeTenancyByDomain::class])->name('api
     Route::get('/suppliers', [SupplierController::class, 'index'])->name('suppliers.index');
     Route::post('/suppliers/search', [SupplierController::class, 'search'])->name('suppliers.search');
 
-    Route::post('/sales', [SaleController::class, 'store'])->name('sale.store');
+    Route::resource('sales', SaleController::class)->only(['store']);
 
     Route::get('/cash-registers', [CashRegisterController::class, 'index'])->name('sale.index');
     Route::post('/cash-registers/search', [CashRegisterController::class, 'search'])->name('sale.search');
