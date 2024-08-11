@@ -38,7 +38,7 @@ class ProductController extends Controller
             return response()->json([]);
         }
 
-        $products = Product::withTotalQuantity()
+        $products = Product::withStock()
             ->where('code', $request->code)
             ->orWhere('name', $request->code)
             ->get();
