@@ -76,7 +76,7 @@ const calculateMetodIcon = (payment) => {
                         <Column field="name" header="Producto">
                             <template #body="slot">
                                 <div class="flex">
-                                    <Image :src="slot.data.image_url" :alt="slot.data.name" class="shadow-lg rounded-md overflow-hidden" width="64" />
+                                    <Image v-if="slot.data.image" :src="slot.data.image_url" :alt="slot.data.name" class="shadow-lg rounded-md overflow-hidden" width="64" />
                                     <div class="text-left ml-5">
                                         <span class="font-bold">{{ slot.data.name }}</span>
                                         <p>{{ slot.data.code }}</p>

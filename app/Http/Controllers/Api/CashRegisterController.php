@@ -58,7 +58,11 @@ class CashRegisterController extends Controller
             'branch_id' => 'required|integer|exists:branches,id'
         ]);
 
-        $cashRegister = CashRegister::create($request->all());
+        $cashRegister = CashRegister::create([
+            'name' => $request->name,
+            'branch_id' => $request->branch_id,
+            'is_default' => false,
+        ]);
 
         return response()->json([
             'message' => 'Registrado correctamente',

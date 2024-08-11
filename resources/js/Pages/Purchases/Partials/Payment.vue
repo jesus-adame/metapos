@@ -34,7 +34,7 @@ const applyPayment = () => {
   const formData = props.form.data();
   formData.supplier_id = props.supplier?.id;
 
-  axios.post(route('purchases.store'), formData)
+  axios.post(route('api.purchases.store'), formData)
   .then(response => {
     purchaseStatus.value = 'paid';
     openDialogResponse({

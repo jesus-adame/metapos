@@ -27,7 +27,7 @@ const removeProduct = (index: number) => {
             <Column header="Producto">
                 <template #body="slot">
                     <div class="flex">
-                        <Image :src="slot.data.image_url" :alt="slot.data.name" class="shadow-lg rounded-md overflow-hidden" width="64" />
+                        <Image v-if="slot.data.image" :src="slot.data.image_url" :alt="slot.data.name" class="shadow-lg rounded-md overflow-hidden" width="64" />
                         <div class="text-left ml-2">
                             <span class="font-bold">{{ slot.data.name }}</span>
                             <p>{{ slot.data.code }}</p>
@@ -42,7 +42,7 @@ const removeProduct = (index: number) => {
             </Column>
             <Column header="Precio de compra">
                 <template #body="slot">
-                    <div class="w-20">
+                    <div>
                         <InputNumber v-model="slot.data.cost" mode="currency" currency="MXN" :minFractionDigits="2" showButtons></InputNumber>
                     </div>
                 </template>
