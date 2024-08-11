@@ -12,7 +12,6 @@ class Purchase extends Model
     protected $fillable = [
         'supplier_id',
         'buyer_id',
-        'branch_id',
         'total',
         'status',
         'purchase_date',
@@ -28,11 +27,6 @@ class Purchase extends Model
     public function buyer()
     {
         return $this->belongsTo(User::class, 'buyer_id');
-    }
-
-    public function branch()
-    {
-        return $this->belongsTo(Branch::class);
     }
 
     public function location()
