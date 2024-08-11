@@ -8,7 +8,6 @@ import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
 import AutoComplete, { AutoCompleteCompleteEvent } from 'primevue/autocomplete';
 import ProductService from '@/Services/ProductService';
-import CustomerService from "@/Services/CustomerService";
 import { useToast } from 'primevue/usetoast';
 import Card from '@/Components/Card.vue';
 import { Product, Supplier } from '@/types';
@@ -17,12 +16,13 @@ import Payment from './Partials/Payment.vue';
 import { formatMoneyNumber } from '@/helpers';
 import ProductsList from './Partials/ProductsList.vue';
 import SelectProduct from './Partials/SelectProduct.vue';
+import SupplierService from '@/Services/SupplierService';
 
 // Retrieve suppliers and products from the server
 const page = usePage();
 const products = ref<Product[]>([]);
 const productService = new ProductService();
-const customerService = new CustomerService();
+const supplierService = new SupplierService();
 const searchQuery = ref('');
 const toast = useToast();
 const selectedSupplier = ref<Supplier>();
@@ -31,7 +31,7 @@ const modalPayments = ref(false)
 
 // Initialize the form
 const form = useForm<{
-    supplier_id: number | null, // Assuming customer_id is a number
+    supplier_id: number | null,
     products: Product[],
     purchase_date: string | null,
     location_id: number,
@@ -69,7 +69,7 @@ const addSearchedProduct = () => {
 
 const searchSupplier = (event: AutoCompleteCompleteEvent) => {
     setTimeout(() => {
-        customerService.findByCode(event.query.trim())
+        supplierService.findByCode(event.query.trim())
             .then((response) => {
                 filteredSuppliers.value = [...response.data]; // Asegúrate de que response.data es un array
             })
@@ -170,8 +170,7 @@ const setSuccessPayment = () => {
                     <template #option="slot">
                         <div class="flex align-options-center">
                             <div>
-                                {{ slot.option.first_name }} {{ slot.option.last_name }} | {{
-                                    slot.option.phone }}
+                                {{ slot.option.first_name }} {{ slot.option.last_name }} | {{ slot.option.phone }}
                             </div>
                         </div>
                     </template>
@@ -180,11 +179,11 @@ const setSuccessPayment = () => {
         </div>
 
         <div class="flex">
-            <div id="shoppingTable" class="w-1/2 mr-2">
+            <div id="shoppingTable" class="w-1/3 mr-2">
                 <SelectProduct :products="products" @selected="pushProduct"></SelectProduct>
             </div>
 
-            <div class="w-1/2">
+            <div class="w-2/3">
                 <ProductsList :products="form.products"></ProductsList>
                 <Card width="full" class="mt-5">
                     <div class="text-3xl font-bold flex justify-center w-full mb-5">

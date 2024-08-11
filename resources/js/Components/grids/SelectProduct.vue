@@ -19,6 +19,7 @@ const pushProduct = (product: Product) => {
                 <Image v-if="product.image" :src="product.image_url" :alt="product.name" class="shadow-lg rounded-md overflow-hidden" width="100%" :pt="{root: 'w-full'}" />
                 <div class="py-2 px-4">
                     <p class="font-bold">{{ product.name }}</p>
+                    <p class="text-sm">SKU: {{ product.sku || 'N/A' }}</p>
                     {{ formatMoneyNumber(product.price) }}
                 </div>
             </div>

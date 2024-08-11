@@ -30,7 +30,8 @@ const removeProduct = (index: number) => {
                         <Image v-if="slot.data.image" :src="slot.data.image_url" :alt="slot.data.name" class="shadow-lg rounded-md overflow-hidden" width="64" />
                         <div class="text-left ml-2">
                             <span class="font-bold">{{ slot.data.name }}</span>
-                            <p>{{ slot.data.code }}</p>
+                            <p class="text-sm">{{ slot.data.code }}</p>
+                            <p class="text-sm">SKU: {{ slot.data.sku || 'N/A' }}</p>
                         </div>
                     </div>
                 </template>
