@@ -88,6 +88,7 @@ class ProductController extends Controller
                 'location_id' => $branch->id,
                 'location_type' => Branch::class,
                 'quantity' => 0,
+                'status' => 'available',
             ]);
         }
 
@@ -97,6 +98,7 @@ class ProductController extends Controller
                 'location_id' => $warehouse->id,
                 'location_type' => Warehouse::class,
                 'quantity' => 0,
+                'status' => 'available',
             ]);
         }
 
