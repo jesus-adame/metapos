@@ -25,6 +25,7 @@ const submit = () => {
     axios.post(route('api.cash-flows.store'), {
         type: form.type,
         amount: form.amount,
+        method: form.method,
         description: form.description,
         date: form.date,
     })

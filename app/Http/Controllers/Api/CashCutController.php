@@ -39,7 +39,9 @@ class CashCutController extends Controller
         $cutEndDate = Carbon::createFromTimeString($request->cut_end_date);
 
         $cutDate->setHours(0);
-        $cutEndDate->setHours(0);
+        $cutEndDate->setHours(23)
+            ->setMinutes(59)
+            ->setSeconds(59);
 
         $totalEntries = CashFlow::where('type', 'entry')
             ->where('cash_register_id', $cashRegister->id)
