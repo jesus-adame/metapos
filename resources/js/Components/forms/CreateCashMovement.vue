@@ -31,13 +31,13 @@ const submit = () => {
     })
     .then((response: AxiosResponse<SuccessResponse>) =>{
         toast.add({ summary: 'Correcto', detail: response.data.message, severity: 'success', life: 2000 })
-        form.processing = true
+        form.processing = false
         emit('save')
     })
     .catch(({ response }) => {
         console.error(response);
         toast.add({ severity: 'error', summary: 'Error', detail: response.data.message, life: 2100 });
-        form.processing = true
+        form.processing = false
     });
 };
 

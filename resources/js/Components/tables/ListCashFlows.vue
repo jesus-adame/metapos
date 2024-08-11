@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Card from '@/Components/Card.vue';
-import { formatDateTime, formatMoneyNumber } from '@/helpers';
+import { formatDate, formatDateTime, formatMoneyNumber } from '@/helpers';
 import Column from 'primevue/column';
 import DataTable, { DataTablePageEvent } from 'primevue/datatable';
 import Tag from 'primevue/tag';
@@ -127,7 +127,7 @@ const hideModalMovements = () => {
             <Column field="id" header="#"></Column>
             <Column field="date" header="Fecha">
                 <template #body="slot">
-                    {{ formatDateTime(slot.data.date) }}
+                    {{ formatDate(slot.data.date, true) }}
                 </template>
             </Column>
             <Column header="Tipo">

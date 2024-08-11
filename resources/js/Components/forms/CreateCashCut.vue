@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import Button from 'primevue/button';
 import DatePicker from 'primevue/datepicker';
 import axios from 'axios';
@@ -11,7 +11,8 @@ const emit = defineEmits(['cancel', 'save']);
 const form = ref({
     cut_date: '',
     cut_end_date: '',
-    timezone: moment.tz.guess()
+    timezone: moment.tz.guess(),
+    processing: false
 });
 
 const cancel = () => {
@@ -23,14 +24,17 @@ const save = () => {
 }
 
 const submit = () => {
+    form.value.processing = true
     axios.post(route('api.cash-cuts.store'), form.value)
     .then(response => {
         form.value.cut_date = '';
         save();
+        form.value.processing = false
     })
     .catch(({ response }) => {
         console.log(response.data.message);
         toast.add({ severity: 'error', summary: 'Error', detail: response.data.message, life: 2000 });
+        form.value.processing = false
     })
 };
 </script>

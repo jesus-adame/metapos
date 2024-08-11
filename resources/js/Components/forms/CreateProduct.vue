@@ -66,11 +66,11 @@ function setImage($event: Event) {
         <div class="flex justify-between">
             <div class="mr-2">
                 <label for="price" class="block">Precio</label>
-                <InputNumber v-model="form.price" showButtons class="w-full" placeholder="0.00"></InputNumber>
+                <InputNumber v-model="form.price" showButtons :minFractionDigits="2" class="w-full" placeholder="0.00"></InputNumber>
             </div>
             <div>
                 <label for="cost" class="block">Costo</label>
-                <InputNumber v-model="form.cost" showButtons class="w-full" placeholder="0.00"></InputNumber>
+                <InputNumber v-model="form.cost" showButtons :minFractionDigits="2" class="w-full" placeholder="0.00"></InputNumber>
             </div>
         </div>
         <div class="flex justify-between">
