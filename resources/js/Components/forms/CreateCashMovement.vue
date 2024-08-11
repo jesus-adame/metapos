@@ -42,8 +42,8 @@ const submit = () => {
 };
 
 const types = [
-    { label: 'Entrada de efectivo', value: 'entry' },
-    { label: 'Salida de efectivo', value: 'exit' },
+    { label: 'Entrada', value: 'entry' },
+    { label: 'Salida', value: 'exit' },
 ];
 
 const methods = [
@@ -54,9 +54,15 @@ const methods = [
 </script>
 <template>
     <form @submit.prevent="submit">
-        <div class="mb-4">
-            <label for="type" class="block">Tipo</label>
-            <Select v-model="form.type" :options="types" optionLabel="label" optionValue="value" class="w-full"></Select>
+        <div class="flex mb-4">
+            <div class="w-1/2 mr-2">
+                <label for="type" class="block">Tipo</label>
+                <Select v-model="form.type" :options="types" optionLabel="label" optionValue="value" class="w-full"></Select>
+            </div>
+            <div class="w-1/2">
+                <label for="date" class="block">Fecha</label>
+                <DatePicker dateFormat="dd/mm/yy" v-model="form.date" id="date" class="w-full" required placeholder="DD/MM/YYYY"/>
+            </div>
         </div>
         <div class="flex mb-4">
             <div class="w-full mr-2">
@@ -71,10 +77,6 @@ const methods = [
         <div class="mb-4">
             <label for="description" class="block">Motivo</label>
             <Textarea v-model="form.description" id="description" class="w-full" rows="4"></Textarea>
-        </div>
-        <div class="mb-4">
-            <label for="date" class="block">Fecha</label>
-            <DatePicker dateFormat="dd/mm/yy" v-model="form.date" id="date" class="w-full" required placeholder="DD/MM/YYYY"/>
         </div>
         <div class="mt-6">
             <Button type="submit" :disabled="form.processing" severity="success">Registrar</Button>

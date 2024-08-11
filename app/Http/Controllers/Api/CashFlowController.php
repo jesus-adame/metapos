@@ -44,8 +44,6 @@ class CashFlowController extends Controller
         $date = Carbon::createFromTimeString($request->date);
         $cashRegisterId = Auth::user()->cash_register_id;
 
-        dd($date->format('Y-m-d 00:00:00'));
-
         CashFlow::create([
             'type' => $request->type,
             'amount' => $request->amount,

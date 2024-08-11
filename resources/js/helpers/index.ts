@@ -60,3 +60,29 @@ export const locationIcon = (location: Location) => {
 
     return 'pi pi-box'
 }
+
+export const saleStatus = (status: string) => {
+    switch (status) {
+        case 'paid':
+            return 'Pagado'
+        case 'pending':
+            return 'Pendiente'
+        case 'canceled':
+            return 'Cancelado'
+        default:
+            return ''
+    }
+}
+
+export const purchaseStatus = (status: string) => {
+    switch (status) {
+        case 'paid':
+            return 'Pagado'
+        case 'pending':
+            return 'Pendiente'
+        case 'canceled':
+            return 'Cancelado'
+        default:
+            return ''
+    }
+}

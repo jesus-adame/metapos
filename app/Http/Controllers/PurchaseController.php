@@ -8,7 +8,7 @@ class PurchaseController extends Controller
 {
     public function index()
     {
-        $purchases = Purchase::with('supplier', 'buyer', 'branch')
+        $purchases = Purchase::with('supplier', 'buyer', 'location')
             ->orderBy('updated_at', 'desc')
             ->get();
 
@@ -17,7 +17,12 @@ class PurchaseController extends Controller
 
     public function show(int $purchaseId)
     {
-        $purchase = Purchase::with('products')->where('id', $purchaseId)->first();
+        $purchase = Purchase::with('products')
+            ->with('supplier')
+            ->with('buyer')
+            ->with('location')
+            ->where('id', $purchaseId)
+            ->first();
 
         return inertia('Purchases/Show', [
             'purchase' => $purchase

@@ -2,7 +2,7 @@
 import { usePage, Head, Link } from '@inertiajs/vue3';
 import UserLayout from '@/Layouts/UserLayout.vue';
 import Button from 'primevue/button';
-import { formatDate, formatMoneyNumber } from '@/helpers';
+import { formatDate, formatMoneyNumber, purchaseStatus } from '@/helpers';
 
 const { props } = usePage();
 const purchases = props.purchases;
@@ -42,7 +42,7 @@ const purchases = props.purchases;
                 </Column>
                 <Column header="Estatus">
                     <template #body="slot">
-                        {{ slot.data.status }}
+                        {{ purchaseStatus(slot.data.status) }}
                     </template>
                 </Column>
                 <Column field="total" header="Total">

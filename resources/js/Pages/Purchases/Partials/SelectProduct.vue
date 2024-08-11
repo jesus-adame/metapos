@@ -14,7 +14,7 @@ const pushProduct = (product: Product) => {
 </script>
 <template>
     <div class="flex flex-wrap justify-start">
-        <div class="px-1 w-1/3" v-for="(product, index) in products" :key="index">
+        <div class="p-1 w-1/3" v-for="(product, index) in products" :key="index">
             <div @click="pushProduct(product)" class="bg-white overflow-hidden shadow-sm sm:rounded-lg text-gray-900 cursor-pointer">
                 <Image v-if="product.image" :src="product.image_url" :alt="product.name" class="shadow-lg rounded-md overflow-hidden" width="100%" :pt="{root: 'w-full'}" />
                 <div class="py-2 px-4">

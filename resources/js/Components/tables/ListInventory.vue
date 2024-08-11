@@ -137,8 +137,8 @@ const onPage = (event: DataTablePageEvent) => {
                         <Link :href="route('products.edit', {product: slot.data.id})">
                             <p class="text-lg font-semibold">{{ slot.data.name }}</p>
                         </Link>
-                        <p>Código: {{ slot.data.code }}</p>
-                        <p>SKU: {{ slot.data.sku || 'N/A' }}</p>
+                        <p class="text-sm">Código: {{ slot.data.code }}</p>
+                        <p class="text-sm">SKU: {{ slot.data.sku || 'N/A' }}</p>
                     </div>
                 </div>
             </template>

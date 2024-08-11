@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
-import { formatDateTime, formatMoneyNumber } from '@/helpers';
+import { formatDateTime, formatMoneyNumber, saleStatus } from '@/helpers';
 import UserLayout from '@/Layouts/UserLayout.vue';
 import Card from '@/Components/Card.vue';
 import Column from 'primevue/column';
@@ -74,6 +74,11 @@ const printTicket = async (saleId: number) => {
                 <Column field="total" header="Total">
                     <template #body="slot">
                         {{ formatMoneyNumber(slot.data.total) }}
+                    </template>
+                </Column>
+                <Column header="Estatus">
+                    <template #body="slot">
+                        {{ saleStatus(slot.data.status) }}
                     </template>
                 </Column>
                 <Column header="">
