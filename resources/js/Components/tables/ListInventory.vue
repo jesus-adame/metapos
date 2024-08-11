@@ -143,10 +143,22 @@ const onPage = (event: DataTablePageEvent) => {
             </template>
         </Column>
         <Column field="description" header="Descripción"></Column>
+        <Column field="cost" header="">
+            <template #header>
+                <div class="w-full text-center">
+                    Precio de compra
+                </div>
+            </template>
+            <template #body="slot">
+                <div class="w-full text-center">
+                    {{ formatMoneyNumber(slot.data.cost) }}
+                </div>
+            </template>
+        </Column>
         <Column field="price" header="">
             <template #header>
                 <div class="w-full text-center">
-                    Precio
+                    Precio de venta
                 </div>
             </template>
             <template #body="slot">

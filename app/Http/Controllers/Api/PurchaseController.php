@@ -33,14 +33,14 @@ class PurchaseController extends Controller
         foreach ($request->products as $productData) {
             $product = Product::find($productData['id']);
             $quantity = $productData['quantity'];
-            $price = $productData['price'];
+            $cost = $productData['cost'];
 
             $purchase->products()->attach($product, [
                 'quantity' => $quantity,
-                'price' => $price,
+                'cost' => $cost,
             ]);
 
-            $total += $price * $quantity;
+            $total += $cost * $quantity;
 
             $inventoryService->execute(
                 $branch,
