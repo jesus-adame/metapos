@@ -148,7 +148,7 @@ const clearPayments = () => {
                             v-model="payment.amount"
                             required
                             :min="0"
-                            :max="(payment.label === 'Efectivo' || payment.label === 'Mixto') ? undefined : props.totalPurchase"
+                            :max="props.totalPurchase"
                             class="my-2 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-60"
                             mode="currency"
                             currency="MXN"

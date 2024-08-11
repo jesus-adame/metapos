@@ -17,7 +17,7 @@ class PurchaseController extends Controller
         $buyerId = Auth::user()->id;
         $cash_register_id = Auth::user()->cash_register_id;
 
-        $purchaseService->execute(
+        $response = $purchaseService->execute(
             $request->supplier_id,
             $buyerId,
             $purchaseDate,
@@ -27,8 +27,10 @@ class PurchaseController extends Controller
             $request->payment_methods,
         );
 
-        return response()->json([
-            'messsage' => 'Compra registrada correctamente.'
-        ], Response::HTTP_CREATED);
+        if ($response['status'] == 'error') {
+            return response()->json($response, Response::HTTP_BAD_REQUEST);
+        }
+
+        return response()->json($response, Response::HTTP_CREATED);
     }
 }
