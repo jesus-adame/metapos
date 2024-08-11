@@ -74,7 +74,7 @@ const methods = [
         </div>
         <div class="mb-4">
             <label for="date" class="block">Fecha</label>
-            <DatePicker v-model="form.date" id="date" class="w-full" required placeholder="DD/MM/YYYY"/>
+            <DatePicker dateFormat="dd/mm/yy" v-model="form.date" id="date" class="w-full" required placeholder="DD/MM/YYYY"/>
         </div>
         <div class="mt-6">
             <Button type="submit" :disabled="form.processing" severity="success">Registrar</Button>
