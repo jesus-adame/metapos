@@ -80,7 +80,6 @@ class ProductController extends Controller
             'image_url' => $imageUrl,
             'branch_id' => $branchId,
             'unit_type' => $request->unit_type,
-            'status' => 'Disponible',
         ]);
 
         foreach (Branch::all() as $branch) {
@@ -88,7 +87,7 @@ class ProductController extends Controller
                 'product_id' => $product->id,
                 'location_id' => $branch->id,
                 'location_type' => Branch::class,
-                'quantity' => 0
+                'quantity' => 0,
             ]);
         }
 
@@ -97,7 +96,7 @@ class ProductController extends Controller
                 'product_id' => $product->id,
                 'location_id' => $warehouse->id,
                 'location_type' => Warehouse::class,
-                'quantity' => 0
+                'quantity' => 0,
             ]);
         }
 

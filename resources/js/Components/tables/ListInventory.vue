@@ -193,7 +193,7 @@ const onPage = (event: DataTablePageEvent) => {
             <template #body="slot">
                 <div class="flex justify-center">
                     <Button icon="pi pi-pencil" class="mr-1" @click="openModalEdit(slot.data)"></Button>
-                    <Button icon="pi pi-trash" severity="danger" @click="confirmDelete(route('products.destroy', { product: slot.data.id }))"></Button>
+                    <Button icon="pi pi-trash" severity="danger" @click="confirmDelete(route('api.products.destroy', { product: slot.data.id }))"></Button>
                 </div>
             </template>
         </Column>
