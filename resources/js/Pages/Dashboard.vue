@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import UserLayout from '@/Layouts/UserLayout.vue';
 import SalesTable from '@/Shared/SalesTable.vue';
 import { Head } from '@inertiajs/vue3';

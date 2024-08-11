@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import CreateProduct from '@/Components/forms/CreateProduct.vue';
 import UserLayout from '@/Layouts/UserLayout.vue';
 import { Head } from '@inertiajs/vue3';

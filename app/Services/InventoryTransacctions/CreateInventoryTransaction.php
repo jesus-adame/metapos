@@ -14,7 +14,7 @@ class CreateInventoryTransaction
         int $productId,
         int $amount,
         mixed $date,
-        string $description = ''
+        ?string $description = null
     ) {
         $transaction = InventoryTransaction::create([
             'product_id' => $productId,

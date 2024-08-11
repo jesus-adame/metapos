@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
 import { formatDateTime, formatMoneyNumber } from '@/helpers';
 import UserLayout from '@/Layouts/UserLayout.vue';
@@ -15,7 +15,7 @@ defineProps({
     },
 });
 
-const printTicket = async (saleId) => {
+const printTicket = async (saleId: number) => {
     const url = route('sales.ticket', saleId);
     window.open(url, '_blank', 'popup')
 };

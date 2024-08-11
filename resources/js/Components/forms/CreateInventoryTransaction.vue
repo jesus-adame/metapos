@@ -24,8 +24,8 @@ const form = reactive({
     quantity: null,
     transaction_date: '',
     description: '',
-    location_id: page.props.location.id,
-    location_type: page.props.location.type,
+    location_id: page.props.location_id,
+    location_type: page.props.location_type,
     processing: false
 });
 
@@ -35,8 +35,8 @@ const submit = () => {
     axios.post(route('api.inventory-transactions.store'), form)
     .then((response: AxiosResponse) => {
         form.processing = false
-        toast.add({ severity: 'success', summary: 'Correcto', detail: response.data.message, life: 1500 })
         emit('save')
+        toast.add({ severity: 'success', summary: 'Correcto', detail: response.data.message, life: 1500 })
     })
     .catch((reject: AxiosError<ErrorResponse>) => {
         form.processing = false

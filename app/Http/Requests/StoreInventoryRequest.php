@@ -26,7 +26,7 @@ class StoreInventoryRequest extends FormRequest
             'type' => 'required|in:entry,exit',
             'quantity' => 'required|integer|min:1',
             'transaction_date' => 'required|date',
-            'description' => 'required|string|max:255',
+            'description' => 'nullable|string|max:255',
             'location_id' => 'required|integer',
             'location_type' => 'required|string',
         ];
@@ -39,7 +39,7 @@ class StoreInventoryRequest extends FormRequest
             'type.required' => 'El tipo de transacción es obligatorio.',
             'quantity.required' => 'La cantidad es obligatoria.',
             'transaction_date.required' => 'La fecha de transacción es requerida.',
-            'description.required' => 'Debes agregar una descripción.',
+            'description.required' => 'Debes agregar un motivo.',
             'location_id.required' => 'Elija una ubicación.',
             'location_type.required' => 'Elija un tipo de ubicación.',
         ];

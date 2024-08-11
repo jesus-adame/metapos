@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { formatMoneyNumber } from '@/helpers';
 import axios from 'axios';
 import Button from 'primevue/button';
@@ -8,15 +8,15 @@ const emit = defineEmits(['cancel', 'save']);
 const selectedPayment = ref('Efectivo');
 const saleStatus = ref('pending');
 
-const props = defineProps({
-  totalSale: Number,
-  form: Object,
-});
+const props = defineProps<{
+  totalSale: number,
+  form: any,
+}>();
 
 const modalResponse = ref(false);
 const dialogResponseData = ref({
-    type: null,
-    header: null,
+    type: 'info',
+    header: undefined,
     content: null,
     message: null
 })
@@ -94,7 +94,7 @@ const applyPayment = () => {
   })
 };
 
-const openDialogResponse = (data) => {
+const openDialogResponse = (data: any) => {
   modalResponse.value = true
   dialogResponseData.value = data
 }
@@ -102,8 +102,8 @@ const openDialogResponse = (data) => {
 const closeDialogResponse = () => {
   modalResponse.value = false
   dialogResponseData.value = {
-    type: null,
-    header: null,
+    type: 'info',
+    header: undefined,
     content: null,
     message: null
   }
@@ -140,7 +140,7 @@ const closeDialogResponse = () => {
             v-model="payment.amount"
             required
             :min="0"
-            :max="(payment.label === 'Efectivo' || payment.label === 'Mixto') ? null: props.totalSale"
+            :max="(payment.label === 'Efectivo' || payment.label === 'Mixto') ? undefined : props.totalSale"
             class="my-2 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-60"
             mode="currency"
             currency="MXN"

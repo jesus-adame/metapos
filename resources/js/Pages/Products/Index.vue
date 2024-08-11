@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head } from '@inertiajs/vue3';
+import { Head, router } from '@inertiajs/vue3';
 import { Link } from '@inertiajs/vue3';
 import UserLayout from '@/Layouts/UserLayout.vue';
 import Card from '@/Components/Card.vue';
@@ -26,12 +26,17 @@ const closeModalCreate = () => {
 const openModalCreate = () => {
     modalCreateMovement.value = true
 }
+
+const saved = () => {
+    closeModalCreate()
+    window.location.reload()
+}
 </script>
 <template>
     <Head title="Inventarios" />
 
     <Dialog v-model:visible="modalCreateMovement" modal header="Nuevo movimiento" :style="{ width: '35rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
-        <CreateInventoryTransaction @save="closeModalCreate"></CreateInventoryTransaction>
+        <CreateInventoryTransaction @save="saved"></CreateInventoryTransaction>
     </Dialog>
 
     <UserLayout>

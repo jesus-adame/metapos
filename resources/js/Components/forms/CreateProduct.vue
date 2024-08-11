@@ -42,7 +42,7 @@ function submit() {
     })
     .catch(reject => {
         console.error(reject.response.data.errors);
-        toast.add({ summary: 'Error', detail: reject.response.data.message, severity: 'error', life: 3000 })
+        toast.add({ summary: 'Error', detail: reject.response.data.message, severity: 'error', life: 4000 })
     })
 }
 
