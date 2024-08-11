@@ -5,20 +5,20 @@ import Column from 'primevue/column';
 import DataTable, { DataTablePageEvent } from 'primevue/datatable';
 import Tag from 'primevue/tag';
 import { onMounted, ref } from 'vue';
-import CashFlowService from "@/Services/CashFlowService";
 import { AxiosResponse } from 'axios';
 import { CashFlow } from '@/types';
 import Dialog from 'primevue/dialog';
 import CreateCashMovement from '../forms/CreateCashMovement.vue';
 import Button from 'primevue/button';
+import CashFlowService from '@/Services/CashFlowService';
 
 const cashFlowService = new CashFlowService;
-const balance = ref(0);
-const items = ref([]);
-const page = ref(1);
-const rows = ref(10);
-const totalRecords = ref(0)
 const modalCashMovements = ref(false)
+const balance = ref<number>(0)
+const items = ref<CashFlow[]>([]);
+const rows = ref(5);
+const current_page = ref(1);
+const totalRecords = ref(0)
 
 const calculateSeverity = (flow: CashFlow) => {
     switch (flow.type) {
@@ -89,18 +89,16 @@ const onPage = (event: DataTablePageEvent) => {
 const fetchItems = (pageNumber: number) => {
     cashFlowService.paginate(pageNumber, rows.value)
     .then((response: AxiosResponse) => {
-        const data = response.data;
-        const paginate = response.data.paginate;
+        const paginate = response.data.paginate
 
-        balance.value = data.balance
         totalRecords.value = paginate.total
+        balance.value = response.data.balance
         items.value = paginate.data
-
     })
 }
 
 onMounted(() => {
-    fetchItems(page.value)
+    fetchItems(current_page.value)
 })
 
 const showModalMovements = () => {
@@ -109,7 +107,7 @@ const showModalMovements = () => {
 
 const hideModalMovements = () => {
     modalCashMovements.value = false
-    fetchItems(page.value)
+    fetchItems(current_page.value)
 }
 </script>
 <template>
@@ -123,7 +121,7 @@ const hideModalMovements = () => {
         <div class="p-4 bg-blue-200 text-blue-500 font-bold text-end">
             <h3>Balance: {{ formatMoneyNumber(balance) }}</h3>
         </div>
-        <DataTable :value="items" paginator :rows="rows" @page="onPage" :totalRecords="totalRecords">
+        <DataTable :value="items" paginator :rows="rows" @page="onPage" :totalRecords="totalRecords" lazy>
             <Column field="id" header="#"></Column>
             <Column field="date" header="Fecha">
                 <template #body="slot">

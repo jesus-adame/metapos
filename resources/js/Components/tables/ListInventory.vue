@@ -18,13 +18,13 @@ import { Link } from '@inertiajs/vue3';
 
 const createModal = ref<Boolean>(false)
 const editModal = ref<Boolean>(false)
-const items = ref<Product[]>([])
-const rows = ref<number>(10)
-const productService = new ProductService()
 const toast = useToast()
 const confirm = useConfirm()
+const productService = new ProductService()
 const product = ref<Product | null>(null)
-const page = ref(1)
+const items = ref<Product[]>([])
+const rows = ref<number>(5)
+const current_page = ref(1)
 const totalRecords = ref(0)
 
 const getSeverity = (product: Product) => {
@@ -46,7 +46,7 @@ const openModalCreate = () => {
 
 const closeModalCreate = () => {
     createModal.value = false
-    fetchItems(page.value)
+    fetchItems(current_page.value)
 }
 
 const openModalEdit = (productData: Product) => {
@@ -56,11 +56,11 @@ const openModalEdit = (productData: Product) => {
 
 const closeModalEdit = () => {
     editModal.value = false
-    fetchItems(page.value)
+    fetchItems(current_page.value)
 }
 
 const fetchItems = (pageNumber: number) => {
-    productService.paginate(pageNumber)
+    productService.paginate(pageNumber, rows.value)
     .then((response: AxiosResponse) => {
         const paginate = response.data
 
@@ -70,7 +70,7 @@ const fetchItems = (pageNumber: number) => {
 }
 
 onMounted(() => {
-    fetchItems(page.value)
+    fetchItems(current_page.value)
 })
 
 const deleteItem = (url: string) => {
@@ -78,7 +78,7 @@ const deleteItem = (url: string) => {
     .then((response: AxiosResponse) => {
         console.log(response);
         toast.add({ summary: 'Correcto', detail: response.data.message, severity: 'success', life: 1500 })
-        fetchItems(page.value)
+        fetchItems(current_page.value)
     })
     .catch(reject => {
         console.error(reject.response.data.errors);
@@ -121,7 +121,7 @@ const onPage = (event: DataTablePageEvent) => {
 
     <ConfirmDialog></ConfirmDialog>
 
-    <DataTable :value="items" paginator :rows="rows" @page="onPage" :totalRecords="totalRecords">
+    <DataTable :value="items" paginator :rows="rows" @page="onPage" :totalRecords="totalRecords" lazy>
         <Column field="id" header="#"></Column>
         <Column field="name" header="Producto">
             <template #body="slot">

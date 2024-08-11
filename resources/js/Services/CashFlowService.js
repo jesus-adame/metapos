@@ -20,7 +20,7 @@ export default class CashFlowService {
 
     async paginate(page, rows) {
         const url = `/api/cash-flows`;
-        const response = await axios.get(url, { params: { page, rows: rows } });
+        const response = await axios.get(url, { params: { page: page, rows: rows } });
         this.cashFlows.value = response.data
 
         return response

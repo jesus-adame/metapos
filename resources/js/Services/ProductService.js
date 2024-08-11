@@ -19,8 +19,8 @@ export default class ProductService {
     }
 
     async paginate(page, rows) {
-        const url = `/api/products`;
-        const response = await axios.get(url, { params: { page, rows: rows } });
+        const url = route('api.products.index');
+        const response = await axios.get(url, { params: { page: page, rows: rows } });
         this.products.value = response.data
 
         return response

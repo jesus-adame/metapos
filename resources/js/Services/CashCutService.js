@@ -20,7 +20,7 @@ export default class CashCutService {
 
     async paginate(page, rows) {
         const url = `/api/cash-cuts`;
-        const response = await axios.get(url, { params: { page, rows: rows } });
+        const response = await axios.get(url, { params: { page: page, rows: rows } });
         this.cashCuts.value = response.data
 
         return response

@@ -190,14 +190,16 @@ const setSuccessPayment = () => {
                         <span class="mr-4">Saldo a pagar</span>
                         <span>{{ formatMoneyNumber(totalPurchase) }}</span>
                     </div>
-                    <div class="flex justify-center w-full">
-                        <Button
-                            @click="showModalPayments"
-                            severity="success"
-                            icon="pi pi-dollar"
-                            type="submit"
-                            label="Pagar"
-                            class="w-full text-xl uppercase"/>
+                    <div class="w-1/2">
+                        <div class="flex justify-center w-full">
+                            <Button
+                                @click="showModalPayments"
+                                severity="success"
+                                icon="pi pi-dollar"
+                                type="submit"
+                                label="Pagar"
+                                class="w-full text-xl uppercase"/>
+                        </div>
                     </div>
                 </Card>
             </div>

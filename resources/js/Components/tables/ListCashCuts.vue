@@ -10,7 +10,7 @@ import CreateCashCut from '../forms/CreateCashCut.vue';
 import { formatDate, formatMoneyNumber } from '@/helpers';
 
 const page = ref<number>(1)
-const rows = ref<number>(10)
+const rows = ref<number>(5)
 const items = ref([])
 const cashCutService = new CashCutService()
 const modalCreate = ref(false)
@@ -20,6 +20,7 @@ const fetchItems = (pageNumber: number) => {
     cashCutService.paginate(pageNumber, rows.value)
     .then((response: AxiosResponse) => {
         items.value = response.data.data
+        totalRecords.value = response.data.total
     })
 }
 
@@ -46,7 +47,7 @@ const onPage = (event: DataTablePageEvent) => {
         <CreateCashCut @save="hideModalCreate"></CreateCashCut>
     </Dialog>
 
-    <DataTable :value="items" :rows="rows" :totalRecords="totalRecords" @page="onPage">
+    <DataTable :value="items" paginator :rows="rows" :totalRecords="totalRecords" @page="onPage" lazy>
         <Column field="cut_date" header="Fecha de corte">
             <template #body="slot">
                 {{ formatDate(slot.data.cut_date, true) }} - {{ formatDate(slot.data.cut_end_date, true) }}

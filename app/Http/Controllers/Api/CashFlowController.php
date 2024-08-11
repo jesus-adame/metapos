@@ -16,7 +16,7 @@ class CashFlowController extends Controller
         $cashRegisterId = Auth::user()->cashRegister->id;
 
         $paginate = CashFlow::with('cashRegister')
-            ->orderBy('updated_at', 'desc')
+            ->orderBy('date', 'desc')
             ->where('cash_register_id', $cashRegisterId)
             ->paginate($perPage);
 
