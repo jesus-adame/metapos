@@ -28,7 +28,7 @@ class PurchaseController extends Controller
             'purchase_date' => $purchaseDate->format('Y-m-d'),
             'status' => 'paid',
             'location_id' => $branch->id,
-            'location_type' => $branch->type,
+            'location_type' => $branch::class,
         ]);
 
         $total = 0;
