@@ -21,6 +21,7 @@ class Product extends Model
         'image_url',
         'unit_type',
         'tax',
+        'status',
         'has_taxes',
     ];
 

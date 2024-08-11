@@ -80,6 +80,7 @@ class ProductController extends Controller
             'image_url' => $imageUrl,
             'branch_id' => $branchId,
             'unit_type' => $request->unit_type,
+            'status' => 'Disponible',
         ]);
 
         foreach (Branch::all() as $branch) {
