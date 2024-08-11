@@ -1,21 +1,17 @@
-<script setup>
+<script setup lang="ts">
 import Card from '@/Components/Card.vue';
 import { formatMoneyNumber } from '@/helpers';
 import UserLayout from '@/Layouts/UserLayout.vue';
+import { Payment, Sale } from '@/types';
 import { Head } from '@inertiajs/vue3';
 import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
 
-const props = defineProps({
-    title: {
-        type: String
-    },
-    sale: {
-        type: Object
-    },
-});
+const props = defineProps<{
+    sale: Sale,
+}>();
 
-const getPaymentName = (payment) => {
+const getPaymentName = (payment: Payment) => {
     switch (payment.method) {
         case 'cash': {
             return 'Efectivo'
@@ -29,7 +25,7 @@ const getPaymentName = (payment) => {
     }
 }
 
-const calculateMetodIcon = (payment) => {
+const calculateMetodIcon = (payment: Payment) => {
     switch (payment.method) {
         case 'cash': {
             return 'pi-money-bill';
@@ -59,7 +55,7 @@ const calculateMetodIcon = (payment) => {
                         <strong>Cliente</strong> {{ sale.customer?.first_name }} {{ sale.customer?.last_name }}
                     </div>
                     <div>
-                        <strong>Vendedor</strong> {{ sale.seller?.name }} {{ sale.seller?.last_name }}
+                        <strong>Vendedor</strong> {{ sale.seller?.name }} {{ sale.seller?.lastname }}
                     </div>
                     <div>
                         <strong>Total Venta</strong> {{ formatMoneyNumber(sale.total) }}

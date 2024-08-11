@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
-import { Head, useForm } from '@inertiajs/vue3';
+import { Head, Link, useForm } from '@inertiajs/vue3';
 import UserLayout from '@/Layouts/UserLayout.vue';
 import ProductService from '@/Services/ProductService';
 import CustomerService from "@/Services/CustomerService";
@@ -15,7 +15,7 @@ import Payment from './Partials/Payment.vue';
 import CreateCashMovement from '@/Components/forms/CreateCashMovement.vue';
 import { Customer, Product } from '@/types';
 import { AutoCompleteCompleteEvent } from 'primevue/autocomplete';
-import Image from 'primevue/image';
+import SelectProduct from '@/Components/grids/SelectProduct.vue';
 
 // Retrieve customers and products from the server
 const productService = new ProductService();
@@ -181,17 +181,7 @@ const setSuccessPayment = () => {
 
         <div class="flex">
             <div id="shoppingTable" class="w-1/2 mr-2">
-                <div class="flex flex-wrap justify-start">
-                    <div class="px-1 w-1/4" v-for="(product, index) in products" :key="index">
-                        <div @click="pushProduct(product)" class="bg-white overflow-hidden shadow-sm sm:rounded-lg text-gray-900 cursor-pointer">
-                            <Image :src="product.image_url" :alt="product.name" class="shadow-lg rounded-md overflow-hidden" width="100%" :pt="{root: 'w-full'}" />
-                            <div class="py-2 px-4">
-                                <p class="font-bold">{{ product.name }}</p>
-                                {{ formatMoneyNumber(product.price) }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <SelectProduct :products="products" @selected="pushProduct"></SelectProduct>
             </div>
 
             <div class="w-1/2">
@@ -213,7 +203,10 @@ const setSuccessPayment = () => {
                             class="w-full text-xl uppercase"/>
                     </div>
                     <div class="flex mt-4 w-full">
-                        <Button @click="showModalMovements" label="Movimiento de caja" severity="warn" class="w-full text-xl uppercase" icon="pi pi-arrow-right-arrow-left"></Button>
+                        <Button @click="showModalMovements" label="Entrada / Salida" severity="danger" class="w-1/2 text-xl uppercase mr-2" icon="pi pi-arrow-right-arrow-left"></Button>
+                        <Link :href="route('cash-flows.index')" class="d-block w-1/2">
+                            <Button label="Ver de caja" severity="warn" class="w-full text-xl uppercase" icon="pi pi-inbox"></Button>
+                        </Link>
                     </div>
                 </Card>
             </div>

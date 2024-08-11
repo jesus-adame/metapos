@@ -2,6 +2,7 @@
 import BranchService from '@/Services/BranchService';
 import ProductService from '@/Services/ProductService';
 import { Branch, ErrorResponse, Product } from '@/types';
+import { usePage } from '@inertiajs/vue3';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import Button from 'primevue/button';
 import Select from 'primevue/select';
@@ -9,6 +10,7 @@ import Textarea from 'primevue/textarea';
 import { useToast } from 'primevue/usetoast';
 import { onMounted, reactive, ref } from 'vue';
 
+const page = usePage();
 const toast = useToast();
 const products = ref<Product[]>([]);
 const branches = ref<Branch[]>([]);
@@ -22,8 +24,8 @@ const form = reactive({
     quantity: null,
     transaction_date: '',
     description: '',
-    location_id: null,
-    location_type: 'App\\Models\\Branch',
+    location_id: page.props.location.id,
+    location_type: page.props.location.type,
     processing: false
 });
 
@@ -73,17 +75,19 @@ const types = ref([
 </script>
 <template>
     <form @submit.prevent="submit">
-        <div class="my-4">
-            <label for="type" class="block">Tipo</label>
-            <Select v-model="form.type" :options="types" optionLabel="label" optionValue="value" class="w-full"></Select>
-        </div>
-        <!-- <div class="my-4">
-            <label for="location_id" class="block">Tipo de ubicación</label>
-            <Select v-model="form.location_type" :options="location_types" optionLabel="label" optionValue="value" class="w-full"></Select>
-        </div> -->
-        <div class="my-4">
-            <label for="location_id" class="block">Ubicación</label>
-            <Select v-model="form.location_id" :options="branches" optionLabel="name" optionValue="id" class="w-full"></Select>
+        <div class="flex my-2">
+            <div class="w-1/2 mr-2">
+                <label for="type" class="block">Tipo</label>
+                <Select v-model="form.type" :options="types" optionLabel="label" optionValue="value" class="w-full"></Select>
+            </div>
+            <!-- <div class="w-1/2">
+                <label for="location_id" class="block">Tipo de ubicación</label>
+                <Select v-model="form.location_type" :options="location_types" optionLabel="label" optionValue="value" class="w-full"></Select>
+            </div> -->
+            <div class="w-1/2">
+                <label for="location_id" class="block">Ubicación</label>
+                <Select v-model="form.location_id" :options="branches" optionLabel="name" optionValue="id" class="w-full"></Select>
+            </div>
         </div>
         <div class="mb-4">
             <label for="product_id" class="block">Producto</label>
@@ -98,7 +102,7 @@ const types = ref([
             <input type="date" v-model="form.transaction_date" id="transaction_date" class="w-full">
         </div>
         <div class="mb-4">
-            <label for="description" class="block">Descripción</label>
+            <label for="description" class="block">Motivo</label>
             <Textarea v-model="form.description" id="description" class="w-full" rows="4"></Textarea>
         </div>
         <div class="mt-6">

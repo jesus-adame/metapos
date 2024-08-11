@@ -11,12 +11,12 @@ import ProductService from '@/Services/ProductService';
 import CustomerService from "@/Services/CustomerService";
 import { useToast } from 'primevue/usetoast';
 import Card from '@/Components/Card.vue';
-import SelectProduct from '@/Components/grids/SelectProduct.vue';
 import { Product, Supplier } from '@/types';
 import Dialog from 'primevue/dialog';
 import Payment from './Partials/Payment.vue';
 import { formatMoneyNumber } from '@/helpers';
 import ProductsList from './Partials/ProductsList.vue';
+import SelectProduct from './Partials/SelectProduct.vue';
 
 // Retrieve suppliers and products from the server
 const products = ref<Product[]>([]);

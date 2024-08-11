@@ -5,15 +5,33 @@ import { Config } from 'ziggy-js';
 export interface User {
     id: number;
     name: string;
+    lastname: string;
     email: string;
     email_verified_at: string;
 }
 
 export interface Customer {
     id: number;
-    name: string;
+    first_name: string;
+    last_name: string;
     email: string;
     phone: string;
+}
+
+export interface Sale {
+    id: number
+    customer: Customer
+    seller: User
+    cash_register: CashRegister
+    total: number
+    status: string
+    payments: Payment[]
+    products: Product[]
+}
+
+export interface Payment {
+    id: number
+    method: string
 }
 
 export interface Supplier {

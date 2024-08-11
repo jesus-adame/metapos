@@ -42,7 +42,7 @@ const removeProduct = (index: number) => {
             </Column>
             <Column header="Precio">
                 <template #body="slot">
-                    <InputNumber v-model="slot.data.price" mode="currency" currency="MXN" :minFractionDigits="2" showButtons></InputNumber>
+                    {{ formatMoneyNumber(slot.data.price * slot.data.quantity) }}
                 </template>
             </Column>
             <Column header="Subtotal">

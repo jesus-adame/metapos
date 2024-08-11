@@ -1,10 +1,12 @@
-<script setup>
+<script setup lang="ts">
 import { Head } from '@inertiajs/vue3';
 import { Link } from '@inertiajs/vue3';
 import UserLayout from '@/Layouts/UserLayout.vue';
 import Card from '@/Components/Card.vue';
 import Button from 'primevue/button';
 import ListInventory from '@/Components/tables/ListInventory.vue';
+import CreateInventoryTransaction from '@/Components/forms/CreateInventoryTransaction.vue';
+import { ref } from 'vue';
 
 defineProps({
     title: {
@@ -15,9 +17,22 @@ defineProps({
     },
 });
 
+const modalCreateMovement = ref(false)
+
+const closeModalCreate = () => {
+    modalCreateMovement.value = false
+}
+
+const openModalCreate = () => {
+    modalCreateMovement.value = true
+}
 </script>
 <template>
-    <Head title="Dashboard" />
+    <Head title="Inventarios" />
+
+    <Dialog v-model:visible="modalCreateMovement" modal header="Nuevo movimiento" :style="{ width: '35rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
+        <CreateInventoryTransaction @save="closeModalCreate"></CreateInventoryTransaction>
+    </Dialog>
 
     <UserLayout>
         <template #header>
@@ -26,8 +41,9 @@ defineProps({
 
         <div class="flex mb-4 mt-6">
             <Link :href="route('inventory-transactions.index')" class="mr-2">
-                <Button label="Movimientos" icon="pi pi-sort-alt"></Button>
+                <Button label="Historial de movimientos" icon="pi pi-list"></Button>
             </Link>
+            <Button label="Registrar movimiento" icon="pi pi-sort-alt" severity="info" @click="openModalCreate"></Button>
         </div>
         <Card padding="0">
             <ListInventory></ListInventory>

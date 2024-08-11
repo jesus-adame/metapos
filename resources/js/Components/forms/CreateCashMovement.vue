@@ -1,26 +1,42 @@
-<script setup>
-import { useForm } from '@inertiajs/vue3';
+<script setup lang="ts">
+import { SuccessResponse } from '@/types';
+import axios, { AxiosResponse } from 'axios';
 import Button from 'primevue/button';
 import DatePicker from 'primevue/datepicker';
 import InputNumber from 'primevue/inputnumber';
 import Select from 'primevue/select';
 import Textarea from 'primevue/textarea';
+import { useToast } from 'primevue/usetoast';
+import { reactive } from 'vue';
 
+const toast = useToast();
 const emit = defineEmits(['save', 'cancel'])
-const form = useForm({
+const form = reactive({
     type: 'entry',
     amount: null,
     description: '',
     method: 'cash',
     date: '',
+    processing: false
 });
 
 const submit = () => {
-    form.post(route('api.cash-flows.store'), {
-        onSuccess: () => {
-            emit('save')
-            form.reset()
-        },
+    form.processing = true
+    axios.post(route('api.cash-flows.store'), {
+        type: form.type,
+        amount: form.amount,
+        description: form.description,
+        date: form.date,
+    })
+    .then((response: AxiosResponse<SuccessResponse>) =>{
+        toast.add({ summary: 'Correcto', detail: response.data.message, severity: 'success', life: 2000 })
+        form.processing = true
+        emit('save')
+    })
+    .catch(({ response }) => {
+        console.error(response);
+        toast.add({ severity: 'error', summary: 'Error', detail: response.data.message, life: 2100 });
+        form.processing = true
     });
 };
 
@@ -52,7 +68,7 @@ const methods = [
             </div>
         </div>
         <div class="mb-4">
-            <label for="description" class="block">Descripción</label>
+            <label for="description" class="block">Motivo</label>
             <Textarea v-model="form.description" id="description" class="w-full" rows="4"></Textarea>
         </div>
         <div class="mb-4">
