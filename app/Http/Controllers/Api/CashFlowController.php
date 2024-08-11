@@ -21,13 +21,17 @@ class CashFlowController extends Controller
             ->paginate($perPage);
 
         // Calcular el saldo en caja
-        $totalEntries = CashFlow::where('type', 'entry')->where('cash_register_id', $cashRegisterId)->sum('amount');
-        $totalExits = CashFlow::where('type', 'exit')->where('cash_register_id', $cashRegisterId)->sum('amount');
-        $balance = $totalEntries - $totalExits;
+        $balance = CashFlow::getBalance($cashRegisterId);
+        $cashBalance = CashFlow::getBalanceByMethod($cashRegisterId, 'cash');
+        $cardBalance = CashFlow::getBalanceByMethod($cashRegisterId, 'card');
+        $transferBalance = CashFlow::getBalanceByMethod($cashRegisterId, 'transfer');
 
         return response()->json([
             'paginate' => $paginate,
             'balance' => $balance,
+            'cashBalance' => $cashBalance,
+            'cardBalance' => $cardBalance,
+            'transferBalance' => $transferBalance,
         ]);
     }
 

@@ -15,6 +15,9 @@ import CashFlowService from '@/Services/CashFlowService';
 const cashFlowService = new CashFlowService;
 const modalCashMovements = ref(false)
 const balance = ref<number>(0)
+const balanceCash = ref<number>(0)
+const balanceCard = ref<number>(0)
+const balanceTransfer = ref<number>(0)
 const items = ref<CashFlow[]>([]);
 const rows = ref(5);
 const current_page = ref(1);
@@ -93,6 +96,9 @@ const fetchItems = (pageNumber: number) => {
 
         totalRecords.value = paginate.total
         balance.value = response.data.balance
+        balanceCash.value = response.data.cashBalance
+        balanceCard.value = response.data.cardBalance
+        balanceTransfer.value = response.data.transferBalance
         items.value = paginate.data
     })
 }
@@ -117,10 +123,14 @@ const hideModalMovements = () => {
         </CreateCashMovement>
     </Dialog>
 
+    <div class="p-4 bg-blue-200 text-blue-500 font-bold text-end mb-4 rounded-md">
+        <p class="text-xl">Balance {{ formatMoneyNumber(balance) }}</p>
+        <p>Efectivo {{ formatMoneyNumber(balanceCash) }}</p>
+        <p>Tarjeta {{ formatMoneyNumber(balanceCard) }}</p>
+        <p>Transferencia {{ formatMoneyNumber(balanceTransfer) }}</p>
+    </div>
+    <h3 class="text-xl font-bold mb-4">Movimientos de caja</h3>
     <Card padding="0">
-        <div class="p-4 bg-blue-200 text-blue-500 font-bold text-end">
-            <h3>Balance: {{ formatMoneyNumber(balance) }}</h3>
-        </div>
         <DataTable :value="items" paginator :rows="rows" @page="onPage" :totalRecords="totalRecords" lazy>
             <Column field="id" header="#"></Column>
             <Column field="date" header="Fecha">

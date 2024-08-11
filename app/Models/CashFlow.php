@@ -20,6 +20,26 @@ class CashFlow extends Model
         'cash_register_id'
     ];
 
+    public static function getBalance(int $cashRegisterId)
+    {
+        $totalEntries = self::where('type', 'entry')->where('cash_register_id', $cashRegisterId)->sum('amount');
+        $totalExits = self::where('type', 'exit')->where('cash_register_id', $cashRegisterId)->sum('amount');
+        return $totalEntries - $totalExits;
+    }
+
+    public static function getBalanceByMethod(int $cashRegisterId, string $method)
+    {
+        $totalEntries = self::where('type', 'entry')
+            ->where('cash_register_id', $cashRegisterId)
+            ->where('method', $method)
+            ->sum('amount');
+        $totalExits = self::where('type', 'exit')
+            ->where('cash_register_id', $cashRegisterId)
+            ->where('method', $method)
+            ->sum('amount');
+        return $totalEntries - $totalExits;
+    }
+
     public function cashable()
     {
         return $this->morphTo();

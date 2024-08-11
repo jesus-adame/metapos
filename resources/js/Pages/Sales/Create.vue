@@ -150,6 +150,7 @@ const hideModalDiscount = () => {
 const setSuccessPayment = () => {
     hideModalPayments();
     clearSaleComponent();
+    removeDiscount();
 }
 
 const setSuccessDiscount = (amount: number, type: string) => {
