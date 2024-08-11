@@ -193,6 +193,7 @@ const setSuccessPayment = () => {
                     <div class="w-1/2">
                         <div class="flex justify-center w-full">
                             <Button
+                                :disabled="totalPurchase <= 0"
                                 @click="showModalPayments"
                                 severity="success"
                                 icon="pi pi-dollar"

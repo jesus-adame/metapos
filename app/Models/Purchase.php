@@ -4,8 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Contracts\Cashable;
 
-class Purchase extends Model
+class Purchase extends Model implements Cashable
 {
     use HasFactory;
 
@@ -18,6 +19,11 @@ class Purchase extends Model
         'location_id',
         'location_type',
     ];
+
+    public function getClassName(): string
+    {
+        return 'compra';
+    }
 
     public function supplier()
     {
