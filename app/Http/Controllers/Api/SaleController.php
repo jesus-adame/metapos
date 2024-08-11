@@ -21,6 +21,7 @@ class SaleController extends Controller
             $request->products,
             $request->payment_methods,
             $cash_register_id,
+            $request->discount,
         );
 
         if ($response['status'] == 'error') {

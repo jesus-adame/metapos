@@ -1,8 +1,23 @@
 import { Location } from '@/types';
 import moment from 'moment-timezone';
 
-export const formatMoneyNumber = (numb: number) => {
-    return new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(numb);
+export const formatMoneyNumber = (number: number | null) => {
+    if (number == null) return null
+    return new Intl.NumberFormat('es-MX', {
+        style: 'currency',
+        currency: 'MXN',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }).format(number);
+}
+
+export const percentageNumber = (number: number | null) => {
+    if (number == null) return null
+    return new Intl.NumberFormat('es-MX', {
+        style: 'percent',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }).format(number / 100);
 }
 
 export const formatDateTime = (date: string, local: boolean = false) => { // Asegúrate de que el nombre sea correcto
@@ -85,4 +100,16 @@ export const purchaseStatus = (status: string) => {
         default:
             return ''
     }
+}
+
+export function roundBank(num: number) {
+    return num % 1 === 0.5 ? (num % 2 === 0 ? num : num + 1) : Math.round(num);
+}
+
+export function getPercentage(number: number, percentage: number) {
+    // Convert the percentage to a decimal by dividing by 100
+    const percentageDecimal = percentage / 100;
+
+    // Calculate the result by multiplying the number by the decimal percentage
+    return number * percentageDecimal;
 }

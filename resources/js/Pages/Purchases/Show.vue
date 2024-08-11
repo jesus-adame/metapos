@@ -1,6 +1,6 @@
 <script setup>
 import Card from '@/Components/Card.vue';
-import { formatMoneyNumber } from '@/helpers';
+import { formatMoneyNumber, purchaseStatus } from '@/helpers';
 import UserLayout from '@/Layouts/UserLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import Column from 'primevue/column';
@@ -35,7 +35,7 @@ defineProps({
                         <strong>Proveedor</strong> {{ purchase.supplier?.first_name }} {{ purchase.supplier?.last_name }}
                     </div>
                     <div>
-                        <strong>Estatus</strong> {{ purchase.status }}
+                        <strong>Estatus</strong> {{ purchaseStatus(purchase.status) }}
                     </div>
                     <div>
                         <strong>Total Compra</strong> {{ formatMoneyNumber(purchase.total) }}

@@ -70,7 +70,7 @@ const clearPayments = () => {
 }
 
 const applyPayment = () => {
-  const formData = props.form.data();
+  const formData = props.form;
 
   formData.payment_methods = payments.value;
 

@@ -12,18 +12,30 @@ use App\Models\CashRegister;
 use App\Models\CashFlow;
 use App\Models\Branch;
 use App\Models\BankTransaction;
+use App\Helpers\MathNumberHelper;
+use App\Contracts\Locationable;
 use App\Contracts\Cashable;
 
 class RegisterSaleService
 {
     public function __construct(private CreateInventoryTransaction $inventoryTransactionService) {}
 
-    public function execute(?int $customerId, int $sellerId, array $products, array $paymentMethods, int $cashRegisterId): array
-    {
+    public function execute(
+        ?int $customerId,
+        int $sellerId,
+        array $products,
+        array $paymentMethods,
+        int $cashRegisterId,
+        ?array $discount = null
+    ): array {
         DB::beginTransaction();
 
         $cashRegister = CashRegister::find($cashRegisterId);
-        $sale = $this->createSale($customerId, $sellerId, $products, $cashRegister);
+        /** @var Branch */
+        $location = $cashRegister->branch;
+        $sale = $this->createSale($customerId, $sellerId, $products, $cashRegister, $discount);
+
+        $this->attachSaleProducts($sale, $location, $products);
 
         // Guardar los métodos de pago
         $paymentsAmount = $this->setPayments($sale, $paymentMethods, $cashRegister);
@@ -65,6 +77,67 @@ class RegisterSaleService
             'message' => 'Venta registrada correctamente',
             'content' => 'Su cambio es $ ' . number_format($change, 2)
         ];
+    }
+
+    private function createSale(?int $customerId, int $sellerId, array $products, CashRegister $cashRegister, ?array $discount = null): Sale
+    {
+        $sale = new Sale();
+        $sale->customer_id = $customerId;
+        $sale->seller_id = $sellerId;
+        $sale->cash_register_id = $cashRegister->id;
+        $sale->status = 'pending';
+        $sale->total = 0; // Inicializamos el total a 0
+
+        $calculatedTotal = 0;
+        foreach ($products as $arrayProduct) {
+            /** @var int */
+            $quantity = $arrayProduct['quantity'];
+            /** @var float */
+            $price = $arrayProduct['price'];
+
+            $calculatedTotal += $price * $quantity;
+        }
+
+        $discountAmount = 0;
+
+        if (!is_null($discount)) {
+            if ($discount['type'] == 'percentage') {
+                $discountAmount = MathNumberHelper::getPercentage($calculatedTotal, $discount['amount']);
+            } else {
+                $discountAmount = $discount['amount'];
+            }
+        }
+
+        $sale->total = $calculatedTotal - $discountAmount;
+        $sale->save();
+
+        return $sale;
+    }
+
+    private function attachSaleProducts(Sale $sale, Locationable $location, array $products)
+    {
+        foreach ($products as $arrayProduct) {
+            /** @var Product */
+            $product = Product::find($arrayProduct['id']);
+            /** @var int */
+            $quantity = $arrayProduct['quantity'];
+            /** @var float */
+            $price = $arrayProduct['price'];
+
+            $sale->products()->attach($product, [
+                'quantity' => $quantity,
+                'price' => $price,
+            ]);
+
+            $this->inventoryTransactionService->execute(
+                $location,
+                'exit',
+                $product->id,
+                $quantity,
+                $sale->created_at,
+                'Venta No. # ' . $sale->id
+            );
+        }
     }
 
     private function setPayments(Sale $sale, array $paymentMethods, CashRegister $cashRegister)
@@ -129,52 +202,6 @@ class RegisterSaleService
             'card' => $cardPayments,
             'transfer' => $transferPayments,
         ];
-    }
-
-    private function createSale(?int $customerId, int $sellerId, array $products, CashRegister $cashRegister): Sale
-    {
-        /** @var Branch */
-        $branch = $cashRegister->branch;
-
-        /** @var Sale */
-        $sale = Sale::create([
-            'customer_id' => $customerId,
-            'seller_id' => $sellerId,
-            'cash_register_id' => $cashRegister->id,
-            'status' => 'pending',
-            'total' => 0, // We will calculate the total below
-        ]);
-
-        $totalSale = 0;
-        foreach ($products as $arrayProduct) {
-            /** @var Product */
-            $product = Product::find($arrayProduct['id']);
-            /** @var int */
-            $quantity = $arrayProduct['quantity'];
-            /** @var float */
-            $price = $arrayProduct['price'];
-
-            $sale->products()->attach($product, [
-                'quantity' => $quantity,
-                'price' => $price,
-            ]);
-
-            $totalSale += $price * $quantity;
-            $this->inventoryTransactionService->execute(
-                $branch,
-                'exit',
-                $product->id,
-                $quantity,
-                $sale->created_at,
-                'Venta No. # ' . $sale->id
-            );
-        }
-
-        $sale->update([
-            'total' => $totalSale
-        ]);
-
-        return $sale;
     }
 
     private function createCashFlow(

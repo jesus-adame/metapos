@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import UserLayout from '@/Layouts/UserLayout.vue';
 import ProductService from '@/Services/ProductService';
@@ -9,13 +9,14 @@ import { useToast } from 'primevue/usetoast';
 import Button from 'primevue/button';
 import IconField from 'primevue/iconfield';
 import Dialog from 'primevue/dialog';
-import { formatMoneyNumber } from '@/helpers';
+import { formatMoneyNumber, getPercentage, percentageNumber } from '@/helpers';
 import ProductsList from './Partials/ProductsList.vue';
 import Payment from './Partials/Payment.vue';
 import CreateCashMovement from '@/Components/forms/CreateCashMovement.vue';
 import { Customer, Product } from '@/types';
 import { AutoCompleteCompleteEvent } from 'primevue/autocomplete';
 import SelectProduct from '@/Components/grids/SelectProduct.vue';
+import Discount from './Partials/Discount.vue';
 
 // Retrieve customers and products from the server
 const productService = new ProductService();
@@ -27,14 +28,20 @@ const filteredCustomers = ref<Customer[]>([]);
 const products = ref<Product[]>([]);
 const modalPayments = ref(false)
 const modalCashMovements = ref(false)
+const modalDiscount = ref(false)
 
 // Initialize the form
-const form = useForm<{
+const form = reactive<{
   customer_id: number | null;
   products: Product[];
+  discount: {
+    type: string,
+    amount: number
+  } | null;
 }>({
     customer_id: null,
     products: [],
+    discount: null,
 });
 
 const addSearchedProduct = () => {
@@ -78,7 +85,14 @@ const pushProduct = (product: Product) => {
 }
 
 const totalSale = computed(() => {
-    return form.products.reduce((acc, product) => acc + (product.price * product.quantity), 0);
+    let subtotal = form.products.reduce((acc, product) => acc + (product.price * product.quantity), 0)
+    if (form.discount == null) {
+        return subtotal
+    }
+
+    if (form.discount.type == 'amount')
+        return subtotal - form.discount.amount;
+    return subtotal - getPercentage(subtotal, form.discount.amount)
 });
 
 const searchCustomer = (event: AutoCompleteCompleteEvent) => {
@@ -125,10 +139,41 @@ const hideModalMovements = () => {
     modalCashMovements.value = false
 }
 
+const showModalDiscount = () => {
+    modalDiscount.value = true
+}
+
+const hideModalDiscount = () => {
+    modalDiscount.value = false
+}
+
 const setSuccessPayment = () => {
     hideModalPayments();
     clearSaleComponent();
 }
+
+const setSuccessDiscount = (amount: number, type: string) => {
+    hideModalDiscount();
+    form.discount = {
+        type: type,
+        amount: amount
+    }
+}
+
+const removeDiscount = () => {
+    form.discount = null
+}
+
+const formatDiscount = computed(() => {
+    if (form.discount) {
+        if (form.discount.type == 'amount')
+            return formatMoneyNumber(form.discount.amount)
+        if (form.discount.type == 'percentage')
+            return percentageNumber(form.discount.amount)
+    } else {
+        return ''
+    }
+})
 </script>
 
 <template>
@@ -140,6 +185,10 @@ const setSuccessPayment = () => {
         </template>
 
         <div class="mt-5"></div>
+
+        <Dialog v-model:visible="modalDiscount" modal header="Agregar Descuento" :style="{ width: '35rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
+            <Discount :totalSale="totalSale" :form="form" @cancel="hideModalDiscount" @apply="setSuccessDiscount"></Discount>
+        </Dialog>
 
         <Dialog v-model:visible="modalPayments" modal header="Agregar Pago" :style="{ width: '35rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
             <Payment :totalSale="totalSale" :form="form" @cancel="hideModalPayments" @save="setSuccessPayment"></Payment>
@@ -161,21 +210,26 @@ const setSuccessPayment = () => {
                 </form>
             </div>
 
-            <div class="customer w-1/3">
-                <AutoComplete v-model="selectedCustomer" optionLabel="first_name" :suggestions="filteredCustomers"
-                    @complete="searchCustomer"
-                    @change="setCustomer"
-                    class="w-full"
-                    inputClass="w-full"
-                    placeholder="Cliente">
-                    <template #option="slot">
-                        <div class="flex align-options-center">
-                            <div>
-                                {{ slot.option.first_name }} {{ slot.option.last_name }} | {{ slot.option.phone }}
-                            </div>
-                        </div>
-                    </template>
-                </AutoComplete>
+            <div class="customer w-1/2">
+                <div class="flex justify-end">
+                    <Button v-if="form.discount == null" label="Agregar descuento" class="mr-2" icon="pi pi-tag" @click="showModalDiscount"></Button>
+                    <div class="w-1/2">
+                        <AutoComplete v-model="selectedCustomer" optionLabel="first_name" :suggestions="filteredCustomers"
+                            @complete="searchCustomer"
+                            @change="setCustomer"
+                            class="w-full"
+                            inputClass="w-full"
+                            placeholder="Cliente">
+                            <template #option="slot">
+                                <div class="flex align-options-center">
+                                    <div>
+                                        {{ slot.option.first_name }} {{ slot.option.last_name }} | {{ slot.option.phone }}
+                                    </div>
+                                </div>
+                            </template>
+                        </AutoComplete>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -188,9 +242,14 @@ const setSuccessPayment = () => {
                 <ProductsList :products="form.products"></ProductsList>
 
                 <Card width="full" class="mt-5">
-                    <div class="text-3xl font-bold flex justify-center w-full mb-5">
-                        <span class="mr-4">Saldo a pagar</span>
-                        <span>{{ formatMoneyNumber(totalSale) }}</span>
+                    <div v-if="form.discount" class="text-xl text-gray-500 font-bold flex justify-end items-center cursor-pointer mb-2" @click="removeDiscount">
+                        <span class="mr-2">
+                            <i class="pi pi-tag"></i>
+                        </span>
+                        <p>Descuento {{ formatDiscount }}</p>
+                    </div>
+                    <div class="text-3xl font-bold text-gray-700 text-center w-full mb-5">
+                        <p>Saldo a pagar {{ formatMoneyNumber(totalSale) }}</p>
                     </div>
                     <div class="flex justify-center w-full">
                         <Button

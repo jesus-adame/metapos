@@ -30,6 +30,7 @@ class StoreSaleRequest extends FormRequest
             'payment_methods' => 'nullable|array',
             'payment_methods.*.method' => 'nullable|in:cash,card,transfer',
             'payment_methods.*.amount' => 'nullable|numeric|min:0',
+            'discount' => 'nullable|array',
         ];
     }
 
