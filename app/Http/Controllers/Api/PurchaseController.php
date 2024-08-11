@@ -27,6 +27,8 @@ class PurchaseController extends Controller
             'total' => 0, // Calcularemos el total a continuación
             'purchase_date' => $purchaseDate->format('Y-m-d'),
             'status' => 'paid',
+            'location_id' => $branch->id,
+            'location_type' => $branch->type,
         ]);
 
         $total = 0;
@@ -37,7 +39,7 @@ class PurchaseController extends Controller
 
             $purchase->products()->attach($product, [
                 'quantity' => $quantity,
-                'cost' => $cost,
+                'price' => $cost,
             ]);
 
             $total += $cost * $quantity;

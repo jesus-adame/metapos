@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
-import { useForm, Head } from '@inertiajs/vue3';
+import { useForm, Head, usePage } from '@inertiajs/vue3';
 import UserLayout from '@/Layouts/UserLayout.vue';
 import Button from 'primevue/button';
 import IconField from 'primevue/iconfield';
@@ -19,8 +19,8 @@ import ProductsList from './Partials/ProductsList.vue';
 import SelectProduct from './Partials/SelectProduct.vue';
 
 // Retrieve suppliers and products from the server
+const page = usePage();
 const products = ref<Product[]>([]);
-
 const productService = new ProductService();
 const customerService = new CustomerService();
 const searchQuery = ref('');
@@ -34,10 +34,14 @@ const form = useForm<{
     supplier_id: number | null, // Assuming customer_id is a number
     products: Product[],
     purchase_date: string | null,
+    location_id: number,
+    location_type: string,
 }>({
     supplier_id: null,
     products: [],
     purchase_date: null,
+    location_id: page.props.location_id,
+    location_type: page.props.location_type,
 });
 
 // Add a product to the form
@@ -120,7 +124,7 @@ onMounted(() => {
 });
 
 const totalPurchase = computed(() => {
-    return form.products.reduce((acc, product) => acc + (product.price * product.quantity), 0);
+    return form.products.reduce((acc, product) => acc + (product.cost * product.quantity), 0);
 });
 
 const clearPurchaseComponent = () => {
