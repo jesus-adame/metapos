@@ -15,24 +15,29 @@ class SaleController extends Controller
     public function index(Request $request): Response
     {
         $perPage = $request->input('rows', 10);
-        $sales = Sale::with('customer', 'seller', 'cashRegister')
-            ->orderBy('created_at', 'desc')
-            ->paginate($perPage);
+        $cashRegisterId = Auth::user()->cash_register_id;
+        $builder = Sale::with('customer', 'seller', 'cashRegister');
 
-        return response()->json($sales);
+        if (!is_null($cashRegisterId)) {
+            $builder->where('cash_register_id', $cashRegisterId);
+        }
+
+        $paginate = $builder->orderBy('created_at', 'desc')->paginate($perPage);
+
+        return response()->json($paginate);
     }
 
     public function store(StoreSaleRequest $request, RegisterSaleService $service): Response
     {
         $sellerId = Auth::id();
-        $cash_register_id = Auth::user()->cash_register_id;
+        $cashRegisterId = Auth::user()->cash_register_id;
 
         $response = $service->execute(
             $request->customer_id,
             $sellerId,
             $request->products,
             $request->payment_methods,
-            $cash_register_id,
+            $cashRegisterId,
             $request->discount,
         );
 

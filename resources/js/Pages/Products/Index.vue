@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, router } from '@inertiajs/vue3';
+import { Head } from '@inertiajs/vue3';
 import { Link } from '@inertiajs/vue3';
 import UserLayout from '@/Layouts/UserLayout.vue';
 import Card from '@/Components/Card.vue';
@@ -50,8 +50,6 @@ const saved = () => {
             </Link>
             <Button label="Registrar movimiento" icon="pi pi-sort-alt" severity="info" @click="openModalCreate"></Button>
         </div>
-        <Card padding="0">
-            <ListInventory></ListInventory>
-        </Card>
+        <ListInventory></ListInventory>
     </UserLayout>
 </template>

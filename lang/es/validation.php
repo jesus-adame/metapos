@@ -148,10 +148,14 @@ return [
 
     'attributes' => [
         'name' => 'nombre',
+        'first_name' => 'nombre',
         'lastname' => 'apellido',
-        'precio' => 'precio',
+        'last_name' => 'apellido',
+        'price' => 'precio',
         'quantity' => 'cantidad',
         'cost' => 'costo',
+        'amount' => 'monto',
+        'password' => 'contraseña',
     ],
 
 ];

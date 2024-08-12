@@ -17,6 +17,7 @@ const totalRecords = ref<number>(0)
 const saleService = new SaleService()
 const page = ref<number>(1)
 const rows = ref<number>(10)
+const cashRegister = ref<number | null>(null)
 
 const printTicket = async (saleId: number) => {
     const url = route('sales.ticket', saleId);
@@ -24,7 +25,7 @@ const printTicket = async (saleId: number) => {
 };
 
 const fetchItems = (pageNumber: number) => {
-    saleService.paginate(pageNumber, rows.value)
+    saleService.paginate(pageNumber, rows.value, cashRegister.value)
     .then((response: AxiosResponse) => {
         const pagination = response.data
         items.value = pagination.data

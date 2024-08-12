@@ -20,18 +20,53 @@ class CashFlowController extends Controller
             ->where('cash_register_id', $cashRegisterId)
             ->paginate($perPage);
 
-        // Calcular el saldo en caja
-        $balance = CashFlow::getBalance($cashRegisterId);
-        $cashBalance = CashFlow::getBalanceByMethod($cashRegisterId, 'cash');
-        $cardBalance = CashFlow::getBalanceByMethod($cashRegisterId, 'card');
-        $transferBalance = CashFlow::getBalanceByMethod($cashRegisterId, 'transfer');
-
         return response()->json([
             'paginate' => $paginate,
-            'balance' => $balance,
-            'cashBalance' => $cashBalance,
-            'cardBalance' => $cardBalance,
-            'transferBalance' => $transferBalance,
+        ]);
+    }
+
+    public function resume()
+    {
+        $cashRegisterId = Auth::user()->cashRegister->id;
+
+        // Calcular el saldo en caja
+        $balance = CashFlow::getBalance($cashRegisterId);
+        $entries = CashFlow::getEntries($cashRegisterId);
+        $exits = CashFlow::getExits($cashRegisterId);
+
+        $cashBalance = CashFlow::getBalanceByMethod($cashRegisterId, 'cash');
+        $cashEntries = CashFlow::getEntriesByMethod($cashRegisterId, 'cash');
+        $cashExits = CashFlow::getExitsByMethod($cashRegisterId, 'cash');
+
+        $cardBalance = CashFlow::getBalanceByMethod($cashRegisterId, 'card');
+        $cardEntries = CashFlow::getEntriesByMethod($cashRegisterId, 'card');
+        $cardExits = CashFlow::getExitsByMethod($cashRegisterId, 'card');
+
+        $transferBalance = CashFlow::getBalanceByMethod($cashRegisterId, 'transfer');
+        $transferEntries = CashFlow::getEntriesByMethod($cashRegisterId, 'transfer');
+        $transferExits = CashFlow::getExitsByMethod($cashRegisterId, 'transfer');
+
+        return response()->json([
+            'global' => [
+                'entries' => $entries,
+                'exits' => $exits,
+                'balance' => $balance,
+            ],
+            'cash' => [
+                'entries' => $cashEntries,
+                'exits' => $cashExits,
+                'balance' => $cashBalance,
+            ],
+            'card' => [
+                'entries' => $cardEntries,
+                'exits' => $cardExits,
+                'balance' => $cardBalance,
+            ],
+            'transfer' => [
+                'entries' => $transferEntries,
+                'exits' => $transferExits,
+                'balance' => $transferBalance,
+            ],
         ]);
     }
 

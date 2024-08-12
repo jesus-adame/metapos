@@ -18,9 +18,9 @@ export default class SaleService {
         return response
     }
 
-    async paginate(page, rows) {
+    async paginate(page, rows, cash_register) {
         const url = route('api.sales.index');
-        const response = await axios.get(url, { params: { page, rows } });
+        const response = await axios.get(url, { params: { page, rows, cash_register } });
         this.sales.value = response.data
 
         return response

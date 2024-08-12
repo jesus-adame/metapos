@@ -57,6 +57,11 @@ const addSearchedProduct = () => {
 }
 
 const pushProduct = (product: Product) => {
+    if (product.stock <= 0) {
+        toast.add({ severity: 'warn', summary: 'Atención', detail: 'Producto sin existencias', life: 3000 });
+        return;
+    }
+
     toast.add({ severity: 'success', summary: 'Correcto', detail: 'Producto agregado correctamente', life: 1100 });
 
     if (form.products.length > 0) {

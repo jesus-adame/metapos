@@ -26,6 +26,14 @@ export default class CashFlowService {
         return response
     }
 
+    async resume() {
+        const url = route('api.cash-flows.resume');
+        const response = await axios.get(url);
+        this.cashFlows.value = response.data
+
+        return response
+    }
+
     async fetchAll() {
         const url = '/api/cash-flows';
         const response = await axios.get(url);

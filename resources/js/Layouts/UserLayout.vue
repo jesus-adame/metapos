@@ -20,7 +20,7 @@ import Toast from 'primevue/toast';
       </main>
 
       <DynamicDialog />
-      <Toast position="bottom-right" />
+      <Toast position="top-right" />
     </div>
   </div>
 </template>

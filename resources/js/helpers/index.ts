@@ -113,3 +113,7 @@ export function getPercentage(number: number, percentage: number) {
     // Calculate the result by multiplying the number by the decimal percentage
     return number * percentageDecimal;
 }
+
+export function hardReload() {
+    window.location.reload()
+}

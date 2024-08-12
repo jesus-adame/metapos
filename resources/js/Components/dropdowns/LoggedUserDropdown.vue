@@ -5,7 +5,7 @@ import DropdownLink from '@/Components/DropdownLink.vue';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useToast } from 'primevue/usetoast';
 import { router, usePage } from '@inertiajs/vue3'
-import { Branch, CashRegister, ErrorResponse, Location } from '@/types';
+import { CashRegister, ErrorResponse, Location } from '@/types';
 import CashRegisterService from '@/Services/CashRegisterService';
 import Button from 'primevue/button';
 import { locationIcon } from '@/helpers';
@@ -38,7 +38,7 @@ const showModal = () => {
 
 const hideModal = () => {
     modalCashRegister.value = false;
-    router.visit(route('sales.create'));
+    window.location.reload()
 }
 
 const searchCashRegisters = () => {

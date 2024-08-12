@@ -26,7 +26,7 @@ Route::middleware(['auth:sanctum', InitializeTenancyByDomain::class])->name('api
     Route::resource('purchases', PurchaseController::class);
     Route::resource('customers', CustomerController::class);
     Route::resource('suppliers', SupplierController::class);
-    Route::resource('cash-flows', CashFlowController::class);
+    Route::resource('cash-flows', CashFlowController::class)->only(['index', 'store']);
     Route::resource('cash-cuts', CashCutController::class);
     Route::resource('inventory-transactions', InventoryTransactionController::class);
     Route::resource('branches', BranchController::class);
@@ -38,5 +38,6 @@ Route::middleware(['auth:sanctum', InitializeTenancyByDomain::class])->name('api
     Route::post('/suppliers/search', [SupplierController::class, 'search'])->name('suppliers.search');
     Route::post('/cash-registers/search', [CashRegisterController::class, 'search'])->name('sales.search');
 
+    Route::get('/cash-flows/resume', [CashFlowController::class, 'resume'])->name('cash-flows.resume');
     Route::post('/cash-registers/select', [CashRegisterController::class, 'select'])->name('cash-registers.select');
 });

@@ -20,6 +20,18 @@ class CashFlow extends Model
         'cash_register_id'
     ];
 
+    public static function getEntries(int $cashRegisterId)
+    {
+        $totalEntries = self::where('type', 'entry')->where('cash_register_id', $cashRegisterId)->sum('amount');
+        return $totalEntries;
+    }
+
+    public static function getExits(int $cashRegisterId)
+    {
+        $totalExits = self::where('type', 'exit')->where('cash_register_id', $cashRegisterId)->sum('amount');
+        return $totalExits;
+    }
+
     public static function getBalance(int $cashRegisterId)
     {
         $totalEntries = self::where('type', 'entry')->where('cash_register_id', $cashRegisterId)->sum('amount');
@@ -38,6 +50,24 @@ class CashFlow extends Model
             ->where('method', $method)
             ->sum('amount');
         return $totalEntries - $totalExits;
+    }
+
+    public static function getEntriesByMethod(int $cashRegisterId, string $method)
+    {
+        $totalEntries = self::where('type', 'entry')
+            ->where('cash_register_id', $cashRegisterId)
+            ->where('method', $method)
+            ->sum('amount');
+        return $totalEntries;
+    }
+
+    public static function getExitsByMethod(int $cashRegisterId, string $method)
+    {
+        $totalExits = self::where('type', 'exit')
+            ->where('cash_register_id', $cashRegisterId)
+            ->where('method', $method)
+            ->sum('amount');
+        return $totalExits;
     }
 
     public function cashable()
