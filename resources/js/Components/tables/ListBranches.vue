@@ -59,12 +59,15 @@ const calculateTypeLabel = (type: string) => {
 }
 </script>
 <template>
+    <Dialog v-model:visible="modalCreate" modal header="Registrar usuario" :style="{ width: '35rem' }" pt:mask:class="backdrop-blur-sm">
+        <CreateBranch class="mt-4" @save="hideModalCreate"></CreateBranch>
+    </Dialog>
     <DataTable :value="items" paginator lazy :rows="rows" @page="onPage" :totalRecords="totalRecords">
         <Column field="id" header="#"></Column>
         <Column field="name" header="Nombre">
             <template #body="slot">
                 <div class="flex items-center">
-                    <div class="py-2 px-3 bg-gray-300 rounded-full mr-3 text-gray-500">
+                    <div class="py-2 px-3 bg-gray-200 rounded-full mr-3 text-gray-500">
                         <i :class="locationIcon(slot.data)"></i>
                     </div>
                     <div>
@@ -93,8 +96,4 @@ const calculateTypeLabel = (type: string) => {
             </template>
         </Column>
     </DataTable>
-
-    <Dialog v-model:visible="modalCreate" modal header="Registrar usuario" :style="{ width: '35rem' }" pt:mask:class="backdrop-blur-sm">
-        <CreateBranch class="mt-4" @save="hideModalCreate"></CreateBranch>
-    </Dialog>
 </template>

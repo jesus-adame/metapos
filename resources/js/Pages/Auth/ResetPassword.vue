@@ -2,12 +2,11 @@
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
 import { Head, useForm, usePage } from '@inertiajs/vue3';
+import InputText from 'primevue/inputtext';
+import Button from 'primevue/button';
 
 const page = usePage()
-
 const props = defineProps({
     email: {
         type: String,
@@ -38,14 +37,11 @@ const submit = () => {
     <GuestLayout>
         <Head title="Reset Password" />
 
-        <div
-            class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg"
-        >
+        <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
             <form @submit.prevent="submit">
                 <div>
                     <InputLabel for="email" value="Email" />
-
-                    <TextInput
+                    <InputText
                         id="email"
                         type="email"
                         class="mt-1 block w-full"
@@ -54,14 +50,12 @@ const submit = () => {
                         autofocus
                         autocomplete="username"
                     />
-
                     <InputError class="mt-2" :message="form.errors.email" />
                 </div>
 
                 <div class="mt-4">
                     <InputLabel for="password" value="Password" />
-
-                    <TextInput
+                    <InputText
                         id="password"
                         type="password"
                         class="mt-1 block w-full"
@@ -69,14 +63,12 @@ const submit = () => {
                         required
                         autocomplete="new-password"
                     />
-
                     <InputError class="mt-2" :message="form.errors.password" />
                 </div>
 
                 <div class="mt-4">
                     <InputLabel for="password_confirmation" value="Confirm Password" />
-
-                    <TextInput
+                    <InputText
                         id="password_confirmation"
                         type="password"
                         class="mt-1 block w-full"
@@ -84,14 +76,13 @@ const submit = () => {
                         required
                         autocomplete="new-password"
                     />
-
                     <InputError class="mt-2" :message="form.errors.password_confirmation" />
                 </div>
 
                 <div class="flex items-center justify-end mt-4">
-                    <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                    <Button :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                         Reset Password
-                    </PrimaryButton>
+                    </Button>
                 </div>
             </form>
         </div>

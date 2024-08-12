@@ -6,7 +6,8 @@ import CustomerService from "@/Services/CustomerService";
 import { AxiosResponse } from 'axios';
 import { DataTablePageEvent } from 'primevue/datatable';
 import CreateCustomer from '../forms/CreateCustomer.vue';
-import { formatDateTime } from '@/helpers';
+import { formatDate } from '@/helpers';
+import UserIcon from '../icons/UserIcon.vue';
 
 const customerService: CustomerService = new CustomerService()
 const items = ref([])
@@ -53,18 +54,23 @@ onMounted(() => {
 
     <DataTable :value="items" class="shadow-md" :paginator="true" :rows="rows" :lazy="true" :totalRecords="totalRecords" @page="onPage">
         <Column field="id" header="#"></Column>
-        <Column field="first_name" header="Nombre"></Column>
-        <Column field="last_name" header="Apellidos"></Column>
+        <Column field="first_name" header="Nombre">
+            <template #body="slot">
+                <UserIcon>
+                    {{ slot.data.first_name }} {{ slot.data.last_name }}
+                </UserIcon>
+            </template>
+        </Column>
         <Column field="phone" header="Teléfono"></Column>
         <Column field="email" header="Email"></Column>
         <Column field="created_at" header="Creación">
             <template #body="slot">
-                {{ formatDateTime(slot.data.created_at) }}
+                {{ formatDate(slot.data.created_at) }}
             </template>
         </Column>
         <Column field="updated_at" header="Edición">
             <template #body="slot">
-                {{ formatDateTime(slot.data.updated_at) }}
+                {{ formatDate(slot.data.updated_at) }}
             </template>
         </Column>
         <Column field="" header="">

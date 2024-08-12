@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import Card from '@/Components/Card.vue';
-import { formatMoneyNumber } from '@/helpers';
+import { formatMoneyNumber, saleStatus } from '@/helpers';
 import UserLayout from '@/Layouts/UserLayout.vue';
 import { Payment, Sale } from '@/types';
 import { Head } from '@inertiajs/vue3';
 import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
 
-const props = defineProps<{
+defineProps<{
     sale: Sale,
 }>();
 
@@ -61,7 +61,7 @@ const calculateMetodIcon = (payment: Payment) => {
                         <strong>Total Venta</strong> {{ formatMoneyNumber(sale.total) }}
                     </div>
                     <div>
-                        <strong>Estatus</strong> {{ sale.status }}
+                        <strong>Estatus</strong> {{ saleStatus(sale.status) }}
                     </div>
                     <div>
                         <strong>Caja</strong> {{ sale.cash_register?.name }}

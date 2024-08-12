@@ -6,7 +6,8 @@ import DataTable, { DataTablePageEvent } from 'primevue/datatable';
 import { onMounted, ref } from 'vue';
 import CashRegisterService from "@/Services/CashRegisterService";
 import CreateCashRegister from '../forms/CreateCashRegister.vue';
-import { formatDateTime } from '@/helpers';
+import { formatDate } from '@/helpers';
+import CashRegisterIcon from '../icons/CashRegisterIcon.vue';
 
 const cashRegisterService: CashRegisterService = new CashRegisterService()
 const modalCreate = ref(false)
@@ -49,8 +50,10 @@ onMounted(() => {
         <Column field="id" header="#"></Column>
         <Column field="name" header="Nombre">
             <template #body="slot">
-                <span>{{ slot.data.name }}</span>
-                <Tag class="ml-2" v-if="slot.data.is_default" :value="'default'" severity="info"></Tag>
+                <CashRegisterIcon>
+                    <span>{{ slot.data.name }}</span>
+                    <Tag class="ml-2" v-if="slot.data.is_default" :value="'default'" severity="info"></Tag>
+                </CashRegisterIcon>
             </template>
         </Column>
         <Column field="branch" header="Ubicación">
@@ -65,7 +68,7 @@ onMounted(() => {
         </Column>
         <Column field="created_at" header="Creado">
             <template #body="slot">
-                {{ formatDateTime(slot.data.created_at) }}
+                {{ formatDate(slot.data.created_at) }}
             </template>
         </Column>
         <Column field="" header="">

@@ -8,6 +8,7 @@ import Dialog from 'primevue/dialog';
 import Button from 'primevue/button';
 import CreateCashCut from '../forms/CreateCashCut.vue';
 import { formatDate, formatMoneyNumber } from '@/helpers';
+import CashRegisterIcon from '../icons/CashRegisterIcon.vue';
 
 const page = ref<number>(1)
 const rows = ref<number>(5)
@@ -55,10 +56,11 @@ const onPage = (event: DataTablePageEvent) => {
         </Column>
         <Column field="" header="Caja">
             <template #body="slot">
-                <span class="bg-gray-200 py-2 px-3 rounded-full mr-2 text-gray-500">
-                    <i class="pi pi-shopping-cart"></i>
-                </span>
-                {{ slot.data.cash_register.name }}
+                <div class="flex">
+                    <CashRegisterIcon>
+                        {{ slot.data.cash_register.name }}
+                    </CashRegisterIcon>
+                </div>
             </template>
         </Column>
         <Column field="total_entries" header="Total de entradas">

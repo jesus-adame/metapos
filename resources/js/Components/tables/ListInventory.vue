@@ -23,7 +23,7 @@ const confirm = useConfirm()
 const productService = new ProductService()
 const product = ref<Product | null>(null)
 const items = ref<Product[]>([])
-const rows = ref<number>(5)
+const rows = ref<number>(10)
 const current_page = ref(1)
 const totalRecords = ref(0)
 
@@ -31,10 +31,8 @@ const getSeverity = (product: Product) => {
     switch (product.stock > 0) {
         case true:
             return 'success';
-
         case false:
             return 'danger';
-
         default:
             return null;
     }

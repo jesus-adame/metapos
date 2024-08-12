@@ -82,7 +82,7 @@ const items = ref([
 
     <UserLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Settings</h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Ajustes</h2>
         </template>
 
         <div class="flex justify-between mt-6 w-full">

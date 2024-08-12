@@ -2,18 +2,22 @@
 import { useForm } from '@inertiajs/vue3';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
+import { Customer } from '@/types';
 
+const { customer } = defineProps<{
+    customer: Customer
+}>()
 const emit = defineEmits(['save'])
 const form = useForm({
-    first_name: null,
-    last_name: null,
-    email: null,
-    phone: null,
-    address: null,
+    first_name: customer.last_name,
+    last_name: customer.last_name,
+    email: customer.email,
+    phone: customer.phone,
+    address: customer.address,
 });
 
 const submit = () => {
-    form.post(route('api.customers.store'), {
+    form.post(route('api.customers.update', { customer: customer.id }), {
         onSuccess: () => {
             emit('save')
             form.reset()

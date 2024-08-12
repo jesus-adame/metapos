@@ -5,6 +5,8 @@ import UserLayout from '@/Layouts/UserLayout.vue';
 import Card from '@/Components/Card.vue';
 import Column from 'primevue/column';
 import Button from 'primevue/button';
+import CashRegisterIcon from '@/Components/icons/CashRegisterIcon.vue';
+import UserIcon from '@/Components/icons/UserIcon.vue';
 
 defineProps({
     title: {
@@ -35,7 +37,13 @@ const printTicket = async (saleId: number) => {
         </div>
         <Card padding="0">
             <DataTable :value="sales" paginator :rows="8">
-                <Column field="id" header="#"></Column>
+                <Column field="id" header="#">
+                    <template #body="slot">
+                        <Link :href="route('sales.show', { sale: slot.data.id })">
+                            {{ slot.data.id }}
+                        </Link>
+                    </template>
+                </Column>
                 <Column header="Fecha">
                     <template #body="slot">
                         {{ formatDateTime(slot.data.created_at) }}
@@ -43,32 +51,23 @@ const printTicket = async (saleId: number) => {
                 </Column>
                 <Column header="Cliente">
                     <template #body="slot">
-                        <div class="flex">
-                            <div class="rounded-full bg-gray-200 px-2 py-1 mr-2">
-                                <i class="pi pi-user"></i>
-                            </div>
+                        <UserIcon>
                             {{ slot.data.customer?.first_name || 'Sin asignar' }} {{ slot.data.customer?.last_name }}
-                        </div>
+                        </UserIcon>
                     </template>
                 </Column>
                 <Column header="Vendedor">
                     <template #body="slot">
-                        <div class="flex">
-                            <div class="rounded-full bg-gray-200 px-2 py-1 mr-2">
-                                <i class="pi pi-user"></i>
-                            </div>
-                            {{ slot.data.seller.name }}
-                        </div>
+                        <UserIcon>
+                            {{ slot.data.seller.name }} {{ slot.data.seller.lastname }}
+                        </UserIcon>
                     </template>
                 </Column>
                 <Column header="Caja">
                     <template #body="slot">
-                        <div class="flex">
-                            <div class="rounded-full bg-gray-200 px-2 py-1 mr-2">
-                                <i class="pi pi-building"></i>
-                            </div>
+                        <CashRegisterIcon>
                             {{ slot.data.cash_register?.name || 'Sin asignar' }}
-                        </div>
+                        </CashRegisterIcon>
                     </template>
                 </Column>
                 <Column field="total" header="Total">
@@ -85,7 +84,7 @@ const printTicket = async (saleId: number) => {
                     <template #body="slot">
                         <div class="flex">
                             <Link :href="route('sales.show', {sale: slot.data.id})">
-                                <Button icon="pi pi-eye" class="mr-1"></Button>
+                                <Button icon="pi pi-eye" class="mr-1" severity="info"></Button>
                             </Link>
                             <Button icon="pi pi-print" @click="printTicket(slot.data.id)"></Button>
                         </div>

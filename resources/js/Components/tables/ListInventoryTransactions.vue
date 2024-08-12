@@ -78,34 +78,28 @@ const confirmDelete = (url: string) => {
 
 const calculateSeverity = (transaccion: InventoryTransaction) => {
     switch (transaccion.type) {
-        case 'entry': {
+        case 'entry':
             return 'success';
-        }
-        case 'exit': {
+        case 'exit':
             return 'danger';
-        }
     }
 }
 
 const calculateIcon = (transaccion: InventoryTransaction) => {
     switch (transaccion.type) {
-        case 'entry': {
+        case 'entry':
             return 'pi pi-angle-up';
-        }
-        case 'exit': {
+        case 'exit':
             return 'pi pi-angle-down';
-        }
     }
 }
 
 const calculateLabel = (transaccion: InventoryTransaction) => {
     switch (transaccion.type) {
-        case 'entry': {
+        case 'entry':
             return 'Entrada';
-        }
-        case 'exit': {
+        case 'exit':
             return 'Salida';
-        }
     }
 }
 

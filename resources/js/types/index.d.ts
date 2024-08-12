@@ -16,11 +16,23 @@ export interface Customer {
     last_name: string;
     email: string;
     phone: string;
+    address: string;
 }
 
 export interface Sale {
     id: number
     customer: Customer
+    seller: User
+    cash_register: CashRegister
+    total: number
+    status: string
+    payments: Payment[]
+    products: Product[]
+}
+
+export interface Purchase {
+    id: number
+    supplier: Supplier
     seller: User
     cash_register: CashRegister
     total: number
@@ -36,7 +48,8 @@ export interface Payment {
 
 export interface Supplier {
     id: number;
-    name: string;
+    first_name: string;
+    last_name: string;
     email: string;
     phone: string;
 }

@@ -1,20 +1,17 @@
-<script setup>
+<script setup lang="ts">
 import Card from '@/Components/Card.vue';
 import { formatMoneyNumber, purchaseStatus } from '@/helpers';
 import UserLayout from '@/Layouts/UserLayout.vue';
+import { Purchase } from '@/types';
 import { Head } from '@inertiajs/vue3';
 import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
 import Image from 'primevue/image';
 
-defineProps({
-    title: {
-        type: String
-    },
-    purchase: {
-        type: Object
-    },
-});
+defineProps<{
+    title: string,
+    purchase: Purchase,
+}>();
 </script>
 
 <template>
@@ -29,7 +26,7 @@ defineProps({
             <div class="w-2/3">
                 <Card class="mb-4 text-lg">
                     <div>
-                        <strong>Compra #</strong> {{  purchase.id }}
+                        <strong>Compra #</strong> {{ purchase.id }}
                     </div>
                     <div>
                         <strong>Proveedor</strong> {{ purchase.supplier?.first_name }} {{ purchase.supplier?.last_name }}

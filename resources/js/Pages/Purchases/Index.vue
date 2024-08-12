@@ -3,6 +3,7 @@ import { usePage, Head, Link } from '@inertiajs/vue3';
 import UserLayout from '@/Layouts/UserLayout.vue';
 import Button from 'primevue/button';
 import { formatDate, formatMoneyNumber, purchaseStatus } from '@/helpers';
+import UserIcon from '@/Components/icons/UserIcon.vue';
 
 const { props } = usePage();
 const purchases = props.purchases;
@@ -32,12 +33,16 @@ const purchases = props.purchases;
                 </Column>
                 <Column header="Proveedor">
                     <template #body="slot">
-                        {{ slot.data.supplier?.first_name }} {{ slot.data.supplier?.last_name }}
+                        <UserIcon>
+                            {{ slot.data.supplier?.first_name || 'N/A' }} {{ slot.data.supplier?.last_name }}
+                        </UserIcon>
                     </template>
                 </Column>
                 <Column header="Comprador">
                     <template #body="slot">
-                        {{ slot.data.buyer?.name }} {{ slot.data.buyer?.lastname }}
+                        <UserIcon>
+                            {{ slot.data.buyer?.name }} {{ slot.data.buyer?.lastname }}
+                        </UserIcon>
                     </template>
                 </Column>
                 <Column header="Estatus">
@@ -53,7 +58,7 @@ const purchases = props.purchases;
                 <Column header="">
                     <template #body="slot">
                         <Link :href="route('purchases.show', {purchase: slot.data.id})">
-                           <Button icon="pi pi-eye"></Button>
+                           <Button icon="pi pi-eye" severity="info"></Button>
                         </Link>
                     </template>
                 </Column>

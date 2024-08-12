@@ -7,6 +7,7 @@ import { onMounted, ref } from 'vue';
 import UserService from "@/Services/UserService";
 import { AxiosResponse } from 'axios';
 import { DataTablePageEvent } from 'primevue/datatable';
+import UserIcon from '../icons/UserIcon.vue';
 
 const userService: UserService = new UserService()
 const items = ref([])
@@ -49,7 +50,13 @@ onMounted(() => {
 <template>
     <DataTable :value="items" class="shadow-md" :paginator="true" :rows="rows" :lazy="true" :totalRecords="totalRecords" @page="onPage">
         <Column field="id" header="#"></Column>
-        <Column field="name" header="Nombre"></Column>
+        <Column field="name" header="Nombre">
+            <template #body="slot">
+                <UserIcon>
+                    {{ slot.data.name }} {{ slot.data.lastname }}
+                </UserIcon>
+            </template>
+        </Column>
         <Column field="email" header="Email"></Column>
         <Column field="created_at" header="Creación">
             <template #body="slot">

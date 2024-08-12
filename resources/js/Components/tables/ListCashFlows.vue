@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Card from '@/Components/Card.vue';
-import { formatDate, formatDateTime, formatMoneyNumber } from '@/helpers';
+import { formatDate, formatMoneyNumber } from '@/helpers';
 import Column from 'primevue/column';
 import DataTable, { DataTablePageEvent } from 'primevue/datatable';
 import Tag from 'primevue/tag';
@@ -11,6 +11,7 @@ import Dialog from 'primevue/dialog';
 import CreateCashMovement from '../forms/CreateCashMovement.vue';
 import Button from 'primevue/button';
 import CashFlowService from '@/Services/CashFlowService';
+import CashRegisterIcon from '@/Components/icons/CashRegisterIcon.vue';
 
 const cashFlowService = new CashFlowService;
 const modalCashMovements = ref(false)
@@ -152,11 +153,9 @@ const hideModalMovements = () => {
             <Column field="cash_register" header="Caja">
                 <template #body="slot">
                     <div class="flex items-center">
-                        <div class="py-2 px-3 bg-gray-200 mr-3 rounded-full">
-                            <i class="pi pi-building"></i>
-                        </div>
+                        <CashRegisterIcon/>
                         <span>
-                            # {{ slot.data.cash_register?.id }} {{ slot.data.cash_register?.name || 'NA' }}
+                            {{ slot.data.cash_register?.name || 'NA' }}
                         </span>
                     </div>
                 </template>
