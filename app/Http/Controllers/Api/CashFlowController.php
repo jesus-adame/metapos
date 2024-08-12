@@ -57,6 +57,8 @@ class CashFlowController extends Controller
             'cash_register_id' => $cashRegisterId,
         ]);
 
-        return redirect()->route('cash-flows.index')->with('success', 'Cash flow recorded successfully.');
+        return response()->json([
+            'message' => 'Movimiento registrado.'
+        ]);
     }
 }

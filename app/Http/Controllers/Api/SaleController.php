@@ -4,12 +4,24 @@ namespace App\Http\Controllers\Api;
 
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 use App\Services\Sales\RegisterSaleService;
+use App\Models\Sale;
 use App\Http\Requests\StoreSaleRequest;
 use App\Http\Controllers\Controller;
 
 class SaleController extends Controller
 {
+    public function index(Request $request): Response
+    {
+        $perPage = $request->input('rows', 10);
+        $sales = Sale::with('customer', 'seller', 'cashRegister')
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage);
+
+        return response()->json($sales);
+    }
+
     public function store(StoreSaleRequest $request, RegisterSaleService $service): Response
     {
         $sellerId = Auth::id();

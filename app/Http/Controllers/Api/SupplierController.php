@@ -49,6 +49,8 @@ class SupplierController extends Controller
 
         Supplier::create($request->all());
 
-        return redirect()->route('users.index')->with('success', 'Supplier created successfully.');
+        return response()->json([
+            'message' => 'Proveedor registrado.'
+        ]);
     }
 }

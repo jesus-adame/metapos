@@ -2,28 +2,47 @@
 import { Head, Link } from '@inertiajs/vue3';
 import { formatDateTime, formatMoneyNumber, saleStatus } from '@/helpers';
 import UserLayout from '@/Layouts/UserLayout.vue';
-import Card from '@/Components/Card.vue';
 import Column from 'primevue/column';
 import Button from 'primevue/button';
 import CashRegisterIcon from '@/Components/icons/CashRegisterIcon.vue';
 import UserIcon from '@/Components/icons/UserIcon.vue';
+import { onMounted, ref } from 'vue';
+import { Sale } from '@/types';
+import SaleService from "@/Services/SaleService";
+import { AxiosResponse } from 'axios';
+import { DataTablePageEvent } from 'primevue/datatable';
 
-defineProps({
-    title: {
-        type: String
-    },
-    sales: {
-        type: Array
-    },
-});
+const items = ref<Sale[]>([])
+const totalRecords = ref<number>(0)
+const saleService = new SaleService()
+const page = ref<number>(1)
+const rows = ref<number>(10)
 
 const printTicket = async (saleId: number) => {
     const url = route('sales.ticket', saleId);
     window.open(url, '_blank', 'popup')
 };
+
+const fetchItems = (pageNumber: number) => {
+    saleService.paginate(pageNumber, rows.value)
+    .then((response: AxiosResponse) => {
+        const pagination = response.data
+        items.value = pagination.data
+        totalRecords.value = pagination.total
+    })
+}
+
+onMounted(() => {
+    fetchItems(page.value)
+})
+
+const onPage = (event: DataTablePageEvent) => {
+    const pageNumber = event.first / event.rows + 1;
+    fetchItems(pageNumber);
+}
 </script>
 <template>
-    <Head title="Dashboard" />
+    <Head title="Ventas" />
 
     <UserLayout>
         <template #header>
@@ -35,62 +54,60 @@ const printTicket = async (saleId: number) => {
                 <Button label="Nueva venta" severity="success" icon="pi pi-plus"></Button>
             </Link>
         </div>
-        <Card padding="0">
-            <DataTable :value="sales" paginator :rows="8">
-                <Column field="id" header="#">
-                    <template #body="slot">
-                        <Link :href="route('sales.show', { sale: slot.data.id })">
-                            {{ slot.data.id }}
+        <DataTable :value="items" paginator :rows="rows" :total-records="totalRecords" @page="onPage" lazy>
+            <Column field="id" header="#">
+                <template #body="slot">
+                    <Link :href="route('sales.show', { sale: slot.data.id })">
+                        {{ slot.data.id }}
+                    </Link>
+                </template>
+            </Column>
+            <Column header="Fecha">
+                <template #body="slot">
+                    {{ formatDateTime(slot.data.created_at) }}
+                </template>
+            </Column>
+            <Column header="Cliente">
+                <template #body="slot">
+                    <UserIcon>
+                        {{ slot.data.customer?.first_name || 'Sin asignar' }} {{ slot.data.customer?.last_name }}
+                    </UserIcon>
+                </template>
+            </Column>
+            <Column header="Vendedor">
+                <template #body="slot">
+                    <UserIcon>
+                        {{ slot.data.seller.name }} {{ slot.data.seller.lastname }}
+                    </UserIcon>
+                </template>
+            </Column>
+            <Column header="Caja">
+                <template #body="slot">
+                    <CashRegisterIcon>
+                        {{ slot.data.cash_register?.name || 'Sin asignar' }}
+                    </CashRegisterIcon>
+                </template>
+            </Column>
+            <Column field="total" header="Total">
+                <template #body="slot">
+                    {{ formatMoneyNumber(slot.data.total) }}
+                </template>
+            </Column>
+            <Column header="Estatus">
+                <template #body="slot">
+                    {{ saleStatus(slot.data.status) }}
+                </template>
+            </Column>
+            <Column header="">
+                <template #body="slot">
+                    <div class="flex">
+                        <Link :href="route('sales.show', {sale: slot.data.id})">
+                            <Button icon="pi pi-eye" class="mr-1" severity="info"></Button>
                         </Link>
-                    </template>
-                </Column>
-                <Column header="Fecha">
-                    <template #body="slot">
-                        {{ formatDateTime(slot.data.created_at) }}
-                    </template>
-                </Column>
-                <Column header="Cliente">
-                    <template #body="slot">
-                        <UserIcon>
-                            {{ slot.data.customer?.first_name || 'Sin asignar' }} {{ slot.data.customer?.last_name }}
-                        </UserIcon>
-                    </template>
-                </Column>
-                <Column header="Vendedor">
-                    <template #body="slot">
-                        <UserIcon>
-                            {{ slot.data.seller.name }} {{ slot.data.seller.lastname }}
-                        </UserIcon>
-                    </template>
-                </Column>
-                <Column header="Caja">
-                    <template #body="slot">
-                        <CashRegisterIcon>
-                            {{ slot.data.cash_register?.name || 'Sin asignar' }}
-                        </CashRegisterIcon>
-                    </template>
-                </Column>
-                <Column field="total" header="Total">
-                    <template #body="slot">
-                        {{ formatMoneyNumber(slot.data.total) }}
-                    </template>
-                </Column>
-                <Column header="Estatus">
-                    <template #body="slot">
-                        {{ saleStatus(slot.data.status) }}
-                    </template>
-                </Column>
-                <Column header="">
-                    <template #body="slot">
-                        <div class="flex">
-                            <Link :href="route('sales.show', {sale: slot.data.id})">
-                                <Button icon="pi pi-eye" class="mr-1" severity="info"></Button>
-                            </Link>
-                            <Button icon="pi pi-print" @click="printTicket(slot.data.id)"></Button>
-                        </div>
-                    </template>
-                </Column>
-            </DataTable>
-        </Card>
+                        <Button icon="pi pi-print" @click="printTicket(slot.data.id)"></Button>
+                    </div>
+                </template>
+            </Column>
+        </DataTable>
     </UserLayout>
 </template>

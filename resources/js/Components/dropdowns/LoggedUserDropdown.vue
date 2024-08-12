@@ -82,7 +82,7 @@ onMounted(() => {
                             </div>
                             <div class="ml-2 text-left">
                                 <p>{{ page.props.location?.name }}</p>
-                                <span class="rounded-lg bg-green-500 px-2 text-sm text-green-100">{{ page.props.cashRegister?.name }}</span>
+                                <span class="rounded-lg bg-yellow-500 px-2 text-sm text-yellow-100">{{ page.props.cashRegister?.name }}</span>
                             </div>
                         </div>
                         <svg

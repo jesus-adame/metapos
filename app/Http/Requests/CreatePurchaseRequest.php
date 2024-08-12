@@ -30,6 +30,7 @@ class CreatePurchaseRequest extends FormRequest
             'products.*.price' => 'required|numeric|min:0',
             'location_id' => 'required|integer',
             'location_type' => 'required|string',
+            'update_cash_register' => 'boolean',
             'payment_methods' => 'nullable|array',
             'payment_methods.*.method' => 'nullable|in:cash,card,transfer',
             'payment_methods.*.amount' => 'nullable|numeric|min:0',

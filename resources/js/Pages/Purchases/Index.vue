@@ -1,12 +1,38 @@
-<script setup>
-import { usePage, Head, Link } from '@inertiajs/vue3';
+<script setup lang="ts">
+import { Head, Link } from '@inertiajs/vue3';
 import UserLayout from '@/Layouts/UserLayout.vue';
 import Button from 'primevue/button';
 import { formatDate, formatMoneyNumber, purchaseStatus } from '@/helpers';
 import UserIcon from '@/Components/icons/UserIcon.vue';
+import { AxiosResponse } from 'axios';
+import PurchaseService from "@/Services/PurchaseService";
+import { onMounted, ref } from 'vue';
+import { Purchase } from '@/types';
+import { DataTablePageEvent } from 'primevue/datatable';
 
-const { props } = usePage();
-const purchases = props.purchases;
+const items = ref<Purchase[]>([])
+const purchaseService = new PurchaseService()
+const totalRecords = ref<number>(0)
+const page = ref<number>(1)
+const rows = ref<number>(10)
+
+const fetchItems = (pageNumber: number) => {
+    purchaseService.paginate(pageNumber, rows.value)
+    .then((response: AxiosResponse) => {
+        const pagination = response.data
+        items.value = pagination.data
+        totalRecords.value = pagination.total
+    })
+}
+
+onMounted(() => {
+    fetchItems(page.value)
+})
+
+const onPage = (event: DataTablePageEvent) => {
+    const pageNumber = event.first / event.rows + 1;
+    fetchItems(pageNumber);
+}
 </script>
 
 <template>
@@ -24,7 +50,7 @@ const purchases = props.purchases;
         </div>
 
         <div class="mt-4 bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            <DataTable :value="purchases">
+            <DataTable :value="items" @page="onPage" :total-records="totalRecords" :rows="rows" lazy paginator>
                 <Column field="id" header="#"></Column>
                 <Column header="Fecha">
                     <template #body="slot">

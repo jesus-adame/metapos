@@ -9,13 +9,12 @@ import DataTable from 'primevue/datatable';
 import Image from 'primevue/image';
 
 defineProps<{
-    title: string,
     purchase: Purchase,
 }>();
 </script>
 
 <template>
-    <Head title="Dashboard" />
+    <Head title="Compra" />
 
     <UserLayout>
         <template #header>
@@ -33,6 +32,9 @@ defineProps<{
                     </div>
                     <div>
                         <strong>Estatus</strong> {{ purchaseStatus(purchase.status) }}
+                    </div>
+                    <div>
+                        <strong>Caja</strong> {{ purchase?.cash_register?.name }}
                     </div>
                     <div>
                         <strong>Total Compra</strong> {{ formatMoneyNumber(purchase.total) }}

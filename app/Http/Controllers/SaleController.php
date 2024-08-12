@@ -3,19 +3,13 @@
 namespace App\Http\Controllers;
 
 use Barryvdh\DomPDF\Facade\Pdf;
-use App\Services\Sales\AllSalesService;
 use App\Models\Sale;
 
 class SaleController extends Controller
 {
-    public function index(AllSalesService $service)
+    public function index()
     {
-        $sales = $service->execute();
-
-        return inertia('Sales/Index', [
-            'title' => 'Ventas',
-            'sales' => $sales
-        ]);
+        return inertia('Sales/Index');
     }
 
     public function create()

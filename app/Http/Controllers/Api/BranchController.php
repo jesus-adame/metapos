@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Branch;
 use App\Http\Controllers\Controller;
 
 class BranchController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): JsonResponse
     {
         $perPage = $request->input('rows', 10);
         $users = Branch::orderBy('updated_at', 'desc')->paginate($perPage);
@@ -16,20 +17,26 @@ class BranchController extends Controller
         return response()->json($users);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $request->validate([
             'name' => 'required|string|max:255',
             'address' => 'nullable|string|max:255',
-            'type' => 'required|string|in:branch,warehouse', // Validate type
         ]);
 
-        Branch::create($request->all());
+        Branch::create([
+            'name' => $request->name,
+            'address' => $request->address,
+            'type' => 'branch',
+            'is_default' => false,
+        ]);
 
-        return redirect()->route('branches.index')->with('success', 'Branch created successfully.');
+        return response()->json([
+            'message' => 'Ubicación registrada.'
+        ]);
     }
 
-    public function update(Request $request, Branch $branch)
+    public function update(Request $request, Branch $branch): JsonResponse
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -39,13 +46,17 @@ class BranchController extends Controller
 
         $branch->update($request->all());
 
-        return redirect()->route('branches.index')->with('success', 'Branch updated successfully.');
+        return response()->json([
+            'message' => 'Ubicación actualizada.'
+        ]);
     }
 
-    public function destroy(Branch $branch)
+    public function destroy(Branch $branch): JsonResponse
     {
         $branch->delete();
 
-        return redirect()->route('branches.index')->with('success', 'Branch deleted successfully.');
+        return response()->json([
+            'message' => 'Ubicación eliminada.'
+        ]);
     }
 }

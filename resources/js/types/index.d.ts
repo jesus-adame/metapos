@@ -21,7 +21,7 @@ export interface Customer {
 
 export interface Sale {
     id: number
-    customer: Customer
+    customer?: Customer
     seller: User
     cash_register: CashRegister
     total: number
@@ -32,7 +32,7 @@ export interface Sale {
 
 export interface Purchase {
     id: number
-    supplier: Supplier
+    supplier?: Supplier
     seller: User
     cash_register: CashRegister
     total: number

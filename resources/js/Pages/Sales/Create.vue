@@ -185,7 +185,7 @@ const formatDiscount = computed(() => {
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">POS</h2>
         </template>
 
-        <div class="mt-5"></div>
+        <div class="mt-4"></div>
 
         <Dialog v-model:visible="modalDiscount" modal header="Agregar Descuento" :style="{ width: '35rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
             <Discount :totalSale="totalSale" :form="form" @cancel="hideModalDiscount" @apply="setSuccessDiscount"></Discount>
@@ -242,15 +242,15 @@ const formatDiscount = computed(() => {
             <div class="w-1/2">
                 <ProductsList :products="form.products"></ProductsList>
 
-                <Card width="full" class="mt-5">
+                <Card width="full" class="mt-4">
                     <div v-if="form.discount" class="text-xl text-gray-500 font-bold flex justify-end items-center cursor-pointer mb-2" @click="removeDiscount">
                         <span class="mr-2">
                             <i class="pi pi-tag"></i>
                         </span>
                         <p>Descuento {{ formatDiscount }}</p>
                     </div>
-                    <div class="text-3xl font-bold text-gray-700 text-center w-full mb-5">
-                        <p>Saldo a pagar {{ formatMoneyNumber(totalSale) }}</p>
+                    <div class="text-3xl font-bold text-gray-700 text-right w-full mb-5">
+                        <p>Saldo {{ formatMoneyNumber(totalSale) }}</p>
                     </div>
                     <div class="flex justify-center w-full">
                         <Button

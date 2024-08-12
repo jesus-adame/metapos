@@ -66,6 +66,8 @@ class CashCutController extends Controller
             'cash_register_id' => $cashRegister->id,
         ]);
 
-        return redirect()->route('cash-cuts.index')->with('success', 'Cash cut recorded successfully.');
+        return response()->json([
+            'message' => 'Corte de caja registrado.'
+        ]);
     }
 }
