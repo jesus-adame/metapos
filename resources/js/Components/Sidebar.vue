@@ -18,7 +18,7 @@ const tabItems = [
     active: route().current('sales.create')
   },
   {
-    icon: 'fi fi-sr-money-bill-wave',
+    icon: 'fi fi-sr-drawer-empty',
     label: 'Caja',
     route: route('cash-flows.index'),
     active: route().current('cash-flows.index')
@@ -71,7 +71,7 @@ function handleMouseLeave() {
 class="-translate-x-80 sidebar fixed inset-0 z-50 h-screen w-[3.7rem] hover:w-56 transition-transform duration-300 xl:translate-x-0"
 @mouseenter="handleMouseEnter"
 @mouseleave="handleMouseLeave">
-  <div class="min-h-screen w-full overflow-hidden border-r hover:shadow-lg bg-gray-700 shadow-md">
+  <div class="min-h-screen w-full overflow-hidden border-r hover:shadow-lg bg-blue-950 shadow-md">
     <div class="flex h-screen flex-col justify-between pt-2 pb-6">
       <div>
         <div class="w-max p-2.5">
@@ -82,9 +82,9 @@ class="-translate-x-80 sidebar fixed inset-0 z-50 h-screen w-[3.7rem] hover:w-56
         </div>
         <div class="mt-6 space-y-2 tracking-wide text-gray-100 reveal-menu">
           <VirtualScroller :items="tabItems" :itemSize="10" style="height: 65vh; overflow-x: hidden;" :class="{ 'overflow-hidden': !isHovered }" orientation="vertical">
-            <template v-slot:item="{ item, options }">
+            <template v-slot:item="{ item }">
               <div class="min-w-max">
-                <Link :href="item.route" :class="{ 'bg-sky-700 pointer-events-none': item.active }" class="group flex items-center space-x-4 px-5 py-3">
+                <Link :href="item.route" :class="{ 'bg-blue-800 pointer-events-none': item.active }" class="group flex items-center space-x-4 px-5 py-3">
                   <i :class="item.icon" class="h-5 w-6"></i>
                   <span>{{ item.label }}</span>
                 </Link>

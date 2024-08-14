@@ -2,11 +2,16 @@
 import LoggedUserDropdown from '@/Components/dropdowns/LoggedUserDropdown.vue';
 import { Link } from '@inertiajs/vue3';
 import Button from 'primevue/button';
+import { ref } from 'vue';
+
+const isFullScreen = ref(false)
 
 function toggleFullScreen() {
   if (!document.fullscreenElement) {
+    isFullScreen.value = true
     document.documentElement.requestFullscreen();
   } else if (document.exitFullscreen) {
+    isFullScreen.value = false
     document.exitFullscreen();
   }
 }
@@ -33,7 +38,13 @@ function toggleFullScreen() {
         <div class="flex items-center">
           <Button icon="pi pi-bell" class="mr-3" rounded severity="secondary"></Button>
           <LoggedUserDropdown/>
-          <Button @click="toggleFullScreen()" icon="fi fi-bs-expand" class="ml-3 p-5" severity="info"></Button>
+          <span
+            @click="toggleFullScreen()"
+            class="ml-3 w-11 h-11 cursor-pointer flex items-center justify-center overflow-hidden bg-blue-800 rounded-md hover:text-2xl duration-300 ease-in-out"
+          >
+            <i v-if="isFullScreen" class="pi pi-arrow-down-left-and-arrow-up-right-to-center"></i>
+            <i v-else class="pi pi-arrow-up-right-and-arrow-down-left-from-center"></i>
+          </span>
         </div>
       </div>
     </nav>

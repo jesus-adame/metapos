@@ -13,8 +13,6 @@ const transfer = ref<any>(null)
 const fetchItems = () => {
     cashFlowService.resume()
     .then((response: AxiosResponse) => {
-        console.log(response.data);
-
         global.value = response.data.global
         cash.value = response.data.cash
         card.value = response.data.card
@@ -63,5 +61,4 @@ onMounted(() => {
             <p class="p-1 rounded m-1 bg-blue-200">{{ formatMoneyNumber(global?.balance) }}</p>
         </div>
     </div>
-
 </template>

@@ -63,8 +63,8 @@ const submit = async () => {
         <div class="w-full sm:max-w-md mt-6 px-6 py-5 bg-white shadow-md overflow-hidden sm:rounded-lg">
             <div class="w-full flex justify-center">
                 <Link href="/">
-                    <ApplicationLogo class="w-20 h-20 fill-current text-gray-600" />
-                    <h1 class="font-bold text-xl text-gray-600 my-3">META POS</h1>
+                    <ApplicationLogo class="w-20 h-20 fill-current text-purple-800" />
+                    <h1 class="font-bold text-xl text-gray-700 my-2">META POS</h1>
                 </Link>
             </div>
             <form @submit.prevent="submit">

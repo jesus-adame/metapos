@@ -1,7 +1,7 @@
 <script setup>
 import { useForm, Head, usePage } from '@inertiajs/vue3';
 import UserLayout from '@/Layouts/UserLayout.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
+import Button from 'primevue/button';
 
 const { props } = usePage();
 const branch = props.branch;
@@ -45,7 +45,7 @@ const submit = () => {
                                     <option value="warehouse">Warehouse</option>
                                 </select>
                             </div>
-                            <PrimaryButton type="submit" :disabled="form.processing">Update Branch</PrimaryButton>
+                            <Button type="submit" :disabled="form.processing">Update Branch</Button>
                         </form>
                     </div>
                 </div>

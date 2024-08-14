@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import CashResume from '@/Components/blocks/CashResume.vue';
 import UserLayout from '@/Layouts/UserLayout.vue';
 import SalesTable from '@/Shared/SalesTable.vue';
 import { Head } from '@inertiajs/vue3';
@@ -15,7 +16,9 @@ import { Head } from '@inertiajs/vue3';
 
         <div class="py-12">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">¡Has iniciado sesión!</div>
+                <div class="p-6 text-gray-900">
+                    ¡Has iniciado sesión!
+                </div>
             </div>
         </div>
     </UserLayout>

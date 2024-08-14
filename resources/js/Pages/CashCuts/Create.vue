@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useForm, Head } from '@inertiajs/vue3';
 import UserLayout from '@/Layouts/UserLayout.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
+import Button from 'primevue/button';
 
 const form = useForm({
     cut_date: '',
@@ -31,7 +31,7 @@ const submit = () => {
                             <input type="date" v-model="form.cut_date" id="cut_date" required class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
                         </div>
                         <div class="mt-6">
-                            <PrimaryButton type="submit" :disabled="form.processing">Record Cash Cut</PrimaryButton>
+                            <Button type="submit" :disabled="form.processing">Record Cash Cut</Button>
                         </div>
                     </form>
                 </div>

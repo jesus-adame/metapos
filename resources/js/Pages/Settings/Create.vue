@@ -1,7 +1,7 @@
 <script setup>
 import { useForm, Head } from '@inertiajs/vue3';
 import UserLayout from '@/Layouts/UserLayout.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
+import Button from 'primevue/button';
 
 const form = useForm({
     key: '',
@@ -42,7 +42,7 @@ const submit = () => {
                                 <textarea v-model="form.value" id="value" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"></textarea>
                             </div>
                             <div class="mt-6">
-                                <PrimaryButton type="submit" :disabled="form.processing">Create Setting</PrimaryButton>
+                                <Button type="submit" :disabled="form.processing">Create Setting</Button>
                             </div>
                         </form>
                     </div>

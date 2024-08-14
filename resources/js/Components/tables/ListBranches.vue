@@ -59,7 +59,7 @@ const calculateTypeLabel = (type: string) => {
 }
 </script>
 <template>
-    <Dialog v-model:visible="modalCreate" modal header="Registrar usuario" :style="{ width: '35rem' }" pt:mask:class="backdrop-blur-sm">
+    <Dialog v-model:visible="modalCreate" modal header="Registrar sucursal" :style="{ width: '35rem' }" pt:mask:class="backdrop-blur-sm">
         <CreateBranch class="mt-4" @save="hideModalCreate"></CreateBranch>
     </Dialog>
     <DataTable :value="items" paginator lazy :rows="rows" @page="onPage" :totalRecords="totalRecords">
