@@ -26,7 +26,8 @@ const modalResponse = ref(false);
 const dialogResponseData = ref({
     type: 'success',
     header: undefined,
-    message: null
+    message: null,
+    content: ''
 })
 
 const cancelPayment = () => {
@@ -50,14 +51,16 @@ const applyPayment = () => {
     openDialogResponse({
       type: 'success',
       header: 'Correcto',
-      message: response.data.message
+      message: response.data.message,
+      content: ''
     });
   })
   .catch(({response}) => {
     openDialogResponse({
       type: 'error',
-      header: 'No se pudo registrar',
+      header: 'Error',
       message: response.data.message,
+      content: ''
     });
   })
 };
@@ -72,7 +75,8 @@ const closeDialogResponse = () => {
   dialogResponseData.value = {
     type: 'success',
     header: undefined,
-    message: null
+    message: null,
+    content: ''
   }
 
   if (purchaseStatus.value == 'paid') {
@@ -115,10 +119,10 @@ const clearPayments = () => {
 </script>
 
 <template>
-    <Dialog v-model:visible="modalResponse" modal :header="dialogResponseData.header">
-        <Message class="mt-2" :closable="false" :severity="dialogResponseData.type">{{ dialogResponseData.header }}</Message>
+    <Dialog v-model:visible="modalResponse" modal :header="dialogResponseData.header" :closable="false">
+        <Message class="mt-2" :closable="false" :severity="dialogResponseData.type">{{ dialogResponseData.message }}</Message>
         <p class="mt-2">
-            <strong>{{ dialogResponseData.message }}</strong>
+            <strong>{{ dialogResponseData.content }}</strong>
         </p>
         <div class="flex w-full">
             <Button class="ml-auto" @click="closeDialogResponse">Aceptar</Button>

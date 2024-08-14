@@ -11,6 +11,13 @@ class CashRegister extends Model
 
     protected $fillable = ['name', 'branch_id', 'is_default'];
 
+    public function getBalance()
+    {
+        $totalEntries = $this->cashFlows()->where('type', 'entry')->sum('amount');
+        $totalExits = $this->cashFlows()->where('type', 'exit')->sum('amount');
+        return $totalEntries - $totalExits;
+    }
+
     public function branch()
     {
         return $this->belongsTo(Branch::class);

@@ -115,7 +115,7 @@ const closeDialogResponse = () => {
 </script>
 
 <template>
-  <Dialog v-model:visible="modalResponse" modal :header="dialogResponseData.header">
+  <Dialog v-model:visible="modalResponse" modal :header="dialogResponseData.header" :closable="false">
     <Message class="mt-2" :closable="false" :severity="dialogResponseData.type">{{ dialogResponseData.message }}</Message>
     <p class="my-4">
       <strong>{{ dialogResponseData.content }}</strong>

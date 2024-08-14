@@ -30,45 +30,13 @@ class RegisterPurchaseService
     ): array {
         DB::beginTransaction();
 
+        /** @var CashRegister */
         $cashRegister = CashRegister::find($cashRegisterId);
         /** @var Branch */
         $location = $cashRegister->branch;
 
-        $purchase = Purchase::create([
-            'supplier_id' => $supplierId,
-            'buyer_id' => $buyerId,
-            'total' => 0, // Calcularemos el total a continuación
-            'purchase_date' => $purchaseDate->format('Y-m-d'),
-            'status' => 'paid',
-            'location_id' => $location->id,
-            'location_type' => $location::class,
-        ]);
-
-        $total = 0;
-        foreach ($products as $productData) {
-            $product = Product::find($productData['id']);
-            $quantity = $productData['quantity'];
-            $cost = $productData['cost'];
-
-            $purchase->products()->attach($product, [
-                'quantity' => $quantity,
-                'price' => $cost,
-            ]);
-
-            $total += $cost * $quantity;
-
-            $this->inventoryTransactionService->execute(
-                $location,
-                'entry',
-                $product->id,
-                $quantity,
-                $purchaseDate->format('Y-m-d'),
-                'Carga por compra #' . $purchase->id
-            );
-        }
-
-        // Actualizar el total de la compra
-        $purchase->update(['total' => $total]);
+        $purchase = $this->createPurchase($supplierId, $buyerId, $purchaseDate, $location, $products);
+        $this->attachPurchaseProducts($purchase, $location, $products);
 
         if (!$updateCashRegister) {
             DB::commit();
@@ -81,6 +49,16 @@ class RegisterPurchaseService
         }
 
         $paymentsAmount = $this->setPayments($purchase, $paymentMethods, $cashRegister);
+
+        if (!$this->validateCashRegisterBalance($cashRegister, $paymentsAmount)) {
+            DB::rollBack();
+
+            return [
+                'status' => 'error',
+                'message' => 'Caja sin fondos',
+                'content' => ''
+            ];
+        }
 
         $cashPayments = $paymentsAmount['cash'];
         $cardPayments = $paymentsAmount['card'];
@@ -108,28 +86,62 @@ class RegisterPurchaseService
         ];
     }
 
-    private function attachPurchaseProducts(Purchase $pruchase, Locationable $location, array $products)
+    private function validateCashRegisterBalance(CashRegister $cashRegister, array $paymentsAmount)
     {
-        foreach ($products as $arrayProduct) {
-            /** @var Product */
-            $product = Product::find($arrayProduct['id']);
-            /** @var int */
-            $quantity = $arrayProduct['quantity'];
-            /** @var float */
-            $price = $arrayProduct['price'];
+        $totalAmount = $paymentsAmount['cash'] + $paymentsAmount['card'] + $paymentsAmount['transfer'];
+        if ($totalAmount > $cashRegister->getBalance()) {
+            return false;
+        }
+        return true;
+    }
 
-            $pruchase->products()->attach($product, [
+    private function createPurchase(?int $supplierId, int $buyerId, mixed $purchaseDate, Locationable $location, array $products)
+    {
+        $purchase = Purchase::create([
+            'supplier_id' => $supplierId,
+            'buyer_id' => $buyerId,
+            'total' => 0, // Calcularemos el total a continuación
+            'purchase_date' => $purchaseDate->format('Y-m-d'),
+            'status' => 'paid',
+            'location_id' => $location->id,
+            'location_type' => $location::class,
+        ]);
+
+        $total = 0;
+        foreach ($products as $productData) {
+            $quantity = $productData['quantity'];
+            $cost = $productData['cost'];
+            $total += $cost * $quantity;
+        }
+
+        // Actualizar el total de la compra
+        $purchase->update(['total' => $total]);
+
+        return $purchase;
+    }
+
+    private function attachPurchaseProducts(Purchase $purchase, Locationable $location, array $products)
+    {
+        foreach ($products as $productData) {
+            /** @var Product */
+            $product = Product::find($productData['id']);
+            /** @var int */
+            $quantity = $productData['quantity'];
+            /** @var float */
+            $cost = $productData['cost'];
+
+            $purchase->products()->attach($product, [
                 'quantity' => $quantity,
-                'price' => $price,
+                'price' => $cost,
             ]);
 
             $this->inventoryTransactionService->execute(
                 $location,
-                'exit',
+                'entry',
                 $product->id,
                 $quantity,
-                $pruchase->created_at,
-                'Compra No. # ' . $pruchase->id
+                $purchase->created_at->format('Y-m-d'),
+                'Carga por compra #' . $purchase->id
             );
         }
     }
