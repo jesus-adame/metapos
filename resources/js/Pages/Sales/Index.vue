@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
-import { formatDateTime, formatMoneyNumber, saleStatus } from '@/helpers';
+import { can, formatDateTime, formatMoneyNumber, saleStatus } from '@/helpers';
 import UserLayout from '@/Layouts/UserLayout.vue';
 import Column from 'primevue/column';
 import Button from 'primevue/button';

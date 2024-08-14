@@ -1,4 +1,5 @@
 import { Location } from '@/types';
+import { usePage } from '@inertiajs/vue3';
 import moment from 'moment-timezone';
 
 export const formatMoneyNumber = (number: number | null) => {
@@ -116,4 +117,17 @@ export function getPercentage(number: number, percentage: number) {
 
 export function hardReload() {
     window.location.reload()
+}
+
+export function can(ability: string) {
+    const page = usePage();
+    const superAdmin = 'Super Admin'
+
+    return page.props.permissions.some((value: string) => value == ability)
+        || page.props.roles.some((role: string) => role == superAdmin);
+}
+
+export function hasRole(name: string) {
+    const page = usePage();
+    return page.props.roles.some((value: string) => value == name);
 }

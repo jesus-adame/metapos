@@ -2,23 +2,31 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Gate;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Sale;
+use App\Models\Permission;
 
 class SaleController extends Controller
 {
     public function index()
     {
+        Gate::authorize(Permission::VIEW_SALES);
+
         return inertia('Sales/Index');
     }
 
     public function create()
     {
+        Gate::authorize(Permission::CREATE_SALES);
+
         return inertia('Sales/Create');
     }
 
     public function show(Sale $sale)
     {
+        Gate::authorize(Permission::VIEW_SALES);
+
         $sale = Sale::with('customer')
             ->with('seller')
             ->with('products')

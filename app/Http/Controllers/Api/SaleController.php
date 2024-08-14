@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Services\Sales\RegisterSaleService;
 use App\Models\Sale;
+use App\Models\Permission;
 use App\Http\Requests\StoreSaleRequest;
 use App\Http\Controllers\Controller;
 
@@ -14,6 +16,8 @@ class SaleController extends Controller
 {
     public function index(Request $request): Response
     {
+        Gate::authorize(Permission::VIEW_SALES);
+
         $perPage = $request->input('rows', 10);
         $cashRegisterId = Auth::user()->cash_register_id;
         $builder = Sale::with('customer', 'seller', 'cashRegister');

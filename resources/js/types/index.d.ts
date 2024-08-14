@@ -125,6 +125,14 @@ export interface ErrorResponse {
     // Other error properties as needed
 }
 
+export interface TabItem {
+    icon: string,
+    label: string,
+    route: string,
+    active: boolean,
+    permission: string
+}
+
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
     auth: {
         user: User;
@@ -139,4 +147,6 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
     location: Location,
     location_id: number,
     location_type: string,
+    permissions: string[],
+    roles: string[],
 };

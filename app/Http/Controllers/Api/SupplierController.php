@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 use App\Models\Supplier;
+use App\Models\Permission;
 use App\Http\Controllers\Controller;
 
 class SupplierController extends Controller
@@ -13,6 +15,8 @@ class SupplierController extends Controller
      */
     public function index(Request $request)
     {
+        Gate::authorize(Permission::VIEW_SUPPLIERS);
+
         $perPage = $request->input('rows', 10);
         $suppliers = Supplier::orderBy('updated_at', 'desc')->paginate($perPage);
 
@@ -24,6 +28,8 @@ class SupplierController extends Controller
      */
     public function search(Request $request)
     {
+        Gate::authorize(Permission::VIEW_SUPPLIERS);
+
         if (is_null($request->code)) {
             return response()->json([]);
         }
@@ -39,6 +45,8 @@ class SupplierController extends Controller
 
     public function store(Request $request)
     {
+        Gate::authorize(Permission::CREATE_SUPPLIERS);
+
         $request->validate([
             'first_name' => 'required',
             'last_name' => 'required',

@@ -21,19 +21,36 @@ class ShareSessionData
     {
         if (Auth::check()) {
             /** @var User */
-            $user = Auth::user();
+            $user = $request->user();
             $cashRegister = CashRegister::find($user?->cash_register_id);
-            $branch = Branch::find($user?->branch_id);
             $location = $user->location;
 
+            if (is_null($location)) {
+                /** @var Branch */
+                $location = Branch::where('is_default', true)->first();
+
+                $defaultCashRegister = CashRegister::where('is_default', true)
+                    ->where('branch_id', $location->id)
+                    ->first();
+
+                $user->update([
+                    'location_id' => $location->id,
+                    'location_type' => $location::class,
+                    'cash_register_id' => $defaultCashRegister->id,
+                ]);
+
+                $request->session()->regenerate();
+            }
+
             inertia()->share([
-                'branch' => $branch,
-                'location_id' => $location->id,
+                'location_id' => $location?->id,
                 'location_type' => $location::class,
                 'location' => $location,
                 'branches' => Branch::all(),
                 'cashRegister' => $cashRegister,
                 'cashRegisters' => CashRegister::all(),
+                'roles' => $request->user() ? $request->user()->roles->pluck('name') : [],
+                'permissions' => $request->user() ? $request->user()->getAllPermissions()->pluck('name') : [],
                 // Agrega aquí otras variables de sesión que necesites
             ]);
         }

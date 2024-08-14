@@ -5,35 +5,19 @@ import Card from 'primevue/card';
 import ListCustomers from '@/Components/tables/ListCustomers.vue';
 import ListSuppliers from '@/Components/tables/ListSuppliers.vue';
 
-defineProps({
-    title: {
-        type: String
-    },
-    users: {
-        type: Array
-    },
-    customers: {
-        type: Array
-    },
-    suppliers: {
-        type: Array
-    },
-});
 </script>
-
 <template>
-    <Head :title="title" />
+    <Head title="Usuarios" />
 
     <UserLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ title }}</h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Usuarios</h2>
         </template>
 
         <Card class="mb-4">
             <template #title>
                 <h3>Clientes</h3>
             </template>
-
             <template #content>
                 <ListCustomers></ListCustomers>
             </template>
@@ -43,7 +27,6 @@ defineProps({
             <template #title>
                 <h3>Proveedores</h3>
             </template>
-
             <template #content>
                 <ListSuppliers></ListSuppliers>
             </template>

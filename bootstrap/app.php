@@ -17,6 +17,10 @@ return Application::configure(basePath: dirname(__DIR__))
             \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
         ]);
 
+        $middleware->appendToGroup('redirect-by-role', [
+            \App\Http\Middleware\RedirectBasedOnRole::class,
+        ]);
+
         $middleware->appendToGroup('cash-register', [
             \App\Http\Middleware\ShareSessionData::class,
         ]);

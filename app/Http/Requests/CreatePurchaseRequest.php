@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Http\FormRequest;
+use App\Models\Permission;
 
 class CreatePurchaseRequest extends FormRequest
 {
@@ -11,7 +13,7 @@ class CreatePurchaseRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return Gate::allows(Permission::CREATE_PURCHASES);
     }
 
     /**

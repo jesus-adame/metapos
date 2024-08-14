@@ -3,37 +3,44 @@ import { Link } from '@inertiajs/vue3';
 import VirtualScroller from 'primevue/virtualscroller';
 import { ref } from 'vue';
 import ApplicationLogo from './ApplicationLogo.vue';
+import { TabItem } from '@/types';
+import { can } from '@/helpers';
 
-const tabItems = [
+const tabItems: TabItem[] = [
   {
     icon: 'fi fi-sr-apps',
     label: 'Panel',
     route: route('home'),
-    active: route().current('home')
+    active: route().current('home'),
+    permission: 'view finance'
   },
   {
     icon: 'fi fi-sr-shopping-cart',
     label: 'POS',
     route: route('sales.create'),
-    active: route().current('sales.create')
+    active: route().current('sales.create'),
+    permission: 'view sales'
   },
   {
     icon: 'fi fi-sr-drawer-empty',
     label: 'Caja',
     route: route('cash-flows.index'),
-    active: route().current('cash-flows.index')
+    active: route().current('cash-flows.index'),
+    permission: 'view sales'
   },
   {
     icon: 'fi fi-sr-chart-histogram',
     label: 'Ventas',
     route: route('sales.index'),
-    active: route().current('sales.index')
+    active: route().current('sales.index'),
+    permission: 'view sales'
   },
   {
     icon: 'fi fi-sr-stats',
     label: 'Compras',
     route: route('purchases.index'),
-    active: route().current('purchases.index')
+    active: route().current('purchases.index'),
+    permission: 'view finance'
   },
   // {
   //   icon: 'fi fi-sr-bank',
@@ -45,13 +52,15 @@ const tabItems = [
     icon: 'fi fi-sr-boxes',
     label: 'Inventario',
     route: route('products.index'),
-    active: route().current('products.index')
+    active: route().current('products.index'),
+    permission: 'view products'
   },
   {
     icon: 'fi fi-sr-users-alt',
     label: 'Usuarios',
     route: route('users.index'),
-    active: route().current('users.index')
+    active: route().current('users.index'),
+    permission: 'view users'
   },
 ];
 
@@ -84,7 +93,7 @@ class="-translate-x-80 sidebar fixed inset-0 z-50 h-screen w-[3.7rem] hover:w-56
           <VirtualScroller :items="tabItems" :itemSize="10" style="height: 65vh; overflow-x: hidden;" :class="{ 'overflow-hidden': !isHovered }" orientation="vertical">
             <template v-slot:item="{ item }">
               <div class="min-w-max">
-                <Link :href="item.route" :class="{ 'bg-blue-800 pointer-events-none': item.active }" class="group flex items-center space-x-4 px-5 py-3">
+                <Link v-if="can(item.permission)" :href="item.route" :class="{ 'bg-blue-800 pointer-events-none': item.active }" class="group flex items-center space-x-4 px-5 py-3">
                   <i :class="item.icon" class="h-5 w-6"></i>
                   <span>{{ item.label }}</span>
                 </Link>

@@ -7,6 +7,7 @@ import Button from 'primevue/button';
 import ListInventory from '@/Components/tables/ListInventory.vue';
 import CreateInventoryTransaction from '@/Components/forms/CreateInventoryTransaction.vue';
 import { ref } from 'vue';
+import { can } from '@/helpers';
 
 defineProps({
     title: {
@@ -48,8 +49,8 @@ const saved = () => {
             <Link :href="route('inventory-transactions.index')" class="mr-2">
                 <Button label="Historial de movimientos" icon="pi pi-list"></Button>
             </Link>
-            <Button class="mr-2" label="Registrar movimiento" icon="pi pi-sort-alt" severity="info" @click="openModalCreate"></Button>
-            <Link :href="route('purchases.create')">
+            <Button v-if="can('update products')" class="mr-2" label="Registrar movimiento" icon="pi pi-sort-alt" severity="info" @click="openModalCreate"></Button>
+            <Link v-if="can('create purchase')" :href="route('purchases.create')">
                 <Button label="Nueva compra" icon="pi pi-plus" severity="success"></Button>
             </Link>
         </div>

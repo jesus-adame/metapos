@@ -4,12 +4,16 @@ namespace App\Http\Controllers\Api;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Warehouse;
 use App\Models\Product;
+use App\Models\Permission;
 use App\Models\Inventory;
 use App\Models\Branch;
+use App\Http\Requests\UpdateProductRequest;
+use App\Http\Requests\CreateProductRequest;
 use App\Http\Controllers\Controller;
 
 class ProductController extends Controller
@@ -19,6 +23,8 @@ class ProductController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
+        Gate::allows(Permission::VIEW_PRODUCTS);
+
         $perPage = $request->input('rows', 10);
         $location = Branch::find(Auth::user()->location_id);
 
@@ -34,6 +40,8 @@ class ProductController extends Controller
      */
     public function search(Request $request): JsonResponse
     {
+        Gate::allows(Permission::VIEW_PRODUCTS);
+
         if (is_null($request->code)) {
             return response()->json([]);
         }
@@ -46,18 +54,8 @@ class ProductController extends Controller
         return response()->json($products);
     }
 
-    public function store(Request $request): JsonResponse
+    public function store(CreateProductRequest $request): JsonResponse
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'code' => 'required|string|unique:products,code',
-            'description' => 'nullable|string',
-            'price' => 'required|numeric',
-            'cost' => 'required|numeric',
-            'unit_type' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-
         $branchId = Auth::user()->location_id;
 
         if ($request->hasFile('image')) {
@@ -108,18 +106,8 @@ class ProductController extends Controller
         ]);
     }
 
-    public function update(Request $request, Product $product): JsonResponse
+    public function update(UpdateProductRequest $request, Product $product): JsonResponse
     {
-        $request->validate([
-            'code' => 'required|string|unique:products,code,' . $product->id,
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'price' => 'required|numeric',
-            'cost' => 'required|numeric',
-            'unit_type' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-
         if ($request->hasFile('image')) {
             // $file = $request->file('image'); // Add name file
             // $imageName = $file->hashName();
@@ -154,6 +142,8 @@ class ProductController extends Controller
 
     public function destroy(Product $product): JsonResponse
     {
+        Gate::allows(Permission::DELETE_PRODUCTS);
+
         $product->delete();
 
         return response()->json([

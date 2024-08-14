@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { formatMoneyNumber } from '@/helpers';
+import { can, formatMoneyNumber } from '@/helpers';
 import { Product } from '@/types';
 import Button from 'primevue/button';
 import Column from 'primevue/column';
@@ -186,13 +186,13 @@ const onPage = (event: DataTablePageEvent) => {
         <Column header="">
             <template #header>
                 <div class="flex justify-center w-full">
-                    <Button icon="pi pi-plus" severity="success" rounded raised @click="openModalCreate"></Button>
+                    <Button v-if="can('create products')" icon="pi pi-plus" severity="success" rounded raised @click="openModalCreate"></Button>
                 </div>
             </template>
             <template #body="slot">
                 <div class="flex justify-center">
-                    <Button icon="pi pi-pencil" class="mr-1" @click="openModalEdit(slot.data)"></Button>
-                    <Button icon="pi pi-trash" severity="danger" @click="confirmDelete(route('api.products.destroy', { product: slot.data.id }))"></Button>
+                    <Button v-if="can('update products')" icon="pi pi-pencil" class="mr-1" @click="openModalEdit(slot.data)"></Button>
+                    <Button v-if="can('delete products')" icon="pi pi-trash" severity="danger" @click="confirmDelete(route('api.products.destroy', { product: slot.data.id }))"></Button>
                 </div>
             </template>
         </Column>

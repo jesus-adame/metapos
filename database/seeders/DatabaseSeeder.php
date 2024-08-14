@@ -6,7 +6,6 @@ use Illuminate\Database\Seeder;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\User;
 use App\Models\Product;
-use App\Models\Customer;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,12 +14,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Product::factory(5)->create();
-        Customer::factory(5)->create();
+        // Product::factory(5)->create();
+        // Customer::factory(5)->create();
 
         // User::factory()->create([
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+        $this->call([
+            UserSeeder::class,
+            CustomerSeeder::class,
+            CreateRolesAndPermissionsSeeder::class
+        ]);
     }
 }
