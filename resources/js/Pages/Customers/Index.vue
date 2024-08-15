@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { Head } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 import UserLayout from '@/Layouts/UserLayout.vue';
 import CardContainer from '@/Components/CardContainer.vue';
 import ListCustomers from '@/Components/tables/ListCustomers.vue';
+import Button from 'primevue/button';
 
 defineProps({
     title: {
@@ -15,15 +16,17 @@ defineProps({
 </script>
 
 <template>
-    <Head :title="title" />
+    <Head title="Clientes" />
 
     <UserLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ title }}</h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Clientes</h2>
         </template>
-
-        <CardContainer>
+        <div class="my-4">
+            <Link :href="route('sales.index')">
+                <Button class="mb-4" label="Ventas" severity="info" icon="pi pi-money-bill"></Button>
+            </Link>
             <ListCustomers></ListCustomers>
-        </CardContainer>
+        </div>
     </UserLayout>
 </template>

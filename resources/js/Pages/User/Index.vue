@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Head } from '@inertiajs/vue3';
 import UserLayout from '@/Layouts/UserLayout.vue';
-import Card from 'primevue/card';
 import ListCustomers from '@/Components/tables/ListCustomers.vue';
 import ListSuppliers from '@/Components/tables/ListSuppliers.vue';
 
@@ -14,22 +13,14 @@ import ListSuppliers from '@/Components/tables/ListSuppliers.vue';
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Usuarios</h2>
         </template>
 
-        <Card class="mb-4">
-            <template #title>
-                <h3>Clientes</h3>
-            </template>
-            <template #content>
-                <ListCustomers></ListCustomers>
-            </template>
-        </Card>
+        <div class="mb-4">
+            <h3 class="text-xl font-bold my-4">Clientes</h3>
+            <ListCustomers></ListCustomers>
+        </div>
 
-        <Card class="mb-4">
-            <template #title>
-                <h3>Proveedores</h3>
-            </template>
-            <template #content>
-                <ListSuppliers></ListSuppliers>
-            </template>
-        </Card>
+        <div class="mb-4">
+            <h3 class="text-xl font-bold my-4">Proveedores</h3>
+            <ListSuppliers></ListSuppliers>
+        </div>
     </UserLayout>
 </template>

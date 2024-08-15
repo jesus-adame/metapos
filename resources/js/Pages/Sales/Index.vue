@@ -54,6 +54,10 @@ const onPage = (event: DataTablePageEvent) => {
             <Link :href="route('sales.create')">
                 <Button label="Nueva venta" severity="success" icon="pi pi-plus"></Button>
             </Link>
+
+            <Link :href="route('customers.index')" class="ml-2">
+                <Button label="Clientes" severity="info" icon="pi pi-users"></Button>
+            </Link>
         </div>
         <DataTable :value="items" paginator :rows="rows" :total-records="totalRecords" @page="onPage" lazy>
             <Column field="id" header="#">

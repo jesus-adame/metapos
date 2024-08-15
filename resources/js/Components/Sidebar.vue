@@ -55,13 +55,13 @@ const tabItems: TabItem[] = [
     active: route().current('products.index'),
     permission: 'view products'
   },
-  {
-    icon: 'fi fi-sr-users-alt',
-    label: 'Usuarios',
-    route: route('users.index'),
-    active: route().current('users.index'),
-    permission: 'view users'
-  },
+  // {
+  //   icon: 'fi fi-sr-users-alt',
+  //   label: 'Usuarios',
+  //   route: route('users.index'),
+  //   active: route().current('users.index'),
+  //   permission: 'view users'
+  // },
 ];
 
 const isHovered = ref(false)
