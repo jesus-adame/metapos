@@ -10,6 +10,7 @@ import { ref } from 'vue';
 import ListUsers from '@/Components/tables/ListUsers.vue';
 import ListCashRegisters from '@/Components/tables/ListCashRegisters.vue';
 import ListBranches from '@/Components/tables/ListBranches.vue';
+import ListRoles from '@/Components/tables/ListRoles.vue';
 
 const { props } = usePage();
 const settings = props.settings;
@@ -97,6 +98,9 @@ const items = ref([
                 </Menu>
             </div>
             <div class="w-3/4 ml-2">
+                <div v-if="activePage == 'roles'">
+                    <ListRoles></ListRoles>
+                </div>
                 <div v-if="activePage == 'users'" class="w-full shadow-md">
                     <ListUsers></ListUsers>
                 </div>

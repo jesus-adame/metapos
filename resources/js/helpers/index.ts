@@ -69,7 +69,11 @@ export const formatDate = (date: string, local: boolean = false) => { // Asegúr
     return dateTime.tz(timezone).format('DD/MM/YYYY');
 }
 
-export const locationIcon = (location: Location) => {
+export const locationIcon = (location: Location | null) => {
+    if (location == null) {
+        return ''
+    }
+
     if (location.type == 'branch') {
         return 'pi pi-building'
     }

@@ -11,6 +11,7 @@ import { useConfirm } from 'primevue/useconfirm';
 import InventoryTransactionService from '@/Services/InventoryTransactionService';
 import CreateInventoryTransaction from '../forms/CreateInventoryTransaction.vue';
 import Button from 'primevue/button';
+import { can } from '@/helpers';
 
 const modalCreateMovement = ref<Boolean>(false)
 const items = ref<Product[]>([])
@@ -113,8 +114,6 @@ const onPage = (event: DataTablePageEvent) => {
         <CreateInventoryTransaction @save="closeModalCreate"></CreateInventoryTransaction>
     </Dialog>
 
-    <ConfirmDialog></ConfirmDialog>
-
     <DataTable :value="items" paginator :rows="rows" @page="onPage" :totalRecords="totalRecords">
         <Column field="transaction_date" header="Fecha"></Column>
         <Column header="Tipo">
@@ -131,7 +130,7 @@ const onPage = (event: DataTablePageEvent) => {
         <Column field="description" header="Descripción"></Column>
         <Column field="" header="">
             <template #header>
-                <Button icon="pi pi-plus" severity="success" rounded raised @click="openModalCreate"></Button>
+                <Button v-if="can('create products')" icon="pi pi-plus" severity="success" rounded raised @click="openModalCreate"></Button>
             </template>
         </Column>
     </DataTable>

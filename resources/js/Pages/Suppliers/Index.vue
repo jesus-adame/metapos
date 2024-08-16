@@ -1,16 +1,7 @@
 <script setup>
 import UserLayout from '@/Layouts/UserLayout.vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Head } from '@inertiajs/vue3';
 import ListSuppliers from '@/Components/tables/ListSuppliers.vue';
-
-defineProps({
-    title: {
-        type: String
-    },
-    suppliers: {
-        type: Array
-    },
-});
 </script>
 
 <template>

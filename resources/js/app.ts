@@ -8,6 +8,7 @@ import { createApp, h, DefineComponent } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
+import { createPinia } from 'pinia'
 
 import PrimeVue from 'primevue/config';
 import Toast from 'primevue/toast';
@@ -66,6 +67,7 @@ import ConfirmationService from 'primevue/confirmationservice';
 import primeOptions from './presets/languages'
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+const pinia = createPinia()
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
@@ -128,6 +130,7 @@ createInertiaApp({
             .use(ToastService)
             .use(DialogService)
             .use(ConfirmationService)
+            .use(pinia)
             .mount(el);
     },
     progress: {

@@ -102,7 +102,7 @@ class="-translate-x-80 sidebar fixed inset-0 z-50 h-screen w-[3.7rem] hover:w-56
           </VirtualScroller>
         </div>
       </div>
-      <div class="w-max -mb-3">
+      <div class="w-max -mb-3" v-if="can('view settings')">
         <Link :href="route('settings.index')" class="group flex items-center space-x-4 px-4 py-3 text-gray-100">
           <i class="pi pi-cog w-6 ml-1"></i>
           <span class="group-hover:text-gray-300">Ajustes</span>

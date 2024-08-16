@@ -29,10 +29,10 @@ class CashRegisterController extends Controller
             'cash_register_id' => $cashRegister->id,
         ]);
 
-        $request->session()->regenerate();
-
         return response()->json([
-            'mensage' => 'Cambiado correctamente'
+            'mensage' => 'Cambiado correctamente',
+            'cashRegister' => $cashRegister,
+            'location' => $location,
         ]);
     }
 }

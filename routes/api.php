@@ -3,9 +3,11 @@
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Auth\AuthenticatedApiController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\SupplierController;
 use App\Http\Controllers\Api\SaleController;
+use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\PurchaseController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\InventoryTransactionController;
@@ -31,7 +33,10 @@ Route::middleware(['auth:sanctum', InitializeTenancyByDomain::class])->name('api
     Route::resource('inventory-transactions', InventoryTransactionController::class);
     Route::resource('branches', BranchController::class);
     Route::resource('cash-registers', CashRegisterController::class);
+    Route::resource('roles', RoleController::class);
 
+    Route::post('/login', [AuthenticatedApiController::class, 'store']);
+    Route::post('/logout', [AuthenticatedApiController::class, 'destroy']);
     Route::post('/products/search', [ProductController::class, 'search'])->name('products.search');
     Route::post('/users/search', [UserController::class, 'search'])->name('users.search');
     Route::post('/customers/search', [CustomerController::class, 'search'])->name('customers.search');

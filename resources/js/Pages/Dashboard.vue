@@ -2,10 +2,15 @@
 import ResumeData from '@/Components/blocks/ResumeData.vue';
 import SaleCategories from '@/Components/charts/SaleCategories.vue';
 import YearSales from '@/Components/charts/YearSales.vue';
+import { can } from '@/helpers';
 import UserLayout from '@/Layouts/UserLayout.vue';
+import { useAuthStore } from '@/stores/AuthStore';
 import { Head, usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
 
-const page = usePage()
+const store = useAuthStore()
+
+const authName = computed(() => store.user?.name)
 </script>
 <template>
     <Head title="Panel" />
@@ -14,15 +19,15 @@ const page = usePage()
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Panel</h2>
         </template>
 
-        <div>
+        <div v-if="can('view finances')">
             <ResumeData></ResumeData>
         </div>
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg my-4">
             <div class="p-6 text-gray-900 text-lg">
-                Buen día {{ page.props.auth.user.name }}
+                Buen día {{ authName }}
             </div>
         </div>
-        <div class="flex py-4 my-6">
+        <div v-if="can('view finances')" class="flex py-4 my-6">
             <div class="w-1/2">
                 <YearSales></YearSales>
             </div>

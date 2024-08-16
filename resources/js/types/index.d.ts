@@ -133,6 +133,14 @@ export interface TabItem {
     permission: string
 }
 
+export interface Role {
+    name: string
+}
+
+export interface Permission {
+    name: string
+}
+
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
     auth: {
         user: User;

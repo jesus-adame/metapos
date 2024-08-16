@@ -1,14 +1,15 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useToast } from 'primevue/usetoast';
-import { router, usePage } from '@inertiajs/vue3'
+import { usePage } from '@inertiajs/vue3'
 import { CashRegister, ErrorResponse, Location } from '@/types';
 import CashRegisterService from '@/Services/CashRegisterService';
 import Button from 'primevue/button';
 import { locationIcon } from '@/helpers';
+import { useAuthStore } from '@/stores/AuthStore';
 
 const page = usePage()
 const toast = useToast()
@@ -16,6 +17,7 @@ const selectedCashRegister = ref<CashRegister | null>(null)
 const selectedBranch = ref<Location | null>(page.props.location)
 const cashRegisters = ref<CashRegister[]>([])
 const cashRegisterService = new CashRegisterService
+const auth = useAuthStore()
 
 const modalCashRegister = ref(false)
 
@@ -23,12 +25,13 @@ const changeCashRegister = () => {
     const url = route('cash-registers.select')
 
     axios.post(url, {
-        cash_register_id: selectedCashRegister.value?.id,
-        _token: page.props.csrf_token
+        cash_register_id: selectedCashRegister.value?.id
     })
     .then(response => {
+        auth.setCashRegister(response.data.cashRegister)
+        auth.setLocation(response.data.location)
         hideModal()
-        toast.add({ severity: 'success', summary: 'Completado', detail: 'Se ha cambiado la caja', life: 1100 });
+        toast.add({ severity: 'success', summary: 'Completado', detail: response.data.message, life: 1100 });
     })
 }
 
@@ -38,7 +41,6 @@ const showModal = () => {
 
 const hideModal = () => {
     modalCashRegister.value = false;
-    window.location.reload()
 }
 
 const searchCashRegisters = () => {
@@ -54,6 +56,14 @@ const searchCashRegisters = () => {
     })
 }
 
+const branches = computed(() => {
+    return page.props.branches
+})
+
+const csrf_token = computed(() => {
+    return page.props.csrf_token
+})
+
 onMounted(() => {
     searchCashRegisters()
 })
@@ -61,7 +71,7 @@ onMounted(() => {
 <template>
     <Dialog v-model:visible="modalCashRegister" header="Cambiar caja" modal>
         <div class="d-block">
-            <Select placeholder="Sucursal" id="branch" v-model="selectedBranch" :options="page.props.branches" optionLabel="name" class="w-60 my-4" @change="searchCashRegisters"></Select>
+            <Select placeholder="Sucursal" id="branch" v-model="selectedBranch" :options="branches" optionLabel="name" class="w-60 my-4" @change="searchCashRegisters"></Select>
         </div>
         <div class="d-block">
             <Select placeholder="- Elegir -" id="cashRegister" v-model="selectedCashRegister" :options="cashRegisters" optionLabel="name" class="w-60 my-4"></Select>
@@ -78,11 +88,11 @@ onMounted(() => {
                     <div class="text-gray-700 px-4 py-2 shadow-md flex items-center justify-between w-62 cursor-pointer rounded-md">
                         <div class="flex items-center">
                             <div class="py-2 px-3 bg-gray-300 rounded-full mr-1 text-gray-500">
-                                <i :class="locationIcon(page.props.location)"></i>
+                                <i :class="locationIcon(auth.location)"></i>
                             </div>
                             <div class="ml-2 text-left">
-                                <p>{{ page.props.location?.name }}</p>
-                                <span class="rounded-lg bg-yellow-500 px-2 text-sm text-yellow-100">{{ page.props.cashRegister?.name }}</span>
+                                <p>{{ auth.location?.name }}</p>
+                                <span class="rounded-lg bg-yellow-500 px-2 text-sm text-yellow-100">{{ auth.cashRegister?.name }}</span>
                             </div>
                         </div>
                         <svg
@@ -107,7 +117,7 @@ onMounted(() => {
             <div @click="showModal" class="cursor-pointer block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">
                 Cambiar de caja
             </div>
-            <DropdownLink :href="route('logout', { _token: page.props.csrf_token })" method="post" as="button">
+            <DropdownLink :href="route('logout', { _token: csrf_token })" method="post" as="button">
                 Cerrar sesión
             </DropdownLink>
         </template>

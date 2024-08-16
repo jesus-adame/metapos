@@ -9,6 +9,7 @@ import { useToast } from 'primevue/usetoast';
 const toast = useToast();
 const form = ref({
     name: '',
+    lastname: '',
     email: '',
     password: '',
     password_confirmation: '',
@@ -21,6 +22,7 @@ const submit = () => {
     .then(response => {
         form.value = {
             name: '',
+            lastname: '',
             email: '',
             password: '',
             password_confirmation: '',
@@ -37,16 +39,27 @@ const submit = () => {
 </script>
 <template>
     <form @submit.prevent="submit">
-        <div>
-            <InputLabel for="name" value="Name" />
-            <InputText
-                id="name"
-                type="text"
-                class="mt-1 block w-full"
-                v-model="form.name"
-                required
-                autocomplete="name"
-            />
+        <div class="flex">
+            <div class="w-1/2 mr-2">
+                <InputLabel for="name" value="Nombre" />
+                <InputText
+                    id="name"
+                    type="text"
+                    class="mt-1 block w-full"
+                    v-model="form.name"
+                    required
+                    autocomplete="name"
+                />
+            </div>
+            <div class="w-1/2">
+                <InputLabel for="lastname" value="Apellidos" />
+                <InputText
+                    id="lastname"
+                    class="mt-1 block w-full"
+                    v-model="form.lastname"
+                    autocomplete="lastname"
+                />
+            </div>
         </div>
         <div class="mt-4">
             <InputLabel for="email" value="Email" />

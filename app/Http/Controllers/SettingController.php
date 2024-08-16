@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 use App\Models\Setting;
 use App\Models\CashRegister;
@@ -12,6 +13,8 @@ class SettingController extends Controller
 {
     public function index()
     {
+        Gate::authorize('view setting');
+
         $settings = Setting::all();
         $branches = Branch::all();
         $cashRegisters = CashRegister::with('branch')->get();
@@ -25,6 +28,8 @@ class SettingController extends Controller
 
     public function create()
     {
+        Gate::authorize('view setting');
+
         return inertia('Settings/Create');
     }
 

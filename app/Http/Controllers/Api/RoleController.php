@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
+use App\Models\Role;
 use App\Http\Controllers\Controller;
 
 class RoleController extends Controller
@@ -12,7 +13,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        //
+        return Role::paginate(10);
     }
 
     /**
@@ -20,7 +21,15 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $role = Role::create([
+            'name' => $request->name,
+            'guard' => $request->guard,
+        ]);
+
+        return response()->json([
+            'message' => 'Role registrado correctamente.',
+            'role' => $role,
+        ]);
     }
 
     /**
@@ -44,6 +53,11 @@ class RoleController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $role = Role::find($id);
+        $role->delete();
+
+        return response()->json([
+            'message' => 'Role eliminado correctamente.',
+        ]);
     }
 }

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Sidebar from '@/Components/Sidebar.vue';
 import Breadcrumb from '@/Shared/Breadcrumb.vue';
+import ConfirmDialog from 'primevue/confirmdialog';
 import DynamicDialog from 'primevue/dynamicdialog';
 import Toast from 'primevue/toast';
 </script>
@@ -21,6 +22,7 @@ import Toast from 'primevue/toast';
 
       <DynamicDialog />
       <Toast position="top-right" />
+      <ConfirmDialog></ConfirmDialog>
     </div>
   </div>
 </template>
