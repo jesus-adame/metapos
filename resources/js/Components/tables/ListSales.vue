@@ -11,6 +11,7 @@ import { AxiosResponse } from 'axios';
 import { Link } from '@inertiajs/vue3';
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
+import PDFObject from '../PDFObject.vue';
 
 const items = ref<Sale[]>([])
 const totalRecords = ref<number>(0)
@@ -46,7 +47,7 @@ onMounted(() => {
 </script>
 <template>
     <Dialog v-model:visible="modalTicket" modal :header="'Venta #' + saleId">
-        <PdfObject :url="route('sales.ticket', {id: saleId})" :options="{ height: '100vh', width: '30vw', border: '1px', solid: '#ccc' }" />
+        <PDFObject :url="route('sales.ticket', {id: saleId})" :options="{ height: '100vh', width: '30vw', border: '1px', solid: '#ccc' }" />
     </Dialog>
 
     <DataTable :value="items" paginator :rows="rows" :total-records="totalRecords" @page="onPage" lazy>
