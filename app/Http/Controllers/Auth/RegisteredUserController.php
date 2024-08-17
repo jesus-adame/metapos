@@ -28,27 +28,38 @@ class RegisteredUserController extends Controller
      */
     public function store(RegisterRequest $request): Response
     {
-        $branch = Branch::create([
-            'name' => $request->branch,
-            'address' => $request->address,
-            'type' => 'branch',
-            'is_default' => true
-        ]);
+        /** @var Branch | null */
+        $defaultLocation = Branch::where('is_default', true)->first();
 
-        $cashRegister = CashRegister::create([
-            'name' => 'Mostrador',
-            'branch_id' => $branch->id,
-            'is_default' => true
-        ]);
+        if (!is_null($defaultLocation)) {
+            /** @var Branch */
+            $defaultLocation = Branch::create([
+                'name' => $request->branch,
+                'address' => $request->address,
+                'type' => 'branch',
+                'is_default' => true
+            ]);
+        }
+
+        /** @var CashRegister | null */
+        $defaulCashRegister = CashRegister::where('is_default', true)->first();
+
+        if (is_null($defaulCashRegister)) {
+            $defaulCashRegister = CashRegister::create([
+                'name' => 'Mostrador',
+                'branch_id' => $defaultLocation->id,
+                'is_default' => true
+            ]);
+        }
 
         $user = User::create([
             'name' => $request->name,
             'lastname' => $request->lastname,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'location_id' => $branch->id,
-            'location_type' => $branch::class,
-            'cash_register_id' => $cashRegister->id,
+            'location_id' => $defaultLocation->id,
+            'location_type' => $defaultLocation::class,
+            'cash_register_id' => $defaulCashRegister->id,
         ]);
 
         event(new Registered($user));

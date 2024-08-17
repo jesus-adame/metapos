@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\CashRegister;
@@ -9,7 +10,7 @@ use App\Http\Controllers\Controller;
 
 class CashRegisterController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): JsonResponse
     {
         $perPage = $request->input('rows', 10);
         $cashRegisters = CashRegister::with('branch')
@@ -19,7 +20,7 @@ class CashRegisterController extends Controller
         return response()->json($cashRegisters);
     }
 
-    public function search(Request $request)
+    public function search(Request $request): JsonResponse
     {
         $params = $request->params;
         $cashRegisters = CashRegister::with('branch')
@@ -31,7 +32,7 @@ class CashRegisterController extends Controller
         return response()->json($cashRegisters);
     }
 
-    public function select(Request $request)
+    public function select(Request $request): JsonResponse
     {
         $request->validate([
             'cash_register_id' => 'required'
@@ -53,7 +54,7 @@ class CashRegisterController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $request->validate([
             'name' => 'required|string|unique:cash_registers,name',
@@ -69,6 +70,21 @@ class CashRegisterController extends Controller
         return response()->json([
             'message' => 'Registrado correctamente',
             'cashRegister' => $cashRegister,
+        ]);
+    }
+
+    public function destroy(CashRegister $cashRegister): JsonResponse
+    {
+        if ($cashRegister->is_default) {
+            return response()->json([
+                'message' => 'No se pueden eliminar datos por defecto.'
+            ], JsonResponse::HTTP_BAD_GATEWAY);
+        }
+
+        $cashRegister->delete();
+
+        return response()->json([
+            'message' => 'Eliminado correctamente.'
         ]);
     }
 }

@@ -29,14 +29,14 @@ const tabItems: TabItem[] = [
     permission: 'view sales'
   },
   {
-    icon: 'fi fi-sr-chart-histogram',
+    icon: 'fi fi-sr-tags',
     label: 'Ventas',
     route: route('sales.index'),
     active: route().current('sales.index'),
     permission: 'view sales'
   },
   {
-    icon: 'fi fi-sr-stats',
+    icon: 'fi fi-sr-bags-shopping',
     label: 'Compras',
     route: route('purchases.index'),
     active: route().current('purchases.index'),

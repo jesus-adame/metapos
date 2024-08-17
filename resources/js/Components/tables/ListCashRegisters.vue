@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import Button from 'primevue/button';
 import Column from 'primevue/column';
 import DataTable, { DataTablePageEvent } from 'primevue/datatable';
@@ -8,6 +8,8 @@ import CashRegisterService from "@/Services/CashRegisterService";
 import CreateCashRegister from '../forms/CreateCashRegister.vue';
 import { formatDate } from '@/helpers';
 import CashRegisterIcon from '../icons/CashRegisterIcon.vue';
+import { useConfirm } from 'primevue/useconfirm';
+import { useToast } from 'primevue/usetoast';
 
 const cashRegisterService: CashRegisterService = new CashRegisterService()
 const modalCreate = ref(false)
@@ -15,6 +17,8 @@ const items = ref([])
 const rows = ref(10)
 const totalRecords = ref(0)
 const page = ref(1)
+const confirm = useConfirm()
+const toast = useToast()
 
 const showModalCreate = () => {
     modalCreate.value = true
@@ -44,8 +48,43 @@ const onPage = (event: DataTablePageEvent) => {
 onMounted(() => {
     fetchItems(page.value)
 })
+
+const deleteItem = (url: string) => {
+    axios.post(url, { _method: 'delete' })
+    .then((response: AxiosResponse) => {
+        toast.add({ summary: 'Correcto', detail: response.data.message, severity: 'success', life: 1500 })
+        fetchItems(page.value)
+    })
+    .catch(reject => {
+        console.error(reject.response.data.errors);
+        toast.add({ summary: 'Error', detail: reject.response.data.message, severity: 'error', life: 3000 })
+    })
+}
+
+const confirmDelete = (url: string) => {
+    confirm.require({
+        header: '¿Está seguro?',
+        message: 'Se eliminará la caja registradora',
+        icon: 'pi pi-exclamation-triangle',
+        rejectProps: {
+            label: 'Cancelar',
+            severity: 'secondary',
+        },
+        acceptProps: {
+            label: 'Eliminar',
+            severity: 'danger'
+        },
+        accept: () => {
+            deleteItem(url)
+        }
+    });
+}
 </script>
 <template>
+    <Dialog v-model:visible="modalCreate" modal header="Registrar caja" :style="{ width: '35rem' }" pt:mask:class="backdrop-blur-sm">
+        <CreateCashRegister class="mt-4" @save="hideModalCreate"></CreateCashRegister>
+    </Dialog>
+
     <DataTable :value="items" paginator :rows="rows" lazy @page="onPage" :totalRecords="totalRecords">
         <Column field="id" header="#"></Column>
         <Column field="name" header="Nombre">
@@ -75,10 +114,9 @@ onMounted(() => {
             <template #header>
                 <Button icon="pi pi-plus" rounded severity="success" raised @click="showModalCreate"></Button>
             </template>
+            <template #body="{data}">
+                <Button icon="pi pi-trash" raised severity="danger" @click="confirmDelete(route('api.cash-registers.destroy', {cash_register: data.id}))"></Button>
+            </template>
         </Column>
     </DataTable>
-
-    <Dialog v-model:visible="modalCreate" modal header="Registrar caja" :style="{ width: '35rem' }" pt:mask:class="backdrop-blur-sm">
-        <CreateCashRegister class="mt-4" @save="hideModalCreate"></CreateCashRegister>
-    </Dialog>
 </template>

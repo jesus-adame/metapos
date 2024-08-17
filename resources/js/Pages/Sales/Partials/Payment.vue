@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import PDFObject from '@/Components/PDFObject.vue';
 import { formatMoneyNumber } from '@/helpers';
 import axios from 'axios';
 import Button from 'primevue/button';
@@ -108,17 +109,18 @@ const openModaTicket = () => {
 
 <template>
     <Dialog v-model:visible="modalTicket" modal :header="'Venta #' + saleId">
-      <PdfObject :url="route('sales.ticket', {id: saleId})" :options="{ height: '100vh', width: '30vw', border: '1px', solid: '#ccc' }" />
+      <PDFObject :url="route('sales.ticket', {id: saleId})" :options="{ height: '100vh', width: '30vw', border: '1px', solid: '#ccc' }" />
     </Dialog>
 
   <Dialog v-model:visible="modalResponse" modal header="Completado" :closable="false">
     <Message class="mt-2" :closable="false" severity="info">{{ dialogResponseData.message }}</Message>
-    <p class="my-4">
+    <p class="my-4 text-2xl">
       <strong>{{ dialogResponseData.content }}</strong>
     </p>
     <div class="flex w-full">
-      <Button v-if="saleStatus == 'paid'" class="ml-auto" @click="openModaTicket" severity="info">Imprimir ticket</Button>
-      <Button class="ml-auto" @click="closeDialogResponse">Aceptar</Button>
+      <Button v-if="saleStatus == 'paid'" class="ml-auto" @click="openModaTicket" icon="pi pi-print" label="Imprimir" severity="info"></Button>
+      <Button v-if="saleStatus == 'paid'" severity="success" label="Continuar" class="ml-2" @click="closeDialogResponse"></Button>
+      <Button v-if="saleStatus != 'paid'" class="ml-2" label="Aceptar" @click="closeDialogResponse"></Button>
     </div>
   </Dialog>
 

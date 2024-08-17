@@ -80,7 +80,7 @@ const deleteItem = (url: string) => {
 const confirmDelete = (url: string) => {
     confirm.require({
         header: '¿Está seguro?',
-        message: 'Se eliminará el producto con su inventario',
+        message: 'Se eliminará el usuario y todos sus datos',
         icon: 'pi pi-exclamation-triangle',
         rejectProps: {
             label: 'Cancelar',

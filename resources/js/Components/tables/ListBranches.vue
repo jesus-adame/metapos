@@ -4,16 +4,20 @@ import Dialog from 'primevue/dialog';
 import CreateBranch from '@/Components/forms/CreateBranch.vue';
 import { onMounted, ref } from 'vue';
 import BranchService from "@/Services/BranchService";
-import { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { DataTablePageEvent } from 'primevue/datatable';
 import Tag from 'primevue/tag';
 import { locationIcon } from '@/helpers';
+import { useToast } from 'primevue/usetoast';
+import { useConfirm } from 'primevue/useconfirm';
 
 const branchService: BranchService = new BranchService()
 const items = ref([])
 const rows = ref(10)
 const totalRecords = ref(0)
 const page = ref(1)
+const confirm = useConfirm()
+const toast = useToast()
 
 const modalCreate = ref(false)
 
@@ -57,6 +61,37 @@ const calculateTypeLabel = (type: string) => {
         }
     }
 }
+
+const deleteItem = (url: string) => {
+    axios.post(url, { _method: 'delete' })
+    .then((response: AxiosResponse) => {
+        toast.add({ summary: 'Correcto', detail: response.data.message, severity: 'success', life: 1500 })
+        fetchItems(page.value)
+    })
+    .catch(reject => {
+        console.error(reject.response.data.errors);
+        toast.add({ summary: 'Error', detail: reject.response.data.message, severity: 'error', life: 3000 })
+    })
+}
+
+const confirmDelete = (url: string) => {
+    confirm.require({
+        header: '¿Está seguro?',
+        message: 'Se eliminará la ubicación y su contenido',
+        icon: 'pi pi-exclamation-triangle',
+        rejectProps: {
+            label: 'Cancelar',
+            severity: 'secondary',
+        },
+        acceptProps: {
+            label: 'Eliminar',
+            severity: 'danger'
+        },
+        accept: () => {
+            deleteItem(url)
+        }
+    });
+}
 </script>
 <template>
     <Dialog v-model:visible="modalCreate" modal header="Registrar sucursal" :style="{ width: '35rem' }" pt:mask:class="backdrop-blur-sm">
@@ -89,9 +124,9 @@ const calculateTypeLabel = (type: string) => {
                     <Button icon="pi pi-plus" rounded severity="success" raised @click="showModalCreate"></Button>
                 </div>
             </template>
-            <template #body>
+            <template #body="{data}">
                 <div class="w-full flex justify-center">
-                    <Button icon="pi pi-trash" severity="danger"></Button>
+                    <Button icon="pi pi-trash" severity="danger" @click="confirmDelete(route('api.branches.destroy', {branch: data.id}))"></Button>
                 </div>
             </template>
         </Column>

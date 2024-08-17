@@ -53,6 +53,12 @@ class BranchController extends Controller
 
     public function destroy(Branch $branch): JsonResponse
     {
+        if ($branch->is_default) {
+            return response()->json([
+                'message' => 'No se pueden eliminar datos por defecto.'
+            ], JsonResponse::HTTP_BAD_GATEWAY);
+        }
+
         $branch->delete();
 
         return response()->json([
