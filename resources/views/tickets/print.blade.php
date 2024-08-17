@@ -5,15 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ticket de Venta</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
         body {
             font-family: Arial, sans-serif;
-            font-size: 12px;
+            font-size: 11px;
             margin: 0;
             padding: 0;
         }
         .ticket {
-            width: 60mm;
             padding: 0px;
+            margin: 6mm auto;
             box-sizing: border-box;
         }
         .header {
@@ -61,7 +65,7 @@
     </style>
 </head>
 <body>
-    <div class="ticket">
+    <div class="ticket" style="width: {{$ancho_mm}}mm">
         <div class="header">
             <h1>Mi Empresa</h1>
             <p>Dirección de la empresa</p>

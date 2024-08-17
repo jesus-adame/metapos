@@ -43,7 +43,17 @@ class SaleController extends Controller
     public function generateTicket($id)
     {
         $sale = Sale::with('products')->findOrFail($id);
-        $pdf = Pdf::setPaper('b7', 'portrait')->loadView('tickets.print', compact('sale'));
+
+        // Suponiendo que quieres una relación de aspecto de 1:1.5
+        $ancho_mm = 45;
+        $relacion_aspecto = 2.5;
+
+        // Convertir mm a puntos
+        $ancho_puntos = $ancho_mm * 3;
+        $alto_puntos = $ancho_puntos * $relacion_aspecto;
+
+        $pdf = Pdf::setPaper(array(0, 0, $ancho_puntos, $alto_puntos))
+            ->loadView('tickets.print', compact('sale', 'ancho_mm'));
 
         return $pdf->stream('sale_ticket.pdf');
     }
