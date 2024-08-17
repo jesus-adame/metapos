@@ -64,6 +64,7 @@ import ToastService from 'primevue/toastservice';
 import DialogService from 'primevue/dialogservice';
 import ConfirmationService from 'primevue/confirmationservice';
 
+import PDFObjectPlugin from 'pdfobject-vue';
 import primeOptions from './presets/languages'
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
@@ -131,6 +132,7 @@ createInertiaApp({
             .use(DialogService)
             .use(ConfirmationService)
             .use(pinia)
+            .use(PDFObjectPlugin)
             .mount(el);
     },
     progress: {

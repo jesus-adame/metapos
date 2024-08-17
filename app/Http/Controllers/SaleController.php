@@ -43,7 +43,7 @@ class SaleController extends Controller
     public function generateTicket($id)
     {
         $sale = Sale::with('products')->findOrFail($id);
-        $pdf = Pdf::setPaper('b7', 'portrait')->loadView('tickets.test', compact('sale'));
+        $pdf = Pdf::setPaper('b7', 'portrait')->loadView('tickets.print', compact('sale'));
 
         return $pdf->stream('sale_ticket.pdf');
     }

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
-import { useForm, Head, usePage } from '@inertiajs/vue3';
+import { useForm, Head, usePage, Link } from '@inertiajs/vue3';
 import UserLayout from '@/Layouts/UserLayout.vue';
 import Button from 'primevue/button';
 import IconField from 'primevue/iconfield';
@@ -190,16 +190,23 @@ const setSuccessPayment = () => {
                         <span class="mr-4">Saldo a pagar</span>
                         <span>{{ formatMoneyNumber(totalPurchase) }}</span>
                     </div>
-                    <div class="w-1/2">
-                        <div class="flex justify-center w-full">
-                            <Button
-                                :disabled="totalPurchase <= 0"
-                                @click="showModalPayments"
-                                severity="success"
-                                icon="pi pi-dollar"
-                                type="submit"
-                                label="Pagar"
-                                class="w-full text-xl uppercase"/>
+                    <div class="flex">
+                        <div class="w-1/2 mr-2">
+                            <div class="flex justify-center w-full">
+                                <Button
+                                    :disabled="totalPurchase <= 0"
+                                    @click="showModalPayments"
+                                    severity="success"
+                                    icon="pi pi-dollar"
+                                    type="submit"
+                                    label="Pagar"
+                                    class="w-full text-xl uppercase"/>
+                            </div>
+                        </div>
+                        <div class="w-1/2">
+                            <Link :href="route('purchases.index')" class="flex justify-center w-full">
+                                <Button class="w-full text-xl uppercase" label="Ver compras" severity="info"></Button>
+                            </Link>
                         </div>
                     </div>
                 </Card>

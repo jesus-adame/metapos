@@ -75,7 +75,8 @@ class RegisterSaleService
         return [
             'status' => 'success',
             'message' => 'Venta registrada correctamente',
-            'content' => 'Su cambio es $ ' . number_format($change, 2)
+            'content' => 'Su cambio es $ ' . number_format($change, 2),
+            'sale' => $sale,
         ];
     }
 

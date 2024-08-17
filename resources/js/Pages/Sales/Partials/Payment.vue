@@ -7,6 +7,8 @@ import { computed, ref } from 'vue';
 const emit = defineEmits(['cancel', 'save']);
 const selectedPayment = ref('Efectivo');
 const saleStatus = ref('pending');
+const modalTicket = ref<boolean>(false)
+const saleId = ref<number | null>()
 
 const props = defineProps<{
   totalSale: number,
@@ -15,8 +17,6 @@ const props = defineProps<{
 
 const modalResponse = ref(false);
 const dialogResponseData = ref({
-    type: 'info',
-    header: undefined,
     content: null,
     message: null
 })
@@ -76,34 +76,22 @@ const applyPayment = () => {
 
   axios.post(route('api.sales.store'), formData)
   .then(response => {
+    const data = response.data
+
     saleStatus.value = 'paid';
-    openDialogResponse({
-      type: 'success',
-      header: 'Correcto',
-      message: response.data.message,
-      content: response.data.content
-    });
+    saleId.value = data.sale.id
+    dialogResponseData.value = data;
+    modalResponse.value = true
   })
   .catch(({response}) => {
-    openDialogResponse({
-      type: 'error',
-      header: 'No se pudo registrar',
-      message: response.data.message,
-      content: null
-    });
+    dialogResponseData.value = response.data
+    modalResponse.value = true
   })
 };
-
-const openDialogResponse = (data: any) => {
-  modalResponse.value = true
-  dialogResponseData.value = data
-}
 
 const closeDialogResponse = () => {
   modalResponse.value = false
   dialogResponseData.value = {
-    type: 'info',
-    header: undefined,
     content: null,
     message: null
   }
@@ -112,15 +100,24 @@ const closeDialogResponse = () => {
     submitPayment();
   }
 }
+
+const openModaTicket = () => {
+    modalTicket.value = true
+}
 </script>
 
 <template>
-  <Dialog v-model:visible="modalResponse" modal :header="dialogResponseData.header" :closable="false">
-    <Message class="mt-2" :closable="false" :severity="dialogResponseData.type">{{ dialogResponseData.message }}</Message>
+    <Dialog v-model:visible="modalTicket" modal :header="'Venta #' + saleId">
+      <PdfObject :url="route('sales.ticket', {id: saleId})" :options="{ height: '100vh', width: '30vw', border: '1px', solid: '#ccc' }" />
+    </Dialog>
+
+  <Dialog v-model:visible="modalResponse" modal header="Completado" :closable="false">
+    <Message class="mt-2" :closable="false" severity="info">{{ dialogResponseData.message }}</Message>
     <p class="my-4">
       <strong>{{ dialogResponseData.content }}</strong>
     </p>
     <div class="flex w-full">
+      <Button v-if="saleStatus == 'paid'" class="ml-auto" @click="openModaTicket" severity="info">Imprimir ticket</Button>
       <Button class="ml-auto" @click="closeDialogResponse">Aceptar</Button>
     </div>
   </Dialog>
