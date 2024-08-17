@@ -35,4 +35,10 @@ class Permission extends ModelsPermission
     const CREATE_USERS = 'create users';
     const UPDATE_USERS = 'update users';
     const DELETE_USERS = 'delete users';
+
+    const CREATE_PERMISSIONS = 'create permissions';
+    const UPDATE_PERMISSION = 'update permissions';
+    const DELETE_PERMISSIONS = 'delete permissions';
+
+    const VIEW_SETTINGS = 'view settings';
 }

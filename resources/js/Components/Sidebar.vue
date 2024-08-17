@@ -19,7 +19,7 @@ const tabItems: TabItem[] = [
     label: 'POS',
     route: route('sales.create'),
     active: route().current('sales.create'),
-    permission: 'view sales'
+    permission: 'create sales'
   },
   {
     icon: 'fi fi-sr-drawer-empty',
@@ -40,7 +40,7 @@ const tabItems: TabItem[] = [
     label: 'Compras',
     route: route('purchases.index'),
     active: route().current('purchases.index'),
-    permission: 'view finance'
+    permission: 'view purchases'
   },
   // {
   //   icon: 'fi fi-sr-bank',

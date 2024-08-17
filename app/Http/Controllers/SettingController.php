@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 use App\Models\Setting;
+use App\Models\Permission;
 use App\Models\CashRegister;
 use App\Models\Branch;
 use App\Http\Controllers\Controller;
@@ -13,7 +14,7 @@ class SettingController extends Controller
 {
     public function index()
     {
-        Gate::authorize('view setting');
+        Gate::authorize(Permission::VIEW_SETTINGS);
 
         $settings = Setting::all();
         $branches = Branch::all();
@@ -28,7 +29,7 @@ class SettingController extends Controller
 
     public function create()
     {
-        Gate::authorize('view setting');
+        Gate::authorize('view settings');
 
         return inertia('Settings/Create');
     }

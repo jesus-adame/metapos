@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Role;
+use App\Models\Permission;
 use App\Http\Controllers\Controller;
 
 class RoleController extends Controller
@@ -14,7 +16,11 @@ class RoleController extends Controller
      */
     public function index()
     {
-        return Role::paginate(10);
+        Gate::authorize(Permission::VIEW_USERS);
+
+        $roles = Role::with('permissions')->where('name', '!=', Role::SUPER_ADMIN)->paginate(10);
+
+        return response()->json($roles);
     }
 
     /**
@@ -22,9 +28,11 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
+        Gate::authorize(Permission::CREATE_PERMISSIONS);
+
         $role = Role::create([
             'name' => $request->name,
-            'guard' => $request->guard,
+            'guard_name' => 'web',
         ]);
 
         return response()->json([
@@ -44,9 +52,28 @@ class RoleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Role $role)
     {
-        //
+        Gate::authorize(Permission::UPDATE_PERMISSION);
+
+        $request->validate([
+            'name' => 'required',
+            'permissions' => 'array',
+            'permissions.*' => 'string|exists:permissions,name' // Ejemplo: ["create products", "delete products", "create sales", "view purchases"]
+        ]);
+
+        $permissions = Permission::whereIn('name', $request->permissions)->get();
+
+        $role->name = $request->name;
+        $role->guard_name = 'web';
+        $role->syncPermissions($permissions);
+
+        $role->save();
+
+        return response()->json([
+            'message' => 'Role editado correctamente.',
+            'role' => $role,
+        ]);
     }
 
     /**
@@ -54,6 +81,8 @@ class RoleController extends Controller
      */
     public function destroy(string $id)
     {
+        Gate::authorize(Permission::DELETE_PERMISSIONS);
+
         $role = DB::table('roles')->where('id', $id)->delete();
 
         if (!$role) {

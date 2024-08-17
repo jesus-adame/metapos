@@ -8,6 +8,8 @@ export interface User {
     lastname: string;
     email: string;
     email_verified_at: string;
+    roles: Role[];
+    permissions: Permission[];
 }
 
 export interface Customer {
@@ -134,10 +136,13 @@ export interface TabItem {
 }
 
 export interface Role {
+    id: ?number
     name: string
+    permissions: Permission[]
 }
 
 export interface Permission {
+    id: ?number
     name: string
 }
 

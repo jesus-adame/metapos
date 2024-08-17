@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import moment from 'moment';
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
 import { onMounted, ref } from 'vue';
@@ -11,7 +10,8 @@ import { Role } from '@/types';
 import CreateRole from '../forms/CreateRole.vue';
 import { useConfirm } from 'primevue/useconfirm';
 import { useToast } from 'primevue/usetoast';
-import { formatDate } from '@/helpers';
+import { can, formatDate } from '@/helpers';
+import EditRole from '../forms/EditRole.vue';
 
 const roleService: RoleService = new RoleService()
 const items = ref<Role[]>([])
@@ -20,8 +20,10 @@ const totalRecords = ref(0)
 const page = ref(1)
 const confirm = useConfirm()
 const toast = useToast()
+const role = ref<Role | null>(null)
 
 const modalCreateRole = ref(false)
+const modalEditRole = ref(false)
 
 const showModalCreate = () => {
     modalCreateRole.value = true
@@ -29,6 +31,16 @@ const showModalCreate = () => {
 
 const hideModalCreate = () => {
     modalCreateRole.value = false
+    fetchRoles(page.value)
+}
+
+const openModalEdit = (selectedRole: Role) => {
+    role.value = {...selectedRole}
+    modalEditRole.value = true
+}
+
+const hideModalEdit = () => {
+    modalEditRole.value = false
     fetchRoles(page.value)
 }
 
@@ -56,7 +68,6 @@ onMounted(() => {
 const deleteItem = (url: string) => {
     axios.post(url, { _method: 'delete' })
     .then((response: AxiosResponse) => {
-        console.log(response);
         toast.add({ summary: 'Correcto', detail: response.data.message, severity: 'success', life: 1500 })
         fetchRoles(page.value)
     })
@@ -89,10 +100,13 @@ const confirmDelete = (url: string) => {
     <Dialog v-model:visible="modalCreateRole" modal header="Nuevo Rol" :style="{ width: '35rem' }" pt:mask:class="backdrop-blur-sm">
         <CreateRole @save="hideModalCreate"></CreateRole>
     </Dialog>
+    <Dialog v-model:visible="modalEditRole" modal header="Editar Rol" :style="{ width: '35rem' }" pt:mask:class="backdrop-blur-sm">
+        <EditRole :role="role" @save="hideModalEdit"></EditRole>
+    </Dialog>
 
     <DataTable :value="items" class="shadow-md" :paginator="true" :rows="rows" :lazy="true" :totalRecords="totalRecords" @page="onPage">
         <Column field="id" header="#"></Column>
-        <Column field="name" header="Nombre">
+        <Column field="name" header="Rol">
             <template #body="{ data }">
                 <UserIcon>
                     {{ data.name }}
@@ -111,12 +125,15 @@ const confirmDelete = (url: string) => {
         </Column>
         <Column field="" header="">
             <template #header>
-                <div class="w-full flex justify-center">
+                <div v-if="can('create.permissions')" class="w-full flex justify-center">
                     <Button icon="pi pi-plus" rounded severity="success" raised @click="showModalCreate"></Button>
                 </div>
             </template>
             <template #body="{ data }">
-                <div class="w-full flex justify-center">
+                <div v-if="can('update.permissions')" class="w-full flex justify-center">
+                    <Button icon="pi pi-pencil" severity="warn" @click="openModalEdit(data)"></Button>
+                </div>
+                <div v-if="can('delete.permissions')" class="w-full flex justify-center">
                     <Button icon="pi pi-trash" severity="danger" @click="confirmDelete(route('api.roles.destroy', {role: data.id }))"></Button>
                 </div>
             </template>

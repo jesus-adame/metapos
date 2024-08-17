@@ -1,11 +1,11 @@
 <script setup>
-import Checkbox from '@/Components/Checkbox.vue';
 import CentralGuestLayout from '@/Layouts/CentralGuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
+import Checkbox from 'primevue/checkbox';
 
 defineProps({
     canResetPassword: {
@@ -71,7 +71,7 @@ const submit = () => {
 
             <div class="block mt-4">
                 <label class="flex items-center">
-                    <Checkbox name="remember" v-model:checked="form.remember" />
+                    <Checkbox name="remember" v-model="form.remember" :binary="true" />
                     <span class="ms-2 text-sm text-gray-600">Remember me</span>
                 </label>
             </div>

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
+use App\Models\Permission;
+use App\Http\Controllers\Controller;
 
 class PermissionController extends Controller
 {
@@ -12,7 +14,11 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        //
+        $permissions = Permission::all();
+
+        return response()->json([
+            'permissions' => $permissions,
+        ]);
     }
 
     /**
@@ -20,7 +26,7 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Gate::authorize(Permission::CREATE_PERMISSIONS);
     }
 
     /**
@@ -36,7 +42,7 @@ class PermissionController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        Gate::authorize(Permission::CREATE_PERMISSIONS);
     }
 
     /**
@@ -44,6 +50,6 @@ class PermissionController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Gate::authorize(Permission::DELETE_PERMISSIONS);
     }
 }

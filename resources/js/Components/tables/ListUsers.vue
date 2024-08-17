@@ -4,12 +4,14 @@ import Dialog from 'primevue/dialog';
 import CreateUser from '@/Components/forms/CreateUser.vue';
 import { onMounted, ref } from 'vue';
 import UserService from "@/Services/UserService";
-import { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { DataTablePageEvent } from 'primevue/datatable';
 import UserIcon from '../icons/UserIcon.vue';
 import EditUser from '../forms/EditUser.vue';
 import { User } from '@/types';
 import { formatDate } from '@/helpers';
+import { useConfirm } from 'primevue/useconfirm';
+import { useToast } from 'primevue/usetoast';
 
 const userService: UserService = new UserService()
 const items = ref([])
@@ -17,6 +19,8 @@ const rows = ref(10)
 const totalRecords = ref(0)
 const page = ref(1)
 const user = ref<User | null>(null)
+const toast = useToast()
+const confirm = useConfirm()
 
 const modalCreateUser = ref(false)
 const modalEditUser = ref(false)
@@ -60,6 +64,37 @@ const hideModalEdit = () => {
 onMounted(() => {
     fetchUsers(page.value)
 })
+
+const deleteItem = (url: string) => {
+    axios.post(url, { _method: 'delete' })
+    .then((response: AxiosResponse) => {
+        toast.add({ summary: 'Correcto', detail: response.data.message, severity: 'success', life: 1500 })
+        fetchUsers(page.value)
+    })
+    .catch(reject => {
+        console.error(reject.response.data.errors);
+        toast.add({ summary: 'Error', detail: reject.response.data.message, severity: 'error', life: 3000 })
+    })
+}
+
+const confirmDelete = (url: string) => {
+    confirm.require({
+        header: '¿Está seguro?',
+        message: 'Se eliminará el producto con su inventario',
+        icon: 'pi pi-exclamation-triangle',
+        rejectProps: {
+            label: 'Cancelar',
+            severity: 'secondary',
+        },
+        acceptProps: {
+            label: 'Eliminar',
+            severity: 'danger'
+        },
+        accept: () => {
+            deleteItem(url)
+        }
+    });
+}
 </script>
 <template>
     <Dialog v-model:visible="modalCreateUser" modal header="Registrar usuario" :style="{ width: '35rem' }" pt:mask:class="backdrop-blur-sm">
@@ -101,7 +136,7 @@ onMounted(() => {
                     <Button icon="pi pi-pencil" severity="warn" @click="openModalEdit(data)"></Button>
                 </div>
                 <div class="w-full flex justify-center">
-                    <Button icon="pi pi-trash" severity="danger"></Button>
+                    <Button icon="pi pi-trash" severity="danger" @click="confirmDelete(route('api.users.destroy', {user: data.id}))"></Button>
                 </div>
             </template>
         </Column>
