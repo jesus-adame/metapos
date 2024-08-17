@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import moment from 'moment';
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
 import CreateUser from '@/Components/forms/CreateUser.vue';
@@ -8,14 +7,19 @@ import UserService from "@/Services/UserService";
 import { AxiosResponse } from 'axios';
 import { DataTablePageEvent } from 'primevue/datatable';
 import UserIcon from '../icons/UserIcon.vue';
+import EditUser from '../forms/EditUser.vue';
+import { User } from '@/types';
+import { formatDate } from '@/helpers';
 
 const userService: UserService = new UserService()
 const items = ref([])
 const rows = ref(10)
 const totalRecords = ref(0)
 const page = ref(1)
+const user = ref<User | null>(null)
 
 const modalCreateUser = ref(false)
+const modalEditUser = ref(false)
 
 const showModalCreate = () => {
     modalCreateUser.value = true
@@ -43,29 +47,47 @@ const onPage = (event: DataTablePageEvent) => {
     fetchUsers(pageNumber);
 }
 
+const openModalEdit = (selectedUser: User) => {
+    user.value = {...selectedUser}
+    modalEditUser.value = true
+}
+
+const hideModalEdit = () => {
+    modalEditUser.value = false
+    fetchUsers(page.value)
+}
+
 onMounted(() => {
     fetchUsers(page.value)
 })
 </script>
 <template>
+    <Dialog v-model:visible="modalCreateUser" modal header="Registrar usuario" :style="{ width: '35rem' }" pt:mask:class="backdrop-blur-sm">
+        <CreateUser class="mt-4" @save="hideModalCreate"></CreateUser>
+    </Dialog>
+
+    <Dialog v-model:visible="modalEditUser" modal header="Editar usuario" :style="{ width: '35rem' }" pt:mask:class="backdrop-blur-sm">
+        <EditUser class="mt-4" :user="user" @save="hideModalEdit"></EditUser>
+    </Dialog>
+
     <DataTable :value="items" class="shadow-md" :paginator="true" :rows="rows" :lazy="true" :totalRecords="totalRecords" @page="onPage">
         <Column field="id" header="#"></Column>
         <Column field="name" header="Nombre">
-            <template #body="slot">
+            <template #body="{data}">
                 <UserIcon>
-                    {{ slot.data.name }} {{ slot.data.lastname }}
+                    {{ data.name }} {{ data.lastname }}
                 </UserIcon>
             </template>
         </Column>
         <Column field="email" header="Email"></Column>
         <Column field="created_at" header="Creación">
-            <template #body="slot">
-                {{ moment(slot.data.created_at).calendar() }}
+            <template #body="{data}">
+                {{ formatDate(data.created_at) }}
             </template>
         </Column>
         <Column field="updated_at" header="Edición">
-            <template #body="slot">
-                {{ moment(slot.data.updated_at).calendar() }}
+            <template #body="{data}">
+                {{ formatDate(data.updated_at) }}
             </template>
         </Column>
         <Column field="" header="">
@@ -74,15 +96,14 @@ onMounted(() => {
                     <Button icon="pi pi-plus" rounded severity="success" raised @click="showModalCreate"></Button>
                 </div>
             </template>
-            <template #body>
+            <template #body="{data}">
+                <div class="w-full flex justify-center">
+                    <Button icon="pi pi-pencil" severity="warn" @click="openModalEdit(data)"></Button>
+                </div>
                 <div class="w-full flex justify-center">
                     <Button icon="pi pi-trash" severity="danger"></Button>
                 </div>
             </template>
         </Column>
     </DataTable>
-
-    <Dialog v-model:visible="modalCreateUser" modal header="Registrar usuario" :style="{ width: '35rem' }" pt:mask:class="backdrop-blur-sm">
-        <CreateUser class="mt-4" @save="hideModalCreate"></CreateUser>
-    </Dialog>
 </template>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Role;
 use App\Http\Controllers\Controller;
@@ -53,8 +54,13 @@ class RoleController extends Controller
      */
     public function destroy(string $id)
     {
-        $role = Role::find($id);
-        $role->delete();
+        $role = DB::table('roles')->where('id', $id)->delete();
+
+        if (!$role) {
+            return response()->json([
+                'message' => 'Role no encontrado.',
+            ], 404);
+        }
 
         return response()->json([
             'message' => 'Role eliminado correctamente.',

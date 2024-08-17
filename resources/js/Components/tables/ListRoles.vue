@@ -11,6 +11,7 @@ import { Role } from '@/types';
 import CreateRole from '../forms/CreateRole.vue';
 import { useConfirm } from 'primevue/useconfirm';
 import { useToast } from 'primevue/usetoast';
+import { formatDate } from '@/helpers';
 
 const roleService: RoleService = new RoleService()
 const items = ref<Role[]>([])
@@ -98,15 +99,14 @@ const confirmDelete = (url: string) => {
                 </UserIcon>
             </template>
         </Column>
-        <Column field="email" header="Email"></Column>
         <Column field="created_at" header="Creación">
             <template #body="{ data }">
-                {{ moment(data.created_at).calendar() }}
+                {{ formatDate(data.created_at) }}
             </template>
         </Column>
         <Column field="updated_at" header="Edición">
             <template #body="{ data }">
-                {{ moment(data.updated_at).calendar() }}
+                {{ formatDate(data.updated_at) }}
             </template>
         </Column>
         <Column field="" header="">
