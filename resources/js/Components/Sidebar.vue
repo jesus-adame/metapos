@@ -12,7 +12,7 @@ const tabItems: TabItem[] = [
     label: 'Panel',
     route: route('home'),
     active: route().current('home'),
-    permission: 'view finance'
+    permission: 'view finances'
   },
   {
     icon: 'fi fi-sr-shopping-cart',

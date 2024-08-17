@@ -41,4 +41,5 @@ class Permission extends ModelsPermission
     const DELETE_PERMISSIONS = 'delete permissions';
 
     const VIEW_SETTINGS = 'view settings';
+    const VIEW_FINANCES = 'view finances';
 }
