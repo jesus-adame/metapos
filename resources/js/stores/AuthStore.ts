@@ -4,14 +4,14 @@ import { defineStore } from "pinia"
 
 const page = usePage()
 
-interface State {
+interface AuthState {
     user: User | null,
     cashRegister: CashRegister | null,
     location: Location | null
 }
 
 export const useAuthStore = defineStore('auth', {
-    state: (): State => ({
+    state: (): AuthState => ({
         user: page.props.auth.user,
         cashRegister: page.props.cashRegister,
         location: page.props.location,

@@ -38,7 +38,7 @@ class RegisterSaleService
         $this->attachSaleProducts($sale, $location, $products);
 
         // Guardar los métodos de pago
-        $paymentsAmount = $this->setPayments($sale, $paymentMethods, $cashRegister);
+        $paymentsAmount = $this->setPayments($sale, $paymentMethods);
         $cashPayments = $paymentsAmount['cash'];
         $cardPayments = $paymentsAmount['card'];
         $transferPayments = $paymentsAmount['transfer'];
@@ -59,7 +59,36 @@ class RegisterSaleService
         $sale->status = 'paid';
         $sale->save();
 
-        // Registrar una entrada en caja si el pago fue en efectivo
+        if ($cashPayments > 0) {
+            $this->createCashFlow(
+                amount: $cashPayments,
+                cashable: $sale,
+                method: Payment::CASH_METHOD,
+                cashRegister: $cashRegister,
+                type: 'entry'
+            );
+        }
+
+        if ($cardPayments > 0) {
+            $this->createCashFlow(
+                amount: $cardPayments,
+                cashable: $sale,
+                method: Payment::CREDIT_CARD_METHOD,
+                cashRegister: $cashRegister,
+                type: 'entry'
+            );
+        }
+
+        if ($transferPayments > 0) {
+            $this->createCashFlow(
+                amount: $transferPayments,
+                cashable: $sale,
+                method: Payment::TRANSFER_METHOD,
+                cashRegister: $cashRegister,
+                type: 'entry'
+            );
+        }
+
         if ($change > 0) {
             $this->createCashFlow(
                 amount: $change,
@@ -141,7 +170,7 @@ class RegisterSaleService
         }
     }
 
-    private function setPayments(Sale $sale, array $paymentMethods, CashRegister $cashRegister)
+    private function setPayments(Sale $sale, array $paymentMethods)
     {
         $cashPayments = 0;
         $cardPayments = 0;
@@ -168,36 +197,6 @@ class RegisterSaleService
             }
         }
 
-        if ($cashPayments > 0) {
-            $this->createCashFlow(
-                amount: $cashPayments,
-                cashable: $sale,
-                method: Payment::CASH_METHOD,
-                cashRegister: $cashRegister,
-                type: 'entry'
-            );
-        }
-
-        if ($cardPayments > 0) {
-            $this->createCashFlow(
-                amount: $cardPayments,
-                cashable: $sale,
-                method: Payment::CREDIT_CARD_METHOD,
-                cashRegister: $cashRegister,
-                type: 'entry'
-            );
-        }
-
-        if ($transferPayments > 0) {
-            $this->createCashFlow(
-                amount: $transferPayments,
-                cashable: $sale,
-                method: Payment::TRANSFER_METHOD,
-                cashRegister: $cashRegister,
-                type: 'entry'
-            );
-        }
-
         return [
             'cash' => $cashPayments,
             'card' => $cardPayments,
@@ -213,10 +212,10 @@ class RegisterSaleService
         string $type = 'entry',
         \DateTime $dateTime = null
     ) {
-        $description = 'Entrada en ' . $method . ' ' . $cashable->getClassName() . ' # ' . $cashable->id;
+        $description = 'Entrada por ' . $cashable->getClassName() . ' # ' . $cashable->id;
 
         if ($type == 'exit') {
-            $description = 'Salida en ' . $method . ' ' . $cashable->getClassName() . ' # ' . $cashable->id;
+            $description = 'Cambio de ' . $cashable->getClassName() . ' # ' . $cashable->id;
         }
 
         if (is_null($dateTime)) {

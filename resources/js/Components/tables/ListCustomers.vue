@@ -1,20 +1,21 @@
 <script lang="ts" setup>
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import CustomerService from "@/Services/CustomerService";
 import { AxiosResponse } from 'axios';
 import { DataTablePageEvent } from 'primevue/datatable';
 import CreateCustomer from '../forms/CreateCustomer.vue';
 import { formatDate } from '@/helpers';
 import UserIcon from '../icons/UserIcon.vue';
+import { useCustomerStore } from '@/stores/CustomerStore';
 
 const customerService: CustomerService = new CustomerService()
 const items = ref([])
 const rows = ref(10)
 const totalRecords = ref(0)
 const page = ref(1)
-
+const customerStore = useCustomerStore()
 const modalCreate = ref(false)
 
 const showModalCreate = () => {
@@ -23,7 +24,6 @@ const showModalCreate = () => {
 
 const hideModalCreate = () => {
     modalCreate.value = false
-    fetchUsers(page.value)
 }
 
 const fetchUsers = (pageNumber: number) => {
@@ -44,6 +44,10 @@ const onPage = (event: DataTablePageEvent) => {
 }
 
 onMounted(() => {
+    fetchUsers(page.value)
+})
+
+watch(customerStore.getCustomers, () => {
     fetchUsers(page.value)
 })
 </script>

@@ -17,6 +17,7 @@ import { Customer, Product } from '@/types';
 import { AutoCompleteCompleteEvent } from 'primevue/autocomplete';
 import SelectProduct from '@/Components/grids/SelectProduct.vue';
 import Discount from './Partials/Discount.vue';
+import CreateCustomer from '@/Components/forms/CreateCustomer.vue';
 
 // Retrieve customers and products from the server
 const productService = new ProductService();
@@ -29,6 +30,7 @@ const products = ref<Product[]>([]);
 const modalPayments = ref(false)
 const modalCashMovements = ref(false)
 const modalDiscount = ref(false)
+const modalCreateCustomer = ref(false)
 
 // Initialize the form
 const form = reactive<{
@@ -151,6 +153,13 @@ const showModalDiscount = () => {
 const hideModalDiscount = () => {
     modalDiscount.value = false
 }
+const showModalCreateCustomer = () => {
+    modalCreateCustomer.value = true
+}
+
+const hideModalCreateCustomer = () => {
+    modalCreateCustomer.value = false
+}
 
 const setSuccessPayment = () => {
     hideModalPayments();
@@ -190,8 +199,6 @@ const formatDiscount = computed(() => {
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">POS</h2>
         </template>
 
-        <div class="mt-4"></div>
-
         <Dialog v-model:visible="modalDiscount" modal header="Agregar Descuento" :style="{ width: '35rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
             <Discount :totalSale="totalSale" :form="form" @cancel="hideModalDiscount" @apply="setSuccessDiscount"></Discount>
         </Dialog>
@@ -205,6 +212,12 @@ const formatDiscount = computed(() => {
                 <Button label="Cancelar" @click="hideModalMovements" class="ml-2"></Button>
             </CreateCashMovement>
         </Dialog>
+
+        <Dialog v-model:visible="modalCreateCustomer" modal header="Registrar cliente" :style="{ width: '35rem' }" pt:mask:class="backdrop-blur-sm">
+            <CreateCustomer class="mt-4" @save="hideModalCreateCustomer"></CreateCustomer>
+        </Dialog>
+
+        <div class="mt-4"></div>
 
         <div class="flex items-baseline justify-between mb-4">
             <div class="search w-1/3">
@@ -220,20 +233,23 @@ const formatDiscount = computed(() => {
                 <div class="flex justify-end">
                     <Button v-if="form.discount == null" label="Agregar descuento" class="mr-2" icon="pi pi-tag" @click="showModalDiscount"></Button>
                     <div class="w-1/2">
-                        <AutoComplete v-model="selectedCustomer" optionLabel="first_name" :suggestions="filteredCustomers"
-                            @complete="searchCustomer"
-                            @change="setCustomer"
-                            class="w-full"
-                            inputClass="w-full"
-                            placeholder="Cliente">
-                            <template #option="slot">
-                                <div class="flex align-options-center">
-                                    <div>
-                                        {{ slot.option.first_name }} {{ slot.option.last_name }} | {{ slot.option.phone }}
+                        <div class="flex">
+                            <AutoComplete v-model="selectedCustomer" optionLabel="first_name" :suggestions="filteredCustomers"
+                                @complete="searchCustomer"
+                                @change="setCustomer"
+                                class="w-full"
+                                inputClass="w-full"
+                                placeholder="Cliente">
+                                <template #option="slot">
+                                    <div class="flex align-options-center">
+                                        <div>
+                                            {{ slot.option.first_name }} {{ slot.option.last_name }} | {{ slot.option.phone }}
+                                        </div>
                                     </div>
-                                </div>
-                            </template>
-                        </AutoComplete>
+                                </template>
+                            </AutoComplete>
+                            <Button icon="pi pi-plus" class="ml-2" severity="success" raised @click="showModalCreateCustomer"></Button>
+                        </div>
                     </div>
                 </div>
             </div>
