@@ -100,6 +100,7 @@ class CreateRolesAndPermissionsSeeder extends Seeder
         $manager->givePermissionTo('update customers');
         $manager->givePermissionTo('delete customers');
         $manager->givePermissionTo('view suppliers');
+        $manager->givePermissionTo('create suppliers');
         $manager->givePermissionTo('update suppliers');
         $manager->givePermissionTo('delete suppliers');
         $manager->givePermissionTo('create permissions');

@@ -6,7 +6,7 @@ import SupplierService from "@/Services/SupplierService";
 import { AxiosResponse } from 'axios';
 import { DataTablePageEvent } from 'primevue/datatable';
 import CreateSupplier from '../forms/CreateSupplier.vue';
-import { formatDate } from '@/helpers';
+import { can, formatDate } from '@/helpers';
 import UserIcon from '../icons/UserIcon.vue';
 
 const supplierService: SupplierService = new SupplierService()
@@ -74,12 +74,12 @@ onMounted(() => {
         </Column>
         <Column field="" header="">
             <template #header>
-                <div class="w-full flex justify-center">
+                <div v-if="can('create suppliers')" class="w-full flex justify-center">
                     <Button icon="pi pi-plus" rounded severity="success" raised @click="showModalCreate"></Button>
                 </div>
             </template>
             <template #body>
-                <div class="w-full flex justify-center">
+                <div v-if="can('delete suppliers')" class="w-full flex justify-center">
                     <Button icon="pi pi-trash" severity="danger"></Button>
                 </div>
             </template>
