@@ -70,4 +70,13 @@ class CashCutController extends Controller
             'message' => 'Corte de caja registrado.'
         ]);
     }
+
+    public function destroy(CashCut $cashCut)
+    {
+        $cashCut->delete();
+
+        return response()->json([
+            'message' => 'Eliminado correctamente',
+        ]);
+    }
 }

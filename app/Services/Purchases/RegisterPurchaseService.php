@@ -35,6 +35,7 @@ class RegisterPurchaseService
         /** @var Branch */
         $location = $cashRegister->branch;
 
+        /** @var Purchase */
         $purchase = $this->createPurchase($supplierId, $buyerId, $purchaseDate, $location, $products);
         $this->attachPurchaseProducts($purchase, $location, $products);
 
@@ -83,7 +84,8 @@ class RegisterPurchaseService
                 cashable: $purchase,
                 method: Payment::CASH_METHOD,
                 cashRegister: $cashRegister,
-                type: 'exit'
+                type: 'exit',
+                dateTime: $purchaseDate
             );
         }
 
@@ -93,7 +95,8 @@ class RegisterPurchaseService
                 cashable: $purchase,
                 method: Payment::CREDIT_CARD_METHOD,
                 cashRegister: $cashRegister,
-                type: 'exit'
+                type: 'exit',
+                dateTime: $purchaseDate
             );
         }
 
@@ -103,7 +106,8 @@ class RegisterPurchaseService
                 cashable: $purchase,
                 method: Payment::TRANSFER_METHOD,
                 cashRegister: $cashRegister,
-                type: 'exit'
+                type: 'exit',
+                dateTime: $purchaseDate
             );
         }
 
@@ -131,7 +135,7 @@ class RegisterPurchaseService
             'supplier_id' => $supplierId,
             'buyer_id' => $buyerId,
             'total' => 0, // Calcularemos el total a continuación
-            'purchase_date' => $purchaseDate->format('Y-m-d'),
+            'purchase_date' => $purchaseDate->format('Y-m-d 00:00:00'),
             'status' => 'paid',
             'location_id' => $location->id,
             'location_type' => $location::class,

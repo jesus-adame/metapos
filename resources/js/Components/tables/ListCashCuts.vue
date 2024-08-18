@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import Column from 'primevue/column';
 import DataTable, { DataTablePageEvent } from 'primevue/datatable';
 import { onMounted, ref } from 'vue';
@@ -9,6 +9,8 @@ import Button from 'primevue/button';
 import CreateCashCut from '../forms/CreateCashCut.vue';
 import { formatDate, formatMoneyNumber } from '@/helpers';
 import CashRegisterIcon from '../icons/CashRegisterIcon.vue';
+import { useToast } from 'primevue/usetoast';
+import { useConfirm } from 'primevue/useconfirm';
 
 const page = ref<number>(1)
 const rows = ref<number>(5)
@@ -16,6 +18,8 @@ const items = ref([])
 const cashCutService = new CashCutService()
 const modalCreate = ref(false)
 const totalRecords = ref(0)
+const toast = useToast()
+const confirm = useConfirm()
 
 const fetchItems = (pageNumber: number) => {
     cashCutService.paginate(pageNumber, rows.value)
@@ -41,6 +45,37 @@ onMounted(() => {
 const onPage = (event: DataTablePageEvent) => {
     const pageNumber = event.first / event.rows + 1;
     fetchItems(pageNumber);
+}
+
+const deleteItem = (url: string) => {
+    axios.post(url, { _method: 'delete' })
+    .then((response: AxiosResponse) => {
+        toast.add({ summary: 'Correcto', detail: response.data.message, severity: 'success', life: 1500 })
+        fetchItems(page.value)
+    })
+    .catch(reject => {
+        console.error(reject.response.data.errors);
+        toast.add({ summary: 'Error', detail: reject.response.data.message, severity: 'error', life: 3000 })
+    })
+}
+
+const confimDelete = (url: string) => {
+    confirm.require({
+        header: '¿Está seguro?',
+        message: 'Se eliminará el corte de caja',
+        icon: 'pi pi-exclamation-triangle',
+        rejectProps: {
+            label: 'Cancelar',
+            severity: 'secondary',
+        },
+        acceptProps: {
+            label: 'Eliminar',
+            severity: 'danger'
+        },
+        accept: () => {
+            deleteItem(url)
+        }
+    });
 }
 </script>
 <template>
@@ -85,6 +120,9 @@ const onPage = (event: DataTablePageEvent) => {
         <Column field="" header="">
             <template #header>
                 <Button rounded raised @click="showModalCreate" icon="pi pi-plus" severity="success"></Button>
+            </template>
+            <template #body="{data}">
+                <Button icon="pi pi-trash" severity="danger" raised @click="confimDelete(route('api.cash-cuts.destroy', { cash_cut: data.id}))"></Button>
             </template>
         </Column>
     </DataTable>
