@@ -76,7 +76,7 @@ const methods = [
         </div>
         <div class="mb-4">
             <label for="description" class="block">Motivo</label>
-            <Textarea v-model="form.description" id="description" class="w-full" rows="4"></Textarea>
+            <Textarea v-model="form.description" id="description" class="w-full" rows="4" placeholder="Reposición de dinero"></Textarea>
         </div>
         <div class="mt-6">
             <Button type="submit" :disabled="form.processing" severity="success">Registrar</Button>

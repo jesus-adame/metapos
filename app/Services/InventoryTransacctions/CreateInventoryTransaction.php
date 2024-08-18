@@ -29,6 +29,16 @@ class CreateInventoryTransaction
             ->where('location_type', $location::class)
             ->first();
 
+        if (is_null($inventory)) {
+            $inventory = new Inventory();
+            $inventory->product_id = $productId;
+            $inventory->location_type = $location::class;
+            $inventory->location_id = $location->id;
+            $inventory->quantity = 0;
+            $inventory->status = 'available';
+            $inventory->save();
+        }
+
         // Actualizar el stock del producto
         if ($type == 'entry') {
             $inventory->quantity += $amount;

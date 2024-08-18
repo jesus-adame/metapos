@@ -77,6 +77,36 @@ class RegisterPurchaseService
             ];
         }
 
+        if ($cashPayments > 0) {
+            $this->createCashFlow(
+                amount: $cashPayments,
+                cashable: $purchase,
+                method: Payment::CASH_METHOD,
+                cashRegister: $cashRegister,
+                type: 'exit'
+            );
+        }
+
+        if ($cardPayments > 0) {
+            $this->createCashFlow(
+                amount: $cardPayments,
+                cashable: $purchase,
+                method: Payment::CREDIT_CARD_METHOD,
+                cashRegister: $cashRegister,
+                type: 'exit'
+            );
+        }
+
+        if ($transferPayments > 0) {
+            $this->createCashFlow(
+                amount: $transferPayments,
+                cashable: $purchase,
+                method: Payment::TRANSFER_METHOD,
+                cashRegister: $cashRegister,
+                type: 'exit'
+            );
+        }
+
         DB::commit();
 
         return [
@@ -173,36 +203,6 @@ class RegisterPurchaseService
             }
         }
 
-        if ($cashPayments > 0) {
-            $this->createCashFlow(
-                amount: $cashPayments,
-                cashable: $purchase,
-                method: Payment::CASH_METHOD,
-                cashRegister: $cashRegister,
-                type: 'exit'
-            );
-        }
-
-        if ($cardPayments > 0) {
-            $this->createCashFlow(
-                amount: $cardPayments,
-                cashable: $purchase,
-                method: Payment::CREDIT_CARD_METHOD,
-                cashRegister: $cashRegister,
-                type: 'exit'
-            );
-        }
-
-        if ($transferPayments > 0) {
-            $this->createCashFlow(
-                amount: $transferPayments,
-                cashable: $purchase,
-                method: Payment::TRANSFER_METHOD,
-                cashRegister: $cashRegister,
-                type: 'exit'
-            );
-        }
-
         return [
             'cash' => $cashPayments,
             'card' => $cardPayments,
@@ -218,10 +218,10 @@ class RegisterPurchaseService
         string $type = 'entry',
         \DateTime $dateTime = null
     ) {
-        $description = 'Entrada en ' . $method . ' ' . $cashable->getClassName() . ' # ' . $cashable->id;
+        $description = 'Entrada por ' . $cashable->getClassName() . ' # ' . $cashable->id;
 
         if ($type == 'exit') {
-            $description = 'Salida en ' . $method . ' ' . $cashable->getClassName() . ' # ' . $cashable->id;
+            $description = 'Salida por ' . $cashable->getClassName() . ' # ' . $cashable->id;
         }
 
         if (is_null($dateTime)) {

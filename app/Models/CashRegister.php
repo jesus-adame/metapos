@@ -15,6 +15,7 @@ class CashRegister extends Model
     {
         $totalEntries = $this->cashFlows()->where('type', 'entry')->sum('amount');
         $totalExits = $this->cashFlows()->where('type', 'exit')->sum('amount');
+
         return $totalEntries - $totalExits;
     }
 
