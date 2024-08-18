@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Setting;
 use App\Models\Sale;
@@ -45,11 +46,16 @@ class SaleController extends Controller
     {
         $sale = Sale::with('products')->findOrFail($id);
 
-        $company_name = Setting::where('key', Setting::COMPANY_NAME)->first()->value;
-        $company_address = Setting::where('key', Setting::COMPANY_ADDRESS)->first()->value;
+        $location = Auth::user()->location;
+
+        $company_name = $location->name;
+        $company_address = $location->address;
         $company_phone = Setting::where('key', Setting::COMPANY_PHONE)->first()->value;
         $company_email = Setting::where('key', Setting::COMPANY_EMAIL)->first()->value;
         $company_rfc = Setting::where('key', Setting::COMPANY_RFC)->first()->value;
+
+        $date = $sale->created_at;
+        $date->setTimezone('America/Mexico_City');
 
         // Suponiendo que quieres una relación de aspecto de 1:1.5
         $ancho_mm = 45;
@@ -68,6 +74,7 @@ class SaleController extends Controller
                 'company_phone',
                 'company_email',
                 'company_rfc',
+                'date',
             ));
 
         return $pdf->stream('sale_ticket.pdf');

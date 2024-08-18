@@ -72,14 +72,12 @@
             <p>Teléfono: {{ $company_phone }}</p>
             <p>Rfc: {{ $company_rfc }}</p>
         </div>
-
         <div class="content">
             <div class="details">
                 <p>Cliente: {{ $sale->customer?->name }}</p>
                 <p>Vendedor: {{ $sale->seller?->name }}</p>
-                <p>Fecha: {{ $sale->created_at->format('d/m/Y H:i') }}</p>
+                <p>Fecha: {{ $date->format('d/m/Y h:i a') }}</p>
             </div>
-
             <div class="products">
                 <table>
                     <thead>
@@ -100,12 +98,10 @@
                     </tbody>
                 </table>
             </div>
-
             <div class="total">
                 <p>Total: ${{ number_format($sale->total, 2) }}</p>
             </div>
         </div>
-
         <div class="footer">
             <p>¡Gracias por su compra!</p>
             <p>Visítenos nuevamente</p>
