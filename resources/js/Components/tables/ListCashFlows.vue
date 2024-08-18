@@ -3,7 +3,7 @@ import { formatDate, formatMoneyNumber } from '@/helpers';
 import Column from 'primevue/column';
 import DataTable, { DataTablePageEvent } from 'primevue/datatable';
 import Tag from 'primevue/tag';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { AxiosResponse } from 'axios';
 import { CashFlow } from '@/types';
 import Dialog from 'primevue/dialog';
@@ -11,6 +11,7 @@ import CreateCashMovement from '../forms/CreateCashMovement.vue';
 import Button from 'primevue/button';
 import CashFlowService from '@/Services/CashFlowService';
 import CashRegisterIcon from '@/Components/icons/CashRegisterIcon.vue';
+import { useAuthStore } from '@/stores/AuthStore';
 
 const cashFlowService = new CashFlowService;
 const modalCashMovements = ref(false)
@@ -19,6 +20,7 @@ const items = ref<CashFlow[]>([]);
 const rows = ref(5);
 const current_page = ref(1);
 const totalRecords = ref(0)
+const authStore = useAuthStore()
 
 const calculateSeverity = (flow: CashFlow) => {
     switch (flow.type) {
@@ -107,6 +109,10 @@ const hideModalMovements = () => {
     modalCashMovements.value = false
     fetchItems(current_page.value)
 }
+
+watch(() => authStore.cashRegister, () => {
+    fetchItems(current_page.value)
+})
 </script>
 <template>
     <Dialog v-model:visible="modalCashMovements" modal header="Registrar movimiento" :style="{ width: '35rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">

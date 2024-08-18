@@ -1,14 +1,16 @@
 <script lang="ts" setup>
 import { formatMoneyNumber } from '@/helpers';
 import CashFlowService from '@/Services/CashFlowService';
+import { useAuthStore } from '@/stores/AuthStore';
 import { AxiosResponse } from 'axios';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 
 const cashFlowService = new CashFlowService;
 const global = ref<any>(null)
 const cash = ref<any>(null)
 const card = ref<any>(null)
 const transfer = ref<any>(null)
+const authStore = useAuthStore()
 
 const fetchItems = () => {
     cashFlowService.resume()
@@ -20,12 +22,17 @@ const fetchItems = () => {
     })
 }
 
+// Suscribirse a las acciones del store
+watch(() => authStore.cashRegister, () => {
+    fetchItems()
+})
+
 onMounted(() => {
     fetchItems()
 })
 </script>
 <template>
-    <div class="flex items-end rounded flex-end text-right text-lg bg-gray-200 text-gray-500 w-full p-2">
+    <div class="flex items-end rounded flex-end text-right text-lg text-gray-600 w-full p-2">
         <div class="">
             <p class="font-bold p-1 rounded m-1">Entradas</p>
             <p class="font-bold p-1 rounded m-1">Salidas</p>

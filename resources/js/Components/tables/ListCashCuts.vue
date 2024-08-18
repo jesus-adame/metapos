@@ -2,7 +2,7 @@
 import axios, { AxiosResponse } from 'axios';
 import Column from 'primevue/column';
 import DataTable, { DataTablePageEvent } from 'primevue/datatable';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import CashCutService from "@/Services/CashCutService";
 import Dialog from 'primevue/dialog';
 import Button from 'primevue/button';
@@ -11,6 +11,7 @@ import { formatDate, formatMoneyNumber } from '@/helpers';
 import CashRegisterIcon from '../icons/CashRegisterIcon.vue';
 import { useToast } from 'primevue/usetoast';
 import { useConfirm } from 'primevue/useconfirm';
+import { useAuthStore } from '@/stores/AuthStore';
 
 const page = ref<number>(1)
 const rows = ref<number>(5)
@@ -20,6 +21,7 @@ const modalCreate = ref(false)
 const totalRecords = ref(0)
 const toast = useToast()
 const confirm = useConfirm()
+const authStore = useAuthStore()
 
 const fetchItems = (pageNumber: number) => {
     cashCutService.paginate(pageNumber, rows.value)
@@ -77,6 +79,10 @@ const confimDelete = (url: string) => {
         }
     });
 }
+
+watch(() => authStore.cashRegister, () => {
+    fetchItems(page.value)
+})
 </script>
 <template>
     <Dialog v-model:visible="modalCreate" header="Nuevo corte" modal :style="{ width: '35rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">

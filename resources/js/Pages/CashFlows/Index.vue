@@ -1,19 +1,20 @@
 <script setup lang="ts">
-import { Head, Link, usePage } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 import UserLayout from '@/Layouts/UserLayout.vue';
 import Button from 'primevue/button';
 import ListCashFlows from '@/Components/tables/ListCashFlows.vue';
 import ListCashCuts from '@/Components/tables/ListCashCuts.vue';
 import CashResume from '@/Components/blocks/CashResume.vue';
+import { useAuthStore } from '@/stores/AuthStore';
 
-const page = usePage()
+const authStore = useAuthStore()
 </script>
 
 <template>
     <Head title="Caja" />
     <UserLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Caja {{ page.props.cashRegister.name }}</h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Caja {{ authStore.cashRegister?.name }}</h2>
         </template>
         <div class="mb-4 mt-4">
             <Link :href="route('sales.create')">

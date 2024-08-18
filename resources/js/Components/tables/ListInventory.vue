@@ -7,7 +7,7 @@ import DataTable, { DataTablePageEvent } from 'primevue/datatable';
 import Dialog from 'primevue/dialog';
 import Image from 'primevue/image';
 import Tag from 'primevue/tag';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import CreateProduct from '../forms/CreateProduct.vue';
 import ProductService from '@/Services/ProductService';
 import axios, { AxiosResponse } from 'axios';
@@ -15,6 +15,7 @@ import { useToast } from 'primevue/usetoast';
 import { useConfirm } from 'primevue/useconfirm';
 import EditProduct from '../forms/EditProduct.vue';
 import { Link } from '@inertiajs/vue3';
+import { useAuthStore } from '@/stores/AuthStore';
 
 const createModal = ref<Boolean>(false)
 const editModal = ref<Boolean>(false)
@@ -26,6 +27,7 @@ const items = ref<Product[]>([])
 const rows = ref<number>(10)
 const current_page = ref(1)
 const totalRecords = ref(0)
+const authStore = useAuthStore()
 
 const getSeverity = (product: Product) => {
     switch (product.stock > 0) {
@@ -107,6 +109,10 @@ const onPage = (event: DataTablePageEvent) => {
     const pageNumber = event.first / event.rows + 1;
     fetchItems(pageNumber);
 }
+
+watch(() => authStore.cashRegister, () => {
+    fetchItems(current_page.value)
+})
 </script>
 <template>
     <Dialog v-model:visible="createModal" header="Nuevo producto" :modal="true">
