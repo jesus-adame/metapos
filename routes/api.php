@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\PurchaseController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\InventoryTransactionController;
+use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\CashRegisterController;
 use App\Http\Controllers\Api\CashFlowController;
@@ -49,4 +50,5 @@ Route::middleware(['auth:sanctum', InitializeTenancyByDomain::class])->name('api
 
     Route::get('/cash-flows/resume', [CashFlowController::class, 'resume'])->name('cash-flows.resume');
     Route::post('/cash-registers/select', [CashRegisterController::class, 'select'])->name('cash-registers.select');
+    Route::get('/dashboard/resume', [DashboardController::class, 'resume'])->name('dashboard.resume');
 });

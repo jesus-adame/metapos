@@ -11,7 +11,11 @@ class Sale extends Model implements Cashable
     use HasFactory;
 
     protected $fillable = [
-        'customer_id', 'seller_id', 'cash_register_id', 'status', 'total',
+        'customer_id',
+        'seller_id',
+        'cash_register_id',
+        'status',
+        'total',
     ];
 
     public function getClassName(): string
