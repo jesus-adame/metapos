@@ -37,6 +37,8 @@ class PurchaseController extends Controller
 
     public function create()
     {
+        Gate::authorize(Permission::CREATE_PURCHASES);
+
         return inertia('Purchases/Create');
     }
 }

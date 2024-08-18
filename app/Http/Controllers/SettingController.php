@@ -6,8 +6,6 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 use App\Models\Setting;
 use App\Models\Permission;
-use App\Models\CashRegister;
-use App\Models\Branch;
 use App\Http\Controllers\Controller;
 
 class SettingController extends Controller
@@ -17,13 +15,9 @@ class SettingController extends Controller
         Gate::authorize(Permission::VIEW_SETTINGS);
 
         $settings = Setting::all();
-        $branches = Branch::all();
-        $cashRegisters = CashRegister::with('branch')->get();
 
         return inertia('Settings/Index', [
             'settings' => $settings,
-            'branches' => $branches,
-            'cashRegisters' => $cashRegisters,
         ]);
     }
 
@@ -42,7 +36,9 @@ class SettingController extends Controller
             'value' => 'nullable|string',
         ]);
 
-        Setting::create($request->all());
+        Setting::create([
+            'value' => $request->value,
+        ]);
 
         return redirect()->route('settings.index')->with('success', 'Setting created successfully.');
     }
@@ -58,7 +54,9 @@ class SettingController extends Controller
             'value' => 'nullable|string',
         ]);
 
-        $setting->update($request->all());
+        $setting->update([
+            'value' => $request->value,
+        ]);
 
         return redirect()->route('settings.index')->with('success', 'Setting updated successfully.');
     }

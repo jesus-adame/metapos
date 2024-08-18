@@ -146,6 +146,13 @@ export interface Permission {
     name: string
 }
 
+export interface Setting {
+    id: ?number
+    key: string
+    label: string
+    value: string
+}
+
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
     auth: {
         user: User;

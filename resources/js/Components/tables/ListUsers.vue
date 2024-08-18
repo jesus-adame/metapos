@@ -9,7 +9,7 @@ import { DataTablePageEvent } from 'primevue/datatable';
 import UserIcon from '../icons/UserIcon.vue';
 import EditUser from '../forms/EditUser.vue';
 import { User } from '@/types';
-import { formatDate } from '@/helpers';
+import { can, formatDate } from '@/helpers';
 import { useConfirm } from 'primevue/useconfirm';
 import { useToast } from 'primevue/usetoast';
 
@@ -128,15 +128,15 @@ const confirmDelete = (url: string) => {
         <Column field="" header="">
             <template #header>
                 <div class="w-full flex justify-center">
-                    <Button icon="pi pi-plus" rounded severity="success" raised @click="showModalCreate"></Button>
+                    <Button v-if="can('create users')" icon="pi pi-plus" rounded severity="success" raised @click="showModalCreate"></Button>
                 </div>
             </template>
             <template #body="{data}">
                 <div class="w-full flex justify-center">
-                    <Button icon="pi pi-pencil" severity="warn" @click="openModalEdit(data)"></Button>
+                    <Button v-if="can('update users')" icon="pi pi-pencil" severity="warn" @click="openModalEdit(data)"></Button>
                 </div>
                 <div class="w-full flex justify-center">
-                    <Button icon="pi pi-trash" severity="danger" @click="confirmDelete(route('api.users.destroy', {user: data.id}))"></Button>
+                    <Button v-if="can('delete users')" icon="pi pi-trash" severity="danger" @click="confirmDelete(route('api.users.destroy', {user: data.id}))"></Button>
                 </div>
             </template>
         </Column>

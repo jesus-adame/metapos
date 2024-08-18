@@ -66,6 +66,10 @@ class CreateRolesAndPermissionsSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'update users']);
         Permission::firstOrCreate(['name' => 'delete users']);
 
+        Permission::firstOrCreate(['name' => 'create permissions']);
+        Permission::firstOrCreate(['name' => 'update permissions']);
+        Permission::firstOrCreate(['name' => 'delete permissions']);
+
         Permission::firstOrCreate(['name' => 'view finances']);
 
         Permission::firstOrCreate(['name' => 'view settings']);
@@ -82,17 +86,25 @@ class CreateRolesAndPermissionsSeeder extends Seeder
         $manager->givePermissionTo('update purchases');
         $manager->givePermissionTo('delete purchases');
         $manager->givePermissionTo('view products');
+        $manager->givePermissionTo('create products');
         $manager->givePermissionTo('update products');
         $manager->givePermissionTo('delete products');
         $manager->givePermissionTo('view cashflows');
         $manager->givePermissionTo('update cashflows');
         $manager->givePermissionTo('delete cashflows');
         $manager->givePermissionTo('view customers');
+        $manager->givePermissionTo('view users');
+        $manager->givePermissionTo('create users');
+        $manager->givePermissionTo('update users');
+        $manager->givePermissionTo('delete users');
         $manager->givePermissionTo('update customers');
         $manager->givePermissionTo('delete customers');
         $manager->givePermissionTo('view suppliers');
         $manager->givePermissionTo('update suppliers');
         $manager->givePermissionTo('delete suppliers');
+        $manager->givePermissionTo('create permissions');
+        $manager->givePermissionTo('update permissions');
+        $manager->givePermissionTo('delete permissions');
 
         $seller->givePermissionTo('view sales');
         $seller->givePermissionTo('create sales');

@@ -2,7 +2,7 @@
 import { Head, Link } from '@inertiajs/vue3';
 import UserLayout from '@/Layouts/UserLayout.vue';
 import Button from 'primevue/button';
-import { formatDate, formatMoneyNumber, purchaseStatus } from '@/helpers';
+import { can, formatDate, formatMoneyNumber, purchaseStatus } from '@/helpers';
 import UserIcon from '@/Components/icons/UserIcon.vue';
 import { AxiosResponse } from 'axios';
 import PurchaseService from "@/Services/PurchaseService";
@@ -44,10 +44,10 @@ const onPage = (event: DataTablePageEvent) => {
         </template>
 
         <div class="mt-6 mb-4">
-            <Link :href="route('purchases.create')" class="mr-2">
+            <Link v-if="can('create purchases')" :href="route('purchases.create')" class="mr-2">
                 <Button label="Nueva compra" icon="pi pi-plus" severity="success"></Button>
             </Link>
-            <Link :href="route('suppliers.index')">
+            <Link v-if="can('view purchases')" :href="route('suppliers.index')">
                 <Button label="Proveedores" icon="pi pi-users" severity="info"></Button>
             </Link>
         </div>

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Auth\AuthenticatedApiController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\SupplierController;
+use App\Http\Controllers\Api\SettingController;
 use App\Http\Controllers\Api\SaleController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\PurchaseController;
@@ -36,6 +37,7 @@ Route::middleware(['auth:sanctum', InitializeTenancyByDomain::class])->name('api
     Route::resource('cash-registers', CashRegisterController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
+    Route::resource('settings', SettingController::class);
 
     Route::post('/login', [AuthenticatedApiController::class, 'store']);
     Route::post('/logout', [AuthenticatedApiController::class, 'destroy']);

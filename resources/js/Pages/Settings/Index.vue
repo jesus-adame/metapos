@@ -1,35 +1,57 @@
-<script setup>
-import { usePage, Head } from '@inertiajs/vue3';
+<script setup lang="ts">
+import { Head } from '@inertiajs/vue3';
 import UserLayout from '@/Layouts/UserLayout.vue';
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
-import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
 import CreateSetting from '@/Components/forms/CreateSetting.vue';
-import { ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import ListUsers from '@/Components/tables/ListUsers.vue';
 import ListCashRegisters from '@/Components/tables/ListCashRegisters.vue';
 import ListBranches from '@/Components/tables/ListBranches.vue';
 import ListRoles from '@/Components/tables/ListRoles.vue';
+import SettingService from '@/Services/SettingService';
+import axios, { AxiosResponse } from 'axios';
+import InputText from 'primevue/inputtext';
+import Button from 'primevue/button';
+import { useToast } from 'primevue/usetoast';
 
-const { props } = usePage();
-const settings = props.settings;
 const modalCreate = ref(false)
 const activePage = ref('users')
+const settingService = new SettingService()
+const toast = useToast()
 
-const showModalCreate = () => {
-    modalCreate.value = true
+const fetchItems = () => {
+    settingService.fetchAll()
+    .then((response: AxiosResponse) => {
+        console.log(response.data);
+        form.settings = response.data
+    })
 }
 
-const hideModalCreate = () => {
-    modalCreate.value = false
-}
+const form = reactive<{
+    settings: any[],
+}>({
+    settings: [],
+})
 
-const setPage = (page) => {
+const setPage = (page: string) => {
     activePage.value = page
 }
 
+onMounted(() => {
+    fetchItems()
+})
+
 const items = ref([
+    {
+        label: 'General',
+        items: [
+            {
+                label: 'Ajustes',
+                icon: 'pi pi-cog',
+                module: 'settings'
+            }
+        ]
+    },
     {
         label: 'Usuarios',
         items: [
@@ -64,18 +86,15 @@ const items = ref([
                 module: 'cashRegisters'
             }
         ]
-    },
-    // {
-    //     label: 'Ajustes',
-    //     items: [
-    //         {
-    //             label: 'Settings',
-    //             icon: 'pi pi-cog',
-    //             module: 'settings'
-    //         }
-    //     ]
-    // }
+    }
 ]);
+
+const updateSettings = () => {
+    axios.post(route('api.settings.store', form))
+    .then((response: AxiosResponse) => {
+        toast.add({ severity: 'success', summary: 'Correcto', detail: response.data.message, life: 2000 })
+    })
+}
 </script>
 
 <template>
@@ -98,23 +117,20 @@ const items = ref([
                 </Menu>
             </div>
             <div class="w-3/4 ml-2">
+                <div v-if="activePage == 'settings'" class="w-full shadow-md bg-gray-50 rounded-md p-4">
+                    <form @submit.prevent="updateSettings">
+                        <div v-for="(setting, index) in form.settings" :key="index" class="my-2">
+                            <label :for="setting.label">{{ setting.label }}</label>
+                            <InputText v-model="form.settings[index].value" class="ml-2"></InputText>
+                        </div>
+                        <Button label="Guardar cambios" type="submit"></Button>
+                    </form>
+                </div>
                 <div v-if="activePage == 'roles'">
                     <ListRoles></ListRoles>
                 </div>
                 <div v-if="activePage == 'users'" class="w-full shadow-md">
                     <ListUsers></ListUsers>
-                </div>
-                <div v-if="activePage == 'settings'" class="w-full shadow-md">
-                    <DataTable :value="settings" paginator :rows="8">
-                        <Column field="id" header="#"></Column>
-                        <Column field="key" header="Clave"></Column>
-                        <Column field="value" header="Valor"></Column>
-                        <Column field="" header="">
-                            <template #header>
-                                <Button icon="pi pi-plus" rounded severity="success" raised @click="showModalCreate"></Button>
-                            </template>
-                        </Column>
-                    </DataTable>
                 </div>
                 <div v-if="activePage == 'branches'" class="w-full shadow-md">
                     <ListBranches></ListBranches>
@@ -124,7 +140,6 @@ const items = ref([
                 </div>
             </div>
         </div>
-
     </UserLayout>
     <Dialog v-model:visible="modalCreate" modal header="Registrar ajuste" :style="{ width: '35rem' }" pt:mask:class="backdrop-blur-sm">
         <CreateSetting class="mt-4"></CreateSetting>

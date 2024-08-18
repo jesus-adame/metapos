@@ -67,9 +67,10 @@
 <body>
     <div class="ticket" style="width: {{$ancho_mm}}mm">
         <div class="header">
-            <h1>Mi Empresa</h1>
-            <p>Dirección de la empresa</p>
-            <p>Teléfono: (123) 456-7890</p>
+            <h1>{{ $company_name }}</h1>
+            <p>{{ $company_address }}</p>
+            <p>Teléfono: {{ $company_phone }}</p>
+            <p>Rfc: {{ $company_rfc }}</p>
         </div>
 
         <div class="content">
@@ -85,7 +86,6 @@
                         <tr>
                             <th>Producto</th>
                             <th>Cant.</th>
-                            <th>Precio</th>
                             <th>Subtotal</th>
                         </tr>
                     </thead>
@@ -94,7 +94,6 @@
                             <tr>
                                 <td>{{ $product->name }}</td>
                                 <td>{{ $product->pivot->quantity }}</td>
-                                <td>{{ number_format($product->pivot->price, 2) }}</td>
                                 <td>{{ number_format($product->pivot->quantity * $product->pivot->price, 2) }}</td>
                             </tr>
                         @endforeach
