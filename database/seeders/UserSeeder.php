@@ -14,14 +14,16 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        /** @var User */
-        $user = User::firstOrCreate([
-            'name' => 'Admin',
-            'lastname' => 'N/A',
-            'email' => config('app.admin.email'),
-        ]);
+        $user = User::where('email', config('app.admin.email'))->first();
 
-        $user->password = Hash::make(config('app.admin.password'));
-        $user->save();
+        if (is_null($user)) {
+            /** @var User */
+            $user = User::create([
+                'name' => 'Admin',
+                'lastname' => 'N/A',
+                'email' => config('app.admin.email'),
+                'password' => Hash::make(config('app.admin.password'))
+            ]);
+        }
     }
 }
