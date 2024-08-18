@@ -1,36 +1,47 @@
 <script setup lang="ts">
-import { useForm } from '@inertiajs/vue3';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
+import { useToast } from 'primevue/usetoast';
+import axios, { AxiosResponse } from 'axios';
+import { reactive } from 'vue';
 
+const toast = useToast();
+//const customerStore = useCustomerStore()
 const emit = defineEmits(['save'])
-const form = useForm({
+const form = reactive({
     first_name: null,
     last_name: null,
     email: null,
     phone: null,
     address: null,
+    processing: false,
 });
 
 const submit = () => {
-    form.post(route('api.suppliers.store'), {
-        onSuccess: () => {
-            emit('save')
-            form.reset()
-        }
-    });
+    form.processing = true
+    axios.post(route('api.suppliers.store'), form)
+    .then((response: AxiosResponse) => {
+        form.processing = false
+        toast.add({ summary: 'Correcto', detail: response.data.message, severity: 'success', life: 2000})
+        emit('save')
+    })
+    .catch(({response}) => {
+        toast.add({ summary: 'Error', detail: response.data.message, severity: 'error', life: 2000})
+    })
 };
 </script>
 
 <template>
     <form @submit.prevent="submit">
-        <div>
-            <label for="first_name" class="block">Nombre</label>
-            <InputText class="w-full" v-model="form.first_name"></InputText>
-        </div>
-        <div>
-            <label for="last_name" class="block">Apellido</label>
-            <InputText class="w-full" v-model="form.last_name"></InputText>
+        <div class="flex">
+            <div class="w-full mr-2">
+                <label for="first_name" class="block">Nombre</label>
+                <InputText name="name" class="w-full" v-model="form.first_name"></InputText>
+            </div>
+            <div class="w-full">
+                <label for="last_name" class="block">Apellido</label>
+                <InputText name="lastname" class="w-full" v-model="form.last_name"></InputText>
+            </div>
         </div>
         <div>
             <label for="email" class="block">Email</label>
@@ -38,14 +49,14 @@ const submit = () => {
         </div>
         <div>
             <label for="phone" class="block">Telefono</label>
-            <InputText class="w-full" v-model="form.phone"></InputText>
+            <InputText name="phone" class="w-full" v-model="form.phone"></InputText>
         </div>
         <div>
             <label for="address" class="block">Dirección</label>
-            <InputText class="w-full" v-model="form.address"></InputText>
+            <InputText name="address" class="w-full" v-model="form.address"></InputText>
         </div>
         <div class="mt-4">
-            <Button type="submit" :disabled="form.processing">Registrar</Button>
+            <Button type="submit" :disabled="form.processing" severity="success">Registrar</Button>
         </div>
     </form>
 </template>

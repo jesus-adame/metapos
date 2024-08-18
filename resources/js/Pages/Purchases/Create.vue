@@ -17,6 +17,7 @@ import { formatMoneyNumber } from '@/helpers';
 import ProductsList from './Partials/ProductsList.vue';
 import SelectProduct from './Partials/SelectProduct.vue';
 import SupplierService from '@/Services/SupplierService';
+import CreateSupplier from '@/Components/forms/CreateSupplier.vue';
 
 // Retrieve suppliers and products from the server
 const page = usePage();
@@ -28,6 +29,7 @@ const toast = useToast();
 const selectedSupplier = ref<Supplier>();
 const filteredSuppliers = ref<Supplier[]>([]);
 const modalPayments = ref(false)
+const modalCreateSupplier = ref(false)
 
 // Initialize the form
 const form = useForm<{
@@ -74,7 +76,7 @@ const searchSupplier = (event: AutoCompleteCompleteEvent) => {
                 filteredSuppliers.value = [...response.data]; // Asegúrate de que response.data es un array
             })
             .catch((error) => {
-                console.error('Error fetching customers', error);
+                console.error('Error fetching Suppliers', error);
             });
     }, 250);
 }
@@ -135,12 +137,24 @@ const setSuccessPayment = () => {
     hideModalPayments();
     clearPurchaseComponent();
 }
+
+const showModalCreateSupplier = () => {
+    modalCreateSupplier.value = true
+}
+
+const hideModalCreateSupplier = () => {
+    modalCreateSupplier.value = false
+}
 </script>
 <template>
     <Head title="Registrar Compra" />
 
     <Dialog v-model:visible="modalPayments" modal header="Registrar compra">
         <Payment :form="form" :totalPurchase="totalPurchase" :supplier="selectedSupplier" @cancel="hideModalPayments" @save="setSuccessPayment"></Payment>
+    </Dialog>
+
+    <Dialog v-model:visible="modalCreateSupplier" modal header="Registrar proveedor" :style="{ width: '35rem' }" pt:mask:class="backdrop-blur-sm">
+        <CreateSupplier class="mt-4" @save="hideModalCreateSupplier"></CreateSupplier>
     </Dialog>
 
     <UserLayout>
@@ -161,20 +175,23 @@ const setSuccessPayment = () => {
                 </form>
             </div>
 
-            <div class="customer w-1/3">
-                <AutoComplete v-model="selectedSupplier" optionLabel="first_name" :suggestions="filteredSuppliers"
-                    @complete="searchSupplier"
-                    class="w-full"
-                    inputClass="w-full"
-                    placeholder="Proveedor" dropdown >
-                    <template #option="slot">
-                        <div class="flex align-options-center">
-                            <div>
-                                {{ slot.option.first_name }} {{ slot.option.last_name }} | {{ slot.option.phone }}
+            <div class="supplier w-1/3">
+                <div class="flex">
+                    <AutoComplete v-model="selectedSupplier" optionLabel="first_name" :suggestions="filteredSuppliers"
+                        @complete="searchSupplier"
+                        class="w-full"
+                        inputClass="w-full"
+                        placeholder="Proveedor" >
+                        <template #option="slot">
+                            <div class="flex align-options-center">
+                                <div>
+                                    {{ slot.option.first_name }} {{ slot.option.last_name }} | {{ slot.option.phone }}
+                                </div>
                             </div>
-                        </div>
-                    </template>
-                </AutoComplete>
+                        </template>
+                    </AutoComplete>
+                    <Button icon="pi pi-plus" class="ml-2" severity="success" raised @click="showModalCreateSupplier"></Button>
+                </div>
             </div>
         </div>
 
