@@ -15,10 +15,10 @@ class InventoryTransaction extends Model
 
     protected $fillable = [
         'product_id',
-        'branch_id',
+        'location_id',
         'type',
         'quantity',
-        'transaction_date',
+        'applicated_at',
         'description',
     ];
 
@@ -27,8 +27,8 @@ class InventoryTransaction extends Model
         return $this->belongsTo(Product::class);
     }
 
-    public function branch()
+    public function location()
     {
-        return $this->belongsTo(Branch::class);
+        return $this->belongsTo(Location::class);
     }
 }

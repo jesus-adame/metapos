@@ -20,10 +20,10 @@ class DashboardController extends Controller
     {
         Gate::allows(Permission::VIEW_FINANCES);
 
-        $salesAmount = Sale::where('status', 'paid')
+        $salesAmount = Sale::where('status', 'completed')
             ->sum('total');
 
-        $purchasesAmount = Purchase::where('status', 'paid')
+        $purchasesAmount = Purchase::where('status', 'completed')
             ->sum('total');
 
         $customersAmount = Customer::count();

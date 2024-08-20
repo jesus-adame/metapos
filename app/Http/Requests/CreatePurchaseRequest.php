@@ -25,7 +25,7 @@ class CreatePurchaseRequest extends FormRequest
     {
         return [
             'supplier_id' => 'nullable|exists:suppliers,id',
-            'purchase_date' => 'required|date',
+            'applicated_at' => 'required|date',
             'products' => 'required|array',
             'products.*.id' => 'required|exists:products,id',
             'products.*.quantity' => 'required|integer|min:1',
@@ -43,7 +43,7 @@ class CreatePurchaseRequest extends FormRequest
     {
         return [
             'products.required' => 'Debes cargar al menos un producto.',
-            'purchase_date.required' => 'Elijar una fecha.',
+            'applicated_at.required' => 'Elijar una fecha.',
             'location_id.required' => 'Elija una ubicación.',
             'location_type.required' => 'Elija un tipo de ubicación.',
         ];

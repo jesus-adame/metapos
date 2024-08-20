@@ -4,9 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Services\InventoryTransacctions\CreateInventoryTransaction;
-use App\Models\Warehouse;
+use App\Models\Location;
 use App\Models\InventoryTransaction;
-use App\Models\Branch;
 use App\Http\Requests\StoreInventoryRequest;
 use App\Http\Controllers\Controller;
 
@@ -38,12 +37,8 @@ class InventoryTransactionController extends Controller
     {
         $location = null;
 
-        if ($request->location_type == Branch::class) {
-            $location = Branch::find($request->location_id);
-        }
-
-        if ($request->location_type == Warehouse::class) {
-            $location = Warehouse::find($request->location_id);
+        if ($request->location_type == Location::class) {
+            $location = Location::find($request->location_id);
         }
 
         $transaction = $service->execute(
@@ -51,7 +46,7 @@ class InventoryTransactionController extends Controller
             $request->type,
             $request->product_id,
             $request->quantity,
-            $request->transaction_date,
+            $request->applicated_at,
             $request->description,
         );
 

@@ -231,7 +231,7 @@ const formatDiscount = computed(() => {
                     <Button v-if="form.discount == null" label="Agregar descuento" class="mr-2" icon="pi pi-tag" @click="showModalDiscount"></Button>
                     <div class="w-1/2">
                         <div class="flex">
-                            <AutoComplete v-model="selectedCustomer" optionLabel="first_name" :suggestions="filteredCustomers"
+                            <AutoComplete v-model="selectedCustomer" optionLabel="firstname" :suggestions="filteredCustomers"
                                 @complete="searchCustomer"
                                 @change="setCustomer"
                                 class="w-full"
@@ -240,7 +240,7 @@ const formatDiscount = computed(() => {
                                 <template #option="slot">
                                     <div class="flex align-options-center">
                                         <div>
-                                            {{ slot.option.first_name }} {{ slot.option.last_name }} | {{ slot.option.phone }}
+                                            {{ slot.option.firstname }} {{ slot.option.lastname }} | {{ slot.option.phone }}
                                         </div>
                                     </div>
                                 </template>

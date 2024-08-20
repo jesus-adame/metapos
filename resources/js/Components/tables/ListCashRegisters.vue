@@ -88,26 +88,26 @@ const confirmDelete = (url: string) => {
     <DataTable :value="items" paginator :rows="rows" lazy @page="onPage" :totalRecords="totalRecords">
         <Column field="id" header="#"></Column>
         <Column field="name" header="Nombre">
-            <template #body="slot">
+            <template #body="{data}">
                 <CashRegisterIcon>
-                    <span>{{ slot.data.name }}</span>
-                    <Tag class="ml-2" v-if="slot.data.is_default" :value="'default'" severity="info"></Tag>
+                    <span>{{ data.name }}</span>
+                    <Tag class="ml-2" v-if="data.is_default" :value="'default'" severity="info"></Tag>
                 </CashRegisterIcon>
             </template>
         </Column>
-        <Column field="branch" header="Ubicación">
-            <template #body="slot">
+        <Column field="location" header="Ubicación">
+            <template #body="{data}">
                 <div class="flex items-center">
                     <div class="rounded-full px-3 py-2 bg-gray-200 mr-2">
                         <i class="pi pi-building"></i>
                     </div>
-                    <span>{{ slot.data.branch.name }}</span>
+                    <span>{{ data.location.name }}</span>
                 </div>
             </template>
         </Column>
         <Column field="created_at" header="Creado">
-            <template #body="slot">
-                {{ formatDate(slot.data.created_at) }}
+            <template #body="{data}">
+                {{ formatDate(data.created_at) }}
             </template>
         </Column>
         <Column field="" header="">

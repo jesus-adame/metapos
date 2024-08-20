@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Contracts\Locationable;
 
-class Branch extends Model implements Locationable
+class Location extends Model implements Locationable
 {
     use HasFactory;
 
@@ -14,8 +14,18 @@ class Branch extends Model implements Locationable
         'name',
         'address',
         'type',
-        'is_default'
+        'is_default',
+        'phone_number',
+        'email',
+        'rfc',
+        'currency',
+        'timezone',
     ];
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
 
     public function cashRegisters()
     {
@@ -29,11 +39,11 @@ class Branch extends Model implements Locationable
 
     public function inventories()
     {
-        return $this->morphMany(Inventory::class, 'location');
+        return $this->hasMany(Inventory::class);
     }
 
     public function purchases()
     {
-        return $this->morphMany(Inventory::class, 'location');
+        return $this->hasMany(Purchase::class);
     }
 }

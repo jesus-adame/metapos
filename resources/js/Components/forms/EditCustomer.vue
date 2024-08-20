@@ -9,8 +9,8 @@ const { customer } = defineProps<{
 }>()
 const emit = defineEmits(['save'])
 const form = useForm({
-    first_name: customer.last_name,
-    last_name: customer.last_name,
+    firstname: customer.lastname,
+    lastname: customer.lastname,
     email: customer.email,
     phone: customer.phone,
     address: customer.address,
@@ -29,12 +29,12 @@ const submit = () => {
 <template>
     <form @submit.prevent="submit">
         <div>
-            <label for="first_name" class="block">Nombre</label>
-            <InputText class="w-full" v-model="form.first_name"></InputText>
+            <label for="firstname" class="block">Nombre</label>
+            <InputText class="w-full" v-model="form.firstname"></InputText>
         </div>
         <div>
-            <label for="last_name" class="block">Apellido</label>
-            <InputText class="w-full" v-model="form.last_name"></InputText>
+            <label for="lastname" class="block">Apellido</label>
+            <InputText class="w-full" v-model="form.lastname"></InputText>
         </div>
         <div>
             <label for="email" class="block">Email</label>

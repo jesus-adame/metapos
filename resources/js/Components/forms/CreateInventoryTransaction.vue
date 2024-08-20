@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import BranchService from '@/Services/BranchService';
+import LocationService from '@/Services/LocationService';
 import ProductService from '@/Services/ProductService';
-import { Branch, ErrorResponse, Product } from '@/types';
+import { Location, ErrorResponse, Product } from '@/types';
 import { usePage } from '@inertiajs/vue3';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import Button from 'primevue/button';
@@ -13,19 +13,18 @@ import { onMounted, reactive, ref } from 'vue';
 const page = usePage();
 const toast = useToast();
 const products = ref<Product[]>([]);
-const branches = ref<Branch[]>([]);
+const locations = ref<Location[]>([]);
 const productService = new ProductService();
-const branchService = new BranchService();
+const locationService = new LocationService();
 const emit = defineEmits(['save', 'cancel'])
 
 const form = reactive({
     product_id: '',
     type: 'entry',
     quantity: null,
-    transaction_date: '',
+    applicated_at: '',
     description: '',
     location_id: page.props.location_id,
-    location_type: page.props.location_type,
     processing: false
 });
 
@@ -46,10 +45,10 @@ const submit = () => {
 };
 
 const fetchLocations = () => {
-    branchService.fetchAll()
+    locationService.fetchAll()
     .then((response: AxiosResponse) => {
         const paginate = response.data
-        branches.value = paginate.data
+        locations.value = paginate.data
     })
 }
 
@@ -69,7 +68,7 @@ const types = ref([
 ])
 
 // const location_types = ref([
-//     { label: 'Sucursal', value: 'App\\Models\\Branch' },
+//     { label: 'Sucursal', value: 'App\\Models\\Location' },
 //     { label: 'Almacén', value: 'App\\Models\\Warehouse' },
 // ])
 </script>
@@ -86,7 +85,7 @@ const types = ref([
             </div> -->
             <div class="w-1/2">
                 <label for="location_id" class="block">Ubicación</label>
-                <Select v-model="form.location_id" :options="branches" optionLabel="name" optionValue="id" class="w-full"></Select>
+                <Select v-model="form.location_id" :options="locations" optionLabel="name" optionValue="id" class="w-full"></Select>
             </div>
         </div>
         <div class="mb-4">
@@ -98,8 +97,8 @@ const types = ref([
             <InputNumber v-model="form.quantity" :min="0" :step="1" class="w-full" showButtons placeholder="0"></InputNumber>
         </div>
         <div class="mb-4">
-            <label for="transaction_date" class="block">Fecha de transacción</label>
-            <input type="date" v-model="form.transaction_date" id="transaction_date" class="w-full">
+            <label for="applicated_at" class="block">Fecha de transacción</label>
+            <input type="date" v-model="form.applicated_at" id="applicated_at" class="w-full">
         </div>
         <div class="mb-4">
             <label for="description" class="block">Motivo</label>

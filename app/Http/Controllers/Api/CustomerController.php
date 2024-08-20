@@ -28,9 +28,9 @@ class CustomerController extends Controller
             return response()->json([]);
         }
 
-        $customers = Customer::where('last_name', 'like', "%$request->code%")
+        $customers = Customer::where('lastname', 'like', "%$request->code%")
             ->orWhere('email', 'like', "%$request->code%")
-            ->orWhere('first_name', 'like', "%$request->code%")
+            ->orWhere('firstname', 'like', "%$request->code%")
             ->orWhere('phone', 'like', "%$request->code%")
             ->get();
 
@@ -40,16 +40,16 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'first_name' => 'required',
-            'last_name' => 'required',
+            'firstname' => 'required',
+            'lastname' => 'required',
             'email' => 'nullable|email',
             'phone' => 'nullable',
             'address' => 'nullable',
         ]);
 
         $customer = Customer::create([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
+            'firstname' => $request->firstname,
+            'lastname' => $request->lastname,
             'email' => $request->email,
             'phone' => $request->phone,
             'address' => $request->address,

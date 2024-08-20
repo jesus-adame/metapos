@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::table('products', function (Blueprint $table) {
             $table->string('image')->nullable();
+            $table->string('image_url')->nullable()->after('image');
         });
     }
 
@@ -23,6 +24,7 @@ return new class extends Migration
     {
         Schema::table('products', function (Blueprint $table) {
             $table->dropColumn('image');
+            $table->dropColumn('image_url');
         });
     }
 };

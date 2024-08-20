@@ -13,7 +13,7 @@ class CashRegisterController extends Controller
     public function index(Request $request): JsonResponse
     {
         $perPage = $request->input('rows', 10);
-        $cashRegisters = CashRegister::with('branch')
+        $cashRegisters = CashRegister::with('location')
             ->orderBy('updated_at', 'desc')
             ->paginate($perPage);
 
@@ -23,7 +23,7 @@ class CashRegisterController extends Controller
     public function search(Request $request): JsonResponse
     {
         $params = $request->params;
-        $cashRegisters = CashRegister::with('branch')
+        $cashRegisters = CashRegister::with('location')
             ->orderBy('updated_at', 'desc')
             ->where($params)
             ->limit(10)
@@ -43,7 +43,7 @@ class CashRegisterController extends Controller
         $cashRegister = CashRegister::find($request->cash_register_id);
 
         $user->update([
-            'branch_id' => $cashRegister->branch->id,
+            'location_id' => $cashRegister->location->id,
             'cash_register_id' => $cashRegister->id,
         ]);
 
@@ -58,12 +58,12 @@ class CashRegisterController extends Controller
     {
         $request->validate([
             'name' => 'required|string|unique:cash_registers,name',
-            'branch_id' => 'required|integer|exists:branches,id'
+            'location_id' => 'required|integer|exists:locations,id'
         ]);
 
         $cashRegister = CashRegister::create([
             'name' => $request->name,
-            'branch_id' => $request->branch_id,
+            'location_id' => $request->location_id,
             'is_default' => false,
         ]);
 

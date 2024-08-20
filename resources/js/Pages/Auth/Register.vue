@@ -18,7 +18,7 @@ const form = reactive({
     email: '',
     password: '',
     password_confirmation: '',
-    branch: '',
+    location: '',
     address: '',
     errors: {},
     processing: false,
@@ -32,7 +32,7 @@ const submit = () => {
         email: form.email,
         password: form.password,
         password_confirmation: form.password_confirmation,
-        branch: form.branch,
+        location: form.location,
         address: form.address,
         _token: page.props.csrf_token,
     })
@@ -94,11 +94,11 @@ const submit = () => {
                     />
                 </div>
                 <div class="mt-4">
-                    <InputLabel for="branch" value="Sucursal" />
+                    <InputLabel for="location" value="Sucursal" />
                     <InputText
-                        id="branch"
+                        id="location"
                         class="mt-1 block w-full"
-                        v-model="form.branch"
+                        v-model="form.location"
                     />
                 </div>
                 <div class="mt-4">

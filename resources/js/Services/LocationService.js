@@ -1,35 +1,35 @@
 import axios from "axios";
 import { ref } from 'vue';
 
-export default class BranchService {
+export default class LocationService {
     constructor() {
-        this.branches = ref([]);
+        this.locations = ref([]);
     }
 
-    getBranches() {
-        return this.branches;
+    getLocations() {
+        return this.locations;
     }
 
     async findByCode(code) {
-        const url = '/api/branches/search';
+        const url = '/api/locations/search';
         const response = await axios.post(url, { code: code });
-        this.branches.value = response.data
+        this.locations.value = response.data
 
         return response
     }
 
     async paginate(page, rows) {
-        const url = `/api/branches`;
+        const url = `/api/locations`;
         const response = await axios.get(url, { params: { page, rows: rows } });
-        this.branches.value = response.data
+        this.locations.value = response.data
 
         return response
     }
 
     async fetchAll() {
-        const url = '/api/branches';
+        const url = '/api/locations';
         const response = await axios.get(url);
-        this.branches.value = response.data
+        this.locations.value = response.data
 
         return response
     }

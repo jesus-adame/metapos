@@ -22,7 +22,7 @@ class User extends Authenticatable
         'lastname',
         'email',
         'password',
-        'branch_id',
+        'location_id',
         'cash_register_id',
     ];
 

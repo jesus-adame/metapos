@@ -148,9 +148,9 @@ return [
 
     'attributes' => [
         'name' => 'nombre',
-        'first_name' => 'nombre',
+        'firstname' => 'nombre',
         'lastname' => 'apellido',
-        'last_name' => 'apellido',
+        'lastname' => 'apellido',
         'price' => 'precio',
         'quantity' => 'cantidad',
         'cost' => 'costo',

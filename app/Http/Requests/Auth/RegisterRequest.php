@@ -28,7 +28,7 @@ class RegisterRequest extends FormRequest
             'lastname' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:' . User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'branch' => ['required', 'string', 'unique:branches,name'],
+            'location' => ['required', 'string', 'unique:locations,name'],
             'address' => 'required|string',
         ];
     }
@@ -39,7 +39,7 @@ class RegisterRequest extends FormRequest
             'name.required' => 'El nombre es obligatorio.',
             'lastname.required' => 'El apellido es obligatorio.',
             'email.required' => 'El email es obligatorio.',
-            'branch.required' => 'La sucursal es obligatorio.',
+            'location.required' => 'La sucursal es obligatorio.',
             'address.required' => 'La dirección es obligatoria.',
         ];
     }

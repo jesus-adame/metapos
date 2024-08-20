@@ -28,7 +28,7 @@ defineProps<{
                         <strong>Compra #</strong> {{ purchase.id }}
                     </div>
                     <div>
-                        <strong>Proveedor</strong> {{ purchase.supplier?.first_name }} {{ purchase.supplier?.last_name }}
+                        <strong>Proveedor</strong> {{ purchase.supplier?.firstname }} {{ purchase.supplier?.lastname }}
                     </div>
                     <div>
                         <strong>Estatus</strong> {{ purchaseStatus(purchase.status) }}

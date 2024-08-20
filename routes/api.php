@@ -12,13 +12,13 @@ use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\PurchaseController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\PermissionController;
+use App\Http\Controllers\Api\LocationController;
 use App\Http\Controllers\Api\InventoryTransactionController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\CashRegisterController;
 use App\Http\Controllers\Api\CashFlowController;
 use App\Http\Controllers\Api\CashCutController;
-use App\Http\Controllers\Api\BranchController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -34,7 +34,7 @@ Route::middleware(['auth:sanctum', InitializeTenancyByDomain::class])->name('api
     Route::resource('cash-flows', CashFlowController::class)->only(['index', 'store']);
     Route::resource('cash-cuts', CashCutController::class);
     Route::resource('inventory-transactions', InventoryTransactionController::class);
-    Route::resource('branches', BranchController::class);
+    Route::resource('locations', LocationController::class);
     Route::resource('cash-registers', CashRegisterController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);

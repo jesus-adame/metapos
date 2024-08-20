@@ -9,8 +9,8 @@ const toast = useToast();
 //const customerStore = useCustomerStore()
 const emit = defineEmits(['save'])
 const form = reactive({
-    first_name: null,
-    last_name: null,
+    firstname: null,
+    lastname: null,
     email: null,
     phone: null,
     address: null,
@@ -35,12 +35,12 @@ const submit = () => {
     <form @submit.prevent="submit">
         <div class="flex">
             <div class="w-full mr-2">
-                <label for="first_name" class="block">Nombre</label>
-                <InputText name="name" class="w-full" v-model="form.first_name"></InputText>
+                <label for="firstname" class="block">Nombre</label>
+                <InputText name="name" class="w-full" v-model="form.firstname"></InputText>
             </div>
             <div class="w-full">
-                <label for="last_name" class="block">Apellido</label>
-                <InputText name="lastname" class="w-full" v-model="form.last_name"></InputText>
+                <label for="lastname" class="block">Apellido</label>
+                <InputText name="lastname" class="w-full" v-model="form.lastname"></InputText>
             </div>
         </div>
         <div>

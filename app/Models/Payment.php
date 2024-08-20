@@ -18,7 +18,11 @@ class Payment extends Model
     const TRANSFER_METHOD = 'transfer';
 
     protected $fillable = [
-        'sale_id', 'method', 'amount',
+        'sale_id',
+        'purchase_id',
+        'method',
+        'amount',
+        'description',
     ];
 
     public function sale()

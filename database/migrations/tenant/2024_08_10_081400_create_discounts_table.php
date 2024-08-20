@@ -19,6 +19,7 @@ return new class extends Migration
             $table->decimal('amount');
             $table->boolean('is_percentage');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

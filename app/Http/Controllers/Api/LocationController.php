@@ -4,15 +4,15 @@ namespace App\Http\Controllers\Api;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Illuminate\Http\Request;
-use App\Models\Branch;
+use App\Models\Location;
 use App\Http\Controllers\Controller;
 
-class BranchController extends Controller
+class LocationController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
         $perPage = $request->input('rows', 10);
-        $users = Branch::orderBy('updated_at', 'desc')->paginate($perPage);
+        $users = Location::orderBy('updated_at', 'desc')->paginate($perPage);
 
         return response()->json($users);
     }
@@ -24,7 +24,7 @@ class BranchController extends Controller
             'address' => 'nullable|string|max:255',
         ]);
 
-        Branch::create([
+        Location::create([
             'name' => $request->name,
             'address' => $request->address,
             'type' => 'branch',
@@ -36,7 +36,7 @@ class BranchController extends Controller
         ]);
     }
 
-    public function update(Request $request, Branch $branch): JsonResponse
+    public function update(Request $request, Location $location): JsonResponse
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -44,22 +44,26 @@ class BranchController extends Controller
             'type' => 'required|string|in:branch,warehouse', // Validate type
         ]);
 
-        $branch->update($request->all());
+        $location->update([
+            'name' => $request->name,
+            'address' => $request->address,
+            'type' => $request->type,
+        ]);
 
         return response()->json([
             'message' => 'Ubicación actualizada.'
         ]);
     }
 
-    public function destroy(Branch $branch): JsonResponse
+    public function destroy(Location $location): JsonResponse
     {
-        if ($branch->is_default) {
+        if ($location->is_default) {
             return response()->json([
                 'message' => 'No se pueden eliminar datos por defecto.'
             ], JsonResponse::HTTP_BAD_GATEWAY);
         }
 
-        $branch->delete();
+        $location->delete();
 
         return response()->json([
             'message' => 'Ubicación eliminada.'

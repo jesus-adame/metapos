@@ -4,7 +4,7 @@ import Column from 'primevue/column';
 import CashRegisterIcon from '@/Components/icons/CashRegisterIcon.vue';
 import UserIcon from '@/Components/icons/UserIcon.vue';
 import { DataTablePageEvent } from 'primevue/datatable';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { Sale } from '@/types';
 import SaleService from "@/Services/SaleService";
 import { AxiosResponse } from 'axios';
@@ -12,6 +12,7 @@ import { Link } from '@inertiajs/vue3';
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
 import PDFObject from '../PDFObject.vue';
+import { useAuthStore } from '@/stores/AuthStore';
 
 const items = ref<Sale[]>([])
 const totalRecords = ref<number>(0)
@@ -21,6 +22,7 @@ const rows = ref<number>(10)
 const cashRegister = ref<number | null>(null)
 const modalTicket = ref<boolean>(false)
 const saleId = ref<number | null>(null)
+const authStore = useAuthStore()
 
 const fetchItems = (pageNumber: number) => {
     saleService.paginate(pageNumber, rows.value, cashRegister.value)
@@ -42,6 +44,10 @@ const openModaTicket = (id: number) => {
 }
 
 onMounted(() => {
+    fetchItems(page.value)
+})
+
+watch(() => authStore.cashRegister, () => {
     fetchItems(page.value)
 })
 </script>
@@ -66,7 +72,7 @@ onMounted(() => {
         <Column header="Cliente">
             <template #body="slot">
                 <UserIcon>
-                    {{ slot.data.customer?.first_name || 'Sin asignar' }} {{ slot.data.customer?.last_name }}
+                    {{ slot.data.customer?.firstname || 'Sin asignar' }} {{ slot.data.customer?.lastname }}
                 </UserIcon>
             </template>
         </Column>

@@ -83,7 +83,7 @@ export const locationIcon = (location: Location | null) => {
 
 export const saleStatus = (status: string) => {
     switch (status) {
-        case 'paid':
+        case 'completed':
             return 'Pagado'
         case 'pending':
             return 'Pendiente'
@@ -96,7 +96,7 @@ export const saleStatus = (status: string) => {
 
 export const purchaseStatus = (status: string) => {
     switch (status) {
-        case 'paid':
+        case 'completed':
             return 'Pagado'
         case 'pending':
             return 'Pendiente'

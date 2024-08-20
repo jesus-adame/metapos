@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('bank_transactions', function (Blueprint $table) {
+        Schema::create('user_locations', function (Blueprint $table) {
             $table->id();
-            $table->enum('type', ['entry', 'exit']);
-            $table->decimal('amount', 10, 2);
-            $table->string('description')->nullable();
-            $table->dateTime('transaction_date');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('location_id');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('location_id')->references('id')->on('locations')->onDelete('cascade');
         });
     }
 
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('bank_transactions');
+        Schema::dropIfExists('user_locations');
     }
 };

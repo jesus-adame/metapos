@@ -57,13 +57,13 @@ const onPage = (event: DataTablePageEvent) => {
                 <Column field="id" header="#"></Column>
                 <Column header="Fecha">
                     <template #body="slot">
-                        {{ formatDate(slot.data.purchase_date) }}
+                        {{ formatDate(slot.data.applicated_at) }}
                     </template>
                 </Column>
                 <Column header="Proveedor">
                     <template #body="slot">
                         <UserIcon>
-                            {{ slot.data.supplier?.first_name || 'N/A' }} {{ slot.data.supplier?.last_name }}
+                            {{ slot.data.supplier?.firstname || 'N/A' }} {{ slot.data.supplier?.lastname }}
                         </UserIcon>
                     </template>
                 </Column>

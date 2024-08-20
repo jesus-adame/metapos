@@ -15,9 +15,8 @@ class Purchase extends Model implements Cashable
         'buyer_id',
         'total',
         'status',
-        'purchase_date',
+        'applicated_at',
         'location_id',
-        'location_type',
     ];
 
     public function getClassName(): string
@@ -37,7 +36,7 @@ class Purchase extends Model implements Cashable
 
     public function location()
     {
-        return $this->morphTo();
+        return $this->belongsTo(Location::class);
     }
 
     public function products()

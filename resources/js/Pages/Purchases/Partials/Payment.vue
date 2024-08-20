@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { formatMoneyNumber } from '@/helpers';
-import BranchService from '@/Services/BranchService';
-import { Branch, Supplier } from '@/types';
+import LocationService from '@/Services/LocationService';
+import { Location, Supplier } from '@/types';
 import axios from 'axios';
 import { AxiosResponse } from 'axios';
 import Button from 'primevue/button';
@@ -11,8 +11,8 @@ import { onMounted, ref } from 'vue';
 
 const emit = defineEmits(['cancel', 'save']);
 const purchaseStatus = ref('pending');
-const branches = ref<Branch[]>([]);
-const branchService = new BranchService();
+const locations = ref<Location[]>([]);
+const locationService = new LocationService();
 const updateCashRegister = ref(false)
 const selectedPayment = ref('Efectivo');
 
@@ -47,7 +47,7 @@ const applyPayment = () => {
 
   axios.post(route('api.purchases.store'), formData)
   .then(response => {
-    purchaseStatus.value = 'paid';
+    purchaseStatus.value = 'completed';
     openDialogResponse({
       type: 'success',
       header: 'Correcto',
@@ -79,16 +79,16 @@ const closeDialogResponse = () => {
     content: ''
   }
 
-  if (purchaseStatus.value == 'paid') {
+  if (purchaseStatus.value == 'completed') {
     submitPayment();
   }
 }
 
 const fetchLocations = () => {
-    branchService.fetchAll()
+    locationService.fetchAll()
     .then((response: AxiosResponse) => {
         const paginate = response.data
-        branches.value = paginate.data
+        locations.value = paginate.data
     })
 }
 
@@ -131,10 +131,10 @@ const clearPayments = () => {
     <div class="w-full shadow-sm rounded-md px-3 mt-2">
         <div>
             <label for="location_id" class="block">Ubicación</label>
-            <Select v-model="form.location_id" :options="branches" optionLabel="name" optionValue="id" class="w-full"></Select>
+            <Select v-model="form.location_id" :options="locations" optionLabel="name" optionValue="id" class="w-full"></Select>
         </div>
-        <label for="purchase_date">Fecha de compra</label>
-        <DatePicker class="d-block w-full" date-format="dd/mm/yy" v-model="form.purchase_date"></DatePicker>
+        <label for="applicated_at">Fecha de compra</label>
+        <DatePicker class="d-block w-full" date-format="dd/mm/yy" v-model="form.applicated_at"></DatePicker>
         <div class="flex items-center my-4">
             <Checkbox v-model="updateCashRegister" :binary="true" inputId="cash" class="mr-2"/>
             <label for="cash">Pagar con Caja</label>

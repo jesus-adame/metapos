@@ -6,15 +6,15 @@ import axios, { AxiosResponse } from 'axios';
 import { onMounted, ref } from 'vue';
 import { useToast } from 'primevue/usetoast';
 import Select from 'primevue/select';
-import BranchService from "@/Services/BranchService";
+import LocationService from "@/Services/LocationService";
 
-const branchService: BranchService = new BranchService()
+const locationService: LocationService = new LocationService()
 const toast = useToast();
 const form = ref({
     name: '',
-    branch_id: '',
+    location_id: '',
 });
-const branches = ref([])
+const locations = ref([])
 
 const emit = defineEmits(['save', 'cancel'])
 
@@ -23,7 +23,7 @@ const submit = () => {
     .then(response => {
         form.value = {
             name: '',
-            branch_id: '',
+            location_id: '',
         };
 
         toast.add({ severity: 'success', summary: 'Correcto', detail: response.data.message, life: 1200 });
@@ -35,17 +35,17 @@ const submit = () => {
     })
 };
 
-const fetchBranches = () => {
-    const result = branchService.fetchAll()
+const fetchLocationes = () => {
+    const result = locationService.fetchAll()
 
     result.then((response: AxiosResponse) => {
         const dataResponse = response.data;
-        branches.value = JSON.parse(JSON.stringify(dataResponse.data))
+        locations.value = JSON.parse(JSON.stringify(dataResponse.data))
     })
 }
 
 onMounted(() => {
-    fetchBranches()
+    fetchLocationes()
 })
 </script>
 <template>
@@ -62,7 +62,7 @@ onMounted(() => {
         </div>
         <div class="mt-4">
             <InputLabel for="banches" value="Ubicación" />
-            <Select v-model="form.branch_id" :options="branches" optionLabel="name" optionValue="id" class="w-full"></Select>
+            <Select v-model="form.location_id" :options="locations" optionLabel="name" optionValue="id" class="w-full"></Select>
         </div>
         <div class="flex items-center justify-end mt-4">
             <Button label="Guardar" type="submit" class="ms-4"></Button>

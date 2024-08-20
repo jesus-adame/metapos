@@ -9,7 +9,7 @@ class CashRegister extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'branch_id', 'is_default'];
+    protected $fillable = ['name', 'location_id', 'is_default'];
 
     public function getBalance()
     {
@@ -19,9 +19,9 @@ class CashRegister extends Model
         return $totalEntries - $totalExits;
     }
 
-    public function branch()
+    public function location()
     {
-        return $this->belongsTo(Branch::class);
+        return $this->belongsTo(Location::class);
     }
 
     public function sales()

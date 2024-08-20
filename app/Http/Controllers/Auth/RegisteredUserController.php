@@ -6,8 +6,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
 use App\Models\User;
+use App\Models\Location;
 use App\Models\CashRegister;
-use App\Models\Branch;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Controllers\Controller;
 
@@ -28,13 +28,13 @@ class RegisteredUserController extends Controller
      */
     public function store(RegisterRequest $request): Response
     {
-        /** @var Branch | null */
-        $defaultLocation = Branch::where('is_default', true)->first();
+        /** @var Location | null */
+        $defaultLocation = Location::where('is_default', true)->first();
 
         if (!is_null($defaultLocation)) {
-            /** @var Branch */
-            $defaultLocation = Branch::create([
-                'name' => $request->branch,
+            /** @var Location */
+            $defaultLocation = Location::create([
+                'name' => $request->location,
                 'address' => $request->address,
                 'type' => 'branch',
                 'is_default' => true
@@ -47,7 +47,7 @@ class RegisteredUserController extends Controller
         if (is_null($defaulCashRegister)) {
             $defaulCashRegister = CashRegister::create([
                 'name' => 'Mostrador',
-                'branch_id' => $defaultLocation->id,
+                'location_id' => $defaultLocation->id,
                 'is_default' => true
             ]);
         }

@@ -14,10 +14,10 @@ import { useAuthStore } from '@/stores/AuthStore';
 const page = usePage()
 const toast = useToast()
 const selectedCashRegister = ref<CashRegister | null>(null)
-const selectedBranch = ref<Location | null>(page.props.location)
+const selectedLocation = ref<Location | null>(page.props.location)
 const cashRegisters = ref<CashRegister[]>([])
 const cashRegisterService = new CashRegisterService
-const auth = useAuthStore()
+const authStore = useAuthStore()
 
 const modalCashRegister = ref(false)
 
@@ -28,8 +28,8 @@ const changeCashRegister = () => {
         cash_register_id: selectedCashRegister.value?.id
     })
     .then(response => {
-        auth.setCashRegister(response.data.cashRegister)
-        auth.setLocation(response.data.location)
+        authStore.setCashRegister(response.data.cashRegister)
+        authStore.setLocation(response.data.location)
         hideModal()
         toast.add({ severity: 'success', summary: 'Completado', detail: response.data.message, life: 1100 });
     })
@@ -45,7 +45,7 @@ const hideModal = () => {
 
 const searchCashRegisters = () => {
     cashRegisterService.search({
-        branch_id: selectedBranch.value?.id
+        location_id: selectedLocation.value?.id
     })
     .then((response: AxiosResponse) => {
         cashRegisters.value = response.data
@@ -56,8 +56,8 @@ const searchCashRegisters = () => {
     })
 }
 
-const branches = computed(() => {
-    return page.props.branches
+const locations = computed(() => {
+    return page.props.locations
 })
 
 const csrf_token = computed(() => {
@@ -71,7 +71,7 @@ onMounted(() => {
 <template>
     <Dialog v-model:visible="modalCashRegister" header="Cambiar caja" modal>
         <div class="d-block">
-            <Select placeholder="Sucursal" id="branch" v-model="selectedBranch" :options="branches" optionLabel="name" class="w-60 my-4" @change="searchCashRegisters"></Select>
+            <Select placeholder="Sucursal" id="location" v-model="selectedLocation" :options="locations" optionLabel="name" class="w-60 my-4" @change="searchCashRegisters"></Select>
         </div>
         <div class="d-block">
             <Select placeholder="- Elegir -" id="cashRegister" v-model="selectedCashRegister" :options="cashRegisters" optionLabel="name" class="w-60 my-4"></Select>
@@ -88,11 +88,11 @@ onMounted(() => {
                     <div class="text-gray-700 px-4 py-2 shadow-md flex items-center justify-between w-62 cursor-pointer rounded-md">
                         <div class="flex items-center">
                             <div class="py-2 px-3 bg-gray-300 rounded-full mr-1 text-gray-500">
-                                <i :class="locationIcon(auth.location)"></i>
+                                <i :class="locationIcon(authStore.location)"></i>
                             </div>
                             <div class="ml-2 text-left">
-                                <p>{{ auth.location?.name }}</p>
-                                <span class="rounded-lg bg-yellow-500 px-2 text-sm text-yellow-100">{{ auth.cashRegister?.name }}</span>
+                                <p>{{ authStore.location?.name }}</p>
+                                <span class="rounded-lg bg-yellow-500 px-2 text-sm text-yellow-100">{{ authStore.cashRegister?.name }}</span>
                             </div>
                         </div>
                         <svg

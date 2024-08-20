@@ -9,8 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
 use App\Models\User;
+use App\Models\Location;
 use App\Models\CashRegister;
-use App\Models\Branch;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Controllers\Controller;
 
@@ -38,17 +38,16 @@ class AuthenticatedSessionController extends Controller
         $user = Auth::user();
 
         // Asignar sucursal y caja por defecto si no están asignadas
-        if (!$user->branch_id || !$user->cash_register_id) {
+        if (!$user->location_id || !$user->cash_register_id) {
 
-            /** @var Branch */
-            $defaultBranch = Branch::where('is_default', true)->first();
+            /** @var Location */
+            $defaultLocation = Location::where('is_default', true)->first();
             $defaultCashRegister = CashRegister::where('is_default', true)
-                ->where('branch_id', $defaultBranch->id)
+                ->where('location_id', $defaultLocation->id)
                 ->first();
 
             $user->update([
-                'location_id' => $defaultBranch->id,
-                'location_type' => $defaultBranch::class,
+                'location_id' => $defaultLocation->id,
                 'cash_register_id' => $defaultCashRegister->id,
             ]);
         }

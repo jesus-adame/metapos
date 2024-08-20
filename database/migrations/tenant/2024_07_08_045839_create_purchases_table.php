@@ -13,13 +13,18 @@ return new class extends Migration
     {
         Schema::create('purchases', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('location_id');
             $table->unsignedBigInteger('supplier_id')->nullable();
+            $table->unsignedBigInteger('buyer_id');
             $table->decimal('total', 10, 2);
-            $table->enum('status', ['pending', 'paid', 'canceled']);
-            $table->dateTime('purchase_date');
+            $table->enum('status', ['pending', 'completed', 'canceled']);
+            $table->dateTime('applicated_at');
             $table->timestamps();
+            $table->softDeletes();
 
-            $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('cascade');
+            $table->foreign('buyer_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('location_id')->references('id')->on('locations')->onDelete('cascade');
+            $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('set null');
         });
 
         Schema::create('product_purchase', function (Blueprint $table) {
@@ -28,7 +33,10 @@ return new class extends Migration
             $table->unsignedBigInteger('purchase_id');
             $table->integer('quantity');
             $table->decimal('price', 10, 2);
+            $table->decimal('tax', 5, 2)->default(0); // 5, 2 means max value 999.99
+            $table->boolean('has_taxes')->default(false);
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->foreign('purchase_id')->references('id')->on('purchases')->onDelete('cascade');

@@ -25,7 +25,7 @@ class PurchaseController extends Controller
 
     public function store(CreatePurchaseRequest $request, RegisterPurchaseService $purchaseService)
     {
-        $purchaseDate = Carbon::createFromTimeString($request->purchase_date);
+        $purchaseDate = Carbon::createFromTimeString($request->applicated_at);
         $purchaseDate->setHours(0);
 
         $buyerId = Auth::user()->id;

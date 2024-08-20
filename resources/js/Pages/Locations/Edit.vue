@@ -4,25 +4,25 @@ import UserLayout from '@/Layouts/UserLayout.vue';
 import Button from 'primevue/button';
 
 const { props } = usePage();
-const branch = props.branch;
+const location = props.location;
 
 const form = useForm({
-    name: branch.name,
-    address: branch.address,
-    type: branch.type,
+    name: location.name,
+    address: location.address,
+    type: location.type,
 });
 
 const submit = () => {
-    form.put(route('branches.update', branch.id));
+    form.put(route('locations.update', location.id));
 };
 </script>
 
 <template>
-    <Head title="Edit Branch" />
+    <Head title="Edit Location" />
 
     <UserLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Edit Branch</h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Edit Location</h2>
         </template>
 
         <div class="py-12">
@@ -41,11 +41,11 @@ const submit = () => {
                             <div class="mb-4">
                                 <label for="type" class="block">Type</label>
                                 <select v-model="form.type" id="type" required class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-                                    <option value="branch">Branch</option>
+                                    <option value="location">Location</option>
                                     <option value="warehouse">Warehouse</option>
                                 </select>
                             </div>
-                            <Button type="submit" :disabled="form.processing">Update Branch</Button>
+                            <Button type="submit" :disabled="form.processing">Update Location</Button>
                         </form>
                     </div>
                 </div>

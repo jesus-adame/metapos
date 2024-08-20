@@ -115,7 +115,7 @@ const onPage = (event: DataTablePageEvent) => {
     </Dialog>
 
     <DataTable :value="items" paginator :rows="rows" @page="onPage" :totalRecords="totalRecords">
-        <Column field="transaction_date" header="Fecha"></Column>
+        <Column field="applicated_at" header="Fecha"></Column>
         <Column header="Tipo">
             <template #body="slot">
                 <Tag :value="calculateLabel(slot.data)" :severity="calculateSeverity(slot.data)" :icon="calculateIcon(slot.data)"></Tag>

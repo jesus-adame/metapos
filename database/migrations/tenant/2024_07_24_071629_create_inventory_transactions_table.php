@@ -13,14 +13,17 @@ return new class extends Migration
     {
         Schema::create('inventory_transactions', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('location_id');
             $table->unsignedBigInteger('product_id');
             $table->enum('type', ['entry', 'exit']);
             $table->integer('quantity');
-            $table->date('transaction_date');
+            $table->dateTime('applicated_at');
             $table->string('description')->nullable();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->foreign('location_id')->references('id')->on('locations')->onDelete('cascade');
         });
     }
 

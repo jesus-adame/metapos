@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\CashRegister;
-use App\Models\Branch;
+use App\Models\Location;
 use App\Http\Controllers\Controller;
 
 class CashRegisterController extends Controller
@@ -21,7 +21,7 @@ class CashRegisterController extends Controller
         $user = Auth::user();
         /** @var CashRegister */
         $cashRegister = CashRegister::find($request->cash_register_id);
-        $location = Branch::find($cashRegister->branch->id);
+        $location = Location::find($cashRegister->location->id);
 
         $user->update([
             'location_id' => $location->id,

@@ -8,12 +8,11 @@ use App\Services\InventoryTransacctions\CreateInventoryTransaction;
 use App\Models\Sale;
 use App\Models\Product;
 use App\Models\Payment;
+use App\Models\Location;
 use App\Models\CashRegister;
 use App\Models\CashFlow;
-use App\Models\Branch;
 use App\Models\BankTransaction;
 use App\Helpers\MathNumberHelper;
-use App\Contracts\Locationable;
 use App\Contracts\Cashable;
 
 class RegisterSaleService
@@ -31,8 +30,8 @@ class RegisterSaleService
         DB::beginTransaction();
 
         $cashRegister = CashRegister::find($cashRegisterId);
-        /** @var Branch */
-        $location = $cashRegister->branch;
+        /** @var Location */
+        $location = $cashRegister->location;
         $sale = $this->createSale($customerId, $sellerId, $products, $cashRegister, $discount);
 
         $this->attachSaleProducts($sale, $location, $products);
@@ -56,7 +55,7 @@ class RegisterSaleService
             ];
         }
 
-        $sale->status = 'paid';
+        $sale->status = 'completed';
         $sale->save();
 
         if ($cashPayments > 0) {
@@ -144,7 +143,7 @@ class RegisterSaleService
         return $sale;
     }
 
-    private function attachSaleProducts(Sale $sale, Locationable $location, array $products)
+    private function attachSaleProducts(Sale $sale, Location $location, array $products)
     {
         foreach ($products as $arrayProduct) {
             /** @var Product */
@@ -232,14 +231,5 @@ class RegisterSaleService
             'date' => $dateTime,
             'cash_register_id' => $cashRegister->id,
         ]);
-
-        if ($method == 'card' || $method == 'transfer') {
-            BankTransaction::create([
-                'type' => 'entry',
-                'amount' => $amount,
-                'description' => 'Pago por tarjeta venta # ' . $cashable->id,
-                'transaction_date' => Carbon::now(),
-            ]);
-        }
     }
 }

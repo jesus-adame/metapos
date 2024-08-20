@@ -25,7 +25,7 @@ class User extends Authenticatable
         'lastname',
         'email',
         'password',
-        'branch_id',
+        'location_id',
         'location_id',
         'location_type',
         'cash_register_id',
@@ -56,12 +56,12 @@ class User extends Authenticatable
 
     public function location()
     {
-        return $this->morphTo();
+        return $this->belongsTo(Location::class);
     }
 
-    public function branch()
+    public function locations()
     {
-        return $this->belongsTo(Branch::class);
+        return $this->belongsToMany(Location::class);
     }
 
     public function cashRegister()

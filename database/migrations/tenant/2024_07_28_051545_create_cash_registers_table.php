@@ -13,12 +13,14 @@ return new class extends Migration
     {
         Schema::create('cash_registers', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('branch_id');
+            $table->unsignedBigInteger('location_id');
             $table->string('name');
             $table->decimal('balance', 15, 2)->default(0);
+            $table->boolean('is_default');
             $table->timestamps();
+            $table->softDeletes();
 
-            $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
+            $table->foreign('location_id')->references('id')->on('locations')->onDelete('cascade');
         });
     }
 

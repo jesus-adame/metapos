@@ -7,11 +7,10 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use App\Models\Warehouse;
 use App\Models\Product;
 use App\Models\Permission;
+use App\Models\Location;
 use App\Models\Inventory;
-use App\Models\Branch;
 use App\Http\Requests\UpdateProductRequest;
 use App\Http\Requests\CreateProductRequest;
 use App\Http\Controllers\Controller;
@@ -26,7 +25,7 @@ class ProductController extends Controller
         Gate::allows(Permission::VIEW_PRODUCTS);
 
         $perPage = $request->input('rows', 10);
-        $location = Branch::find(Auth::user()->location_id);
+        $location = Location::find(Auth::user()->location_id);
 
         $products = Product::withStock($location)
             ->orderBy('updated_at', 'desc')
@@ -56,7 +55,7 @@ class ProductController extends Controller
 
     public function store(CreateProductRequest $request): JsonResponse
     {
-        $branchId = Auth::user()->location_id;
+        $locationId = Auth::user()->location_id;
 
         if ($request->hasFile('image')) {
             // $file = $request->file('image'); // Add name file
@@ -76,25 +75,14 @@ class ProductController extends Controller
             'cost' => $request->cost,
             'image' => $imagePath,
             'image_url' => $imageUrl,
-            'branch_id' => $branchId,
+            'location_id' => $locationId,
             'unit_type' => $request->unit_type,
         ]);
 
-        foreach (Branch::all() as $branch) {
+        foreach (Location::all() as $location) {
             Inventory::create([
                 'product_id' => $product->id,
-                'location_id' => $branch->id,
-                'location_type' => Branch::class,
-                'quantity' => 0,
-                'status' => 'available',
-            ]);
-        }
-
-        foreach (Warehouse::all() as $warehouse) {
-            Inventory::create([
-                'product_id' => $product->id,
-                'location_id' => $warehouse->id,
-                'location_type' => Warehouse::class,
+                'location_id' => $location->id,
                 'quantity' => 0,
                 'status' => 'available',
             ]);

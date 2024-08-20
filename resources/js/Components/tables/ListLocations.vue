@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
-import CreateBranch from '@/Components/forms/CreateBranch.vue';
+import CreateLocation from '@/Components/forms/CreateLocation.vue';
 import { onMounted, ref } from 'vue';
-import BranchService from "@/Services/BranchService";
+import LocationService from "@/Services/LocationService";
 import axios, { AxiosResponse } from 'axios';
 import { DataTablePageEvent } from 'primevue/datatable';
 import Tag from 'primevue/tag';
@@ -11,7 +11,7 @@ import { locationIcon } from '@/helpers';
 import { useToast } from 'primevue/usetoast';
 import { useConfirm } from 'primevue/useconfirm';
 
-const branchService: BranchService = new BranchService()
+const locationService: LocationService = new LocationService()
 const items = ref([])
 const rows = ref(10)
 const totalRecords = ref(0)
@@ -31,14 +31,14 @@ const hideModalCreate = () => {
 }
 
 const fetchItems = (pageNumber: number) => {
-    const result = branchService.paginate(pageNumber, rows.value)
+    const result = locationService.paginate(pageNumber, rows.value)
 
     result.then((response: AxiosResponse) => {
-        const branches = response.data;
+        const locations = response.data;
 
-        totalRecords.value = branches.total
-        items.value = JSON.parse(JSON.stringify(branches.data))
-        page.value = branches.current_page
+        totalRecords.value = locations.total
+        items.value = JSON.parse(JSON.stringify(locations.data))
+        page.value = locations.current_page
     })
 }
 
@@ -95,7 +95,7 @@ const confirmDelete = (url: string) => {
 </script>
 <template>
     <Dialog v-model:visible="modalCreate" modal header="Registrar sucursal" :style="{ width: '35rem' }" pt:mask:class="backdrop-blur-sm">
-        <CreateBranch class="mt-4" @save="hideModalCreate"></CreateBranch>
+        <CreateLocation class="mt-4" @save="hideModalCreate"></CreateLocation>
     </Dialog>
     <DataTable :value="items" paginator lazy :rows="rows" @page="onPage" :totalRecords="totalRecords">
         <Column field="id" header="#"></Column>
@@ -126,7 +126,7 @@ const confirmDelete = (url: string) => {
             </template>
             <template #body="{data}">
                 <div class="w-full flex justify-center">
-                    <Button icon="pi pi-trash" severity="danger" @click="confirmDelete(route('api.branches.destroy', {branch: data.id}))"></Button>
+                    <Button icon="pi pi-trash" severity="danger" @click="confirmDelete(route('api.locations.destroy', {location: data.id}))"></Button>
                 </div>
             </template>
         </Column>

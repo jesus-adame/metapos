@@ -14,8 +14,8 @@ export interface User {
 
 export interface Customer {
     id: number;
-    first_name: string;
-    last_name: string;
+    firstname: string;
+    lastname: string;
     email: string;
     phone: string;
     address: string;
@@ -50,8 +50,8 @@ export interface Payment {
 
 export interface Supplier {
     id: number;
-    first_name: string;
-    last_name: string;
+    firstname: string;
+    lastname: string;
     email: string;
     phone: string;
 }
@@ -61,15 +61,12 @@ export interface CashRegister {
     name?: string
 }
 
-export interface Branch {
-    id?: string
-    name?: string
-}
-
 export interface Location {
     id?: string
     name?: string
-    type?: string
+    address?: string
+    type: string
+    is_default: boolean
 }
 
 export interface Product {
@@ -158,15 +155,12 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
         user: User;
     };
     ziggy: Config & { location: string };
-
     cashRegister: CashRegister,
     cashRegisters: CashRegister[],
-    branch: Branch,
-    branches: Branch[],
-    csrf_token: string,
     location: Location,
+    locations: Location[],
+    csrf_token: string,
     location_id: number,
-    location_type: string,
     permissions: string[],
     roles: string[],
 };

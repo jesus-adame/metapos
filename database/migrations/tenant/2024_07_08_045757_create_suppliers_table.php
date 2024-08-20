@@ -13,12 +13,15 @@ return new class extends Migration
     {
         Schema::create('suppliers', function (Blueprint $table) {
             $table->id();
-            $table->string('first_name');
-            $table->string('last_name');
-            $table->string('email')->unique();
+            $table->string('name');
+            $table->string('lastname');
+            $table->string('company_name')->nullable();
+            $table->string('email')->nullable()->unique();
+            $table->string('rfc')->nullable();
             $table->string('phone')->nullable();
             $table->text('address')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

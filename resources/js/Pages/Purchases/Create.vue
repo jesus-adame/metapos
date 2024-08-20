@@ -35,15 +35,13 @@ const modalCreateSupplier = ref(false)
 const form = useForm<{
     supplier_id: number | null,
     products: Product[],
-    purchase_date: string | null,
+    applicated_at: string | null,
     location_id: number,
-    location_type: string,
 }>({
     supplier_id: null,
     products: [],
-    purchase_date: null,
+    applicated_at: null,
     location_id: page.props.location_id,
-    location_type: page.props.location_type,
 });
 
 // Add a product to the form
@@ -177,7 +175,7 @@ const hideModalCreateSupplier = () => {
 
             <div class="supplier w-1/3">
                 <div class="flex">
-                    <AutoComplete v-model="selectedSupplier" optionLabel="first_name" :suggestions="filteredSuppliers"
+                    <AutoComplete v-model="selectedSupplier" optionLabel="firstname" :suggestions="filteredSuppliers"
                         @complete="searchSupplier"
                         class="w-full"
                         inputClass="w-full"
@@ -185,7 +183,7 @@ const hideModalCreateSupplier = () => {
                         <template #option="slot">
                             <div class="flex align-options-center">
                                 <div>
-                                    {{ slot.option.first_name }} {{ slot.option.last_name }} | {{ slot.option.phone }}
+                                    {{ slot.option.firstname }} {{ slot.option.lastname }} | {{ slot.option.phone }}
                                 </div>
                             </div>
                         </template>

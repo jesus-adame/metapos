@@ -7,8 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Closure;
 use App\Models\User;
+use App\Models\Location;
 use App\Models\CashRegister;
-use App\Models\Branch;
 
 class ShareSessionData
 {
@@ -26,16 +26,15 @@ class ShareSessionData
             $location = $user->location;
 
             if (is_null($location)) {
-                /** @var Branch */
-                $location = Branch::where('is_default', true)->first();
+                /** @var Location */
+                $location = Location::where('is_default', true)->first();
 
                 $defaultCashRegister = CashRegister::where('is_default', true)
-                    ->where('branch_id', $location->id)
+                    ->where('location_id', $location->id)
                     ->first();
 
                 $user->update([
                     'location_id' => $location->id,
-                    'location_type' => $location::class,
                     'cash_register_id' => $defaultCashRegister->id,
                 ]);
 
@@ -46,7 +45,7 @@ class ShareSessionData
                 'location_id' => $location?->id,
                 'location_type' => $location::class,
                 'location' => $location,
-                'branches' => Branch::all(),
+                'locations' => Location::all(),
                 'cashRegister' => $cashRegister,
                 'cashRegisters' => CashRegister::all(),
                 'roles' => $request->user() ? $request->user()->roles->pluck('name') : [],

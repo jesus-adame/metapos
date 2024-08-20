@@ -54,10 +54,10 @@ onMounted(() => {
 
     <DataTable :value="items" class="shadow-md" :paginator="true" :rows="rows" :lazy="true" :totalRecords="totalRecords" @page="onPage">
         <Column field="id" header="#"></Column>
-        <Column field="first_name" header="Nombre">
+        <Column field="firstname" header="Nombre">
             <template #body="slot">
                 <UserIcon>
-                    {{ slot.data.first_name }} {{ slot.data.last_name }}
+                    {{ slot.data.firstname }} {{ slot.data.lastname }}
                 </UserIcon>
             </template>
         </Column>

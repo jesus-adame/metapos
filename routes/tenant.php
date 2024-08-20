@@ -12,14 +12,13 @@ use App\Http\Controllers\SaleController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\LocationController;
 use App\Http\Controllers\InventoryTransactionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CashRegisterController;
 use App\Http\Controllers\CashFlowController;
 use App\Http\Controllers\CashCutController;
-use App\Http\Controllers\BranchController;
-use App\Http\Controllers\BankTransactionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,9 +56,8 @@ Route::middleware([
         Route::resource('suppliers', SupplierController::class);
         Route::resource('cash-flows', CashFlowController::class);
         Route::resource('cash-cuts', CashCutController::class);
-        Route::resource('bank-transactions', BankTransactionController::class);
         Route::resource('inventory-transactions', InventoryTransactionController::class);
-        Route::resource('branches', BranchController::class);
+        Route::resource('locations', LocationController::class);
         Route::resource('cash-registers', CashRegisterController::class);
     });
 

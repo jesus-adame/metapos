@@ -5,8 +5,8 @@ import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 
 const form = useForm({
-    first_name: null,
-    last_name: null,
+    firstname: null,
+    lastname: null,
     email: null,
     phone: null,
     address: null,
@@ -32,12 +32,12 @@ const submit = () => {
                 <div class="p-6 text-gray-900">
                     <form @submit.prevent="submit">
                         <div>
-                            <label for="first_name" class="block">Nombre</label>
-                            <InputText v-model="form.first_name"></InputText>
+                            <label for="firstname" class="block">Nombre</label>
+                            <InputText v-model="form.firstname"></InputText>
                         </div>
                         <div>
-                            <label for="last_name" class="block">Apellido</label>
-                            <InputText v-model="form.last_name"></InputText>
+                            <label for="lastname" class="block">Apellido</label>
+                            <InputText v-model="form.lastname"></InputText>
                         </div>
                         <div>
                             <label for="email" class="block">Email</label>

@@ -6,7 +6,7 @@ import CreateSetting from '@/Components/forms/CreateSetting.vue';
 import { onMounted, reactive, ref } from 'vue';
 import ListUsers from '@/Components/tables/ListUsers.vue';
 import ListCashRegisters from '@/Components/tables/ListCashRegisters.vue';
-import ListBranches from '@/Components/tables/ListBranches.vue';
+import ListLocations from '@/Components/tables/ListLocations.vue';
 import ListRoles from '@/Components/tables/ListRoles.vue';
 import SettingService from '@/Services/SettingService';
 import axios, { AxiosResponse } from 'axios';
@@ -73,13 +73,8 @@ const items = ref([
             {
                 label: 'Sucursales',
                 icon: 'pi pi-building',
-                module: 'branches'
+                module: 'locations'
             },
-            // {
-            //     label: 'Almacenes',
-            //     icon: 'pi pi-building',
-            //     module: 'warehouses'
-            // },
             {
                 label: 'Cajas',
                 icon: 'pi pi-shopping-cart',
@@ -132,8 +127,8 @@ const updateSettings = () => {
                 <div v-if="activePage == 'users'" class="w-full shadow-md">
                     <ListUsers></ListUsers>
                 </div>
-                <div v-if="activePage == 'branches'" class="w-full shadow-md">
-                    <ListBranches></ListBranches>
+                <div v-if="activePage == 'locations'" class="w-full shadow-md">
+                    <ListLocations></ListLocations>
                 </div>
                 <div v-if="activePage == 'cashRegisters'" class="w-full shadow-md">
                     <ListCashRegisters></ListCashRegisters>
