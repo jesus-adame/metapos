@@ -72,7 +72,7 @@ watch(() => authStore.cashRegister, () => {
         <Column header="Cliente">
             <template #body="slot">
                 <UserIcon>
-                    {{ slot.data.customer?.firstname || 'Sin asignar' }} {{ slot.data.customer?.lastname }}
+                    {{ slot.data.customer?.name || 'Sin asignar' }} {{ slot.data.customer?.lastname }}
                 </UserIcon>
             </template>
         </Column>
@@ -102,11 +102,11 @@ watch(() => authStore.cashRegister, () => {
         </Column>
         <Column header="">
             <template #body="{data}">
-                <div class="flex">
+                <div class="flex gap-1">
                     <Link :href="route('sales.show', {sale: data.id})">
-                        <Button icon="pi pi-eye" class="mr-1" severity="info"></Button>
+                        <Button raised icon="pi pi-eye" severity="info"></Button>
                     </Link>
-                    <Button icon="pi pi-print" @click="openModaTicket(data.id)"></Button>
+                    <Button raised icon="pi pi-print" @click="openModaTicket(data.id)"></Button>
                 </div>
             </template>
         </Column>

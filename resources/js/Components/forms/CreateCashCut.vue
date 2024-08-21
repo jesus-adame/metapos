@@ -53,7 +53,7 @@ const submit = () => {
             </div>
         </div>
         <div class="mt-6">
-            <Button type="submit" :disabled="form.processing" label="Guardar" severity="success"></Button>
+            <Button raised type="submit" :disabled="form.processing" label="Guardar" severity="success"></Button>
         </div>
     </form>
 </template>

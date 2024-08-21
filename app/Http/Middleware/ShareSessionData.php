@@ -30,20 +30,19 @@ class ShareSessionData
                 $location = Location::where('is_default', true)->first();
 
                 $defaultCashRegister = CashRegister::where('is_default', true)
-                    ->where('location_id', $location->id)
+                    ->where('location_id', $location?->id)
                     ->first();
 
-                $user->update([
-                    'location_id' => $location->id,
-                    'cash_register_id' => $defaultCashRegister->id,
-                ]);
-
-                $request->session()->regenerate();
+                if (!is_null($defaultCashRegister)) {
+                    $user->update([
+                        'location_id' => $location->id,
+                        'cash_register_id' => $defaultCashRegister->id,
+                    ]);
+                }
             }
 
             inertia()->share([
                 'location_id' => $location?->id,
-                'location_type' => $location::class,
                 'location' => $location,
                 'locations' => Location::all(),
                 'cashRegister' => $cashRegister,

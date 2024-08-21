@@ -42,16 +42,16 @@ onMounted(() => {
 })
 
 const items = ref([
-    {
-        label: 'General',
-        items: [
-            {
-                label: 'Ajustes',
-                icon: 'pi pi-cog',
-                module: 'settings'
-            }
-        ]
-    },
+    // {
+    //     label: 'General',
+    //     items: [
+    //         {
+    //             label: 'Ajustes',
+    //             icon: 'pi pi-cog',
+    //             module: 'settings'
+    //         }
+    //     ]
+    // },
     {
         label: 'Usuarios',
         items: [
@@ -93,7 +93,7 @@ const updateSettings = () => {
 </script>
 
 <template>
-    <Head title="Settings" />
+    <Head title="Ajustes" />
 
     <UserLayout>
         <template #header>

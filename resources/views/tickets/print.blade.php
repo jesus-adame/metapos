@@ -25,11 +25,11 @@
         }
         .header h1 {
             margin: 0;
-            font-size: 16px;
+            font-size: 15px;
         }
         .header p {
             margin: 0;
-            font-size: 12px;
+            font-size: 10px;
         }
         .content {
             margin-top: 10px;

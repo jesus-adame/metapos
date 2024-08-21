@@ -131,10 +131,10 @@ const confirmDelete = (url: string) => {
             </template>
             <template #body="{ data }">
                 <div v-if="can('update.permissions')" class="w-full flex justify-center">
-                    <Button icon="pi pi-pencil" severity="warn" @click="openModalEdit(data)"></Button>
+                    <Button raised icon="pi pi-pencil" severity="warn" @click="openModalEdit(data)"></Button>
                 </div>
                 <div v-if="can('delete.permissions')" class="w-full flex justify-center">
-                    <Button icon="pi pi-trash" severity="danger" @click="confirmDelete(route('api.roles.destroy', {role: data.id }))"></Button>
+                    <Button raised icon="pi pi-trash" severity="danger" @click="confirmDelete(route('api.roles.destroy', {role: data.id }))"></Button>
                 </div>
             </template>
         </Column>

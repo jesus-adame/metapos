@@ -31,7 +31,7 @@ class RegisteredUserController extends Controller
         /** @var Location | null */
         $defaultLocation = Location::where('is_default', true)->first();
 
-        if (!is_null($defaultLocation)) {
+        if (is_null($defaultLocation)) {
             /** @var Location */
             $defaultLocation = Location::create([
                 'name' => $request->location,
@@ -58,7 +58,6 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'location_id' => $defaultLocation->id,
-            'location_type' => $defaultLocation::class,
             'cash_register_id' => $defaulCashRegister->id,
         ]);
 

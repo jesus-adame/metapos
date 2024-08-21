@@ -30,7 +30,6 @@ class StoreInventoryRequest extends FormRequest
             'applicated_at' => 'required|date',
             'description' => 'nullable|string|max:255',
             'location_id' => 'required|integer',
-            'location_type' => 'required|string',
         ];
     }
 
@@ -43,7 +42,6 @@ class StoreInventoryRequest extends FormRequest
             'applicated_at.required' => 'La fecha de transacción es requerida.',
             'description.required' => 'Debes agregar un motivo.',
             'location_id.required' => 'Elija una ubicación.',
-            'location_type.required' => 'Elija un tipo de ubicación.',
         ];
     }
 }

@@ -5,21 +5,26 @@ import InputLabel from '@/Components/InputLabel.vue';
 import axios from 'axios';
 import { ref } from 'vue';
 import { useToast } from 'primevue/usetoast';
+import { Location } from '@/types';
 
+const props = defineProps<{
+    location: Location | null
+}>();
 const toast = useToast();
 const form = ref({
-    name: '',
-    address: '',
-    phone_number: '',
-    rfc: '',
-    email: '',
-    type: 'branch'
+    name: props.location?.name,
+    address: props.location?.address,
+    phone_number: props.location?.phone_number,
+    rfc: props.location?.rfc,
+    email: props.location?.email,
+    type: 'branch',
+    _method: 'put',
 });
 
 const emit = defineEmits(['save', 'cancel'])
 
 const submit = () => {
-    axios.post(route('api.locations.store'), form.value)
+    axios.post(route('api.locations.update', {location: props.location?.id}), form.value)
     .then(response => {
         form.value = {
             name: '',
@@ -27,7 +32,8 @@ const submit = () => {
             phone_number: '',
             rfc: '',
             email: '',
-            type: 'branch'
+            type: 'branch',
+            _method: 'put',
         };
 
         emit('save')
@@ -74,14 +80,14 @@ const submit = () => {
             />
         </div>
         <div class="mt-4">
-            <InputLabel for="address" value="Dirección" />
+            <InputLabel for="email" value="Dirección" />
             <InputText
                 class="mt-1 block w-full"
                 v-model="form.address"
             />
         </div>
         <div class="flex items-center justify-end mt-4">
-            <Button label="Guardar" type="submit" class="ms-4" severity="success"></Button>
+            <Button raised label="Aplicar" type="submit" class="ms-4" severity="warn"</Button>
         </div>
     </form>
 </template>

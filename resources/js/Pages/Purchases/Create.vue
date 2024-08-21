@@ -175,7 +175,7 @@ const hideModalCreateSupplier = () => {
 
             <div class="supplier w-1/3">
                 <div class="flex">
-                    <AutoComplete v-model="selectedSupplier" optionLabel="firstname" :suggestions="filteredSuppliers"
+                    <AutoComplete v-model="selectedSupplier" optionLabel="name" :suggestions="filteredSuppliers"
                         @complete="searchSupplier"
                         class="w-full"
                         inputClass="w-full"
@@ -183,7 +183,7 @@ const hideModalCreateSupplier = () => {
                         <template #option="slot">
                             <div class="flex align-options-center">
                                 <div>
-                                    {{ slot.option.firstname }} {{ slot.option.lastname }} | {{ slot.option.phone }}
+                                    {{ slot.option.name }} {{ slot.option.lastname }} | {{ slot.option.phone }}
                                 </div>
                             </div>
                         </template>

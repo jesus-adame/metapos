@@ -14,7 +14,7 @@ class CustomerSeeder extends Seeder
     public function run(): void
     {
         Customer::firstOrCreate([
-            'firstname' => 'Público general',
+            'name' => 'Público general',
             'lastname' => 'N/A',
             'email' => 'general@metapos.mx',
             'phone' => '7777777',

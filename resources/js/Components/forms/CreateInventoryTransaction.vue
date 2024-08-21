@@ -74,8 +74,8 @@ const types = ref([
 </script>
 <template>
     <form @submit.prevent="submit">
-        <div class="flex my-2">
-            <div class="w-1/2 mr-2">
+        <div class="flex gap-2 my-2">
+            <div class="w-1/2">
                 <label for="type" class="block">Tipo</label>
                 <Select v-model="form.type" :options="types" optionLabel="label" optionValue="value" class="w-full"></Select>
             </div>
@@ -92,20 +92,22 @@ const types = ref([
             <label for="product_id" class="block">Producto</label>
             <Select v-model="form.product_id" :options="products" optionLabel="name" optionValue="id" class="w-full"></Select>
         </div>
-        <div class="mb-4">
-            <label for="quantity" class="block">Cantidad</label>
-            <InputNumber v-model="form.quantity" :min="0" :step="1" class="w-full" showButtons placeholder="0"></InputNumber>
-        </div>
-        <div class="mb-4">
-            <label for="applicated_at" class="block">Fecha de transacción</label>
-            <input type="date" v-model="form.applicated_at" id="applicated_at" class="w-full">
+        <div class="flex gap-2 my-2">
+            <div class="w-1/2">
+                <label for="quantity" class="block">Cantidad</label>
+                <InputNumber v-model="form.quantity" :min="0" :step="1" class="w-full" showButtons placeholder="0"></InputNumber>
+            </div>
+            <div class="w-1/2">
+                <label for="applicated_at" class="block">Fecha de transacción</label>
+                <input type="date" v-model="form.applicated_at" id="applicated_at" class="w-full">
+            </div>
         </div>
         <div class="mb-4">
             <label for="description" class="block">Motivo</label>
             <Textarea v-model="form.description" id="description" class="w-full" rows="4"></Textarea>
         </div>
         <div class="mt-6">
-            <Button type="submit" :disabled="form.processing" label="Registrar" severity="success"></Button>
+            <Button raised type="submit" :disabled="form.processing" label="Registrar" severity="success"></Button>
         </div>
     </form>
 </template>

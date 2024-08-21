@@ -58,10 +58,10 @@ watch(customerStore.getCustomers, () => {
 
     <DataTable :value="items" class="shadow-md" :paginator="true" :rows="rows" :lazy="true" :totalRecords="totalRecords" @page="onPage">
         <Column field="id" header="#"></Column>
-        <Column field="firstname" header="Nombre">
+        <Column field="name" header="Nombre">
             <template #body="slot">
                 <UserIcon>
-                    {{ slot.data.firstname }} {{ slot.data.lastname }}
+                    {{ slot.data.name }} {{ slot.data.lastname }}
                 </UserIcon>
             </template>
         </Column>

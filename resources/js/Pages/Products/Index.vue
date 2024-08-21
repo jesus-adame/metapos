@@ -2,7 +2,6 @@
 import { Head } from '@inertiajs/vue3';
 import { Link } from '@inertiajs/vue3';
 import UserLayout from '@/Layouts/UserLayout.vue';
-import Card from '@/Components/Card.vue';
 import Button from 'primevue/button';
 import ListInventory from '@/Components/tables/ListInventory.vue';
 import CreateInventoryTransaction from '@/Components/forms/CreateInventoryTransaction.vue';

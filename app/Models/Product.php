@@ -35,8 +35,7 @@ class Product extends Model
     {
         return $query->withSum(['inventories as stock' => function ($query) use ($location) {
             if (!is_null($location)) {
-                $query->where('location_id', $location->id)
-                    ->where('location_type', $location::class);
+                $query->where('location_id', $location->id);
             }
         }], 'quantity');
     }
@@ -44,8 +43,7 @@ class Product extends Model
     public function scopeWhereLocation(Builder $query, Locationable $location)
     {
         return $query->whereHas('inventories', function ($query) use ($location) {
-            $query->where('location_id', $location->id)
-                ->where('location_type', $location::class);
+            $query->where('location_id', $location->id);
         });
     }
 

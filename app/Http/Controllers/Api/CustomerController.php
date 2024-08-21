@@ -30,7 +30,7 @@ class CustomerController extends Controller
 
         $customers = Customer::where('lastname', 'like', "%$request->code%")
             ->orWhere('email', 'like', "%$request->code%")
-            ->orWhere('firstname', 'like', "%$request->code%")
+            ->orWhere('name', 'like', "%$request->code%")
             ->orWhere('phone', 'like', "%$request->code%")
             ->get();
 
@@ -40,7 +40,7 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'firstname' => 'required',
+            'name' => 'required',
             'lastname' => 'required',
             'email' => 'nullable|email',
             'phone' => 'nullable',
@@ -48,7 +48,7 @@ class CustomerController extends Controller
         ]);
 
         $customer = Customer::create([
-            'firstname' => $request->firstname,
+            'name' => $request->name,
             'lastname' => $request->lastname,
             'email' => $request->email,
             'phone' => $request->phone,

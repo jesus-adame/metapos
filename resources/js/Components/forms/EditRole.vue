@@ -87,7 +87,7 @@ onMounted(() => {
             </div>
         </div>
         <div class="flex items-center justify-end mt-4">
-            <Button label="Guardar" type="submit" class="ms-4"></Button>
+            <Button raised label="Guardar" type="submit" class="ms-4"></Button>
         </div>
     </form>
 </template>

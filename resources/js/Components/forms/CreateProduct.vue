@@ -63,22 +63,22 @@ function setImage($event: Event) {
             <label for="name" class="block">Nombre</label>
             <InputText v-model="form.name" class="w-full"></InputText>
         </div>
-        <div class="flex justify-between">
-            <div class="mr-2">
-                <label for="price" class="block">Precio</label>
-                <InputNumber v-model="form.price" showButtons :minFractionDigits="2" class="w-full" placeholder="0.00"></InputNumber>
-            </div>
-            <div>
+        <div class="flex gap-2 justify-between">
+            <div class="w-1/2">
                 <label for="cost" class="block">Costo</label>
                 <InputNumber v-model="form.cost" showButtons :minFractionDigits="2" class="w-full" placeholder="0.00"></InputNumber>
             </div>
+            <div class="w-1/2">
+                <label for="price" class="block">Precio</label>
+                <InputNumber v-model="form.price" showButtons :minFractionDigits="2" class="w-full" placeholder="0.00"></InputNumber>
+            </div>
         </div>
-        <div class="flex justify-between">
-            <div class="w-full mr-2">
+        <div class="flex gap-2 justify-between">
+            <div class="w-1/2">
                 <label for="unit_type" class="block">Unidad</label>
                 <Select v-model="form.unit_type" class="w-full" :options="unities" optionLabel="label" optionValue="label"></Select>
             </div>
-            <div class="w-full">
+            <div class="w-1/2">
                 <label for="sku" class="block">SKU (Opcional)</label>
                 <InputText v-model="form.sku" class="w-full"></InputText>
             </div>

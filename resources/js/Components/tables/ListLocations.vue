@@ -10,6 +10,8 @@ import Tag from 'primevue/tag';
 import { locationIcon } from '@/helpers';
 import { useToast } from 'primevue/usetoast';
 import { useConfirm } from 'primevue/useconfirm';
+import EditLocation from '../forms/EditLocation.vue';
+import { Location } from '@/types';
 
 const locationService: LocationService = new LocationService()
 const items = ref([])
@@ -18,8 +20,9 @@ const totalRecords = ref(0)
 const page = ref(1)
 const confirm = useConfirm()
 const toast = useToast()
-
 const modalCreate = ref(false)
+const modalEdit = ref(false)
+const selectedLocation = ref<Location | null>(null)
 
 const showModalCreate = () => {
     modalCreate.value = true
@@ -27,6 +30,16 @@ const showModalCreate = () => {
 
 const hideModalCreate = () => {
     modalCreate.value = false
+    fetchItems(page.value)
+}
+
+const showModalEdit = (location: Location) => {
+    selectedLocation.value = location
+    modalEdit.value = true
+}
+
+const hideModalEdit = () => {
+    modalEdit.value = false
     fetchItems(page.value)
 }
 
@@ -94,8 +107,11 @@ const confirmDelete = (url: string) => {
 }
 </script>
 <template>
-    <Dialog v-model:visible="modalCreate" modal header="Registrar sucursal" :style="{ width: '35rem' }" pt:mask:class="backdrop-blur-sm">
+    <Dialog v-model:visible="modalCreate" modal header="Nueva ubicación" :style="{ width: '35rem' }" pt:mask:class="backdrop-blur-sm">
         <CreateLocation class="mt-4" @save="hideModalCreate"></CreateLocation>
+    </Dialog>
+    <Dialog v-model:visible="modalEdit" modal header="Editar ubicación" :style="{ width: '35rem' }" pt:mask:class="backdrop-blur-sm">
+        <EditLocation class="mt-4" @save="hideModalEdit" :location="selectedLocation"></EditLocation>
     </Dialog>
     <DataTable :value="items" paginator lazy :rows="rows" @page="onPage" :totalRecords="totalRecords">
         <Column field="id" header="#"></Column>
@@ -125,8 +141,9 @@ const confirmDelete = (url: string) => {
                 </div>
             </template>
             <template #body="{data}">
-                <div class="w-full flex justify-center">
-                    <Button icon="pi pi-trash" severity="danger" @click="confirmDelete(route('api.locations.destroy', {location: data.id}))"></Button>
+                <div class="w-full flex gap-1 justify-center">
+                    <Button icon="pi pi-pencil" raised severity="warn" @click="showModalEdit(data)"></Button>
+                    <Button icon="pi pi-trash" raised severity="danger" @click="confirmDelete(route('api.locations.destroy', {location: data.id}))"></Button>
                 </div>
             </template>
         </Column>

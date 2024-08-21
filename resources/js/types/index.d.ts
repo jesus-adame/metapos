@@ -14,7 +14,7 @@ export interface User {
 
 export interface Customer {
     id: number;
-    firstname: string;
+    name: string;
     lastname: string;
     email: string;
     phone: string;
@@ -50,10 +50,12 @@ export interface Payment {
 
 export interface Supplier {
     id: number;
-    firstname: string;
-    lastname: string;
-    email: string;
-    phone: string;
+    name: string;
+    lastname?: string;
+    email?: string;
+    phone?: string;
+    address?: string;
+    company_name?: string;
 }
 
 export interface CashRegister {
@@ -65,6 +67,9 @@ export interface Location {
     id?: string
     name?: string
     address?: string
+    phone_number?: string
+    rfc?: string
+    email?: string
     type: string
     is_default: boolean
 }

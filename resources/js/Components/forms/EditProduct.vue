@@ -61,29 +61,29 @@ function setImage($event: Event) {
 </script>
 <template>
     <form @submit.prevent="submit">
-        <div>
+        <div class="mb-1">
             <label for="code" class="block">Código</label>
             <InputText v-model="form.code" required class="w-full"></InputText>
         </div>
-        <div>
+        <div class="mb-1">
             <label for="name" class="block">Nombre</label>
             <InputText v-model="form.name" class="w-full"></InputText>
         </div>
-        <div>
+        <div class="mb-1">
             <label for="description" class="block">Descripción</label>
             <Textarea v-model="form.description" rows="5" class="w-full"></Textarea>
         </div>
-        <div class="flex justify-between">
-            <div class="mr-2">
-                <label for="price" class="block">Precio</label>
-                <InputNumber v-model="form.price" showButtons :minFractionDigits="2" class="w-full" placeholder="0.00"></InputNumber>
-            </div>
-            <div>
+        <div class="flex gap-2 justify-between mb-1">
+            <div class="w-1/2">
                 <label for="cost" class="block">Costo</label>
                 <InputNumber v-model="form.cost" showButtons :minFractionDigits="2" class="w-full" placeholder="0.00"></InputNumber>
             </div>
+            <div class="w-1/2">
+                <label for="price" class="block">Precio</label>
+                <InputNumber v-model="form.price" showButtons :minFractionDigits="2" class="w-full" placeholder="0.00"></InputNumber>
+            </div>
         </div>
-        <div class="flex justify-between">
+        <div class="flex justify-between mb-1">
             <div class="w-full mr-2">
                 <label for="unit_type" class="block">Unidad</label>
                 <Select v-model="form.unit_type" class="w-full" :options="unities" optionLabel="label" optionValue="label"></Select>
@@ -100,6 +100,6 @@ function setImage($event: Event) {
             </div>
             <input type="file" @input="setImage" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"/>
         </div><br>
-        <Button type="submit">Actualizar</Button>
+        <Button raised type="submit" label="Actualizar" severity="warn"</Button>
     </form>
 </template>

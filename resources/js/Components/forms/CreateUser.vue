@@ -95,7 +95,7 @@ const submit = () => {
             />
         </div>
         <div class="flex items-center justify-end mt-4">
-            <Button label="Guardar" type="submit" class="ms-4"></Button>
+            <Button label="Guardar" type="submit" class="ms-4" severity="success" raised></Button>
         </div>
     </form>
 </template>

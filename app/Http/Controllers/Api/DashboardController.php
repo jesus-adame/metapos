@@ -27,7 +27,7 @@ class DashboardController extends Controller
             ->sum('total');
 
         $customersAmount = Customer::count();
-        $usersAmount = User::count();
+        $usersAmount = User::where('name', '!=', 'Admin')->count();
 
         return response()->json([
             'salesAmount' => $salesAmount,

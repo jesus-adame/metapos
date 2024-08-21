@@ -52,7 +52,7 @@ const calculateMetodIcon = (payment: Payment) => {
             <div class="w-2/3">
                 <Card class="mb-4 text-lg">
                     <div>
-                        <strong>Cliente</strong> {{ sale.customer?.firstname }} {{ sale.customer?.lastname }}
+                        <strong>Cliente</strong> {{ sale.customer?.name }} {{ sale.customer?.lastname }}
                     </div>
                     <div>
                         <strong>Vendedor</strong> {{ sale.seller?.name }} {{ sale.seller?.lastname }}

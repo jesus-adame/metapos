@@ -196,9 +196,9 @@ watch(() => authStore.cashRegister, () => {
                 </div>
             </template>
             <template #body="slot">
-                <div class="flex justify-center">
-                    <Button v-if="can('update products')" icon="pi pi-pencil" class="mr-1" @click="openModalEdit(slot.data)"></Button>
-                    <Button v-if="can('delete products')" icon="pi pi-trash" severity="danger" @click="confirmDelete(route('api.products.destroy', { product: slot.data.id }))"></Button>
+                <div class="flex gap-1 justify-center">
+                    <Button raised v-if="can('update products')" icon="pi pi-pencil" severity="warn" @click="openModalEdit(slot.data)"></Button>
+                    <Button raised v-if="can('delete products')" icon="pi pi-trash" severity="danger" @click="confirmDelete(route('api.products.destroy', { product: slot.data.id }))"></Button>
                 </div>
             </template>
         </Column>

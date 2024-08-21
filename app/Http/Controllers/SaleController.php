@@ -50,9 +50,9 @@ class SaleController extends Controller
 
         $company_name = $location->name;
         $company_address = $location->address;
-        $company_phone = Setting::where('key', Setting::COMPANY_PHONE)->first()->value;
-        $company_email = Setting::where('key', Setting::COMPANY_EMAIL)->first()->value;
-        $company_rfc = Setting::where('key', Setting::COMPANY_RFC)->first()->value;
+        $company_phone = $location->phone_number;
+        $company_email = $location->email;
+        $company_rfc = $location->rfc;
 
         $date = $sale->created_at;
         $date->setTimezone('America/Mexico_City');

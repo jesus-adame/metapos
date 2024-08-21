@@ -36,7 +36,7 @@ class SupplierController extends Controller
 
         $suppliers = Supplier::where('lastname', 'like', "%$request->code%")
             ->orWhere('email', 'like', "%$request->code%")
-            ->orWhere('firstname', 'like', "%$request->code%")
+            ->orWhere('name', 'like', "%$request->code%")
             ->orWhere('phone', 'like', "%$request->code%")
             ->get();
 
@@ -48,7 +48,7 @@ class SupplierController extends Controller
         Gate::authorize(Permission::CREATE_SUPPLIERS);
 
         $request->validate([
-            'firstname' => 'required',
+            'name' => 'required',
             'lastname' => 'required',
             'email' => 'nullable|email',
             'phone' => 'nullable',

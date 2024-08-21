@@ -77,7 +77,7 @@ onMounted(() => {
             <Select placeholder="- Elegir -" id="cashRegister" v-model="selectedCashRegister" :options="cashRegisters" optionLabel="name" class="w-60 my-4"></Select>
         </div>
         <div class="text-end">
-            <Button label="Aplicar" @click="changeCashRegister"></Button>
+            <Button raised label="Aplicar" @click="changeCashRegister" severity="warn"</Button>
         </div>
     </Dialog>
 

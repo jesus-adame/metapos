@@ -31,7 +31,6 @@ class CreatePurchaseRequest extends FormRequest
             'products.*.quantity' => 'required|integer|min:1',
             'products.*.price' => 'required|numeric|min:0',
             'location_id' => 'required|integer',
-            'location_type' => 'required|string',
             'update_cash_register' => 'boolean',
             'payment_methods' => 'nullable|array',
             'payment_methods.*.method' => 'nullable|in:cash,card,transfer',
@@ -45,7 +44,7 @@ class CreatePurchaseRequest extends FormRequest
             'products.required' => 'Debes cargar al menos un producto.',
             'applicated_at.required' => 'Elijar una fecha.',
             'location_id.required' => 'Elija una ubicación.',
-            'location_type.required' => 'Elija un tipo de ubicación.',
+            'products.required' => 'Agregue productos.',
         ];
     }
 }

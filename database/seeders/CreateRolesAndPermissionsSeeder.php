@@ -83,6 +83,7 @@ class CreateRolesAndPermissionsSeeder extends Seeder
         $manager->givePermissionTo('update sales');
         $manager->givePermissionTo('delete sales');
         $manager->givePermissionTo('view purchases');
+        $manager->givePermissionTo('create purchases');
         $manager->givePermissionTo('update purchases');
         $manager->givePermissionTo('delete purchases');
         $manager->givePermissionTo('view products');

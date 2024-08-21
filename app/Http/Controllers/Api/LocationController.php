@@ -22,11 +22,17 @@ class LocationController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'address' => 'nullable|string|max:255',
+            'phone_number' => 'nullable|string|max:255',
+            'email' => 'nullable|string|email|max:255',
+            'type' => 'required|string|in:branch,warehouse',
         ]);
 
         Location::create([
             'name' => $request->name,
             'address' => $request->address,
+            'phone_number' => $request->phone_number,
+            'email' => $request->email,
+            'rfc' => $request->rfc,
             'type' => 'branch',
             'is_default' => false,
         ]);
@@ -41,12 +47,17 @@ class LocationController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'address' => 'nullable|string|max:255',
+            'phone_number' => 'nullable|string|max:255',
+            'email' => 'nullable|string|email|max:255',
             'type' => 'required|string|in:branch,warehouse', // Validate type
         ]);
 
         $location->update([
             'name' => $request->name,
             'address' => $request->address,
+            'phone_number' => $request->phone_number,
+            'email' => $request->email,
+            'rfc' => $request->rfc,
             'type' => $request->type,
         ]);
 

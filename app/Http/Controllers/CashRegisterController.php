@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\CashRegister;
 use App\Models\Location;
+use App\Models\CashRegister;
 use App\Http\Controllers\Controller;
 
 class CashRegisterController extends Controller
@@ -25,7 +25,6 @@ class CashRegisterController extends Controller
 
         $user->update([
             'location_id' => $location->id,
-            'location_type' => $location::class,
             'cash_register_id' => $cashRegister->id,
         ]);
 

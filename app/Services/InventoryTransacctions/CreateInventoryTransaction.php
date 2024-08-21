@@ -18,6 +18,7 @@ class CreateInventoryTransaction
     ) {
         $transaction = InventoryTransaction::create([
             'product_id' => $productId,
+            'location_id' => $location->id,
             'type' => $type,
             'quantity' => $amount,
             'applicated_at' => $date,

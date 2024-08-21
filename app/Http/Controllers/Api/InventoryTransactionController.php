@@ -35,11 +35,7 @@ class InventoryTransactionController extends Controller
 
     public function store(StoreInventoryRequest $request, CreateInventoryTransaction $service)
     {
-        $location = null;
-
-        if ($request->location_type == Location::class) {
-            $location = Location::find($request->location_id);
-        }
+        $location = Location::find($request->location_id);
 
         $transaction = $service->execute(
             $location,
