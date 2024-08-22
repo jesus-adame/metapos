@@ -60,6 +60,16 @@ import Panel from 'primevue/panel';
 import FloatLabel from 'primevue/floatlabel';
 import Chart from 'primevue/chart';
 import Popover from 'primevue/popover';
+import ProgressSpinner from 'primevue/progressspinner';
+import Inplace from 'primevue/inplace';
+import Chip from 'primevue/chip';
+
+// import as component
+import Badge from 'primevue/badge';
+import OverlayBadge from 'primevue/overlaybadge';
+
+import StyleClass from 'primevue/styleclass';
+import FocusTrap from 'primevue/focustrap';
 
 import ToastService from 'primevue/toastservice';
 import DialogService from 'primevue/dialogservice';
@@ -125,6 +135,14 @@ createInertiaApp({
             .component("FloatLabel", FloatLabel)
             .component("Chart", Chart)
             .component("Popover", Popover)
+            .component("ProgressSpinner", ProgressSpinner)
+            .component("Inplace", Inplace)
+            .component("Chip", Chip)
+            .component("Badge", Badge)
+            .component("OverlayBadge", OverlayBadge)
+
+        app.directive('styleclass', StyleClass)
+            .directive('focustrap', FocusTrap)
 
         app.use(plugin)
             .use(ZiggyVue)

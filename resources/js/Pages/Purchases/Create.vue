@@ -193,9 +193,12 @@ const hideModalCreateSupplier = () => {
             </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-            <SelectProduct :products="products" @selected="pushProduct"></SelectProduct>
-            <div>
+        <div class="flex gap-2">
+            <div id="shoppingTable" class="w-1/3">
+                <SelectProduct :products="products" @selected="pushProduct"></SelectProduct>
+            </div>
+
+            <div class="w-2/3">
                 <ProductsList :products="form.products"></ProductsList>
                 <Card width="full" class="mt-5">
                     <div class="text-3xl font-bold flex justify-center w-full mb-5">

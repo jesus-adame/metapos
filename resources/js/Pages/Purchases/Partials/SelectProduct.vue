@@ -13,14 +13,13 @@ const pushProduct = (product: Product) => {
 }
 </script>
 <template>
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 justify-start">
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-2 justify-start">
         <div v-for="(product, index) in products" :key="index">
-            <div @click="pushProduct(product)" class="bg-white overflow-hidden shadow-sm sm:rounded-lg text-gray-900 cursor-pointer">
-                <Image v-if="product.image" :src="product.image_url" :alt="product.name" class="shadow-lg rounded-md overflow-hidden" width="100%" :pt="{root: 'w-full'}" />
+            <div @click="pushProduct(product)" class="transition-all bg-white relative hover:shadow-lg overflow-hidden shadow-sm sm:rounded-lg text-gray-700 cursor-pointer">
+                <Image v-if="product.image" :src="product.image_url" :alt="product.name" :pt="{root: 'w-full'}" />
                 <div class="py-2 px-4">
                     <p class="font-bold">{{ product.name }}</p>
                     <p class="text-sm">SKU: {{ product.sku || 'N/A' }}</p>
-                    {{ formatMoneyNumber(product.cost) }}
                 </div>
             </div>
         </div>

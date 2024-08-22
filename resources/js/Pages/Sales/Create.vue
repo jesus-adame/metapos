@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref } from 'vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 import UserLayout from '@/Layouts/UserLayout.vue';
 import ProductService from '@/Services/ProductService';
 import CustomerService from "@/Services/CustomerService";
@@ -64,31 +64,21 @@ const pushProduct = (product: Product) => {
         return;
     }
 
-    toast.add({ severity: 'success', summary: 'Correcto', detail: 'Producto agregado correctamente', life: 1100 });
-
     if (form.products.length > 0) {
-        const productIndex = form.products.findIndex((element) => element.code == product.code);
+        const currentProduct = form.products.find((element) => element.code == product.code);
 
-        if (productIndex > -1) {
-            form.products[productIndex].quantity++
+        if (currentProduct !== undefined) {
+            if (currentProduct.quantity >= product.stock) {
+                toast.add({ severity: 'warn', summary: 'Atención', detail: 'Producto sin existencias', life: 3000 });
+                return;
+            }
+            currentProduct.quantity++
+            toast.add({ severity: 'success', summary: 'Correcto', detail: 'Producto agregado correctamente', life: 1100 });
             return;
         }
     }
 
-    form.products.push({
-        id: product?.id,
-        code: product.code,
-        sku: product.sku,
-        name: product.name,
-        image: product.image,
-        image_url: product.image_url,
-        price: product.price,
-        cost: product.cost,
-        quantity: 1,
-        stock: product.stock,
-        tax: product.tax,
-        unit_type: product.unit_type,
-    })
+    form.products.push({ ...product, quantity: 1 })
 }
 
 const totalSale = computed(() => {
@@ -118,13 +108,13 @@ const clearSaleComponent = () => {
     form.products = [];
 }
 
-onMounted(() => {
+const fetchProducts = () => {
     productService.fetchAll()
     .then(response => {
         const paginate = response.data
         products.value = [...paginate.data]
     });
-});
+}
 
 const setCustomer = () => {
     form.customer_id = selectedCustomer.value?.id
@@ -165,6 +155,7 @@ const setSuccessPayment = () => {
     hideModalPayments();
     clearSaleComponent();
     removeDiscount();
+    fetchProducts();
 }
 
 const setSuccessDiscount = (amount: number, type: string) => {
@@ -189,6 +180,10 @@ const formatDiscount = computed(() => {
         return ''
     }
 })
+
+onMounted(() => {
+    fetchProducts()
+});
 </script>
 
 <template>

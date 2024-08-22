@@ -27,7 +27,9 @@ const removeProduct = (index: number) => {
             <Column header="Producto">
                 <template #body="slot">
                     <div class="flex">
-                        <Image v-if="slot.data.image" :src="slot.data.image_url" :alt="slot.data.name" class="hidden lg:block shadow-lg rounded-md overflow-hidden" width="64" />
+                        <div class="overflow-hidden hidden lg:block shadow-lg rounded-md w-20 h-20">
+                            <Image v-if="slot.data.image" :src="slot.data.image_url" :alt="slot.data.name" />
+                        </div>
                         <div class="text-left ml-2">
                             <span class="font-bold">{{ slot.data.name }}</span>
                             <p class="text-sm">{{ slot.data.code }}</p>
@@ -37,18 +39,18 @@ const removeProduct = (index: number) => {
                 </template>
             </Column>
             <Column header="Cantidad">
-                <template #body="slot">
-                    <InputNumber v-model="slot.data.quantity" showButtons buttonLayout="vertical"></InputNumber>
+                <template #body="{data}">
+                    <InputNumber v-model="data.quantity" showButtons buttonLayout="vertical" :min="1" :max="data.stock"></InputNumber>
                 </template>
             </Column>
             <Column header="Precio">
-                <template #body="slot">
-                    {{ formatMoneyNumber(slot.data.price * slot.data.quantity) }}
+                <template #body="{data}">
+                    {{ formatMoneyNumber(data.price) }}
                 </template>
             </Column>
             <Column header="Subtotal">
-                <template #body="slot">
-                    {{ formatMoneyNumber(slot.data.price * slot.data.quantity) }}
+                <template #body="{data}">
+                    {{ formatMoneyNumber(data.price * data.quantity) }}
                 </template>
             </Column>
             <Column header="">
