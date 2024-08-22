@@ -27,13 +27,9 @@ const authName = computed(() => store.user?.name)
                 Buen día {{ authName }}
             </div>
         </div>
-        <div v-if="can('view finances')" class="flex py-4 my-6">
-            <div class="w-1/2">
-                <YearSales></YearSales>
-            </div>
-            <div class="w-1/2">
-                <SaleCategories></SaleCategories>
-            </div>
+        <div v-if="can('view finances')" class="grid md:grid-cols-2 py-4 my-6">
+            <YearSales></YearSales>
+            <SaleCategories></SaleCategories>
         </div>
     </UserLayout>
 </template>

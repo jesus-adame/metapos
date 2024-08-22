@@ -160,8 +160,8 @@ const hideModalCreateSupplier = () => {
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Registrar Compra</h2>
         </template>
 
-        <div class="flex items-baseline justify-between my-4">
-            <div class="search w-1/3">
+        <div class="flex flex-wrap gap-2 items-baseline justify-between my-4">
+            <div class="search md:w-1/3">
                 <form @submit.prevent="addSearchedProduct" class="flex items-center">
                     <IconField iconPosition="left" class="w-full">
                         <InputIcon>
@@ -173,7 +173,7 @@ const hideModalCreateSupplier = () => {
                 </form>
             </div>
 
-            <div class="supplier w-1/3">
+            <div class="supplier md:w-1/3">
                 <div class="flex">
                     <AutoComplete v-model="selectedSupplier" optionLabel="name" :suggestions="filteredSuppliers"
                         @complete="searchSupplier"
@@ -193,12 +193,9 @@ const hideModalCreateSupplier = () => {
             </div>
         </div>
 
-        <div class="flex">
-            <div id="shoppingTable" class="w-1/3 mr-2">
-                <SelectProduct :products="products" @selected="pushProduct"></SelectProduct>
-            </div>
-
-            <div class="w-2/3">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+            <SelectProduct :products="products" @selected="pushProduct"></SelectProduct>
+            <div>
                 <ProductsList :products="form.products"></ProductsList>
                 <Card width="full" class="mt-5">
                     <div class="text-3xl font-bold flex justify-center w-full mb-5">

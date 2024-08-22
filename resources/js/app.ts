@@ -59,6 +59,7 @@ import PanelMenu from 'primevue/panelmenu';
 import Panel from 'primevue/panel';
 import FloatLabel from 'primevue/floatlabel';
 import Chart from 'primevue/chart';
+import Popover from 'primevue/popover';
 
 import ToastService from 'primevue/toastservice';
 import DialogService from 'primevue/dialogservice';
@@ -123,6 +124,7 @@ createInertiaApp({
             .component("Drawer", Drawer)
             .component("FloatLabel", FloatLabel)
             .component("Chart", Chart)
+            .component("Popover", Popover)
 
         app.use(plugin)
             .use(ZiggyVue)

@@ -8,7 +8,7 @@ import Toast from 'primevue/toast';
 
 <template>
   <!-- component -->
-  <div class="min-h-screen bg-gray-100">
+  <div class="min-h-screen bg-gray-100 overflow-auto">
     <Sidebar></Sidebar>
     <div class="py-4 px-10 xl:ml-10">
       <Breadcrumb>

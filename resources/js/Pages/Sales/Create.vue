@@ -217,8 +217,8 @@ const formatDiscount = computed(() => {
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">POS</h2>
         </template>
 
-        <div class="flex items-baseline justify-between mb-4 mt-4">
-            <div class="search w-1/3">
+        <div class="flex flex-wrap gap-2 items-baseline justify-between mb-4 mt-4 w-full">
+            <div class="search w-full md:w-1/3">
                 <form @submit.prevent="addSearchedProduct" class="flex items-center">
                     <IconField iconPosition="left" class="w-full">
                         <InputIcon class="pi pi-search"></InputIcon>
@@ -226,9 +226,9 @@ const formatDiscount = computed(() => {
                     </IconField>
                 </form>
             </div>
-            <div class="customer w-1/2">
-                <div class="flex justify-end">
-                    <Button v-if="form.discount == null" label="Agregar descuento" class="mr-2" icon="pi pi-tag" @click="showModalDiscount"></Button>
+            <div class="customer w-full md:w-1/2">
+                <div class="flex justify-end w-full">
+                    <Button v-if="form.discount == null" label="Descuento" class="mr-2" icon="pi pi-tag" @click="showModalDiscount"></Button>
                     <div class="w-1/2">
                         <div class="flex">
                             <AutoComplete v-model="selectedCustomer" optionLabel="name" :suggestions="filteredCustomers"
@@ -252,11 +252,9 @@ const formatDiscount = computed(() => {
             </div>
         </div>
 
-        <div class="flex">
-            <div id="shoppingTable" class="w-1/2 mr-2">
-                <SelectProduct :products="products" @selected="pushProduct"></SelectProduct>
-            </div>
-            <div class="w-1/2">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+            <SelectProduct :products="products" @selected="pushProduct"></SelectProduct>
+            <div>
                 <ProductsList :products="form.products"></ProductsList>
 
                 <Card width="full" class="mt-4">

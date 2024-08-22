@@ -5,6 +5,7 @@ import { ref } from 'vue';
 import ApplicationLogo from './ApplicationLogo.vue';
 import { TabItem } from '@/types';
 import { can } from '@/helpers';
+import FloatMenu from './menus/FloatMenu.vue';
 
 const tabItems: TabItem[] = [
   {
@@ -76,41 +77,43 @@ function handleMouseLeave() {
 </script>
 
 <template>
-<div
-class="-translate-x-80 sidebar fixed inset-0 z-50 h-screen w-[3.7rem] hover:w-56 transition-transform duration-300 xl:translate-x-0"
-@mouseenter="handleMouseEnter"
-@mouseleave="handleMouseLeave">
-  <div class="min-h-screen w-full overflow-hidden border-r hover:shadow-lg bg-blue-950 shadow-md">
-    <div class="flex h-screen flex-col justify-between pt-2 pb-6">
-      <div>
-        <div class="w-max p-2.5">
-          <div class="flex items-center">
-            <ApplicationLogo class="w-9 fill-current text-gray-200"></ApplicationLogo>
-            <span class="ml-3 font-black text-lg text-gray-200">METAPOS</span>
+  <FloatMenu></FloatMenu>
+
+  <div
+  class="-translate-x-80 sidebar fixed inset-0 z-50 h-screen w-[3.7rem] hover:w-56 transition-transform duration-300 xl:translate-x-0"
+  @mouseenter="handleMouseEnter"
+  @mouseleave="handleMouseLeave">
+    <div class="min-h-screen w-full overflow-hidden border-r hover:shadow-lg bg-blue-950 shadow-md">
+      <div class="flex h-screen flex-col justify-between pt-2 pb-6">
+        <div>
+          <div class="w-max p-2.5">
+            <div class="flex items-center">
+              <ApplicationLogo class="w-9 fill-current text-gray-200"></ApplicationLogo>
+              <span class="ml-3 font-black text-lg text-gray-200">METAPOS</span>
+            </div>
+          </div>
+          <div class="mt-6 space-y-2 tracking-wide text-gray-100 reveal-menu">
+            <VirtualScroller :items="tabItems" :itemSize="10" style="height: 65vh; overflow-x: hidden;" :class="{ 'overflow-hidden': !isHovered }" orientation="vertical">
+              <template v-slot:item="{ item }">
+                <div class="min-w-max">
+                  <Link v-if="can(item.permission)" :href="item.route" :class="{ 'bg-blue-800 pointer-events-none': item.active }" class="group flex items-center space-x-4 px-5 py-3">
+                    <i :class="item.icon" class="h-5 w-6"></i>
+                    <span>{{ item.label }}</span>
+                  </Link>
+                </div>
+              </template>
+            </VirtualScroller>
           </div>
         </div>
-        <div class="mt-6 space-y-2 tracking-wide text-gray-100 reveal-menu">
-          <VirtualScroller :items="tabItems" :itemSize="10" style="height: 65vh; overflow-x: hidden;" :class="{ 'overflow-hidden': !isHovered }" orientation="vertical">
-            <template v-slot:item="{ item }">
-              <div class="min-w-max">
-                <Link v-if="can(item.permission)" :href="item.route" :class="{ 'bg-blue-800 pointer-events-none': item.active }" class="group flex items-center space-x-4 px-5 py-3">
-                  <i :class="item.icon" class="h-5 w-6"></i>
-                  <span>{{ item.label }}</span>
-                </Link>
-              </div>
-            </template>
-          </VirtualScroller>
+        <div class="w-max -mb-3" v-if="can('view settings')">
+          <Link :href="route('settings.index')" class="group flex items-center space-x-4 px-4 py-3 text-gray-100">
+            <i class="pi pi-cog w-6 ml-1"></i>
+            <span class="group-hover:text-gray-300">Ajustes</span>
+          </Link>
         </div>
-      </div>
-      <div class="w-max -mb-3" v-if="can('view settings')">
-        <Link :href="route('settings.index')" class="group flex items-center space-x-4 px-4 py-3 text-gray-100">
-          <i class="pi pi-cog w-6 ml-1"></i>
-          <span class="group-hover:text-gray-300">Ajustes</span>
-        </Link>
       </div>
     </div>
   </div>
-</div>
 </template>
 
 <style scoped>

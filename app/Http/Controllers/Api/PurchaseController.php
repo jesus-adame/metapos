@@ -15,8 +15,10 @@ class PurchaseController extends Controller
 {
     public function index(Request $request)
     {
+        $location = $request->user()->location;
         $perPage = $request->input('rows', 10);
         $purchases = Purchase::with('supplier', 'buyer', 'location')
+            ->where('location_id', $location->id)
             ->orderBy('updated_at', 'desc')
             ->paginate($perPage);
 
