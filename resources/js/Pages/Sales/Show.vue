@@ -1,15 +1,22 @@
 <script setup lang="ts">
 import Card from '@/Components/Card.vue';
-import { formatMoneyNumber, saleStatus } from '@/helpers';
+import AddSaleCustomer from '@/Components/forms/AddSaleCustomer.vue';
+import { can, formatMoneyNumber, saleSeverity, saleStatus } from '@/helpers';
 import UserLayout from '@/Layouts/UserLayout.vue';
 import { Payment, Sale } from '@/types';
-import { Head } from '@inertiajs/vue3';
+import { Head, router, usePage } from '@inertiajs/vue3';
+import Button from 'primevue/button';
 import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
+import Dialog from 'primevue/dialog';
+import Tag from 'primevue/tag';
+import { ref } from 'vue';
 
 defineProps<{
     sale: Sale,
 }>();
+
+const addCustomerModal = ref(false)
 
 const getPaymentName = (payment: Payment) => {
     switch (payment.method) {
@@ -38,10 +45,29 @@ const calculateMetodIcon = (payment: Payment) => {
         }
     }
 }
+
+const savedCustomer = () => {
+    hideAddCustomerModal()
+    router.reload()
+}
+
+const showAddCustomerModal = () => {
+    addCustomerModal.value = true
+}
+
+const hideAddCustomerModal = () => {
+    addCustomerModal.value = false
+}
+
+const page = usePage()
 </script>
 
 <template>
     <Head title="Venta" />
+
+    <Dialog v-model:visible="addCustomerModal" header="Agregar cliente" modal >
+        <AddSaleCustomer :sale="sale" @save="savedCustomer"></AddSaleCustomer>
+    </Dialog>
 
     <UserLayout>
         <template #header>
@@ -51,20 +77,26 @@ const calculateMetodIcon = (payment: Payment) => {
         <div class="flex mt-4">
             <div class="w-2/3">
                 <Card class="mb-4 text-lg">
-                    <div>
-                        <strong>Cliente</strong> {{ sale.customer?.name }} {{ sale.customer?.lastname }}
+                    <div v-if="sale.customer" class="flex gap-2 items-center">
+                        <strong>Cliente</strong>
+                        <span>{{ sale.customer?.name }} {{ sale.customer?.lastname }}</span>
+                    </div>
+                    <div v-else class="flex gap-2 items-center">
+                        <strong>Cliente</strong>
+                        <Button v-if="can('update sales')" label="Sin asignar" link @click="showAddCustomerModal"></Button>
+                        <span v-else>Sin asignar</span>
                     </div>
                     <div>
                         <strong>Vendedor</strong> {{ sale.seller?.name }} {{ sale.seller?.lastname }}
                     </div>
                     <div>
-                        <strong>Total Venta</strong> {{ formatMoneyNumber(sale.total) }}
+                        <strong>Estatus</strong> <Tag :severity="saleSeverity(sale.status)" :value="saleStatus(sale.status)"></Tag>
                     </div>
                     <div>
-                        <strong>Estatus</strong> {{ saleStatus(sale.status) }}
+                        <strong>Caja</strong> <span>{{ sale.cash_register?.name }}</span>
                     </div>
                     <div>
-                        <strong>Caja</strong> {{ sale.cash_register?.name }}
+                        <strong>Total Venta</strong> <span class="text-green-700">{{ formatMoneyNumber(sale.total) }}</span>
                     </div>
                 </Card>
                 <Card padding="0">

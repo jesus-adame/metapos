@@ -240,7 +240,7 @@ onMounted(() => {
                                     </div>
                                 </template>
                             </AutoComplete>
-                            <Button icon="pi pi-plus" class="ml-2" severity="success" raised @click="showModalCreateCustomer"></Button>
+                            <Button v-tooltip.right="'Nuevo cliente'" icon="pi pi-plus" class="ml-2" severity="success" raised @click="showModalCreateCustomer"></Button>
                         </div>
                     </div>
                 </div>

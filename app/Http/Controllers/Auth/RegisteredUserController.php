@@ -63,7 +63,7 @@ class RegisteredUserController extends Controller
             'cash_register_id' => $defaulCashRegister->id,
         ]);
 
-        $user->assignRole(Role::SUPER_ADMIN);
+        $user->assignRole(Role::MANAGER);
 
         event(new Registered($user));
 

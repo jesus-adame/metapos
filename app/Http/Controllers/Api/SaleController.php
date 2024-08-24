@@ -54,6 +54,20 @@ class SaleController extends Controller
         return response()->json($response, Response::HTTP_CREATED);
     }
 
+    public function setCustomer(Request $request, Sale $sale)
+    {
+        $request->validate([
+            'customer_id' => 'nullable|exists:customers,id',
+        ]);
+
+        $sale->customer_id = $request->customer_id;
+        $sale->save();
+
+        return response()->json([
+            'message' => 'Cliente asignado correctamente.'
+        ]);
+    }
+
     public function cancel(CancelSaleRequest $request, string $saleId, CancelSaleService $service)
     {
         $sale = Sale::with('products')->find($saleId);
