@@ -180,13 +180,22 @@ watch(() => authStore.cashRegister, () => {
             </template>
             <template #body="slot">
                 <div class="text-center w-full">
-                    <Tag :value="slot.data.stock || 0" :severity="getSeverity(slot.data)"></Tag>
+                    <span class="font-bold">
+                        {{slot.data.stock || 0}}
+                    </span>
                 </div>
             </template>
         </Column>
         <Column field="unit" header="Unidad">
             <template #body="slot">
                 {{ slot.data.unit_type }}
+            </template>
+        </Column>
+        <Column header="Estatus">
+            <template #body="slot">
+                <div class="text-center w-full">
+                    <Tag :value="slot.data.stock ? 'Disponible' : 'Sin stock'" :severity="getSeverity(slot.data)"></Tag>
+                </div>
             </template>
         </Column>
         <Column header="">

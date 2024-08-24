@@ -3,7 +3,8 @@ import Card from '@/Components/Card.vue';
 import { formatMoneyNumber, purchaseStatus } from '@/helpers';
 import UserLayout from '@/Layouts/UserLayout.vue';
 import { Purchase } from '@/types';
-import { Head } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
+import Button from 'primevue/button';
 import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
 import Image from 'primevue/image';
@@ -18,7 +19,12 @@ defineProps<{
 
     <UserLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Compra # {{ purchase.id }}</h2>
+            <div class="flex items-center gap-4">
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">Compra # {{ purchase.id }}</h2>
+                <Link :href="route('purchases.index')">
+                    <Button icon="pi pi-chevron-left"></Button>
+                </Link>
+            </div>
         </template>
 
         <div class="flex mt-4">

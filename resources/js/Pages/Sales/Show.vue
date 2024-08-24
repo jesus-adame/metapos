@@ -4,7 +4,7 @@ import AddSaleCustomer from '@/Components/forms/AddSaleCustomer.vue';
 import { can, formatMoneyNumber, saleSeverity, saleStatus } from '@/helpers';
 import UserLayout from '@/Layouts/UserLayout.vue';
 import { Payment, Sale } from '@/types';
-import { Head, router, usePage } from '@inertiajs/vue3';
+import { Head, Link, router } from '@inertiajs/vue3';
 import Button from 'primevue/button';
 import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
@@ -58,8 +58,6 @@ const showAddCustomerModal = () => {
 const hideAddCustomerModal = () => {
     addCustomerModal.value = false
 }
-
-const page = usePage()
 </script>
 
 <template>
@@ -71,7 +69,12 @@ const page = usePage()
 
     <UserLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Venta # {{ sale.id }}</h2>
+            <div class="flex items-center gap-4">
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">Venta # {{ sale.id }}</h2>
+                <Link :href="route('sales.index')">
+                    <Button icon="pi pi-chevron-left"></Button>
+                </Link>
+            </div>
         </template>
 
         <div class="flex mt-4">
@@ -95,8 +98,9 @@ const page = usePage()
                     <div>
                         <strong>Caja</strong> <span>{{ sale.cash_register?.name }}</span>
                     </div>
-                    <div>
-                        <strong>Total Venta</strong> <span class="text-green-700">{{ formatMoneyNumber(sale.total) }}</span>
+                    <div class="flex gap-2 items-center">
+                        <strong>Total Venta</strong>
+                        <span class="font-bold text-gray-600">{{ formatMoneyNumber(sale.total) }}</span>
                     </div>
                 </Card>
                 <Card padding="0">

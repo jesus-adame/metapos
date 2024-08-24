@@ -105,6 +105,11 @@ const confirmDelete = (url: string) => {
                 {{ formatDateTime(data.created_at) }}
             </template>
         </Column>
+        <Column header="Estatus">
+            <template #body="{data}">
+                <Tag :severity="saleSeverity(data.status)" :value="saleStatus(data.status)"></Tag>
+            </template>
+        </Column>
         <Column header="Cliente">
             <template #body="{data}">
                 <UserIcon>
@@ -128,12 +133,9 @@ const confirmDelete = (url: string) => {
         </Column>
         <Column field="total" header="Total">
             <template #body="{data}">
-                {{ formatMoneyNumber(data.total) }}
-            </template>
-        </Column>
-        <Column header="Estatus">
-            <template #body="{data}">
-                <Tag :severity="saleSeverity(data.status)" :value="saleStatus(data.status)"></Tag>
+                <span class="font-bold">
+                    {{ formatMoneyNumber(data.total) }}
+                </span>
             </template>
         </Column>
         <Column header="">

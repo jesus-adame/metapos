@@ -120,6 +120,19 @@ export const purchaseStatus = (status: string) => {
     }
 }
 
+export const purchaseSeverity = (status: string) => {
+    switch (status) {
+        case 'completed':
+            return 'success'
+        case 'pending':
+            return 'warning'
+        case 'canceled':
+            return 'danger'
+        default:
+            return ''
+    }
+}
+
 export function roundBank(num: number) {
     return num % 1 === 0.5 ? (num % 2 === 0 ? num : num + 1) : Math.round(num);
 }
