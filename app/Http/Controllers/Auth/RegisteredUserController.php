@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
 use App\Models\User;
+use App\Models\Role;
 use App\Models\Location;
 use App\Models\CashRegister;
 use App\Http\Requests\Auth\RegisterRequest;
@@ -52,6 +53,7 @@ class RegisteredUserController extends Controller
             ]);
         }
 
+        /** @var User */
         $user = User::create([
             'name' => $request->name,
             'lastname' => $request->lastname,
@@ -60,6 +62,8 @@ class RegisteredUserController extends Controller
             'location_id' => $defaultLocation->id,
             'cash_register_id' => $defaulCashRegister->id,
         ]);
+
+        $user->assignRole(Role::SUPER_ADMIN);
 
         event(new Registered($user));
 

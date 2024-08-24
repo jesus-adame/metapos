@@ -81,8 +81,8 @@ const calculateMetodIcon = (payment: Payment) => {
                             </template>
                         </Column>
                         <Column header="Precio">
-                            <template #body="slot">
-                                {{ formatMoneyNumber(slot.data.pivot.price) }}
+                            <template #body="{data}">
+                                {{ formatMoneyNumber(data.pivot.price) }}
                             </template>
                         </Column>
                         <Column header="Cantidad">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Models\Location;
 use App\Models\CashRegister;
 use App\Http\Controllers\Controller;
 
@@ -40,17 +41,19 @@ class CashRegisterController extends Controller
 
         /** @var User */
         $user = Auth::user();
+        /** @var CashRegister */
         $cashRegister = CashRegister::find($request->cash_register_id);
+        $location = Location::find($cashRegister->location->id);
 
         $user->update([
-            'location_id' => $cashRegister->location->id,
+            'location_id' => $location->id,
             'cash_register_id' => $cashRegister->id,
         ]);
 
-        $request->session()->regenerate();
-
         return response()->json([
-            'mensage' => 'Cambiado correctamente'
+            'mensage' => 'Cambiado correctamente',
+            'cashRegister' => $cashRegister,
+            'location' => $location,
         ]);
     }
 

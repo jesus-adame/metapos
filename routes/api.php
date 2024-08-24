@@ -47,6 +47,7 @@ Route::middleware(['auth:sanctum', InitializeTenancyByDomain::class])->name('api
     Route::post('/customers/search', [CustomerController::class, 'search'])->name('customers.search');
     Route::post('/suppliers/search', [SupplierController::class, 'search'])->name('suppliers.search');
     Route::post('/cash-registers/search', [CashRegisterController::class, 'search'])->name('sales.search');
+    Route::delete('/sales/{sale}/cancel', [SaleController::class, 'cancel'])->name('sales.cancel');
 
     Route::get('/cash-flows/resume', [CashFlowController::class, 'resume'])->name('cash-flows.resume');
     Route::post('/cash-registers/select', [CashRegisterController::class, 'select'])->name('cash-registers.select');

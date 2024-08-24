@@ -11,7 +11,6 @@ use App\Models\Payment;
 use App\Models\Location;
 use App\Models\CashRegister;
 use App\Models\CashFlow;
-use App\Models\BankTransaction;
 use App\Helpers\MathNumberHelper;
 use App\Contracts\Cashable;
 

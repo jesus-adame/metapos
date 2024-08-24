@@ -5,12 +5,9 @@ import YearSales from '@/Components/charts/YearSales.vue';
 import { can } from '@/helpers';
 import UserLayout from '@/Layouts/UserLayout.vue';
 import { useAuthStore } from '@/stores/AuthStore';
-import { Head, usePage } from '@inertiajs/vue3';
-import { computed } from 'vue';
+import { Head } from '@inertiajs/vue3';
 
-const store = useAuthStore()
-
-const authName = computed(() => store.user?.name)
+const authStore = useAuthStore()
 </script>
 <template>
     <Head title="Panel" />
@@ -24,7 +21,7 @@ const authName = computed(() => store.user?.name)
         </div>
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg my-4">
             <div class="p-6 text-gray-900 text-lg">
-                Buen día {{ authName }}
+                Buen día {{ authStore.user?.name }}
             </div>
         </div>
         <div v-if="can('view finances')" class="grid md:grid-cols-2 py-4 my-6">

@@ -84,11 +84,24 @@ export const locationIcon = (location: Location | null) => {
 export const saleStatus = (status: string) => {
     switch (status) {
         case 'completed':
-            return 'Pagado'
+            return 'Pagada'
         case 'pending':
             return 'Pendiente'
         case 'canceled':
-            return 'Cancelado'
+            return 'Cancelada'
+        default:
+            return ''
+    }
+}
+
+export const saleSeverity = (status: string) => {
+    switch (status) {
+        case 'completed':
+            return 'success'
+        case 'pending':
+            return 'warning'
+        case 'canceled':
+            return 'danger'
         default:
             return ''
     }

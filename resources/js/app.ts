@@ -63,13 +63,13 @@ import Popover from 'primevue/popover';
 import ProgressSpinner from 'primevue/progressspinner';
 import Inplace from 'primevue/inplace';
 import Chip from 'primevue/chip';
-
-// import as component
+import SplitButton from 'primevue/splitbutton';
 import Badge from 'primevue/badge';
 import OverlayBadge from 'primevue/overlaybadge';
 
 import StyleClass from 'primevue/styleclass';
 import FocusTrap from 'primevue/focustrap';
+import Tooltip from 'primevue/tooltip';
 
 import ToastService from 'primevue/toastservice';
 import DialogService from 'primevue/dialogservice';
@@ -140,9 +140,11 @@ createInertiaApp({
             .component("Chip", Chip)
             .component("Badge", Badge)
             .component("OverlayBadge", OverlayBadge)
+            .component("SplitButton", SplitButton)
 
         app.directive('styleclass', StyleClass)
             .directive('focustrap', FocusTrap)
+            .directive('tooltip', Tooltip)
 
         app.use(plugin)
             .use(ZiggyVue)

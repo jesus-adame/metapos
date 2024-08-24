@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { can, formatDateTime, formatMoneyNumber, saleStatus } from '@/helpers';
+import { can, formatDateTime, formatMoneyNumber, saleSeverity, saleStatus } from '@/helpers';
 import Column from 'primevue/column';
 import CashRegisterIcon from '@/Components/icons/CashRegisterIcon.vue';
 import UserIcon from '@/Components/icons/UserIcon.vue';
@@ -7,12 +7,15 @@ import { DataTablePageEvent } from 'primevue/datatable';
 import { onMounted, ref, watch } from 'vue';
 import { Sale } from '@/types';
 import SaleService from "@/Services/SaleService";
-import { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { Link } from '@inertiajs/vue3';
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
 import PDFObject from '../PDFObject.vue';
 import { useAuthStore } from '@/stores/AuthStore';
+import { useConfirm } from 'primevue/useconfirm';
+import { useToast } from 'primevue/usetoast';
+import Tag from 'primevue/tag';
 
 const items = ref<Sale[]>([])
 const totalRecords = ref<number>(0)
@@ -23,6 +26,8 @@ const cashRegister = ref<number | null>(null)
 const modalTicket = ref<boolean>(false)
 const saleId = ref<number | null>(null)
 const authStore = useAuthStore()
+const confirm = useConfirm()
+const toast = useToast()
 
 const fetchItems = (pageNumber: number) => {
     saleService.paginate(pageNumber, rows.value, cashRegister.value)
@@ -50,6 +55,37 @@ onMounted(() => {
 watch(() => authStore.cashRegister, () => {
     fetchItems(page.value)
 })
+
+const deleteItem = (url: string) => {
+    axios.post(url, { _method: 'delete' })
+    .then((response: AxiosResponse) => {
+        toast.add({ summary: 'Correcto', detail: response.data.message, severity: 'success', life: 1500 })
+        fetchItems(page.value)
+    })
+    .catch(reject => {
+        console.error(reject.response.data.errors);
+        toast.add({ summary: 'Error', detail: reject.response.data.message, severity: 'error', life: 3000 })
+    })
+}
+
+const confirmDelete = (url: string) => {
+    confirm.require({
+        header: '¿Está seguro de cancelar?',
+        message: 'Se cancelará la venta y cargara los productos al inventario',
+        icon: 'pi pi-exclamation-triangle',
+        rejectProps: {
+            label: 'Cancelar',
+            severity: 'secondary',
+        },
+        acceptProps: {
+            label: 'Aplicar cancelación',
+            severity: 'danger'
+        },
+        accept: () => {
+            deleteItem(url)
+        }
+    });
+}
 </script>
 <template>
     <Dialog v-model:visible="modalTicket" modal :header="'Venta #' + saleId">
@@ -58,46 +94,46 @@ watch(() => authStore.cashRegister, () => {
 
     <DataTable :value="items" paginator :rows="rows" :total-records="totalRecords" @page="onPage" lazy>
         <Column field="id" header="#">
-            <template #body="slot">
-                <Link :href="route('sales.show', { sale: slot.data.id })">
-                    {{ slot.data.id }}
+            <template #body="{data}">
+                <Link :href="route('sales.show', { sale: data.id })">
+                    {{ data.id }}
                 </Link>
             </template>
         </Column>
         <Column header="Fecha">
-            <template #body="slot">
-                {{ formatDateTime(slot.data.created_at) }}
+            <template #body="{data}">
+                {{ formatDateTime(data.created_at) }}
             </template>
         </Column>
         <Column header="Cliente">
-            <template #body="slot">
+            <template #body="{data}">
                 <UserIcon>
-                    {{ slot.data.customer?.name || 'Sin asignar' }} {{ slot.data.customer?.lastname }}
+                    {{ data.customer?.name || 'Sin asignar' }} {{ data.customer?.lastname }}
                 </UserIcon>
             </template>
         </Column>
         <Column header="Vendedor">
-            <template #body="slot">
+            <template #body="{data}">
                 <UserIcon>
-                    {{ slot.data.seller.name }} {{ slot.data.seller.lastname }}
+                    {{ data.seller.name }} {{ data.seller.lastname }}
                 </UserIcon>
             </template>
         </Column>
         <Column header="Caja">
-            <template #body="slot">
+            <template #body="{data}">
                 <CashRegisterIcon>
-                    {{ slot.data.cash_register?.name || 'Sin asignar' }}
+                    {{ data.cash_register?.name || 'Sin asignar' }}
                 </CashRegisterIcon>
             </template>
         </Column>
         <Column field="total" header="Total">
-            <template #body="slot">
-                {{ formatMoneyNumber(slot.data.total) }}
+            <template #body="{data}">
+                {{ formatMoneyNumber(data.total) }}
             </template>
         </Column>
         <Column header="Estatus">
-            <template #body="slot">
-                {{ saleStatus(slot.data.status) }}
+            <template #body="{data}">
+                <Tag :severity="saleSeverity(data.status)" :value="saleStatus(data.status)"></Tag>
             </template>
         </Column>
         <Column header="">
@@ -106,6 +142,7 @@ watch(() => authStore.cashRegister, () => {
                     <Link :href="route('sales.show', {sale: data.id})">
                         <Button raised icon="pi pi-eye" severity="info"></Button>
                     </Link>
+                    <Button v-if="can('update sales')" raised icon="pi pi-replay" severity="danger" v-tooltip.top="'Cancelar'" @click="confirmDelete(route('api.sales.cancel', {sale: data.id}))"></Button>
                     <Button raised icon="pi pi-print" @click="openModaTicket(data.id)"></Button>
                 </div>
             </template>

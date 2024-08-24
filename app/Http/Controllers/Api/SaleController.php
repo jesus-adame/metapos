@@ -7,9 +7,11 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Services\Sales\RegisterSaleService;
+use App\Services\Sales\CancelSaleService;
 use App\Models\Sale;
 use App\Models\Permission;
 use App\Http\Requests\StoreSaleRequest;
+use App\Http\Requests\CancelSaleRequest;
 use App\Http\Controllers\Controller;
 
 class SaleController extends Controller
@@ -50,5 +52,14 @@ class SaleController extends Controller
         }
 
         return response()->json($response, Response::HTTP_CREATED);
+    }
+
+    public function cancel(CancelSaleRequest $request, string $saleId, CancelSaleService $service)
+    {
+        $sale = Sale::with('products')->find($saleId);
+
+        $response = $service->execute($sale);
+
+        return response()->json($response);
     }
 }

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import axios, { AxiosError, AxiosResponse } from 'axios';
@@ -22,7 +22,7 @@ const authStore = useAuthStore()
 const modalCashRegister = ref(false)
 
 const changeCashRegister = () => {
-    const url = route('cash-registers.select')
+    const url = route('api.cash-registers.select')
 
     axios.post(url, {
         cash_register_id: selectedCashRegister.value?.id
@@ -56,14 +56,6 @@ const searchCashRegisters = () => {
     })
 }
 
-const locations = computed(() => {
-    return page.props.locations
-})
-
-const csrf_token = computed(() => {
-    return page.props.csrf_token
-})
-
 onMounted(() => {
     searchCashRegisters()
 })
@@ -71,7 +63,7 @@ onMounted(() => {
 <template>
     <Dialog v-model:visible="modalCashRegister" header="Cambiar caja" modal>
         <div class="d-block">
-            <Select placeholder="Sucursal" id="location" v-model="selectedLocation" :options="locations" optionLabel="name" class="w-60 my-4" @change="searchCashRegisters"></Select>
+            <Select placeholder="Sucursal" id="location" v-model="selectedLocation" :options="authStore.locations" optionLabel="name" class="w-60 my-4" @change="searchCashRegisters"></Select>
         </div>
         <div class="d-block">
             <Select placeholder="- Elegir -" id="cashRegister" v-model="selectedCashRegister" :options="cashRegisters" optionLabel="name" class="w-60 my-4"></Select>
@@ -117,7 +109,7 @@ onMounted(() => {
             <div @click="showModal" class="cursor-pointer block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">
                 Cambiar de caja
             </div>
-            <DropdownLink :href="route('logout', { _token: csrf_token })" method="post" as="button">
+            <DropdownLink :href="route('logout', { _token: authStore.csrf_token })" method="post" as="button">
                 Cerrar sesión
             </DropdownLink>
         </template>
