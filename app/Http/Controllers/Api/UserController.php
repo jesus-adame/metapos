@@ -20,7 +20,7 @@ class UserController extends Controller
 
         $perPage = $request->input('rows', 10);
         $users = User::with('roles')
-            ->where('email', '!=', 'admin@metapos.mx')
+            ->where('email', '!=', config('app.admin.email'))
             ->orderBy('updated_at', 'desc')->paginate($perPage);
 
         return response()->json($users);

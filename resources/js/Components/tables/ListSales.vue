@@ -113,7 +113,7 @@ const confirmDelete = (url: string) => {
         <Column header="Cliente">
             <template #body="{data}">
                 <UserIcon>
-                    {{ data.customer?.name || 'Sin asignar' }} {{ data.customer?.lastname }}
+                    {{ data.customer?.name || '-' }} {{ data.customer?.lastname }}
                 </UserIcon>
             </template>
         </Column>
@@ -127,7 +127,7 @@ const confirmDelete = (url: string) => {
         <Column header="Caja">
             <template #body="{data}">
                 <CashRegisterIcon>
-                    {{ data.cash_register?.name || 'Sin asignar' }}
+                    {{ data.cash_register?.name || '-' }}
                 </CashRegisterIcon>
             </template>
         </Column>

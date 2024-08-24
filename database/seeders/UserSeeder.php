@@ -19,8 +19,8 @@ class UserSeeder extends Seeder
         if (is_null($user)) {
             /** @var User */
             $user = User::create([
-                'name' => 'Admin',
-                'lastname' => 'N/A',
+                'name' => 'Super Admin',
+                'lastname' => '',
                 'email' => config('app.admin.email'),
                 'password' => Hash::make(config('app.admin.password'))
             ]);

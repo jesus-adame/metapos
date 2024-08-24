@@ -51,7 +51,7 @@ const onPage = (event: DataTablePageEvent) => {
         <Column header="Proveedor">
             <template #body="slot">
                 <UserIcon>
-                    {{ slot.data.supplier?.name || 'N/A' }} {{ slot.data.supplier?.lastname }}
+                    {{ slot.data.supplier?.name || '-' }} {{ slot.data.supplier?.lastname }}
                 </UserIcon>
             </template>
         </Column>

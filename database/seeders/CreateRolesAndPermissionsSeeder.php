@@ -16,7 +16,7 @@ class CreateRolesAndPermissionsSeeder extends Seeder
     public function run(): void
     {
         /** @var User */
-        $superAdmin = User::where('name', 'Admin')->first();
+        $superAdmin = User::where('name', 'Super Admin')->first();
 
         Role::firstOrCreate(['name' => Role::SUPER_ADMIN]);
         $manager = Role::firstOrCreate(['name' => Role::MANAGER]);
