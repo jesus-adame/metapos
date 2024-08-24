@@ -28,6 +28,9 @@ const saleId = ref<number | null>(null)
 const authStore = useAuthStore()
 const confirm = useConfirm()
 const toast = useToast()
+const props = defineProps<{
+    dates?: any[] | null
+}>()
 
 const fetchItems = (pageNumber: number) => {
     saleService.paginate(pageNumber, rows.value, cashRegister.value)
@@ -50,6 +53,15 @@ const openModaTicket = (id: number) => {
 
 onMounted(() => {
     fetchItems(page.value)
+})
+
+watch(() => props.dates, (dates) => {
+    saleService.paginateByDates(page.value, rows.value, cashRegister.value, dates)
+    .then((response: AxiosResponse) => {
+        const pagination = response.data
+        items.value = pagination.data
+        totalRecords.value = pagination.total
+    })
 })
 
 watch(() => authStore.cashRegister, () => {

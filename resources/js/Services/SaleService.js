@@ -18,6 +18,14 @@ export default class SaleService {
         return response
     }
 
+    async paginateByDates(page, rows, cash_register, dates) {
+        const url = route('api.sales.index');
+        const response = await axios.get(url, { params: { page, rows, cash_register, dates } });
+        this.sales.value = response.data
+
+        return response
+    }
+
     async paginate(page, rows, cash_register) {
         const url = route('api.sales.index');
         const response = await axios.get(url, { params: { page, rows, cash_register } });

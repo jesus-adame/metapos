@@ -176,3 +176,8 @@
     font-weight: 900;
     font-style: italic;
 }
+
+.bg-highlight {
+    background: #dadada;
+    color: var(--p-highlight-color);
+}
