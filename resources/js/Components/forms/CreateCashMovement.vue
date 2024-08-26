@@ -61,7 +61,7 @@ const methods = [
             </div>
             <div class="w-1/2">
                 <label for="date" class="block">Fecha</label>
-                <DatePicker dateFormat="dd/mm/yy" v-model="form.date" id="date" class="w-full" required placeholder="DD/MM/YYYY"/>
+                <DatePicker dateFormat="dd/mm/yy" v-model="form.date" showTime hour-format="12" id="date" class="w-full" required placeholder="DD/MM/YYYY"/>
             </div>
         </div>
         <div class="flex mb-4">

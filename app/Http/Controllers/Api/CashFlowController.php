@@ -80,10 +80,8 @@ class CashFlowController extends Controller
             'date' => 'required|date',
         ]);
 
-        $splitDate = explode('T', $request->date);
-
         // Calcular entradas y salidas hasta la fecha del corte
-        $date = Carbon::parse($splitDate[0] . ' 00:00:00 ' . 'America/Mexico_City');
+        $date = Carbon::parse($request->date);
         $cashRegisterId = Auth::user()->cash_register_id;
 
         CashFlow::create([
@@ -91,7 +89,7 @@ class CashFlowController extends Controller
             'amount' => $request->amount,
             'description' => $request->description,
             'method' => $request->method,
-            'date' => $date->utc(),
+            'date' => $date,
             'cash_register_id' => $cashRegisterId,
         ]);
 
