@@ -26,7 +26,6 @@ class SaleController extends Controller
 
         $perPage = $request->input('rows', 10);
         $builder = Sale::with('customer', 'seller', 'cashRegister');
-        $builder->orderBy('created_at', 'desc');
 
         if (!is_null($since) && !is_null($until)) {
             $splitSince = explode('T', $since);
@@ -51,6 +50,7 @@ class SaleController extends Controller
         }
 
         $totalSales = $builder->sum('total');
+        $builder->orderBy('created_at', 'desc');
         $paginate = $builder->paginate($perPage);
 
 

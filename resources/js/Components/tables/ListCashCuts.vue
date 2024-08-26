@@ -91,36 +91,36 @@ watch(() => authStore.cashRegister, () => {
 
     <DataTable :value="items" paginator :rows="rows" :totalRecords="totalRecords" @page="onPage" lazy>
         <Column field="cut_date" header="Fecha de corte">
-            <template #body="slot">
-                {{ formatDate(slot.data.cut_date, true) }} - {{ formatDate(slot.data.cut_end_date, true) }}
+            <template #body="{data}">
+                {{ formatDate(data.cut_date, true) }} - {{ formatDate(data.cut_end_date, true) }}
             </template>
         </Column>
         <Column field="" header="Caja">
-            <template #body="slot">
+            <template #body="{data}">
                 <div class="flex">
                     <CashRegisterIcon>
-                        {{ slot.data.cash_register.name }}
+                        {{ data.cash_register.name }}
                     </CashRegisterIcon>
                 </div>
             </template>
         </Column>
         <Column field="total_entries" header="Total de entradas">
-            <template #body="slot">
+            <template #body="{data}">
                 <Tag severity="success">
-                    {{ formatMoneyNumber(slot.data.total_entries) }}
+                    {{ formatMoneyNumber(data.total_entries) }}
                 </Tag>
             </template>
         </Column>
         <Column field="total_exits" header="Total de salidas">
-            <template #body="slot">
+            <template #body="{data}">
                 <Tag severity="danger">
-                    {{ formatMoneyNumber(slot.data.total_exits) }}
+                    {{ formatMoneyNumber(data.total_exits) }}
                 </Tag>
             </template>
         </Column>
-        <Column field="final_balance" header="Balance final">
-            <template #body="slot">
-                <Tag severity="info">{{ formatMoneyNumber(slot.data.final_balance) }}</Tag>
+        <Column field="final_balance" header="Balance">
+            <template #body="{data}">
+                <Tag severity="info">{{ formatMoneyNumber(data.final_balance) }}</Tag>
             </template>
         </Column>
         <Column field="" header="">

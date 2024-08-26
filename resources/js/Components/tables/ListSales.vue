@@ -69,7 +69,7 @@ const confirmDelete = (url: string) => {
                 </Link>
             </template>
         </Column>
-        <Column header="Fecha">
+        <Column header="Fecha y hora">
             <template #body="{data}">
                 {{ formatDateTime(data.created_at) }}
             </template>
