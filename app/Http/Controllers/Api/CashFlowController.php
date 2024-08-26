@@ -16,7 +16,7 @@ class CashFlowController extends Controller
         $cashRegisterId = Auth::user()->cashRegister->id;
 
         $paginate = CashFlow::with('cashRegister')
-            ->orderBy('created_at', 'desc')
+            ->orderBy('date', 'desc')
             ->where('cash_register_id', $cashRegisterId)
             ->paginate($perPage);
 
@@ -80,7 +80,10 @@ class CashFlowController extends Controller
             'date' => 'required|date',
         ]);
 
-        $date = Carbon::createFromTimeString($request->date);
+        $splitDate = explode('T', $request->date);
+
+        // Calcular entradas y salidas hasta la fecha del corte
+        $date = Carbon::parse($splitDate[0] . ' 00:00:00 ' . 'America/Mexico_City');
         $cashRegisterId = Auth::user()->cash_register_id;
 
         CashFlow::create([
@@ -88,7 +91,7 @@ class CashFlowController extends Controller
             'amount' => $request->amount,
             'description' => $request->description,
             'method' => $request->method,
-            'date' => $date->format('Y-m-d 00:00:00'),
+            'date' => $date->utc(),
             'cash_register_id' => $cashRegisterId,
         ]);
 

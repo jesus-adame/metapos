@@ -27,11 +27,9 @@ class PurchaseController extends Controller
 
     public function store(CreatePurchaseRequest $request, RegisterPurchaseService $purchaseService)
     {
-        $purchaseDate = Carbon::createFromTimeString($request->applicated_at);
-        $purchaseDate->setHours(0);
-
         $buyerId = Auth::user()->id;
         $cash_register_id = Auth::user()->cash_register_id;
+        $purchaseDate = Carbon::parse($request->applicated_at);
 
         $response = $purchaseService->execute(
             $request->supplier_id,
@@ -48,5 +46,19 @@ class PurchaseController extends Controller
         }
 
         return response()->json($response, Response::HTTP_CREATED);
+    }
+
+    public function setSupplier(Request $request, Purchase $purchase)
+    {
+        $request->validate([
+            'supplier_id' => 'nullable|exists:suppliers,id',
+        ]);
+
+        $purchase->supplier_id = $request->supplier_id;
+        $purchase->save();
+
+        return response()->json([
+            'message' => 'Proveedor asignado correctamente.'
+        ]);
     }
 }

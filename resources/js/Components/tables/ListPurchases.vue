@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { formatDate, formatMoneyNumber, purchaseSeverity, purchaseStatus } from '@/helpers';
+import { formatDateTime, formatMoneyNumber, purchaseSeverity, purchaseStatus } from '@/helpers';
 import Button from 'primevue/button';
 import Column from 'primevue/column';
 import Tag from 'primevue/tag';
@@ -38,9 +38,9 @@ const onPage = (event: DataTablePageEvent) => {
 <template>
     <DataTable :value="items" @page="onPage" :total-records="totalRecords" :rows="rows" lazy paginator>
         <Column field="id" header="#"></Column>
-        <Column header="Fecha">
+        <Column header="Fecha y hora">
             <template #body="slot">
-                {{ formatDate(slot.data.applicated_at) }}
+                {{ formatDateTime(slot.data.applicated_at) }}
             </template>
         </Column>
         <Column header="Estatus">

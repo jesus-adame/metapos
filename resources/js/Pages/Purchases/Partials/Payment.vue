@@ -134,7 +134,7 @@ const clearPayments = () => {
             <Select v-model="form.location_id" :options="locations" optionLabel="name" optionValue="id" class="w-full"></Select>
         </div>
         <label for="applicated_at">Fecha de compra</label>
-        <DatePicker class="d-block w-full" date-format="dd/mm/yy" v-model="form.applicated_at"></DatePicker>
+        <DatePicker class="d-block w-full" date-format="dd/mm/yy" v-model="form.applicated_at" showTime hourFormat="12"></DatePicker>
         <div class="flex items-center my-4">
             <Checkbox v-model="updateCashRegister" :binary="true" inputId="cash" class="mr-2"/>
             <label for="cash">Pagar con Caja</label>

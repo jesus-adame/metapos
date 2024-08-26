@@ -1,28 +1,38 @@
 <script setup lang="ts">
-import { useForm } from '@inertiajs/vue3';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import { Customer } from '@/types';
+import { reactive } from 'vue';
+import axios, { AxiosResponse } from 'axios';
+import { useToast } from 'primevue/usetoast';
 
 const { customer } = defineProps<{
-    customer: Customer
+    customer: Customer | null
 }>()
+const toast = useToast();
 const emit = defineEmits(['save'])
-const form = useForm({
-    name: customer.lastname,
-    lastname: customer.lastname,
-    email: customer.email,
-    phone: customer.phone,
-    address: customer.address,
+const form = reactive({
+    name: customer?.name,
+    lastname: customer?.lastname,
+    email: customer?.email,
+    phone: customer?.phone,
+    address: customer?.address,
+    _method: 'put',
+    processing: false,
 });
 
 const submit = () => {
-    form.post(route('api.customers.update', { customer: customer.id }), {
-        onSuccess: () => {
-            emit('save')
-            form.reset()
-        }
-    });
+    form.processing = true
+    axios.post(route('api.customers.update', { customer: customer?.id }), form)
+    .then((response: AxiosResponse) => {
+        form.processing = false
+        toast.add({ summary: 'Correcto', detail: response.data.message, severity: 'success', life: 2000})
+        emit('save')
+    })
+    .catch(({response}) => {
+        form.processing = false
+        toast.add({ summary: 'Error', detail: response.data.message, severity: 'error', life: 2000})
+    })
 };
 </script>
 
@@ -49,7 +59,7 @@ const submit = () => {
             <InputText class="w-full" v-model="form.address"></InputText>
         </div>
         <div class="mt-4">
-            <Button type="submit" :disabled="form.processing">Registrar</Button>
+            <Button type="submit" :disabled="form.processing" severity="warn" label="Actualizar"></Button>
         </div>
     </form>
 </template>

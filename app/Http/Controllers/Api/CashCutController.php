@@ -34,11 +34,14 @@ class CashCutController extends Controller
 
         $cashRegister = Auth::user()->cashRegister;
 
-        // Calcular entradas y salidas hasta la fecha del corte
-        $cutDate = Carbon::createFromTimeString($request->cut_date);
-        $cutEndDate = Carbon::createFromTimeString($request->cut_end_date);
+        $splitSince = explode('T', $request->cut_date);
+        $splitUntil = explode('T', $request->cut_end_date);
 
-        $cashCut = $service->execute($cutDate, $cutEndDate, $cashRegister);
+        // Calcular entradas y salidas hasta la fecha del corte
+        $cutDate = Carbon::parse($splitSince[0] . ' 00:00:00 ' . 'America/Mexico_City');
+        $cutEndDate = Carbon::parse($splitUntil[0] . ' 23:59:59 ' . 'America/Mexico_City');
+
+        $cashCut = $service->execute($cutDate->utc(), $cutEndDate->utc(), $cashRegister);
 
         return response()->json([
             'message' => 'Corte de caja registrado.',

@@ -14,7 +14,7 @@ import { useConfirm } from 'primevue/useconfirm';
 import { useAuthStore } from '@/stores/AuthStore';
 
 const page = ref<number>(1)
-const rows = ref<number>(5)
+const rows = ref<number>(6)
 const items = ref([])
 const cashCutService = new CashCutService()
 const modalCreate = ref(false)
@@ -92,7 +92,7 @@ watch(() => authStore.cashRegister, () => {
     <DataTable :value="items" paginator :rows="rows" :totalRecords="totalRecords" @page="onPage" lazy>
         <Column field="cut_date" header="Fecha de corte">
             <template #body="{data}">
-                {{ formatDate(data.cut_date, true) }} - {{ formatDate(data.cut_end_date, true) }}
+                {{ formatDate(data.cut_date) }} - {{ formatDate(data.cut_end_date) }}
             </template>
         </Column>
         <Column field="" header="Caja">
@@ -102,6 +102,21 @@ watch(() => authStore.cashRegister, () => {
                         {{ data.cash_register.name }}
                     </CashRegisterIcon>
                 </div>
+            </template>
+        </Column>
+        <Column field="cash_amount" header="Efectivo">
+            <template #body="{data}">
+                <Tag severity="info">{{ formatMoneyNumber(data.cash_amount) }}</Tag>
+            </template>
+        </Column>
+        <Column field="card_amount" header="Tarjeta">
+            <template #body="{data}">
+                <Tag severity="info">{{ formatMoneyNumber(data.card_amount) }}</Tag>
+            </template>
+        </Column>
+        <Column field="transfer_amount" header="Transferencia">
+            <template #body="{data}">
+                <Tag severity="info">{{ formatMoneyNumber(data.transfer_amount) }}</Tag>
             </template>
         </Column>
         <Column field="total_entries" header="Total de entradas">
@@ -118,7 +133,7 @@ watch(() => authStore.cashRegister, () => {
                 </Tag>
             </template>
         </Column>
-        <Column field="final_balance" header="Balance">
+        <Column field="card_amount" header="Balance">
             <template #body="{data}">
                 <Tag severity="info">{{ formatMoneyNumber(data.final_balance) }}</Tag>
             </template>

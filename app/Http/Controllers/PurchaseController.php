@@ -27,6 +27,7 @@ class PurchaseController extends Controller
             ->with('supplier')
             ->with('buyer')
             ->with('location')
+            ->with('payments')
             ->where('id', $purchaseId)
             ->first();
 

@@ -60,4 +60,28 @@ class CustomerController extends Controller
             'customer' => $customer,
         ]);
     }
+
+    public function update(Request $request, Customer $customer)
+    {
+        $request->validate([
+            'name' => 'required',
+            'lastname' => 'required',
+            'email' => 'nullable|email',
+            'phone' => 'nullable',
+            'address' => 'nullable',
+        ]);
+
+        $customer->update([
+            'name' => $request->name,
+            'lastname' => $request->lastname,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'address' => $request->address,
+        ]);
+
+        return response()->json([
+            'message' => 'Cliente actualizado correctamente.',
+            'customer' => $customer,
+        ]);
+    }
 }

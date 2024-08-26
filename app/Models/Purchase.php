@@ -39,6 +39,11 @@ class Purchase extends Model implements Cashable
         return $this->belongsTo(Location::class);
     }
 
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+
     public function products()
     {
         return $this->belongsToMany(Product::class, 'product_purchase')

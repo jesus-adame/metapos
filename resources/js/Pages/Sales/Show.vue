@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Card from '@/Components/Card.vue';
 import AddSaleCustomer from '@/Components/forms/AddSaleCustomer.vue';
-import { can, formatMoneyNumber, saleSeverity, saleStatus } from '@/helpers';
+import { calculateMetodIcon, can, formatMoneyNumber, getPaymentName, saleSeverity, saleStatus } from '@/helpers';
 import UserLayout from '@/Layouts/UserLayout.vue';
 import { Payment, Sale } from '@/types';
 import { Head, Link, router } from '@inertiajs/vue3';
@@ -17,34 +17,6 @@ defineProps<{
 }>();
 
 const addCustomerModal = ref(false)
-
-const getPaymentName = (payment: Payment) => {
-    switch (payment.method) {
-        case 'cash': {
-            return 'Efectivo'
-        }
-        case 'card': {
-            return 'Tarjeta de crédito/débito'
-        }
-        case 'transfer': {
-            return 'Transferencia'
-        }
-    }
-}
-
-const calculateMetodIcon = (payment: Payment) => {
-    switch (payment.method) {
-        case 'cash': {
-            return 'pi-money-bill';
-        }
-        case 'card': {
-            return 'pi-credit-card';
-        }
-        case 'transfer': {
-            return 'pi-arrow-right';
-        }
-    }
-}
 
 const savedCustomer = () => {
     hideAddCustomerModal()

@@ -7,6 +7,7 @@ import CreateCustomer from './CreateCustomer.vue';
 import Button from 'primevue/button';
 import Tag from 'primevue/tag';
 import axios, { AxiosResponse } from 'axios';
+import { useToast } from 'primevue/usetoast';
 
 const props = defineProps<{
     sale: Sale
@@ -14,6 +15,7 @@ const props = defineProps<{
 
 const emit = defineEmits(['save'])
 
+const toast = useToast();
 const customerService = new CustomerService();
 const filteredCustomers = ref<Customer[]>([]);
 const selectedCustomer = ref<Customer | null>(null);
@@ -29,7 +31,7 @@ const form = reactive<{
 const addCustomer = () => {
     axios.post(route('api.sales.set-customer', {sale: props.sale?.id}), form)
     .then((response: AxiosResponse) => {
-        console.log(response.data.message);
+        toast.add({ severity: 'success', summary: 'Correcto', detail: response.data.message, life: 2000 })
         emit('save')
         clearCustomer()
     })

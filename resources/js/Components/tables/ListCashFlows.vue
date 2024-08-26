@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { formatDate, formatMoneyNumber } from '@/helpers';
+import { formatDateTime, formatMoneyNumber } from '@/helpers';
 import Column from 'primevue/column';
 import DataTable, { DataTablePageEvent } from 'primevue/datatable';
 import Tag from 'primevue/tag';
@@ -15,9 +15,8 @@ import { useAuthStore } from '@/stores/AuthStore';
 
 const cashFlowService = new CashFlowService;
 const modalCashMovements = ref(false)
-
 const items = ref<CashFlow[]>([]);
-const rows = ref(5);
+const rows = ref(8);
 const current_page = ref(1);
 const totalRecords = ref(0)
 const authStore = useAuthStore()
@@ -122,14 +121,14 @@ watch(() => authStore.cashRegister, () => {
     </Dialog>
     <DataTable :value="items" paginator :rows="rows" @page="onPage" :totalRecords="totalRecords" lazy>
         <Column field="id" header="#"></Column>
-        <Column field="date" header="Fecha">
-            <template #body="slot">
-                {{ formatDate(slot.data.date, true) }}
+        <Column field="date" header="Fecha y hora">
+            <template #body="{data}">
+                {{ formatDateTime(data.date) }}
             </template>
         </Column>
         <Column header="Tipo">
-            <template #body="slot">
-                <Tag :value="calculateLabel(slot.data)" :severity="calculateSeverity(slot.data)" :icon="calculateIcon(slot.data)"></Tag>
+            <template #body="{data}">
+                <Tag :value="calculateLabel(data)" :severity="calculateSeverity(data)" :icon="calculateIcon(data)"></Tag>
             </template>
         </Column>
         <Column header="Método">
@@ -139,11 +138,11 @@ watch(() => authStore.cashRegister, () => {
             </template>
         </Column>
         <Column field="cash_register" header="Caja">
-            <template #body="slot">
+            <template #body="{data}">
                 <div class="flex items-center">
                     <CashRegisterIcon/>
                     <span>
-                        {{ slot.data.cash_register?.name || 'NA' }}
+                        {{ data.cash_register?.name || '-' }}
                     </span>
                 </div>
             </template>

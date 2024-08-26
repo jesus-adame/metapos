@@ -17,12 +17,13 @@ const form = reactive({
     email: props.supplier?.email,
     phone: props.supplier?.phone,
     address: props.supplier?.address,
+    _method: 'put',
     processing: false,
 });
 
 const submit = () => {
     form.processing = true
-    axios.post(route('api.suppliers.store'), form)
+    axios.post(route('api.suppliers.update', {supplier: props.supplier?.id}), form)
     .then((response: AxiosResponse) => {
         form.processing = false
         toast.add({ summary: 'Correcto', detail: response.data.message, severity: 'success', life: 2000})

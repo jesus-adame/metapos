@@ -134,7 +134,7 @@ class RegisterPurchaseService
             'location_id' => $location->id,
             'buyer_id' => $buyerId,
             'total' => 0, // Calcularemos el total a continuación
-            'applicated_at' => $purchaseDate->format('Y-m-d 00:00:00'),
+            'applicated_at' => $purchaseDate,
             'status' => 'completed',
         ]);
 

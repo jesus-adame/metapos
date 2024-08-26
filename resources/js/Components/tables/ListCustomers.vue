@@ -6,9 +6,11 @@ import CustomerService from "@/Services/CustomerService";
 import { AxiosResponse } from 'axios';
 import { DataTablePageEvent } from 'primevue/datatable';
 import CreateCustomer from '../forms/CreateCustomer.vue';
-import { formatDate } from '@/helpers';
+import { can, formatDate } from '@/helpers';
 import UserIcon from '../icons/UserIcon.vue';
 import { useCustomerStore } from '@/stores/CustomerStore';
+import EditCustomer from '../forms/EditCustomer.vue';
+import { Customer } from '@/types';
 
 const customerService: CustomerService = new CustomerService()
 const items = ref([])
@@ -17,6 +19,8 @@ const totalRecords = ref(0)
 const page = ref(1)
 const customerStore = useCustomerStore()
 const modalCreate = ref(false)
+const modalEdit = ref(false)
+const selectedCustomer = ref<Customer | null>(null)
 
 const showModalCreate = () => {
     modalCreate.value = true
@@ -26,7 +30,17 @@ const hideModalCreate = () => {
     modalCreate.value = false
 }
 
-const fetchUsers = (pageNumber: number) => {
+const showModalEdit = (customer: Customer) => {
+    modalEdit.value = true
+    selectedCustomer.value = customer
+}
+
+const hideModalEdit = () => {
+    modalEdit.value = false
+    fetchItems(page.value)
+}
+
+const fetchItems = (pageNumber: number) => {
     const result = customerService.paginate(pageNumber, rows.value)
 
     result.then((response: AxiosResponse) => {
@@ -40,20 +54,24 @@ const fetchUsers = (pageNumber: number) => {
 
 const onPage = (event: DataTablePageEvent) => {
     const pageNumber = event.first / event.rows + 1;
-    fetchUsers(pageNumber);
+    fetchItems(pageNumber);
 }
 
 onMounted(() => {
-    fetchUsers(page.value)
+    fetchItems(page.value)
 })
 
 watch(customerStore.getCustomers, () => {
-    fetchUsers(page.value)
+    fetchItems(page.value)
 })
 </script>
 <template>
-    <Dialog v-model:visible="modalCreate" modal header="Registrar cliente" :style="{ width: '35rem' }" pt:mask:class="backdrop-blur-sm">
+    <Dialog v-model:visible="modalCreate" modal header="Nuevo cliente" :style="{ width: '35rem' }" pt:mask:class="backdrop-blur-sm">
         <CreateCustomer class="mt-4" @save="hideModalCreate"></CreateCustomer>
+    </Dialog>
+
+    <Dialog v-model:visible="modalEdit" modal header="Editar cliente" :style="{ width: '35rem' }" pt:mask:class="backdrop-blur-sm">
+        <EditCustomer :customer="selectedCustomer" class="mt-4" @save="hideModalEdit"></EditCustomer>
     </Dialog>
 
     <DataTable :value="items" class="shadow-md" :paginator="true" :rows="rows" :lazy="true" :totalRecords="totalRecords" @page="onPage">
@@ -83,9 +101,10 @@ watch(customerStore.getCustomers, () => {
                     <Button icon="pi pi-plus" rounded severity="success" raised @click="showModalCreate"></Button>
                 </div>
             </template>
-            <template #body>
-                <div class="w-full flex justify-center">
-                    <Button icon="pi pi-trash" severity="danger"></Button>
+            <template #body="{data}">
+                <div class="w-full flex gap-1 justify-center">
+                    <Button raised v-if="can('update customers')" @click="showModalEdit(data)" icon="pi pi-pencil" severity="warn"></Button>
+                    <Button v-if="can('delete customers')" icon="pi pi-trash" severity="danger"></Button>
                 </div>
             </template>
         </Column>

@@ -61,4 +61,23 @@ class SupplierController extends Controller
             'message' => 'Proveedor registrado.'
         ]);
     }
+
+    public function update(Request $request, Supplier $supplier)
+    {
+        Gate::authorize(Permission::UPDATE_SUPPLIERS);
+
+        $request->validate([
+            'name' => 'required',
+            'lastname' => 'required',
+            'email' => 'nullable|email',
+            'phone' => 'nullable',
+            'address' => 'nullable',
+        ]);
+
+        $supplier->update($request->all());
+
+        return response()->json([
+            'message' => 'Proveedor actualizado.'
+        ]);
+    }
 }

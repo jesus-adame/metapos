@@ -36,7 +36,8 @@ export interface Purchase {
     id: number
     supplier?: Supplier
     seller: User
-    cash_register: CashRegister
+    cash_register?: CashRegister
+    location: Location
     total: number
     status: string
     payments: Payment[]

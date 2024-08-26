@@ -15,7 +15,10 @@ class CashCut extends Model
         'final_balance',
         'cut_date',
         'cut_end_date',
-        'cash_register_id'
+        'cash_amount',
+        'card_amount',
+        'transfer_amount',
+        'cash_register_id',
     ];
 
     public function cashRegister()
