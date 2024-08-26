@@ -80,4 +80,13 @@ class SupplierController extends Controller
             'message' => 'Proveedor actualizado.'
         ]);
     }
+
+    public function destroy(Supplier $supplier)
+    {
+        $supplier->delete();
+
+        return response()->json([
+            'message' => 'Proveedor eliminado correctamente.',
+        ]);
+    }
 }

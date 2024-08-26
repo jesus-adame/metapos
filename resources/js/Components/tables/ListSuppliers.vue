@@ -3,13 +3,15 @@ import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
 import { onMounted, ref } from 'vue';
 import SupplierService from "@/Services/SupplierService";
-import { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { DataTablePageEvent } from 'primevue/datatable';
 import CreateSupplier from '../forms/CreateSupplier.vue';
 import { can, formatDate } from '@/helpers';
 import UserIcon from '../icons/UserIcon.vue';
 import EditSupplier from '../forms/EditSupplier.vue';
 import { Supplier } from '@/types';
+import { useConfirm } from 'primevue/useconfirm';
+import { useToast } from 'primevue/usetoast';
 
 const supplierService: SupplierService = new SupplierService()
 const items = ref([])
@@ -19,6 +21,8 @@ const page = ref(1)
 const modalCreate = ref(false)
 const modalEdit = ref(false)
 const selectedSupplier = ref<Supplier | null>(null)
+const confirm = useConfirm()
+const toast = useToast()
 
 const showModalCreate = () => {
     modalCreate.value = true
@@ -59,6 +63,38 @@ const onPage = (event: DataTablePageEvent) => {
 onMounted(() => {
     fetchItems(page.value)
 })
+
+const deleteItem = (url: string) => {
+    axios.post(url, { _method: 'delete' })
+    .then((response: AxiosResponse) => {
+        console.log(response);
+        toast.add({ summary: 'Correcto', detail: response.data.message, severity: 'success', life: 1500 })
+        fetchItems(page.value)
+    })
+    .catch(reject => {
+        console.error(reject.response.data.errors);
+        toast.add({ summary: 'Error', detail: reject.response.data.message, severity: 'error', life: 3000 })
+    })
+}
+
+const confirmDelete = (url: string) => {
+    confirm.require({
+        header: '¿Está seguro?',
+        message: 'Se eliminará el cliente',
+        icon: 'pi pi-exclamation-triangle',
+        rejectProps: {
+            label: 'Cancelar',
+            severity: 'secondary',
+        },
+        acceptProps: {
+            label: 'Eliminar',
+            severity: 'danger'
+        },
+        accept: () => {
+            deleteItem(url)
+        }
+    });
+}
 </script>
 <template>
     <Dialog v-model:visible="modalCreate" modal header="Nuevo proveedor" :style="{ width: '35rem' }" pt:mask:class="backdrop-blur-sm">
@@ -99,7 +135,7 @@ onMounted(() => {
             <template #body="{data}">
                 <div  class="flex gap-1 justify-center">
                     <Button raised v-if="can('update suppliers')" @click="showModalEdit(data)" icon="pi pi-pencil" severity="warn"></Button>
-                    <Button raised v-if="can('delete suppliers')" icon="pi pi-trash" severity="danger"></Button>
+                    <Button raised v-if="can('delete suppliers')" @click="confirmDelete(route('api.suppliers.destroy', {supplier: data.id}))" icon="pi pi-trash" severity="danger"></Button>
                 </div>
             </template>
         </Column>

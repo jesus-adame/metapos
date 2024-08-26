@@ -3,7 +3,7 @@ import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
 import { onMounted, ref, watch } from 'vue';
 import CustomerService from "@/Services/CustomerService";
-import { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { DataTablePageEvent } from 'primevue/datatable';
 import CreateCustomer from '../forms/CreateCustomer.vue';
 import { can, formatDate } from '@/helpers';
@@ -11,6 +11,8 @@ import UserIcon from '../icons/UserIcon.vue';
 import { useCustomerStore } from '@/stores/CustomerStore';
 import EditCustomer from '../forms/EditCustomer.vue';
 import { Customer } from '@/types';
+import { useConfirm } from 'primevue/useconfirm';
+import { useToast } from 'primevue/usetoast';
 
 const customerService: CustomerService = new CustomerService()
 const items = ref([])
@@ -21,6 +23,8 @@ const customerStore = useCustomerStore()
 const modalCreate = ref(false)
 const modalEdit = ref(false)
 const selectedCustomer = ref<Customer | null>(null)
+const confirm = useConfirm()
+const toast = useToast()
 
 const showModalCreate = () => {
     modalCreate.value = true
@@ -64,6 +68,38 @@ onMounted(() => {
 watch(customerStore.getCustomers, () => {
     fetchItems(page.value)
 })
+
+const deleteItem = (url: string) => {
+    axios.post(url, { _method: 'delete' })
+    .then((response: AxiosResponse) => {
+        console.log(response);
+        toast.add({ summary: 'Correcto', detail: response.data.message, severity: 'success', life: 1500 })
+        fetchItems(page.value)
+    })
+    .catch(reject => {
+        console.error(reject.response.data.errors);
+        toast.add({ summary: 'Error', detail: reject.response.data.message, severity: 'error', life: 3000 })
+    })
+}
+
+const confirmDelete = (url: string) => {
+    confirm.require({
+        header: '¿Está seguro?',
+        message: 'Se eliminará el cliente',
+        icon: 'pi pi-exclamation-triangle',
+        rejectProps: {
+            label: 'Cancelar',
+            severity: 'secondary',
+        },
+        acceptProps: {
+            label: 'Eliminar',
+            severity: 'danger'
+        },
+        accept: () => {
+            deleteItem(url)
+        }
+    });
+}
 </script>
 <template>
     <Dialog v-model:visible="modalCreate" modal header="Nuevo cliente" :style="{ width: '35rem' }" pt:mask:class="backdrop-blur-sm">
@@ -104,7 +140,7 @@ watch(customerStore.getCustomers, () => {
             <template #body="{data}">
                 <div class="w-full flex gap-1 justify-center">
                     <Button raised v-if="can('update customers')" @click="showModalEdit(data)" icon="pi pi-pencil" severity="warn"></Button>
-                    <Button v-if="can('delete customers')" icon="pi pi-trash" severity="danger"></Button>
+                    <Button v-if="can('delete customers')" icon="pi pi-trash" severity="danger" @click="confirmDelete(route('api.customers.destroy', {customer: data.id}))"></Button>
                 </div>
             </template>
         </Column>

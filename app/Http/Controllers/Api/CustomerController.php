@@ -84,4 +84,13 @@ class CustomerController extends Controller
             'customer' => $customer,
         ]);
     }
+
+    public function destroy(Customer $customer)
+    {
+        $customer->delete();
+
+        return response()->json([
+            'message' => 'Cliente eliminado correctamente.',
+        ]);
+    }
 }
