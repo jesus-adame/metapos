@@ -25,7 +25,6 @@ class SaleController extends Controller
         $until = $request->dates[1] ?? null;
 
         $perPage = $request->input('rows', 10);
-        $cashRegisterId = Auth::user()->cash_register_id;
         $builder = Sale::with('customer', 'seller', 'cashRegister');
         $builder->orderBy('created_at', 'desc');
 
@@ -43,13 +42,22 @@ class SaleController extends Controller
             $builder->where('created_at', '<=', $until->utc());
         }
 
-        if (!is_null($cashRegisterId)) {
-            $builder->where('cash_register_id', $cashRegisterId);
+        if (!is_null($request->cash_register)) {
+            $builder->where('cash_register_id', $request->cash_register);
         }
 
+        if (!is_null($request->status)) {
+            $builder->where('status', $request->status);
+        }
+
+        $totalSales = $builder->sum('total');
         $paginate = $builder->paginate($perPage);
 
-        return response()->json($paginate);
+
+        $response = $paginate->toArray();
+        $response['totalSales'] = $totalSales;
+
+        return response()->json($response);
     }
 
     public function store(StoreSaleRequest $request, RegisterSaleService $service): Response

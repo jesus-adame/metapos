@@ -18,17 +18,9 @@ export default class SaleService {
         return response
     }
 
-    async paginateByDates(page, rows, cash_register, dates) {
+    async paginate(params) {
         const url = route('api.sales.index');
-        const response = await axios.get(url, { params: { page, rows, cash_register, dates } });
-        this.sales.value = response.data
-
-        return response
-    }
-
-    async paginate(page, rows, cash_register) {
-        const url = route('api.sales.index');
-        const response = await axios.get(url, { params: { page, rows, cash_register } });
+        const response = await axios.get(url, { params });
         this.sales.value = response.data
 
         return response
@@ -38,6 +30,12 @@ export default class SaleService {
         const url = route('api.sales.index');
         const response = await axios.get(url, { params: { page: 1, rows: 100 } });
         this.sales.value = response.data
+
+        return response
+    }
+
+    async deleteItem(url) {
+        const response = axios.post(url, { _method: 'delete' })
 
         return response
     }

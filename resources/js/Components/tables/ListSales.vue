@@ -3,48 +3,22 @@ import { can, formatDateTime, formatMoneyNumber, saleSeverity, saleStatus } from
 import Column from 'primevue/column';
 import CashRegisterIcon from '@/Components/icons/CashRegisterIcon.vue';
 import UserIcon from '@/Components/icons/UserIcon.vue';
-import { DataTablePageEvent } from 'primevue/datatable';
-import { onMounted, ref, watch } from 'vue';
-import { Sale } from '@/types';
-import SaleService from "@/Services/SaleService";
-import axios, { AxiosResponse } from 'axios';
+import { onMounted, ref } from 'vue';
+import { AxiosResponse } from 'axios';
 import { Link } from '@inertiajs/vue3';
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
 import PDFObject from '../PDFObject.vue';
-import { useAuthStore } from '@/stores/AuthStore';
 import { useConfirm } from 'primevue/useconfirm';
 import { useToast } from 'primevue/usetoast';
 import Tag from 'primevue/tag';
+import { useSaleStore } from '@/stores/SaleStore';
 
-const items = ref<Sale[]>([])
-const totalRecords = ref<number>(0)
-const saleService = new SaleService()
-const page = ref<number>(1)
-const rows = ref<number>(10)
-const cashRegister = ref<number | null>(null)
 const modalTicket = ref<boolean>(false)
 const saleId = ref<number | null>(null)
-const authStore = useAuthStore()
 const confirm = useConfirm()
 const toast = useToast()
-const props = defineProps<{
-    dates?: any[] | null
-}>()
-
-const fetchItems = (pageNumber: number) => {
-    saleService.paginate(pageNumber, rows.value, cashRegister.value)
-    .then((response: AxiosResponse) => {
-        const pagination = response.data
-        items.value = pagination.data
-        totalRecords.value = pagination.total
-    })
-}
-
-const onPage = (event: DataTablePageEvent) => {
-    const pageNumber = event.first / event.rows + 1;
-    fetchItems(pageNumber);
-}
+const saleStore = useSaleStore()
 
 const openModaTicket = (id: number) => {
     saleId.value = id
@@ -52,33 +26,8 @@ const openModaTicket = (id: number) => {
 }
 
 onMounted(() => {
-    fetchItems(page.value)
+    saleStore.fetchItems()
 })
-
-watch(() => props.dates, (dates) => {
-    saleService.paginateByDates(page.value, rows.value, cashRegister.value, dates)
-    .then((response: AxiosResponse) => {
-        const pagination = response.data
-        items.value = pagination.data
-        totalRecords.value = pagination.total
-    })
-})
-
-watch(() => authStore.cashRegister, () => {
-    fetchItems(page.value)
-})
-
-const deleteItem = (url: string) => {
-    axios.post(url, { _method: 'delete' })
-    .then((response: AxiosResponse) => {
-        toast.add({ summary: 'Correcto', detail: response.data.message, severity: 'success', life: 1500 })
-        fetchItems(page.value)
-    })
-    .catch(reject => {
-        console.error(reject.response.data.errors);
-        toast.add({ summary: 'Error', detail: reject.response.data.message, severity: 'error', life: 3000 })
-    })
-}
 
 const confirmDelete = (url: string) => {
     confirm.require({
@@ -94,7 +43,15 @@ const confirmDelete = (url: string) => {
             severity: 'danger'
         },
         accept: () => {
-            deleteItem(url)
+            saleStore.deleteItem(url)
+            .then((response: AxiosResponse) => {
+                toast.add({ summary: 'Correcto', detail: response.data.message, severity: 'success', life: 1500 })
+                saleStore.fetchItems()
+            })
+            .catch(reject => {
+                console.error(reject.response.data.errors);
+                toast.add({ summary: 'Error', detail: reject.response.data.message, severity: 'error', life: 3000 })
+            })
         }
     });
 }
@@ -104,7 +61,7 @@ const confirmDelete = (url: string) => {
         <PDFObject :url="route('sales.ticket', {id: saleId})" :options="{ height: '100vh', width: '30vw', border: '1px', solid: '#ccc' }" />
     </Dialog>
 
-    <DataTable :value="items" paginator :rows="rows" :total-records="totalRecords" @page="onPage" lazy>
+    <DataTable :value="saleStore.sales" paginator :rows="saleStore.rows" :total-records="saleStore.totalRecords" @page="saleStore.onPage" lazy>
         <Column field="id" header="#">
             <template #body="{data}">
                 <Link :href="route('sales.show', { sale: data.id })">
@@ -154,10 +111,10 @@ const confirmDelete = (url: string) => {
             <template #body="{data}">
                 <div class="flex gap-1">
                     <Link :href="route('sales.show', {sale: data.id})">
-                        <Button raised icon="pi pi-eye" severity="info"></Button>
+                        <Button raised icon="pi pi-eye" severity="info" v-tooltip.top="'Ver'"></Button>
                     </Link>
                     <Button v-if="can('update sales')" raised icon="pi pi-replay" severity="danger" v-tooltip.top="'Cancelar'" @click="confirmDelete(route('api.sales.cancel', {sale: data.id}))"></Button>
-                    <Button raised icon="pi pi-print" @click="openModaTicket(data.id)"></Button>
+                    <Button raised icon="pi pi-print" v-tooltip.top="'Imprimir'" @click="openModaTicket(data.id)"></Button>
                 </div>
             </template>
         </Column>

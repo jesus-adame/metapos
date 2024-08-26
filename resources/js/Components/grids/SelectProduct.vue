@@ -15,7 +15,9 @@ const pushProduct = (product: Product) => {
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 justify-start">
         <div v-for="(product, index) in products" :key="index">
             <div @click="pushProduct(product)" class="transition-all bg-white relative hover:shadow-lg overflow-hidden shadow-sm sm:rounded-lg text-gray-700 cursor-pointer">
-                <Image v-if="product.image" :src="product.image_url" :alt="product.name" :pt="{root: 'w-full'}" />
+                <div class="h-40 overflow-hidden">
+                    <Image v-if="product.image" :src="product.image_url" :alt="product.name" :pt="{root: 'w-full'}" />
+                </div>
                 <div class="py-2 px-4">
                     <p class="font-bold">{{ product.name }}</p>
                     <p class="text-sm">{{ product.code }}</p>

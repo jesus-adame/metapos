@@ -7,6 +7,7 @@ const page = usePage()
 interface AuthState {
     user: User | null,
     cashRegister: CashRegister | null,
+    cashRegisters: CashRegister[] | null,
     location: Location | null,
     locations: Location[],
     csrf_token: string | null,
@@ -16,6 +17,7 @@ export const useAuthStore = defineStore('auth', {
     state: (): AuthState => ({
         user: page.props.auth.user,
         cashRegister: page.props.cashRegister,
+        cashRegisters: page.props.cashRegisters,
         location: page.props.location,
         locations: page.props.locations,
         csrf_token: page.props.csrf_token

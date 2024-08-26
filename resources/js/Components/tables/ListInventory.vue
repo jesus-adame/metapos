@@ -123,8 +123,6 @@ watch(() => authStore.cashRegister, () => {
         <EditProduct class="mt-4" @save="closeModalEdit" :product="product ?? undefined"></EditProduct>
     </Dialog>
 
-    <ConfirmDialog></ConfirmDialog>
-
     <DataTable :value="items" paginator :rows="rows" @page="onPage" :totalRecords="totalRecords" lazy>
         <Column field="id" header="#"></Column>
         <Column field="name" header="Producto">

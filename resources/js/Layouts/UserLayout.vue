@@ -22,7 +22,7 @@ import Toast from 'primevue/toast';
 
       <DynamicDialog />
       <Toast position="top-right" />
-      <ConfirmDialog></ConfirmDialog>
+      <ConfirmDialog/>
     </div>
   </div>
 </template>
