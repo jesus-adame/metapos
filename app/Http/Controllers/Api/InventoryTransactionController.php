@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use App\Services\InventoryTransacctions\CreateInventoryTransaction;
 use App\Models\Location;
 use App\Models\InventoryTransaction;
@@ -36,13 +37,14 @@ class InventoryTransactionController extends Controller
     public function store(StoreInventoryRequest $request, CreateInventoryTransaction $service)
     {
         $location = Location::find($request->location_id);
+        $dateTime = Carbon::parse($request->applicated_at);
 
         $transaction = $service->execute(
             $location,
             $request->type,
             $request->product_id,
             $request->quantity,
-            $request->applicated_at,
+            $dateTime,
             $request->description,
         );
 

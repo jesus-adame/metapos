@@ -5,6 +5,7 @@ import { Location, ErrorResponse, Product } from '@/types';
 import { usePage } from '@inertiajs/vue3';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import Button from 'primevue/button';
+import DatePicker from 'primevue/datepicker';
 import Select from 'primevue/select';
 import Textarea from 'primevue/textarea';
 import { useToast } from 'primevue/usetoast';
@@ -99,7 +100,7 @@ const types = ref([
             </div>
             <div class="w-1/2">
                 <label for="applicated_at" class="block">Fecha de transacción</label>
-                <input type="date" v-model="form.applicated_at" id="applicated_at" class="w-full">
+                <DatePicker dateFormat="dd/mm/yy" v-model="form.applicated_at" id="applicated_at" placeholder="DD/MM/YYYY" class="w-full" showTime hourFormat="12"></DatePicker>
             </div>
         </div>
         <div class="mb-4">

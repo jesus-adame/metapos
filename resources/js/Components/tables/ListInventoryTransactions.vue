@@ -11,7 +11,7 @@ import { useConfirm } from 'primevue/useconfirm';
 import InventoryTransactionService from '@/Services/InventoryTransactionService';
 import CreateInventoryTransaction from '../forms/CreateInventoryTransaction.vue';
 import Button from 'primevue/button';
-import { can } from '@/helpers';
+import { can, formatDateTime } from '@/helpers';
 
 const modalCreateMovement = ref<Boolean>(false)
 const items = ref<Product[]>([])
@@ -115,7 +115,11 @@ const onPage = (event: DataTablePageEvent) => {
     </Dialog>
 
     <DataTable :value="items" paginator :rows="rows" @page="onPage" :totalRecords="totalRecords">
-        <Column field="applicated_at" header="Fecha"></Column>
+        <Column field="applicated_at" header="Fecha y hora">
+            <template #body="{data}">
+                {{ formatDateTime(data.applicated_at) }}
+            </template>
+        </Column>
         <Column header="Tipo">
             <template #body="slot">
                 <Tag :value="calculateLabel(slot.data)" :severity="calculateSeverity(slot.data)" :icon="calculateIcon(slot.data)"></Tag>
