@@ -97,10 +97,10 @@ const confirmDelete = (url: string) => {
 }
 </script>
 <template>
-    <Dialog v-model:visible="modalCreateRole" modal header="Nuevo Rol" :style="{ width: '35rem' }" pt:mask:class="backdrop-blur-sm">
+    <Dialog v-model:visible="modalCreateRole" modal header="Nuevo Rol" :style="{ width: '35rem' }">
         <CreateRole @save="hideModalCreate"></CreateRole>
     </Dialog>
-    <Dialog v-model:visible="modalEditRole" modal header="Editar Rol" :style="{ width: '35rem' }" pt:mask:class="backdrop-blur-sm">
+    <Dialog v-model:visible="modalEditRole" modal header="Editar Rol" :style="{ width: '35rem' }">
         <EditRole :role="role" @save="hideModalEdit"></EditRole>
     </Dialog>
 

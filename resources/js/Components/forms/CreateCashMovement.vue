@@ -29,7 +29,7 @@ const submit = () => {
         description: form.description,
         date: form.date,
     })
-    .then((response: AxiosResponse<SuccessResponse>) =>{
+    .then((response: AxiosResponse<SuccessResponse>) => {
         toast.add({ summary: 'Correcto', detail: response.data.message, severity: 'success', life: 2000 })
         form.processing = false
         emit('save')

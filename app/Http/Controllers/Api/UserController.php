@@ -67,6 +67,8 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
+        Gate::authorize(Permission::DELETE_USERS);
+
         $user->delete();
 
         return response()->json([

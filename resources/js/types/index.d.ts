@@ -57,6 +57,7 @@ export interface Supplier {
     phone?: string;
     address?: string;
     company_name?: string;
+    rfc?: string;
 }
 
 export interface CashRegister {

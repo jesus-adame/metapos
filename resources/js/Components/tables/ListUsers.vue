@@ -97,11 +97,11 @@ const confirmDelete = (url: string) => {
 }
 </script>
 <template>
-    <Dialog v-model:visible="modalCreateUser" modal header="Registrar usuario" :style="{ width: '35rem' }" pt:mask:class="backdrop-blur-sm">
+    <Dialog v-model:visible="modalCreateUser" modal header="Registrar usuario" :style="{ width: '35rem' }">
         <CreateUser class="mt-4" @save="hideModalCreate"></CreateUser>
     </Dialog>
 
-    <Dialog v-model:visible="modalEditUser" modal header="Editar usuario" :style="{ width: '35rem' }" pt:mask:class="backdrop-blur-sm">
+    <Dialog v-model:visible="modalEditUser" modal header="Editar usuario" :style="{ width: '35rem' }">
         <EditUser class="mt-4" :user="user" @save="hideModalEdit"></EditUser>
     </Dialog>
 

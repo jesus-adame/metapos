@@ -17,6 +17,8 @@ const form = reactive({
     email: props.supplier?.email,
     phone: props.supplier?.phone,
     address: props.supplier?.address,
+    company_name: props.supplier?.company_name,
+    rfc: props.supplier?.rfc,
     _method: 'put',
     processing: false,
 });
@@ -37,9 +39,9 @@ const submit = () => {
 </script>
 
 <template>
-    <form @submit.prevent="submit">
-        <div class="flex">
-            <div class="w-full mr-2">
+    <form @submit.prevent="submit" class="flex flex-col gap-2">
+        <div class="flex gap-2">
+            <div class="w-full">
                 <label for="name" class="block">Nombre</label>
                 <InputText name="name" class="w-full" v-model="form.name"></InputText>
             </div>
@@ -48,13 +50,23 @@ const submit = () => {
                 <InputText name="lastname" class="w-full" v-model="form.lastname"></InputText>
             </div>
         </div>
+        <div class="w-full">
+            <label for="company_name" class="block">Empresa</label>
+            <InputText name="company_name" class="w-full" v-model="form.company_name"></InputText>
+        </div>
+        <div class="flex gap-2">
+            <div class="w-full">
+                <label for="rfc" class="block">RFC</label>
+                <InputText name="rfc" class="w-full" v-model="form.rfc"></InputText>
+            </div>
+            <div class="w-full">
+                <label for="phone" class="block">Telefono</label>
+                <InputText name="phone" class="w-full" v-model="form.phone"></InputText>
+            </div>
+        </div>
         <div>
             <label for="email" class="block">Email</label>
             <InputText class="w-full" v-model="form.email" type="email"></InputText>
-        </div>
-        <div>
-            <label for="phone" class="block">Telefono</label>
-            <InputText name="phone" class="w-full" v-model="form.phone"></InputText>
         </div>
         <div>
             <label for="address" class="block">Dirección</label>

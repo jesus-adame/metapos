@@ -81,7 +81,7 @@ const confirmDelete = (url: string) => {
 }
 </script>
 <template>
-    <Dialog v-model:visible="modalCreate" modal header="Registrar caja" :style="{ width: '35rem' }" pt:mask:class="backdrop-blur-sm">
+    <Dialog v-model:visible="modalCreate" modal header="Registrar caja" :style="{ width: '35rem' }">
         <CreateCashRegister class="mt-4" @save="hideModalCreate"></CreateCashRegister>
     </Dialog>
 

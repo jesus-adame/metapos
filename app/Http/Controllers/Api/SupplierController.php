@@ -51,6 +51,8 @@ class SupplierController extends Controller
             'name' => 'required',
             'lastname' => 'required',
             'email' => 'nullable|email',
+            'company_name' => 'nullable|string',
+            'rfc' => 'nullable|string',
             'phone' => 'nullable',
             'address' => 'nullable',
         ]);
@@ -70,6 +72,8 @@ class SupplierController extends Controller
             'name' => 'required',
             'lastname' => 'required',
             'email' => 'nullable|email',
+            'company_name' => 'nullable|string',
+            'rfc' => 'nullable|string',
             'phone' => 'nullable',
             'address' => 'nullable',
         ]);
@@ -83,6 +87,8 @@ class SupplierController extends Controller
 
     public function destroy(Supplier $supplier)
     {
+        Gate::authorize(Permission::DELETE_SUPPLIERS);
+
         $supplier->delete();
 
         return response()->json([
