@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 use App\Models\Supplier;
 use App\Models\Permission;
+use App\Http\Requests\UpdateSupplierRequest;
+use App\Http\Requests\StoreSupplierRequest;
 use App\Http\Controllers\Controller;
 
 class SupplierController extends Controller
@@ -43,20 +45,8 @@ class SupplierController extends Controller
         return response()->json($suppliers);
     }
 
-    public function store(Request $request)
+    public function store(StoreSupplierRequest $request)
     {
-        Gate::authorize(Permission::CREATE_SUPPLIERS);
-
-        $request->validate([
-            'name' => 'required',
-            'lastname' => 'required',
-            'email' => 'nullable|email',
-            'company_name' => 'nullable|string',
-            'rfc' => 'nullable|string',
-            'phone' => 'nullable',
-            'address' => 'nullable',
-        ]);
-
         Supplier::create($request->all());
 
         return response()->json([
@@ -64,20 +54,8 @@ class SupplierController extends Controller
         ]);
     }
 
-    public function update(Request $request, Supplier $supplier)
+    public function update(UpdateSupplierRequest $request, Supplier $supplier)
     {
-        Gate::authorize(Permission::UPDATE_SUPPLIERS);
-
-        $request->validate([
-            'name' => 'required',
-            'lastname' => 'required',
-            'email' => 'nullable|email',
-            'company_name' => 'nullable|string',
-            'rfc' => 'nullable|string',
-            'phone' => 'nullable',
-            'address' => 'nullable',
-        ]);
-
         $supplier->update($request->all());
 
         return response()->json([

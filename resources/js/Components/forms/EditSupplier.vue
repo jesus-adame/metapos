@@ -35,7 +35,7 @@ const submit = () => {
         form.processing = false
         toast.add({ summary: 'Error', detail: response.data.message, severity: 'error', life: 2000})
     })
-};
+}
 </script>
 
 <template>
