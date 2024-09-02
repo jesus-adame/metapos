@@ -83,12 +83,14 @@ export interface Product {
     sku: ?string
     price: number
     cost: number
+    wholesale_price: number
     image: string
     image_url: string
     quantity: number
     stock: number
     unit_type: string
     tax: number
+    has_taxes: number
     description?: string
 }
 

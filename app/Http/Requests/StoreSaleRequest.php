@@ -25,10 +25,13 @@ class StoreSaleRequest extends FormRequest
     {
         return [
             'customer_id' => 'nullable|exists:customers,id',
+            'wholesale' => 'required|boolean',
             'products' => 'required|array',
             'products.*.id' => 'required|exists:products,id',
             'products.*.quantity' => 'required|integer|min:1',
             'products.*.price' => 'required|decimal:0,4',
+            'products.*.has_taxes' => 'required|boolean',
+            'products.*.tax' => 'nullable|boolean',
             'payment_methods' => 'nullable|array',
             'payment_methods.*.method' => 'nullable|in:cash,card,transfer',
             'payment_methods.*.amount' => 'nullable|numeric|min:0',
@@ -40,6 +43,8 @@ class StoreSaleRequest extends FormRequest
     {
         return [
             'customer_id.required' => 'El cliente es obligatorio.',
+            'wholesale.required' => 'El cliente mayorista es obligatorio.',
+            'has_taxes.required' => 'El campo impuestos no puede ir vacío.',
             'customer_id.exists' => 'El cliente no existe.',
             'products.required' => 'Debes agregar al menos un producto.',
             'products.array' => 'El campo productos debe ser un array.',
@@ -50,6 +55,7 @@ class StoreSaleRequest extends FormRequest
             'products.*.quantity.min' => 'La cantidad del producto debe ser al menos 1.',
             'products.*.price.required' => 'El precio del producto es obligatorio.',
             'products.*.price.regex' => 'El precio del producto debe tener un formato válido (hasta 4 decimales).',
+            'products.*.has_taxes.required' => 'Los impuestos son obligatorios.',
             'payment_methods.required' => 'Debes agregar al menos un método de pago.',
             'payment_methods.array' => 'El campo métodos de pago debe ser un array.',
             'payment_methods.*.method.required' => 'El método de pago es obligatorio.',

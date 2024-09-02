@@ -20,7 +20,7 @@ class SupplierController extends Controller
         Gate::authorize(Permission::VIEW_SUPPLIERS);
 
         $perPage = $request->input('rows', 10);
-        $suppliers = Supplier::orderBy('updated_at', 'desc')->paginate($perPage);
+        $suppliers = Supplier::orderBy('created_at', 'desc')->paginate($perPage);
 
         return response()->json($suppliers);
     }

@@ -17,6 +17,7 @@ class Product extends Model
         'description',
         'price',
         'cost',
+        'wholesale_price',
         'image',
         'image_url',
         'unit_type',
@@ -29,6 +30,7 @@ class Product extends Model
         'cost' => 'float',
         'stock' => 'integer',
         'tax' => 'float',
+        'has_taxes' => 'boolean',
     ];
 
     public function scopeWithStock(Builder $query, ?Locationable $location = null): Builder

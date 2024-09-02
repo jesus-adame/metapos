@@ -115,11 +115,11 @@ watch(() => authStore.cashRegister, () => {
 })
 </script>
 <template>
-    <Dialog v-model:visible="createModal" header="Nuevo producto" :modal="true">
+    <Dialog v-model:visible="createModal" header="Nuevo producto" :modal="true" :style="{ width: '65rem' }">
         <CreateProduct class="mt-4" @save="closeModalCreate"></CreateProduct>
     </Dialog>
 
-    <Dialog v-model:visible="editModal" header="Editar producto" :modal="true">
+    <Dialog v-model:visible="editModal" header="Editar producto" :modal="true" :style="{ width: '65rem' }">
         <EditProduct class="mt-4" @save="closeModalEdit" :product="product ?? undefined"></EditProduct>
     </Dialog>
 

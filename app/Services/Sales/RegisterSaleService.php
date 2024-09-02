@@ -24,14 +24,15 @@ class RegisterSaleService
         array $products,
         array $paymentMethods,
         int $cashRegisterId,
-        ?array $discount = null
+        ?array $discount = null,
+        bool $wholesale = false,
     ): array {
         DB::beginTransaction();
 
         $cashRegister = CashRegister::find($cashRegisterId);
         /** @var Location */
         $location = $cashRegister->location;
-        $sale = $this->createSale($customerId, $sellerId, $products, $cashRegister, $discount);
+        $sale = $this->createSale($customerId, $sellerId, $products, $cashRegister, $discount, $wholesale);
 
         $this->attachSaleProducts($sale, $location, $products);
 
@@ -107,8 +108,14 @@ class RegisterSaleService
         ];
     }
 
-    private function createSale(?int $customerId, int $sellerId, array $products, CashRegister $cashRegister, ?array $discount = null): Sale
-    {
+    private function createSale(
+        ?int $customerId,
+        int $sellerId,
+        array $products,
+        CashRegister $cashRegister,
+        ?array $discount = null,
+        bool $wholesale = false,
+    ): Sale {
         $sale = new Sale();
         $sale->customer_id = $customerId;
         $sale->seller_id = $sellerId;
@@ -121,9 +128,13 @@ class RegisterSaleService
             /** @var int */
             $quantity = $arrayProduct['quantity'];
             /** @var float */
-            $price = $arrayProduct['price'];
+            $price = $wholesale ? $arrayProduct['wholesale_price'] : $arrayProduct['price'];
+            /** @var float */
+            $taxes = $arrayProduct['has_taxes'] ? $arrayProduct['tax'] : 0;
 
-            $calculatedTotal += $price * $quantity;
+            $subtotal_price = $price * ($taxes / 100);
+
+            $calculatedTotal += $subtotal_price * $quantity;
         }
 
         $discountAmount = 0;
@@ -150,11 +161,15 @@ class RegisterSaleService
             /** @var int */
             $quantity = $arrayProduct['quantity'];
             /** @var float */
-            $price = $arrayProduct['price'];
+            $price = $sale->wholesale_sale ? $arrayProduct['wholesale_price'] : $arrayProduct['price'];
+            /** @var float */
+            $taxes = $arrayProduct['has_taxes'] ? $arrayProduct['tax'] : 0;
 
             $sale->products()->attach($product, [
                 'quantity' => $quantity,
                 'price' => $price,
+                'has_taxes' => $arrayProduct['has_taxes'],
+                'tax' => $taxes,
             ]);
 
             $this->inventoryTransactionService->execute(

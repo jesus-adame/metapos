@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { formatMoneyNumber } from '@/helpers';
 import { ErrorResponse, Product } from '@/types';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import Button from 'primevue/button';
@@ -33,10 +34,13 @@ const form = ref({
     code: product?.code,
     sku: product?.sku,
     description: product?.description,
+    wholesale_price: product?.wholesale_price,
     price: product?.price,
     cost: product?.cost,
     image: null as File | null,
     unit_type: product?.unit_type,
+    has_taxes: product?.has_taxes,
+    tax: product?.tax,
     _method: 'put'
 })
 
@@ -60,46 +64,78 @@ function setImage($event: Event) {
 }
 </script>
 <template>
-    <form @submit.prevent="submit">
-        <div class="mb-1">
-            <label for="code" class="block">Código</label>
-            <InputText v-model="form.code" required class="w-full"></InputText>
-        </div>
-        <div class="mb-1">
-            <label for="name" class="block">Nombre</label>
-            <InputText v-model="form.name" class="w-full"></InputText>
-        </div>
-        <div class="mb-1">
-            <label for="description" class="block">Descripción</label>
-            <Textarea v-model="form.description" rows="5" class="w-full"></Textarea>
-        </div>
-        <div class="flex gap-2 justify-between mb-1">
-            <div class="w-1/2">
-                <label for="cost" class="block">Costo</label>
-                <InputNumber v-model="form.cost" showButtons :minFractionDigits="2" class="w-full" placeholder="0.00"></InputNumber>
+    <form @submit.prevent="submit" class="grid grid-cols-1 lg:grid-cols-2 gap-2">
+        <div class="flex flex-col gap-2">
+            <div class="flex gap-2 justify-between">
+                <div class="w-full">
+                    <label for="code" class="block">Código</label>
+                    <InputText v-model="form.code" required class="w-full"></InputText>
+                </div>
+                <div class="w-full">
+                    <label for="sku" class="block">SKU (Opcional)</label>
+                    <InputText v-model="form.sku" class="w-full"></InputText>
+                </div>
             </div>
-            <div class="w-1/2">
-                <label for="price" class="block">Precio</label>
-                <InputNumber v-model="form.price" showButtons :minFractionDigits="2" class="w-full" placeholder="0.00"></InputNumber>
+            <div class="">
+                <label for="name" class="block">Nombre</label>
+                <InputText v-model="form.name" class="w-full"></InputText>
             </div>
-        </div>
-        <div class="flex justify-between mb-1">
-            <div class="w-full mr-2">
+            <div class="flex gap-2 justify-between ">
+                <div class="w-full">
+                    <label for="cost" class="block">Costo</label>
+                    <InputNumber v-model="form.cost" showButtons :minFractionDigits="2" class="w-full" placeholder="0.00"></InputNumber>
+                </div>
+                <div class="w-full">
+                    <label for="price" class="block">Precio</label>
+                    <InputNumber v-model="form.price" showButtons :minFractionDigits="2" class="w-full" placeholder="0.00"></InputNumber>
+                </div>
+            </div>
+            <div class="w-full">
                 <label for="unit_type" class="block">Unidad</label>
                 <Select v-model="form.unit_type" class="w-full" :options="unities" optionLabel="label" optionValue="label"></Select>
             </div>
-            <div class="w-full">
-                <label for="sku" class="block">SKU (Opcional)</label>
-                <InputText v-model="form.sku" class="w-full"></InputText>
+            <div class="w-full flex items-center gap-2 py-1">
+                <Checkbox v-model="form.has_taxes" :binary="true" inputId="hasTaxes"></Checkbox>
+                <label for="hasTaxes" class="block w-full">Tiene impuestos</label>
+            </div>
+            <div v-if="form.has_taxes" class="flex gap-2">
+                <div class="w-full">
+                    <label for="tax" class="block">Procentaje</label>
+                    <InputNumber v-model="form.tax" showButtons prefix="%" :minFractionDigits="1" class="w-full" placeholder="%0.0"></InputNumber>
+                </div>
+                <div class="w-full">
+                    <label for="tax" class="block">Precio con impuesto</label>
+                    <span v-if="form.price != null && form.tax != null" class="block py-2 px-3 w-full border border-1 rounded-md bg-gray-100">
+                        {{ formatMoneyNumber((form?.tax / 100) * form?.price) }}
+                    </span>
+                </div>
+            </div>
+            <div class="flex gap-2 items-center">
+                <div class="w-full">
+                    <label for="wholesale_price" class="block">Precio mayorista</label>
+                    <InputNumber v-model="form.wholesale_price" showButtons :minFractionDigits="2" class="w-full" placeholder="0.00"></InputNumber>
+                </div>
+                <div v-if="form.has_taxes" class="w-full">
+                    <label for="tax" class="block">Con impuesto</label>
+                    <span v-if="form.wholesale_price != null && form.tax != null" class="block py-2 px-3 w-full border border-1 rounded-md bg-gray-100">
+                        {{ formatMoneyNumber((form?.tax / 100) * form?.wholesale_price) }}
+                    </span>
+                </div>
             </div>
         </div>
-        <div>
-            <label for="image" class="block">Imagen</label>
-            <div v-if="product?.image" class="my-2">
-                <img :src="product?.image_url" alt="Product Image" width="100" class="rounded-md">
+        <div class="flex flex-col justify-between">
+            <div class="w-full">
+                <label for="description" class="block">Descripción</label>
+                <Textarea v-model="form.description" rows="5" class="w-full"></Textarea>
             </div>
-            <input type="file" @input="setImage" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"/>
-        </div><br>
-        <Button raised type="submit" label="Actualizar" severity="warn"</Button>
+            <div class="py-3">
+                <label for="image" class="block">Imagen</label>
+                <div v-if="product?.image" class="my-2">
+                    <img :src="product?.image_url" alt="Product Image" width="100" class="rounded-md">
+                </div>
+                <input type="file" @input="setImage" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"/>
+            </div>
+            <Button raised type="submit" label="Actualizar" severity="warn"</Button>
+        </div>
     </form>
 </template>

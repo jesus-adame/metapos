@@ -14,6 +14,7 @@ class Sale extends Model implements Cashable
         'customer_id',
         'seller_id',
         'cash_register_id',
+        'wholesale_sale',
         'status',
         'total',
     ];
@@ -40,7 +41,7 @@ class Sale extends Model implements Cashable
 
     public function products()
     {
-        return $this->belongsToMany(Product::class, 'product_sale')->withPivot('quantity', 'price');
+        return $this->belongsToMany(Product::class, 'product_sale')->withPivot('quantity', 'price', 'has_taxes', 'tax');
     }
 
     public function payments()
