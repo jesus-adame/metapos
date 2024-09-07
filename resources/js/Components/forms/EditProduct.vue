@@ -106,7 +106,7 @@ function setImage($event: Event) {
                 <div class="w-full">
                     <label for="tax" class="block">Precio con impuesto</label>
                     <span v-if="form.price != null && form.tax != null" class="block py-2 px-3 w-full border border-1 rounded-md bg-gray-100">
-                        {{ formatMoneyNumber((form?.tax / 100) * form?.price) }}
+                        {{ formatMoneyNumber(((form?.tax / 100) * form?.price) + form?.price) }}
                     </span>
                 </div>
             </div>
@@ -118,7 +118,7 @@ function setImage($event: Event) {
                 <div v-if="form.has_taxes" class="w-full">
                     <label for="tax" class="block">Con impuesto</label>
                     <span v-if="form.wholesale_price != null && form.tax != null" class="block py-2 px-3 w-full border border-1 rounded-md bg-gray-100">
-                        {{ formatMoneyNumber((form?.tax / 100) * form?.wholesale_price) }}
+                        {{ formatMoneyNumber(((form?.tax / 100) * form?.wholesale_price) + form?.wholesale_price) }}
                     </span>
                 </div>
             </div>
