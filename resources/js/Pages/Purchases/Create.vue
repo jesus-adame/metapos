@@ -99,10 +99,12 @@ const pushProduct = (product: Product) => {
         image: product.image,
         image_url: product.image_url,
         price: product.price,
+        wholesale_price: product.wholesale_price,
         cost: product.cost,
         quantity: 1,
         stock: product.stock,
         tax: product.tax,
+        has_taxes: product.has_taxes,
         unit_type: product.unit_type,
     })
 }
