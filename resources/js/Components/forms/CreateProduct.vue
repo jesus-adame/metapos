@@ -91,7 +91,7 @@ function setImage($event: Event) {
             </div>
             <div class="w-full flex items-center gap-2 py-1">
                 <Checkbox v-model="form.has_taxes" :binary="true" inputId="hasTaxes"></Checkbox>
-                <label for="hasTaxes" class="block w-full">Tiene IVA</label>
+                <label for="hasTaxes" class="block">Tiene IVA</label>
             </div>
             <div v-if="form.has_taxes" class="flex gap-2">
                 <div class="w-full">
@@ -101,7 +101,7 @@ function setImage($event: Event) {
                 <div class="w-full">
                     <label for="tax" class="block">Precio con impuesto</label>
                     <span v-if="form.price != null && form.tax != null" class="block py-2 px-3 w-full border border-1 rounded-md bg-gray-100">
-                        {{ formatMoneyNumber((form?.tax / 100) * form?.price) }}
+                        {{ formatMoneyNumber(((form?.tax / 100) * form?.price) + form?.price) }}
                     </span>
                 </div>
             </div>

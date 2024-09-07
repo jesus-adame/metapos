@@ -71,7 +71,7 @@ class ProductController extends Controller
             'name' => $request->name,
             'code' => $request->code,
             'description' => $request->description,
-            'wholesale_price' => $request->wholesale_price,
+            'wholesale_price' => $request->wholesale_price ?? 0,
             'price' => $request->price,
             'cost' => $request->cost,
             'image' => $imagePath,
@@ -79,7 +79,7 @@ class ProductController extends Controller
             'location_id' => $locationId,
             'unit_type' => $request->unit_type,
             'tax' => $request->tax,
-            'has_taxes' => $request->has_taxes,
+            'has_taxes' => $request->has_taxes == 'true' ? 1 : 0,
         ]);
 
         foreach (Location::all() as $location) {
@@ -118,7 +118,7 @@ class ProductController extends Controller
             'code' => $request->code,
             'name' => $request->name,
             'description' => $request->description,
-            'wholesale_price' => $request->wholesale_price,
+            'wholesale_price' => $request->wholesale_price ?? 0,
             'price' => $request->price,
             'cost' => $request->cost,
             'unit_type' => $request->unit_type,
