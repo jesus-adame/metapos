@@ -31,7 +31,7 @@ class StoreSaleRequest extends FormRequest
             'products.*.quantity' => 'required|integer|min:1',
             'products.*.price' => 'required|decimal:0,4',
             'products.*.has_taxes' => 'required|boolean',
-            'products.*.tax' => 'nullable|boolean',
+            'products.*.tax' => 'nullable|decimal:0,2',
             'payment_methods' => 'nullable|array',
             'payment_methods.*.method' => 'nullable|in:cash,card,transfer',
             'payment_methods.*.amount' => 'nullable|numeric|min:0',
@@ -43,7 +43,7 @@ class StoreSaleRequest extends FormRequest
     {
         return [
             'customer_id.required' => 'El cliente es obligatorio.',
-            'wholesale.required' => 'El cliente mayorista es obligatorio.',
+            'wholesale.required' => 'El precio mayorista es obligatorio.',
             'has_taxes.required' => 'El campo impuestos no puede ir vacío.',
             'customer_id.exists' => 'El cliente no existe.',
             'products.required' => 'Debes agregar al menos un producto.',

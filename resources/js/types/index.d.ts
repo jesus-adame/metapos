@@ -26,6 +26,7 @@ export interface Sale {
     customer?: Customer
     seller: User
     cash_register: CashRegister
+    wholesale_sale: boolean
     total: number
     status: string
     payments: Payment[]

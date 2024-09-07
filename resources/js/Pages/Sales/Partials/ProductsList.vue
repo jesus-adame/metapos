@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Card from '@/Components/Card.vue';
-import { formatMoneyNumber } from '@/helpers';
+import { formatMoneyNumber, getPercentage, percentageNumber } from '@/helpers';
 import { Product } from '@/types';
 import Button from 'primevue/button';
 import Column from 'primevue/column';
@@ -45,12 +45,17 @@ const removeProduct = (index: number) => {
             </Column>
             <Column header="Precio">
                 <template #body="{data}">
-                    {{ formatMoneyNumber(data.price) }}
+                    {{ formatMoneyNumber(data.price + getPercentage(data.price, data.tax)) }}
+                </template>
+            </Column>
+            <Column header="IVA">
+                <template #body="{data}">
+                    {{ percentageNumber(data.tax) ?? 'N/A' }}
                 </template>
             </Column>
             <Column header="Subtotal">
                 <template #body="{data}">
-                    {{ formatMoneyNumber(data.price * data.quantity) }}
+                    {{ formatMoneyNumber((data.price + getPercentage(data.price, data.tax)) * data.quantity) }}
                 </template>
             </Column>
             <Column header="">

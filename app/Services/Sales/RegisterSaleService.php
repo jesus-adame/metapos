@@ -131,8 +131,10 @@ class RegisterSaleService
             $price = $wholesale ? $arrayProduct['wholesale_price'] : $arrayProduct['price'];
             /** @var float */
             $taxes = $arrayProduct['has_taxes'] ? $arrayProduct['tax'] : 0;
+            /** @var float */
+            $taxesAmount = MathNumberHelper::getPercentage($price, $taxes);
 
-            $subtotal_price = $price * ($taxes / 100);
+            $subtotal_price = $price + $taxesAmount;
 
             $calculatedTotal += $subtotal_price * $quantity;
         }

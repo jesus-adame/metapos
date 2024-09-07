@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import Card from '@/Components/Card.vue';
 import AddSaleCustomer from '@/Components/forms/AddSaleCustomer.vue';
-import { calculateMetodIcon, can, formatMoneyNumber, getPaymentName, saleSeverity, saleStatus } from '@/helpers';
+import { calculateMetodIcon, can, formatMoneyNumber, getPaymentName, getPercentage, percentageNumber, saleSeverity, saleStatus } from '@/helpers';
 import UserLayout from '@/Layouts/UserLayout.vue';
-import { Payment, Sale } from '@/types';
+import { Sale } from '@/types';
 import { Head, Link, router } from '@inertiajs/vue3';
 import Button from 'primevue/button';
 import Column from 'primevue/column';
@@ -91,7 +91,7 @@ const hideAddCustomerModal = () => {
                                 </div>
                             </template>
                         </Column>
-                        <Column header="Precio">
+                        <Column header="Precio (Sin IVA)">
                             <template #body="{data}">
                                 {{ formatMoneyNumber(data.pivot.price) }}
                             </template>
@@ -101,9 +101,14 @@ const hideAddCustomerModal = () => {
                                 {{ slot.data.pivot.quantity }}
                             </template>
                         </Column>
+                        <Column header="IVA">
+                            <template #body="{data}">
+                                {{ percentageNumber(data.tax) ?? 'N/A' }}
+                            </template>
+                        </Column>
                         <Column header="Subtotal">
-                            <template #body="slot">
-                                {{ formatMoneyNumber(slot.data.pivot.price * slot.data.pivot.quantity) }}
+                            <template #body="{data}">
+                                {{ formatMoneyNumber((data.price + getPercentage(data.price, data.tax)) * data.pivot.quantity) }}
                             </template>
                         </Column>
                     </DataTable>

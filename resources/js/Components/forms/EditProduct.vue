@@ -64,7 +64,7 @@ function setImage($event: Event) {
 }
 </script>
 <template>
-    <form @submit.prevent="submit" class="grid grid-cols-1 lg:grid-cols-2 gap-2">
+    <form @submit.prevent="submit" class="grid grid-cols-1 xl:grid-cols-2 gap-2">
         <div class="flex flex-col gap-2">
             <div class="flex gap-2 justify-between">
                 <div class="w-full">
@@ -124,16 +124,18 @@ function setImage($event: Event) {
             </div>
         </div>
         <div class="flex flex-col justify-between">
-            <div class="w-full">
-                <label for="description" class="block">Descripción</label>
-                <Textarea v-model="form.description" rows="5" class="w-full"></Textarea>
-            </div>
-            <div class="py-3">
-                <label for="image" class="block">Imagen</label>
-                <div v-if="product?.image" class="my-2">
-                    <img :src="product?.image_url" alt="Product Image" width="100" class="rounded-md">
+            <div>
+                <div class="w-full">
+                    <label for="description" class="block">Descripción</label>
+                    <Textarea v-model="form.description" rows="5" class="w-full"></Textarea>
                 </div>
-                <input type="file" @input="setImage" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"/>
+                <div class="py-2">
+                    <label for="image" class="block">Imagen</label>
+                    <div v-if="product?.image" class="my-2">
+                        <img :src="product?.image_url" alt="Product Image" width="100" class="rounded-md">
+                    </div>
+                    <input type="file" @input="setImage" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"/>
+                </div>
             </div>
             <Button raised type="submit" label="Actualizar" severity="warn"</Button>
         </div>

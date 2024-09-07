@@ -18,7 +18,7 @@ const { product } = defineProps<{
         </template>
 
         <div class="py-6">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg w-1/2">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <EditProduct :product="product"></EditProduct>
                 </div>

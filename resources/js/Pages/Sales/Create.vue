@@ -36,6 +36,7 @@ const modalCreateCustomer = ref(false)
 const form = reactive<{
   customer_id: number | null;
   products: Product[];
+  wholesale: boolean;
   discount: {
     type: string,
     amount: number
@@ -44,6 +45,7 @@ const form = reactive<{
     customer_id: null,
     products: [],
     discount: null,
+    wholesale: false,
 });
 
 const addSearchedProduct = () => {
@@ -82,7 +84,7 @@ const pushProduct = (product: Product) => {
 }
 
 const totalSale = computed(() => {
-    let subtotal = form.products.reduce((acc, product) => acc + (product.price * product.quantity), 0)
+    let subtotal = form.products.reduce((acc, product) => acc + ((product.price * product.quantity) + getPercentage(product.price, product.tax)), 0)
     if (form.discount == null) {
         return subtotal
     }
@@ -252,12 +254,19 @@ onMounted(() => {
             <div>
                 <ProductsList :products="form.products"></ProductsList>
 
-                <Card width="full" class="mt-4">
-                    <div v-if="form.discount" class="text-xl text-gray-500 font-bold flex justify-end items-center cursor-pointer mb-2" @click="removeDiscount">
-                        <span class="mr-2">
-                            <i class="pi pi-tag"></i>
-                        </span>
-                        <p>Descuento {{ formatDiscount }}</p>
+                <div class="bg-white p-4 shadow-md rounded mt-4">
+                    <div class="flex justify-end w-full">
+                        <div
+                            v-if="form.discount"
+                            class="text-xl text-gray-500 font-bold flex gap-2 p-2 justify-end items-center cursor-pointer"
+                            @click="removeDiscount"
+                            v-tooltip.top="'Eliminar descuento'"
+                        >
+                            <span>
+                                <i class="pi pi-tag"></i>
+                            </span>
+                            <p>Descuento {{ formatDiscount }}</p>
+                        </div>
                     </div>
                     <div class="text-3xl font-bold text-gray-700 text-right w-full mb-5">
                         <p>Saldo {{ formatMoneyNumber(totalSale) }}</p>
@@ -278,7 +287,7 @@ onMounted(() => {
                             <Button label="Ver de caja" severity="warn" class="w-full text-xl uppercase" icon="pi pi-inbox"></Button>
                         </Link>
                     </div>
-                </Card>
+                </div>
             </div>
         </div>
     </UserLayout>

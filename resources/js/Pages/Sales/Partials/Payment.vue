@@ -103,7 +103,7 @@ const closeDialogResponse = () => {
 }
 
 const openModaTicket = () => {
-    modalTicket.value = true
+  modalTicket.value = true
 }
 </script>
 

@@ -16,7 +16,7 @@ export const percentageNumber = (number: number | null) => {
     if (number == null) return null
     return new Intl.NumberFormat('es-MX', {
         style: 'percent',
-        minimumFractionDigits: 2,
+        minimumFractionDigits: 0,
         maximumFractionDigits: 2
     }).format(number / 100);
 }
