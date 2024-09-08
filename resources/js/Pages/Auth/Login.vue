@@ -62,9 +62,8 @@ const submit = async () => {
 
         <div class="w-full sm:max-w-md mt-6 px-6 py-5 bg-white shadow-md overflow-hidden sm:rounded-lg">
             <div class="w-full flex justify-center">
-                <Link href="/">
-                    <ApplicationLogo class="w-20 h-20 fill-current text-purple-800" />
-                    <h1 class="font-bold text-xl text-gray-700 my-2">META POS</h1>
+                <Link href="/" class="w-1/2">
+                    <img src="/logos/logo-2-black.png" alt="Logo">
                 </Link>
             </div>
             <form @submit.prevent="submit">
@@ -97,8 +96,7 @@ const submit = async () => {
                         <span class="ms-2 text-sm text-gray-600">Remember me</span>
                     </label>
                 </div>
-
-                <div class="flex items-center justify-end mt-4">
+                <div class="flex items-center justify-center mt-4">
                     <Link
                         v-if="canResetPassword"
                         :href="route('password.request')"
@@ -106,7 +104,14 @@ const submit = async () => {
                     >
                         Forgot your password?
                     </Link>
-                    <Button class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing" raised label="Log in" type="submit"></Button>
+                </div>
+
+                <div class="flex items-center justify-center mt-4">
+                    <Button
+                        class="w-full"
+                        :class="{ 'opacity-25': form.processing }"
+                        :disabled="form.processing"
+                        raised label="Log in" type="submit" severity="contrast"></Button>
                 </div>
             </form>
         </div>

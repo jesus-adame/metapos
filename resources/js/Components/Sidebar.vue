@@ -87,8 +87,10 @@ function handleMouseLeave() {
       <div class="flex h-screen flex-col justify-between pt-2 pb-6">
         <div>
           <div class="w-max p-2.5">
-            <div class="flex items-center">
-              <ApplicationLogo class="w-9 fill-current text-gray-200"></ApplicationLogo>
+            <div class="flex items-center justify-center">
+              <div class="w-9">
+                <img src="/logos/logo-6-only-white.png" alt="Logo" class="w-full">
+              </div>
               <span class="ml-3 font-black text-lg text-gray-200">METAPOS</span>
             </div>
           </div>

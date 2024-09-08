@@ -20,7 +20,7 @@ function toggleFullScreen() {
       <div class="flex flex-col-reverse justify-between gap-6 md:flex-row md:items-center">
         <slot/>
         <div class="flex items-center">
-          <Button icon="pi pi-bell" class="mr-3" rounded severity="secondary"></Button>
+          <!-- <Button icon="pi pi-bell" class="mr-3" rounded severity="secondary"></Button> -->
           <LoggedUserDropdown/>
           <span
             @click="toggleFullScreen()"

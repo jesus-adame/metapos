@@ -4,7 +4,6 @@ import { Head, Link } from '@inertiajs/vue3';
 import UserLayout from '@/Layouts/UserLayout.vue';
 import ProductService from '@/Services/ProductService';
 import CustomerService from "@/Services/CustomerService";
-import Card from '@/Components/Card.vue';
 import { useToast } from 'primevue/usetoast';
 import Button from 'primevue/button';
 import IconField from 'primevue/iconfield';
@@ -250,10 +249,11 @@ onMounted(() => {
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-            <SelectProduct :products="products" @selected="pushProduct"></SelectProduct>
+            <div>
+                <SelectProduct :products="products" @selected="pushProduct"></SelectProduct>
+            </div>
             <div>
                 <ProductsList :products="form.products"></ProductsList>
-
                 <div class="bg-white p-4 shadow-md rounded mt-4">
                     <div class="flex justify-end w-full">
                         <div

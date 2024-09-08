@@ -4,7 +4,7 @@ import InputNumber from 'primevue/inputnumber';
 import SelectButton from 'primevue/selectbutton';
 import { computed, reactive, ref } from 'vue';
 
-const selectedDiscountType = ref('amount')
+const selectedDiscountType = ref('percentage')
 const emit = defineEmits(['apply'])
 const form = reactive<{
     amount: number | null
@@ -13,8 +13,8 @@ const form = reactive<{
 })
 
 const discountTypes = ref([
-    {label: 'Monto', value: 'amount'},
     {label: 'Porcentaje', value: 'percentage'},
+    {label: 'Monto', value: 'amount'},
 ]);
 
 const prefixIcon = computed(() => {
@@ -35,14 +35,13 @@ const submitButton = computed(() => {
 </script>
 <template>
     <div>
-        <form @submit.prevent="addDiscount">
+        <form @submit.prevent="addDiscount" class="grid gap-4">
             <div class="w-full text-center">
                 <SelectButton v-model="selectedDiscountType" :options="discountTypes" option-label="label" option-value="value"></SelectButton>
             </div>
-            <label>Monto</label>
             <InputNumber v-model="form.amount" :min-fraction-digits="2" :max-fraction-digits="2" class="w-full" :prefix="prefixIcon" placeholder="0.00"></InputNumber>
             <div class="flex justify-end">
-                <Button label="Aplicar" class="mt-4" type="submit" :disabled="submitButton"></Button>
+                <Button label="Aplicar" type="submit" :disabled="submitButton"></Button>
             </div>
         </form>
     </div>
