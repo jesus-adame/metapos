@@ -42,7 +42,7 @@ const form = ref<Product>({
     quantity: 0,
     stock: 0,
     unit_type: 'Unidad',
-    tax: null,
+    tax: 0,
     has_taxes: false,
     description: null,
 })

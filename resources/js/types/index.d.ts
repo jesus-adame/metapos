@@ -91,7 +91,7 @@ export interface Product {
     quantity: number
     stock: number
     unit_type: string
-    tax: ?number
+    tax: number
     has_taxes: ?boolean
     description: ?string
 }
