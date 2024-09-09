@@ -74,8 +74,8 @@
         </div>
         <div class="content">
             <div class="details">
-                <p>Cliente: {{ $sale->customer?->name }}</p>
-                <p>Vendedor: {{ $sale->seller?->name }}</p>
+                <p>Cliente: {{ $sale->customer?->name }} {{ $sale->customer?->lastname }}</p>
+                <p>Vendedor: {{ $sale->seller?->name }} {{ $sale->customer?->lastname }}</p>
                 <p>Fecha: {{ $date->format('d/m/Y h:i a') }}</p>
             </div>
             <div class="products">
@@ -105,7 +105,7 @@
         </div>
         <div class="footer">
             <p>¡Gracias por su compra!</p>
-            <p>Visítenos nuevamente</p>
+            <p>Lo esperamos nuevamente</p>
         </div>
     </div>
 </body>
