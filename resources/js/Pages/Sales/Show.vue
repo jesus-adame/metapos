@@ -74,6 +74,10 @@ const hideAddCustomerModal = () => {
                         <strong>Total Venta</strong>
                         <span class="font-bold text-gray-600">{{ formatMoneyNumber(sale.total) }}</span>
                     </div>
+                    <div class="flex gap-2 items-center">
+                        <strong>Cambio</strong>
+                        <span class="font-bold text-gray-600">{{ formatMoneyNumber(sale.change) }}</span>
+                    </div>
                 </Card>
                 <Card padding="0">
                     <DataTable :value="sale.products">
@@ -103,12 +107,12 @@ const hideAddCustomerModal = () => {
                         </Column>
                         <Column header="IVA">
                             <template #body="{data}">
-                                {{ percentageNumber(data.tax) ?? 'N/A' }}
+                                {{ percentageNumber(data.pivot.tax) ?? 'N/A' }}
                             </template>
                         </Column>
                         <Column header="Subtotal">
                             <template #body="{data}">
-                                {{ formatMoneyNumber((data.price + getPercentage(data.price, data.tax)) * data.pivot.quantity) }}
+                                {{ formatMoneyNumber((data.pivot.price + getPercentage(data.pivot.price, data.pivot.tax)) * data.pivot.quantity) }}
                             </template>
                         </Column>
                     </DataTable>

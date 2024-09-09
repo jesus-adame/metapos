@@ -28,6 +28,7 @@ export interface Sale {
     cash_register: CashRegister
     wholesale_sale: boolean
     total: number
+    change: number
     status: string
     payments: Payment[]
     products: Product[]

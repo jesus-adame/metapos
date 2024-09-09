@@ -29,13 +29,16 @@ class SaleController extends Controller
     {
         Gate::authorize(Permission::VIEW_SALES);
 
-        $sale = Sale::with('customer')
-            ->with('seller')
-            ->with('products')
-            ->with('payments')
-            ->with('cashRegister')
-            ->with('cashFlows')
-            ->find($sale->id);
+        $sale = Sale::with([
+            'customer',
+            'seller',
+            'products' => function ($query) {
+                $query->withPivot('quantity', 'price', 'has_taxes', 'tax'); // Asegúrate de incluir los pivotes aquí
+            },
+            'payments',
+            'cashRegister',
+            'cashFlows',
+        ])->find($sale->id);
 
         return inertia('Sales/Show', [
             'sale' => $sale,

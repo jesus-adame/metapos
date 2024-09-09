@@ -42,7 +42,10 @@ class Sale extends Model implements Cashable
 
     public function products()
     {
-        return $this->belongsToMany(Product::class, 'product_sale')->withPivot('quantity', 'price', 'has_taxes', 'tax');
+        return $this->belongsToMany(Product::class, 'product_sale')
+            ->withPivot('quantity', 'price', 'has_taxes', 'tax')
+            ->withTimestamps()
+            ->using(ProductSalePivot::class);
     }
 
     public function payments()
