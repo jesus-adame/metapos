@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { formatMoneyNumber } from '@/helpers';
 import { Product } from '@/types';
 
 defineProps<{

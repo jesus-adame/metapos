@@ -30,17 +30,17 @@ const unities = ref([
 ])
 
 const form = ref<Product>({
-    name: null,
+    name: '',
     code: null,
     sku: null,
-    price: null,
+    price: 0,
     price_with_tax: null,
-    cost: null,
+    cost: 0,
     wholesale_price: null,
     image: null as File | null,
     image_url: null,
-    quantity: null,
-    stock: null,
+    quantity: 0,
+    stock: 0,
     unit_type: 'Unidad',
     tax: null,
     has_taxes: false,

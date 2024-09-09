@@ -79,17 +79,17 @@ export interface Location {
 
 export interface Product {
     id?: number
-    name: ?string
+    name: string
     code: ?string
     sku: ?string
-    price: ?number
+    price: number
     price_with_tax: ?number
-    cost: ?number
+    cost: number
     wholesale_price: ?number
     image: ?string | File
     image_url: ?string
-    quantity: ?number
-    stock: ?number
+    quantity: number
+    stock: number
     unit_type: string
     tax: ?number
     has_taxes: ?boolean
@@ -100,13 +100,17 @@ export interface CartItem {
     id?: number
     name: string
     code: string
+    sku: ?string
     price: number
+    price_with_tax: ?number
+    wholesale_price: ?number
     image: string
     image_url: string
     quantity: number
     stock: number
     unit_type: string
     tax: number
+    has_taxes: ?boolean
 }
 
 export interface CashFlow {
