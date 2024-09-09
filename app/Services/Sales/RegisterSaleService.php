@@ -56,6 +56,7 @@ class RegisterSaleService
         }
 
         $sale->status = 'completed';
+        $sale->change = $change;
         $sale->save();
 
         if ($cashPayments > 0) {

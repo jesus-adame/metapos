@@ -16,6 +16,7 @@ class Sale extends Model implements Cashable
         'cash_register_id',
         'wholesale_sale',
         'status',
+        'change',
         'total',
     ];
 
