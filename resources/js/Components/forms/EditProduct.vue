@@ -5,7 +5,7 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 import { useToast } from 'primevue/usetoast';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 const emit = defineEmits(['save'])
 const toast = useToast()
@@ -14,6 +14,9 @@ const axiosOptions = {
         'Content-Type': 'multipart/form-data'
     }
 }
+
+let isUpdatingPrice = false;
+let isUpdatingPriceWithTax = false;
 
 const unities = ref([
     {label: 'Unidad', value: 'unity'},
@@ -36,6 +39,7 @@ const form = ref({
     description: product?.description,
     wholesale_price: product?.wholesale_price,
     price: product?.price,
+    price_with_tax: (product?.price ?? 0) * (1 + (product?.tax ?? 0) / 100),
     cost: product?.cost,
     image: null as File | null,
     unit_type: product?.unit_type,
@@ -62,6 +66,36 @@ function setImage($event: Event) {
         form.value.image = input.files?.[0] as File | null
     }
 }
+
+function calcularPrecioSinImpuesto(precioConImpuesto: number, taxNumber: number): number {
+    return precioConImpuesto / (1 + (taxNumber / 100));
+}
+
+function calcularPrecioConImpuesto(precioSinImpuesto: number, taxNumber: number): number {
+    return precioSinImpuesto * (1 + (taxNumber / 100));
+}
+
+// Watcher para actualizar el precio sin impuestos cuando cambia el precio con impuestos o la tasa de impuestos
+watch([() => form.value.price_with_tax, () => form.value.tax], ([precioConImpuesto, tasaImpuesto]) => {
+    if (isUpdatingPriceWithTax) return;
+
+    if (precioConImpuesto != null && tasaImpuesto != null) {
+        isUpdatingPrice = true;
+        form.value.price = calcularPrecioSinImpuesto(precioConImpuesto, tasaImpuesto);
+        isUpdatingPrice = false;
+    }
+});
+
+// Watcher para actualizar el precio con impuestos cuando cambia el precio sin impuestos o la tasa de impuestos
+watch([() => form.value.price, () => form.value.tax], ([precioSinImpuesto, tasaImpuesto]) => {
+    if (isUpdatingPrice) return;
+
+    if (precioSinImpuesto != null && tasaImpuesto != null) {
+        isUpdatingPriceWithTax = true;
+        form.value.price_with_tax = calcularPrecioConImpuesto(precioSinImpuesto, tasaImpuesto);
+        isUpdatingPriceWithTax = false;
+    }
+});
 </script>
 <template>
     <form @submit.prevent="submit" class="grid grid-cols-1 xl:grid-cols-2 gap-2">
@@ -83,11 +117,11 @@ function setImage($event: Event) {
             <div class="flex gap-2 justify-between ">
                 <div class="w-full">
                     <label for="cost" class="block">Costo</label>
-                    <InputNumber v-model="form.cost" showButtons :minFractionDigits="2" class="w-full" placeholder="0.00"></InputNumber>
+                    <InputNumber v-model="form.cost" showButtons :minFractionDigits="2" :maxFractionDigits="2" class="w-full" placeholder="0.00"></InputNumber>
                 </div>
                 <div class="w-full">
                     <label for="price" class="block">Precio</label>
-                    <InputNumber v-model="form.price" showButtons :minFractionDigits="2" class="w-full" placeholder="0.00"></InputNumber>
+                    <InputNumber v-model="form.price" showButtons :minFractionDigits="2" :maxFractionDigits="2" class="w-full" placeholder="0.00"></InputNumber>
                 </div>
             </div>
             <div class="w-full">
@@ -96,24 +130,22 @@ function setImage($event: Event) {
             </div>
             <div class="w-full flex items-center gap-2 py-1">
                 <Checkbox v-model="form.has_taxes" :binary="true" inputId="hasTaxes"></Checkbox>
-                <label for="hasTaxes" class="block w-full">Tiene impuestos</label>
+                <label for="hasTaxes" class="block">Tiene impuestos</label>
             </div>
             <div v-if="form.has_taxes" class="flex gap-2">
                 <div class="w-full">
                     <label for="tax" class="block">Procentaje</label>
-                    <InputNumber v-model="form.tax" showButtons prefix="%" :minFractionDigits="1" class="w-full" placeholder="%0.0"></InputNumber>
+                    <InputNumber v-model="form.tax" showButtons prefix="%" :maxFractionDigits="1" class="w-full" placeholder="%0.0"></InputNumber>
                 </div>
                 <div class="w-full">
                     <label for="tax" class="block">Precio con impuesto</label>
-                    <span v-if="form.price != null && form.tax != null" class="block py-2 px-3 w-full border border-1 rounded-md bg-gray-100">
-                        {{ formatMoneyNumber(((form?.tax / 100) * form?.price) + form?.price) }}
-                    </span>
+                    <InputNumber v-model="form.price_with_tax" showButtons :minFractionDigits="2" :maxFractionDigits="2" class="w-full" placeholder="0.00"></InputNumber>
                 </div>
             </div>
             <div class="flex gap-2 items-center">
                 <div class="w-full">
                     <label for="wholesale_price" class="block">Precio mayorista</label>
-                    <InputNumber v-model="form.wholesale_price" showButtons :minFractionDigits="2" class="w-full" placeholder="0.00"></InputNumber>
+                    <InputNumber v-model="form.wholesale_price" showButtons :minFractionDigits="2" :maxFractionDigits="2" class="w-full" placeholder="0.00"></InputNumber>
                 </div>
                 <div v-if="form.has_taxes" class="w-full">
                     <label for="tax" class="block">Con impuesto</label>
@@ -132,7 +164,7 @@ function setImage($event: Event) {
                 <div class="py-2">
                     <label for="image" class="block">Imagen</label>
                     <div v-if="product?.image" class="my-2">
-                        <img :src="product?.image_url" alt="Product Image" width="100" class="rounded-md">
+                        <img :src="product?.image_url ?? ''" alt="Product Image" width="100" class="rounded-md">
                     </div>
                     <input type="file" @input="setImage" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"/>
                 </div>

@@ -28,7 +28,7 @@ class ProductController extends Controller
         $location = Location::find(Auth::user()->location_id);
 
         $products = Product::withStock($location)
-            ->orderBy('updated_at', 'desc')
+            ->orderBy('created_at', 'desc')
             ->paginate($perPage);
 
         return response()->json($products);

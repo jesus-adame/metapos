@@ -79,20 +79,21 @@ export interface Location {
 
 export interface Product {
     id?: number
-    name: string
-    code: string
+    name: ?string
+    code: ?string
     sku: ?string
-    price: number
-    cost: number
-    wholesale_price: number
-    image: string
-    image_url: string
-    quantity: number
-    stock: number
+    price: ?number
+    price_with_tax: ?number
+    cost: ?number
+    wholesale_price: ?number
+    image: ?string | File
+    image_url: ?string
+    quantity: ?number
+    stock: ?number
     unit_type: string
-    tax: number
-    has_taxes: number
-    description?: string
+    tax: ?number
+    has_taxes: ?boolean
+    description: ?string
 }
 
 export interface CartItem {
