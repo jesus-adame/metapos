@@ -28,7 +28,7 @@ export default class ProductService {
 
     async fetchAll() {
         const url = route('api.products.index');
-        const response = await axios.get(url, { params: { page: 1, rows: 100 } });
+        const response = await axios.get(url, { params: { page: 1, rows: 50 } });
         this.products.value = response.data
 
         return response
