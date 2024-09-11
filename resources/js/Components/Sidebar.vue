@@ -2,7 +2,6 @@
 import { Link } from '@inertiajs/vue3';
 import VirtualScroller from 'primevue/virtualscroller';
 import { ref } from 'vue';
-import ApplicationLogo from './ApplicationLogo.vue';
 import { TabItem } from '@/types';
 import { can } from '@/helpers';
 import FloatMenu from './menus/FloatMenu.vue';

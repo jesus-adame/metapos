@@ -22,7 +22,6 @@ const toast = useToast()
 const fetchItems = () => {
     settingService.fetchAll()
     .then((response: AxiosResponse) => {
-        console.log(response.data);
         form.settings = response.data
     })
 }

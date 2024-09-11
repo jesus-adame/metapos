@@ -66,4 +66,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(CashRegister::class);
     }
+
+    public function sales()
+    {
+        return $this->hasMany(Sale::class, 'seller_id');
+    }
 }

@@ -25,8 +25,8 @@ const authStore = useAuthStore()
             </div>
         </div>
         <div v-if="can('view finances')" class="grid md:grid-cols-2 py-4 my-6">
-            <YearSales></YearSales>
-            <SaleCategories></SaleCategories>
+            <!-- <YearSales></YearSales>
+            <SaleCategories></SaleCategories> -->
         </div>
     </UserLayout>
 </template>

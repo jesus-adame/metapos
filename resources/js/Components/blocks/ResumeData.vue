@@ -24,7 +24,7 @@ onMounted(() => {
 })
 </script>
 <template>
-    <div class="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4 mt-14 text-gray-600">
+    <div class="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4 mt-10 text-gray-600">
         <div class="relative flex flex-col bg-clip-border rounded-xl bg-white shadow-md">
             <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-blue-600 to-blue-400 text-white shadow-blue-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
                 <SalesIcon></SalesIcon>
