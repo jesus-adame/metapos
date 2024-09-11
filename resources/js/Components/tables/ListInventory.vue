@@ -145,7 +145,6 @@ watch(() => authStore.cashRegister, () => {
                 </div>
             </template>
         </Column>
-        <Column field="description" header="Descripción"></Column>
         <Column field="cost" header="">
             <template #header>
                 <div class="w-full text-center">

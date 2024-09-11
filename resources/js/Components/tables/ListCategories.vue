@@ -112,13 +112,7 @@ const confirmDelete = (url: string) => {
 
     <DataTable :value="items" class="shadow-md" :paginator="true" :rows="rows" :lazy="true" :totalRecords="totalRecords" @page="onPage">
         <Column field="id" header="#"></Column>
-        <Column field="name" header="Nombre">
-            <template #body="{data}">
-                <UserIcon>
-                    {{ data.name }}
-                </UserIcon>
-            </template>
-        </Column>
+        <Column field="name" header="Nombre"></Column>
         <Column field="description" header="Descripción"></Column>
         <Column field="created_at" header="Creación">
             <template #body="slot">

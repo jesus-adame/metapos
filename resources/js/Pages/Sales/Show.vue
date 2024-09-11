@@ -84,8 +84,8 @@ const hideAddCustomerModal = () => {
                         <Column field="name" header="Producto">
                             <template #body="{data}">
                                 <div class="flex">
-                                    <div class="overflow-hidden hidden lg:block shadow-lg rounded-md w-16 h-16">
-                                        <Image v-if="data.image" :src="data.image_url" :alt="data.name" />
+                                    <div v-if="data.image" class="overflow-hidden hidden lg:block shadow-lg rounded-md w-16 h-16">
+                                        <Image :src="data.image_url" :alt="data.name" />
                                     </div>
                                     <div class="text-left ml-5">
                                         <span class="font-bold">{{ data.name }}</span>

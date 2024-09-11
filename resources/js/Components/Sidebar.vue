@@ -30,7 +30,7 @@ const tabItems: TabItem[] = [
     permission: 'view sales'
   },
   {
-    icon: 'fi fi-sr-tags',
+    icon: 'fi fi-ss-receipt',
     label: 'Ventas',
     route: route('sales.index'),
     active: route().current('sales.index'),
@@ -56,13 +56,20 @@ const tabItems: TabItem[] = [
     active: route().current('products.index'),
     permission: 'view products'
   },
-  // {
-  //   icon: 'fi fi-sr-users-alt',
-  //   label: 'Usuarios',
-  //   route: route('users.index'),
-  //   active: route().current('users.index'),
-  //   permission: 'view users'
-  // },
+  {
+    icon: 'fi fi-sr-user',
+    label: 'Cientes',
+    route: route('customers.index'),
+    active: route().current('customers.index'),
+    permission: 'view customers'
+  },
+  {
+    icon: 'fi fi-sr-tags',
+    label: 'Categorías',
+    route: route('categories.index'),
+    active: route().current('categories.index'),
+    permission: 'view categories'
+  },
 ];
 
 const isHovered = ref(false)

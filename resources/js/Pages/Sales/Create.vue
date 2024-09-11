@@ -90,7 +90,7 @@ const pushProduct = (product: Product) => {
         quantity: 1,
         stock: product.stock,
         unit_type: product.unit_type,
-        tax: product.tax
+        tax: product.tax ?? 0
     };
 
     if (form.wholesale && product?.wholesale_price) {
