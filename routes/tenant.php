@@ -61,5 +61,9 @@ Route::middleware([
         Route::resource('cash-registers', CashRegisterController::class);
     });
 
+    Route::get('/offline', function () {
+        return view('vendor.laravelpwa.offline');
+    });
+
     require __DIR__ . '/auth.php';
 });

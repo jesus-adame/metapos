@@ -15,11 +15,8 @@
 
         @laravelPWA
         <!-- Scripts -->
-        @routes
-        @vite(['resources/js/app.ts', "resources/js/Pages/{$page['component']}.vue"])
-        @inertiaHead
     </head>
     <body class="font-sans antialiased">
-        @inertia
+        <h1>No tienes acceso a Internet.</h1>
     </body>
 </html>
