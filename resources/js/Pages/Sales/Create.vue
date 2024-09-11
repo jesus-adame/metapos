@@ -8,7 +8,7 @@ import { useToast } from 'primevue/usetoast';
 import Button from 'primevue/button';
 import IconField from 'primevue/iconfield';
 import Dialog from 'primevue/dialog';
-import { formatMoneyNumber, getPercentage, percentageNumber } from '@/helpers';
+import { formatMoneyNumber, getPercentage, percentageNumber, roundBank } from '@/helpers';
 import ProductsList from './Partials/ProductsList.vue';
 import Payment from './Partials/Payment.vue';
 import CreateCashMovement from '@/Components/forms/CreateCashMovement.vue';
@@ -84,7 +84,7 @@ const pushProduct = (product: Product) => {
         name: product.name,
         code: product.code,
         sku: product.sku,
-        price: product.price + getPercentage(product.price, product.tax), // Con impuestos
+        price: roundBank(product.price + getPercentage(product.price, product.tax)), // Con impuestos
         image: product.image,
         image_url: product.image_url,
         quantity: 1,
