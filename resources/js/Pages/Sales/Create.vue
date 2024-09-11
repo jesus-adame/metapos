@@ -222,13 +222,13 @@ watch(() => form.wholesale, () => {
     </Dialog>
 
     <Dialog v-model:visible="modalCashMovements" modal header="Registrar movimiento" :style="{ width: '35rem' }">
-        <CreateCashMovement class="mt-2">
+        <CreateCashMovement>
             <Button label="Cancelar" @click="hideModalMovements" class="ml-2"></Button>
         </CreateCashMovement>
     </Dialog>
 
     <Dialog v-model:visible="modalCreateCustomer" modal header="Registrar cliente" :style="{ width: '35rem' }">
-        <CreateCustomer class="mt-4" @save="hideModalCreateCustomer"></CreateCustomer>
+        <CreateCustomer @save="hideModalCreateCustomer"></CreateCustomer>
     </Dialog>
 
     <UserLayout>

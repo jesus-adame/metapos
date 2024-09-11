@@ -39,7 +39,7 @@ class CategoryController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'description' => 'required',
+            'description' => 'nullable',
         ]);
 
         $category = Category::create([
@@ -57,7 +57,7 @@ class CategoryController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'description' => 'required',
+            'description' => 'nullable',
         ]);
 
         $category->update([

@@ -8,11 +8,11 @@ import { DataTablePageEvent } from 'primevue/datatable';
 import CreateCategory from '../forms/CreateCategory.vue';
 import { can, formatDate } from '@/helpers';
 import UserIcon from '../icons/UserIcon.vue';
-import { useCategoryStore } from '@/stores/CategoryStore';
 import EditCategory from '../forms/EditCategory.vue';
 import { Category } from '@/types';
 import { useConfirm } from 'primevue/useconfirm';
 import { useToast } from 'primevue/usetoast';
+import { useCategoryStore } from '@/stores/CategoryStore';
 
 const categoryService = new CategoryService()
 const items = ref([])
@@ -102,12 +102,12 @@ const confirmDelete = (url: string) => {
 }
 </script>
 <template>
-    <Dialog v-model:visible="modalCreate" modal header="Nuevo categoría" :style="{ width: '35rem' }" pt:mask:class="backdrop-blur-sm">
-        <CreateCategory class="mt-4" @save="hideModalCreate"></CreateCategory>
+    <Dialog v-model:visible="modalCreate" modal header="Nuevo categoría" :style="{ width: '35rem' }">
+        <CreateCategory @save="hideModalCreate"></CreateCategory>
     </Dialog>
 
-    <Dialog v-model:visible="modalEdit" modal header="Editar categoría" :style="{ width: '35rem' }" pt:mask:class="backdrop-blur-sm">
-        <EditCategory :category="selectedCategory" class="mt-4" @save="hideModalEdit"></EditCategory>
+    <Dialog v-model:visible="modalEdit" modal header="Editar categoría" :style="{ width: '35rem' }">
+        <EditCategory :category="selectedCategory" @save="hideModalEdit"></EditCategory>
     </Dialog>
 
     <DataTable :value="items" class="shadow-md" :paginator="true" :rows="rows" :lazy="true" :totalRecords="totalRecords" @page="onPage">

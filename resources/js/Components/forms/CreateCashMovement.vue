@@ -54,7 +54,7 @@ const methods = [
 </script>
 <template>
     <form @submit.prevent="submit">
-        <div class="flex mb-4">
+        <div class="flex mb-2">
             <div class="w-1/2 mr-2">
                 <label for="type" class="block">Tipo</label>
                 <Select v-model="form.type" :options="types" optionLabel="label" optionValue="value" class="w-full"></Select>
@@ -64,7 +64,7 @@ const methods = [
                 <DatePicker dateFormat="dd/mm/yy" v-model="form.date" showTime hour-format="12" id="date" class="w-full" required placeholder="DD/MM/YYYY"/>
             </div>
         </div>
-        <div class="flex mb-4">
+        <div class="flex mb-2">
             <div class="w-full mr-2">
                 <label for="method" class="block">Método</label>
                 <Select v-model="form.method" :options="methods" optionLabel="label" optionValue="value" class="w-full"></Select>
@@ -74,11 +74,11 @@ const methods = [
                 <InputNumber v-model="form.amount" id="amount" class="w-full" required :min="0" :step="0.01" showButtons placeholder="0.00"/>
             </div>
         </div>
-        <div class="mb-4">
+        <div class="mb-2">
             <label for="description" class="block">Motivo</label>
             <Textarea v-model="form.description" id="description" class="w-full" rows="4" placeholder="Reposición de dinero"></Textarea>
         </div>
-        <div class="mt-6">
+        <div class="mt-4 flex justify-end">
             <Button raised type="submit" :disabled="form.processing" severity="success">Registrar</Button>
             <slot></slot>
         </div>

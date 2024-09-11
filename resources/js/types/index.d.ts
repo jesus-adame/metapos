@@ -95,6 +95,7 @@ export interface Product {
     tax: number
     has_taxes: ?boolean
     description: ?string
+    categories: Category[]
 }
 
 export interface CartItem {

@@ -28,6 +28,7 @@ class ProductController extends Controller
         $location = Location::find(Auth::user()->location_id);
 
         $products = Product::withStock($location)
+            ->with('categories')
             ->orderBy('created_at', 'desc')
             ->paginate($perPage);
 
@@ -128,6 +129,8 @@ class ProductController extends Controller
             'has_taxes' => $request->has_taxes == 'true' ? 1 : 0,
         ]);
 
+        $product->categories()->attach($request['categories']);
+
         return response()->json([
             'message' => 'Producto editado correctamente',
             'product' => $product
@@ -139,6 +142,17 @@ class ProductController extends Controller
         Gate::allows(Permission::DELETE_PRODUCTS);
 
         $product->delete();
+
+        return response()->json([
+            'message' => 'Producto eliminado correctamente'
+        ]);
+    }
+
+    public function removeCategory(Product $product, int $category): JsonResponse
+    {
+        Gate::allows(Permission::UPDATE_PRODUCTS);
+
+        $product->categories()->detach($category);
 
         return response()->json([
             'message' => 'Producto eliminado correctamente'

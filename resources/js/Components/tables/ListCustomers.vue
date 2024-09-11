@@ -102,12 +102,12 @@ const confirmDelete = (url: string) => {
 }
 </script>
 <template>
-    <Dialog v-model:visible="modalCreate" modal header="Nuevo cliente" :style="{ width: '35rem' }" pt:mask:class="backdrop-blur-sm">
-        <CreateCustomer class="mt-4" @save="hideModalCreate"></CreateCustomer>
+    <Dialog v-model:visible="modalCreate" modal header="Nuevo cliente" :style="{ width: '35rem' }">
+        <CreateCustomer @save="hideModalCreate"></CreateCustomer>
     </Dialog>
 
-    <Dialog v-model:visible="modalEdit" modal header="Editar cliente" :style="{ width: '35rem' }" pt:mask:class="backdrop-blur-sm">
-        <EditCustomer :customer="selectedCustomer" class="mt-4" @save="hideModalEdit"></EditCustomer>
+    <Dialog v-model:visible="modalEdit" modal header="Editar cliente" :style="{ width: '35rem' }">
+        <EditCustomer :customer="selectedCustomer" @save="hideModalEdit"></EditCustomer>
     </Dialog>
 
     <DataTable :value="items" class="shadow-md" :paginator="true" :rows="rows" :lazy="true" :totalRecords="totalRecords" @page="onPage">

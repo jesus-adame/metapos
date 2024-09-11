@@ -1,13 +1,17 @@
 <script lang="ts" setup>
 import { formatMoneyNumber } from '@/helpers';
-import { ErrorResponse, Product } from '@/types';
+import { Category, ErrorResponse, Product } from '@/types';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
+import MultiSelect from 'primevue/multiselect';
 import { useToast } from 'primevue/usetoast';
-import { ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
+import { useCategoryStore } from '@/stores/CategoryStore';
+import Chip from 'primevue/chip';
 
 const emit = defineEmits(['save'])
+const categoryStore = useCategoryStore()
 const toast = useToast()
 const axiosOptions = {
     headers: {
@@ -45,6 +49,7 @@ const form = ref({
     unit_type: product?.unit_type,
     has_taxes: product?.has_taxes,
     tax: product?.tax,
+    categories: [],
     _method: 'put'
 })
 
@@ -96,9 +101,19 @@ watch([() => form.value.price, () => form.value.tax], ([precioSinImpuesto, tasaI
         isUpdatingPriceWithTax = false;
     }
 });
+
+onMounted(() => {
+    categoryStore.fetchItems()
+})
+
+const removeCategory = (category: Category) => {
+    console.log(category.id)
+    axios.post(route('api.products.remove-category', {product: product?.id, category: category.id}), {_method: 'put'})
+    .then(() => {})
+}
 </script>
 <template>
-    <form @submit.prevent="submit" class="grid grid-cols-1 xl:grid-cols-2 gap-2">
+    <div class="grid grid-cols-1 xl:grid-cols-2 gap-2">
         <div class="flex flex-col gap-2">
             <div class="flex gap-2 justify-between">
                 <div class="w-full">
@@ -156,7 +171,20 @@ watch([() => form.value.price, () => form.value.tax], ([precioSinImpuesto, tasaI
             </div>
         </div>
         <div class="flex flex-col justify-between">
-            <div>
+            <div class="grid gap-2">
+                <div class="w-full">
+                    <label for="description" class="block">Categorías</label>
+                    <div class="card flex justify-center">
+                        <MultiSelect v-model="form.categories"
+                            display="chip"
+                            :options="categoryStore.categories"
+                            optionLabel="name" option-value="id" placeholder="Elegir"
+                            :maxSelectedLabels="5" class="w-full" />
+                    </div>
+                    <div class="mt-2 flex gap-1">
+                        <Chip v-for="(item, index) in product?.categories" :key="index" :label="item.name" @remove="removeCategory(item)" removable></Chip>
+                    </div>
+                </div>
                 <div class="w-full">
                     <label for="description" class="block">Descripción</label>
                     <Textarea v-model="form.description" rows="5" class="w-full"></Textarea>
@@ -169,7 +197,7 @@ watch([() => form.value.price, () => form.value.tax], ([precioSinImpuesto, tasaI
                     <input type="file" @input="setImage" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"/>
                 </div>
             </div>
-            <Button raised type="submit" label="Actualizar" severity="warn"</Button>
+            <Button raised label="Actualizar" severity="warn" @click="submit"></Button>
         </div>
-    </form>
+    </div>
 </template>

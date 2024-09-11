@@ -116,11 +116,11 @@ watch(() => authStore.cashRegister, () => {
 </script>
 <template>
     <Dialog v-model:visible="createModal" header="Nuevo producto" :modal="true" :style="{ width: '65rem' }">
-        <CreateProduct class="mt-4" @save="closeModalCreate"></CreateProduct>
+        <CreateProduct @save="closeModalCreate"></CreateProduct>
     </Dialog>
 
-    <Dialog v-model:visible="editModal" header="Editar producto" :modal="true" :style="{ width: '65rem' }">
-        <EditProduct class="mt-4" @save="closeModalEdit" :product="product ?? undefined"></EditProduct>
+    <Dialog v-model:visible="editModal" header="Editar producto" :modal="true" @hide="fetchItems(current_page)" :style="{ width: '65rem' }">
+        <EditProduct @save="closeModalEdit" :product="product ?? undefined"></EditProduct>
     </Dialog>
 
     <DataTable :value="items" paginator :rows="rows" @page="onPage" :totalRecords="totalRecords" lazy>

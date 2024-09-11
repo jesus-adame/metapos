@@ -115,7 +115,7 @@ watch(() => authStore.cashRegister, () => {
 </script>
 <template>
     <Dialog v-model:visible="modalCashMovements" modal header="Registrar movimiento" :style="{ width: '35rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
-        <CreateCashMovement class="mt-4" @save="hideModalMovements">
+        <CreateCashMovement @save="hideModalMovements">
             <Button raised label="Cancelar" @click="hideModalMovements" class="ml-2"></Button>
         </CreateCashMovement>
     </Dialog>
