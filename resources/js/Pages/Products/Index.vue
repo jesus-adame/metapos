@@ -49,7 +49,7 @@ const saved = () => {
                 <Button label="Historial de movimientos" icon="pi pi-list"></Button>
             </Link>
             <Button v-if="can('update products')" class="mr-2" label="Registrar movimiento" icon="pi pi-sort-alt" severity="info" @click="openModalCreate"></Button>
-            <Link v-if="can('create purchase')" :href="route('purchases.create')">
+            <Link v-if="can('create purchases')" :href="route('purchases.create')">
                 <Button label="Nueva compra" icon="pi pi-plus" severity="success"></Button>
             </Link>
         </div>
