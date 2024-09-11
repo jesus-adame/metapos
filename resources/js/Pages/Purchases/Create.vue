@@ -155,7 +155,7 @@ const hideModalCreateSupplier = () => {
         <Payment :form="form" :totalPurchase="totalPurchase" :supplier="selectedSupplier" @cancel="hideModalPayments" @save="setSuccessPayment"></Payment>
     </Dialog>
 
-    <Dialog v-model:visible="modalCreateSupplier" modal header="Registrar proveedor" :style="{ width: '35rem' }" pt:mask:class="backdrop-blur-sm">
+    <Dialog v-model:visible="modalCreateSupplier" modal header="Registrar proveedor" :style="{ width: '35rem' }">
         <CreateSupplier class="mt-4" @save="hideModalCreateSupplier"></CreateSupplier>
     </Dialog>
 

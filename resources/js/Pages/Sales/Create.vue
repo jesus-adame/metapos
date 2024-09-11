@@ -190,21 +190,21 @@ onMounted(() => {
 <template>
     <Head title="Punto de Venta" />
 
-    <Dialog v-model:visible="modalDiscount" modal header="Agregar Descuento" :style="{ width: '35rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
+    <Dialog v-model:visible="modalDiscount" modal header="Agregar Descuento" :style="{ width: '35rem' }">
         <Discount :totalSale="totalSale" :form="form" @cancel="hideModalDiscount" @apply="setSuccessDiscount"></Discount>
     </Dialog>
 
-    <Dialog v-model:visible="modalPayments" modal header="Agregar Pago" :style="{ width: '35rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
+    <Dialog v-model:visible="modalPayments" modal header="Agregar Pago" :style="{ width: '35rem' }">
         <Payment :totalSale="totalSale" :form="form" @cancel="hideModalPayments" @save="setSuccessPayment"></Payment>
     </Dialog>
 
-    <Dialog v-model:visible="modalCashMovements" modal header="Registrar movimiento" :style="{ width: '35rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
+    <Dialog v-model:visible="modalCashMovements" modal header="Registrar movimiento" :style="{ width: '35rem' }">
         <CreateCashMovement class="mt-2">
             <Button label="Cancelar" @click="hideModalMovements" class="ml-2"></Button>
         </CreateCashMovement>
     </Dialog>
 
-    <Dialog v-model:visible="modalCreateCustomer" modal header="Registrar cliente" :style="{ width: '35rem' }" pt:mask:class="backdrop-blur-sm">
+    <Dialog v-model:visible="modalCreateCustomer" modal header="Registrar cliente" :style="{ width: '35rem' }">
         <CreateCustomer class="mt-4" @save="hideModalCreateCustomer"></CreateCustomer>
     </Dialog>
 

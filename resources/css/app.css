@@ -105,6 +105,10 @@
     letter-spacing: 0.3px;
 }
 
+body {
+    user-select: none;
+}
+
 .poppins-light {
     font-family: "Poppins", sans-serif;
     font-weight: 300;
