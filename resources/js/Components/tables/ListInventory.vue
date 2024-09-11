@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { can, formatMoneyNumber } from '@/helpers';
+import { can, formatMoneyNumber, percentageNumber } from '@/helpers';
 import { Product } from '@/types';
 import Button from 'primevue/button';
 import Column from 'primevue/column';
@@ -126,21 +126,21 @@ watch(() => authStore.cashRegister, () => {
     <DataTable :value="items" paginator :rows="rows" @page="onPage" :totalRecords="totalRecords" lazy>
         <Column field="id" header="#"></Column>
         <Column field="name" header="Producto">
-            <template #body="slot">
+            <template #body="{data}">
                 <div class="flex items-center">
                     <Image
-                        :src="`${slot.data.image_url}`"
-                        :alt="slot.data.image"
-                        v-if="slot.data.image"
+                        :src="`${data.image_url}`"
+                        :alt="data.image"
+                        v-if="data.image"
                         class="w-24 text-white shadow-md mr-8 rounded-md overflow-hidden"
                         preview
                     />
                     <div>
-                        <Link :href="route('products.edit', {product: slot.data.id})">
-                            <p class="text-lg font-semibold">{{ slot.data.name }}</p>
+                        <Link :href="route('products.edit', {product: data.id})">
+                            <p class="text-lg font-semibold">{{ data.name }}</p>
                         </Link>
-                        <p class="text-sm">Código: {{ slot.data.code }}</p>
-                        <p class="text-sm">SKU: {{ slot.data.sku || 'N/A' }}</p>
+                        <p class="text-sm">Código: {{ data.code }}</p>
+                        <p class="text-sm">SKU: {{ data.sku || 'N/A' }}</p>
                     </div>
                 </div>
             </template>
@@ -152,9 +152,9 @@ watch(() => authStore.cashRegister, () => {
                     Precio de compra
                 </div>
             </template>
-            <template #body="slot">
+            <template #body="{data}">
                 <div class="w-full text-center">
-                    {{ formatMoneyNumber(slot.data.cost) }}
+                    {{ formatMoneyNumber(data.cost) }}
                 </div>
             </template>
         </Column>
@@ -164,9 +164,21 @@ watch(() => authStore.cashRegister, () => {
                     Precio de venta
                 </div>
             </template>
-            <template #body="slot">
+            <template #body="{data}">
                 <div class="w-full text-center">
-                    {{ formatMoneyNumber(slot.data.price) }}
+                    {{ formatMoneyNumber(data.price * (1 + (data.tax / 100))) }}
+                </div>
+            </template>
+        </Column>
+        <Column field="price" header="">
+            <template #header>
+                <div class="w-full text-center">
+                    IVA
+                </div>
+            </template>
+            <template #body="{data}">
+                <div class="w-full text-center">
+                    {{ percentageNumber(data.tax ?? 0) }}
                 </div>
             </template>
         </Column>
@@ -176,10 +188,10 @@ watch(() => authStore.cashRegister, () => {
                     Inventario
                 </div>
             </template>
-            <template #body="slot">
+            <template #body="{data}">
                 <div class="text-center w-full">
                     <span class="font-bold">
-                        {{slot.data.stock || 0}}
+                        {{ data.stock || 0 }}
                     </span>
                 </div>
             </template>
@@ -190,9 +202,9 @@ watch(() => authStore.cashRegister, () => {
             </template>
         </Column>
         <Column header="Estatus">
-            <template #body="slot">
+            <template #body="{data}">
                 <div class="text-center w-full">
-                    <Tag :value="slot.data.stock ? 'Disponible' : 'Sin stock'" :severity="getSeverity(slot.data)"></Tag>
+                    <Tag :value="data.stock ? 'Disponible' : 'Sin stock'" :severity="getSeverity(data)"></Tag>
                 </div>
             </template>
         </Column>
@@ -202,10 +214,10 @@ watch(() => authStore.cashRegister, () => {
                     <Button v-if="can('create products')" icon="pi pi-plus" severity="success" rounded raised @click="openModalCreate"></Button>
                 </div>
             </template>
-            <template #body="slot">
+            <template #body="{data}">
                 <div class="flex gap-1 justify-center">
-                    <Button raised v-if="can('update products')" icon="pi pi-pencil" severity="warn" @click="openModalEdit(slot.data)"></Button>
-                    <Button raised v-if="can('delete products')" icon="pi pi-trash" severity="danger" @click="confirmDelete(route('api.products.destroy', { product: slot.data.id }))"></Button>
+                    <Button raised v-if="can('update products')" icon="pi pi-pencil" severity="warn" @click="openModalEdit(data)"></Button>
+                    <Button raised v-if="can('delete products')" icon="pi pi-trash" severity="danger" @click="confirmDelete(route('api.products.destroy', { product: data.id }))"></Button>
                 </div>
             </template>
         </Column>
