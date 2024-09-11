@@ -16,6 +16,7 @@ use App\Http\Controllers\LocationController;
 use App\Http\Controllers\InventoryTransactionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CashRegisterController;
 use App\Http\Controllers\CashFlowController;
 use App\Http\Controllers\CashCutController;
@@ -59,6 +60,7 @@ Route::middleware([
         Route::resource('inventory-transactions', InventoryTransactionController::class);
         Route::resource('locations', LocationController::class);
         Route::resource('cash-registers', CashRegisterController::class);
+        Route::resource('categories', CategoryController::class);
     });
 
     Route::get('/offline', function () {

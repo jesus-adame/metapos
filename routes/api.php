@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\LocationController;
 use App\Http\Controllers\Api\InventoryTransactionController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\CustomerController;
+use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CashRegisterController;
 use App\Http\Controllers\Api\CashFlowController;
 use App\Http\Controllers\Api\CashCutController;
@@ -39,6 +40,7 @@ Route::middleware(['auth:sanctum', InitializeTenancyByDomain::class])->name('api
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
     Route::resource('settings', SettingController::class);
+    Route::resource('categories', CategoryController::class);
 
     Route::post('/login', [AuthenticatedApiController::class, 'store']);
     Route::post('/logout', [AuthenticatedApiController::class, 'destroy']);

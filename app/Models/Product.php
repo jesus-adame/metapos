@@ -54,4 +54,9 @@ class Product extends Model
     {
         return $this->hasMany(Inventory::class);
     }
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class);
+    }
 }
