@@ -94,7 +94,7 @@ const pushProduct = (product: Product) => {
     };
 
     if (form.wholesale && product?.wholesale_price) {
-        cartItem.price = product.wholesale_price + getPercentage(product.wholesale_price, product.tax)
+        cartItem.price = roundBank(product.wholesale_price + getPercentage(product.wholesale_price, product.tax))
     }
 
     form.products.push(cartItem)
