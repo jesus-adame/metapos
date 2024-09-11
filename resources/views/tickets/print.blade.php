@@ -92,7 +92,7 @@
                             <tr>
                                 <td>{{ $product->name }}</td>
                                 <td>{{ $product->pivot->quantity }}</td>
-                                <td>{{ number_format($product->pivot->quantity * ($product->pivot->price * (1 + ($product->pivot->tax / 100))), 2) }}</td>
+                                <td>{{ number_format($product->pivot->quantity * $product->pivot->price, 2) }}</td>
                             </tr>
                         @endforeach
                     </tbody>

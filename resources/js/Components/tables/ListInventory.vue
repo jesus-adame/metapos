@@ -132,7 +132,7 @@ watch(() => authStore.cashRegister, () => {
                         :src="`${data.image_url}`"
                         :alt="data.image"
                         v-if="data.image"
-                        class="w-24 text-white shadow-md mr-8 rounded-md overflow-hidden"
+                        class="w-20 h-20 text-white shadow-md mr-8 rounded-md overflow-hidden"
                         preview
                     />
                     <div>

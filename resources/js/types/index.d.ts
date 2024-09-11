@@ -100,18 +100,15 @@ export interface Product {
 export interface CartItem {
     id?: number
     name: string
-    code: string
+    code: ?string
     sku: ?string
     price: number
-    price_with_tax: ?number
-    wholesale_price: ?number
-    image: string
-    image_url: string
+    image: ?string | File
+    image_url: ?string
     quantity: number
     stock: number
     unit_type: string
     tax: number
-    has_taxes: ?boolean
 }
 
 export interface CashFlow {

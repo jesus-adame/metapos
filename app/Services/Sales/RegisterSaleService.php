@@ -115,7 +115,6 @@ class RegisterSaleService
         array $products,
         CashRegister $cashRegister,
         ?array $discount = null,
-        bool $wholesale = false,
     ): Sale {
         $sale = new Sale();
         $sale->customer_id = $customerId;
@@ -129,15 +128,9 @@ class RegisterSaleService
             /** @var int */
             $quantity = $arrayProduct['quantity'];
             /** @var float */
-            $price = $wholesale ? $arrayProduct['wholesale_price'] : $arrayProduct['price'];
-            /** @var float */
-            $taxes = $arrayProduct['has_taxes'] ? $arrayProduct['tax'] : 0;
-            /** @var float */
-            $taxesAmount = MathNumberHelper::getPercentage($price, $taxes);
+            $price = $arrayProduct['price'];
 
-            $subtotal_price = $price + $taxesAmount;
-
-            $calculatedTotal += $subtotal_price * $quantity;
+            $calculatedTotal += $price * $quantity;
         }
 
         $discountAmount = 0;
@@ -164,14 +157,14 @@ class RegisterSaleService
             /** @var int */
             $quantity = $arrayProduct['quantity'];
             /** @var float */
-            $price = $sale->wholesale_sale ? $arrayProduct['wholesale_price'] : $arrayProduct['price'];
+            $price = $arrayProduct['price'];
             /** @var float */
-            $taxes = $arrayProduct['has_taxes'] ? $arrayProduct['tax'] : 0;
+            $taxes = $arrayProduct['tax'] ?? 0;
 
             $sale->products()->attach($product, [
                 'quantity' => $quantity,
                 'price' => $price,
-                'has_taxes' => $arrayProduct['has_taxes'],
+                'has_taxes' => 1,
                 'tax' => $taxes,
             ]);
 

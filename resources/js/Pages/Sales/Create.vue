@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref, watch } from 'vue';
 import { Head, Link } from '@inertiajs/vue3';
 import UserLayout from '@/Layouts/UserLayout.vue';
 import ProductService from '@/Services/ProductService';
@@ -12,7 +12,7 @@ import { formatMoneyNumber, getPercentage, percentageNumber } from '@/helpers';
 import ProductsList from './Partials/ProductsList.vue';
 import Payment from './Partials/Payment.vue';
 import CreateCashMovement from '@/Components/forms/CreateCashMovement.vue';
-import { Customer, Product } from '@/types';
+import { CartItem, Customer, Product } from '@/types';
 import { AutoCompleteCompleteEvent } from 'primevue/autocomplete';
 import SelectProduct from '@/Components/grids/SelectProduct.vue';
 import Discount from './Partials/Discount.vue';
@@ -34,7 +34,7 @@ const modalCreateCustomer = ref(false)
 // Initialize the form
 const form = reactive<{
   customer_id: number | null;
-  products: Product[];
+  products: CartItem[];
   wholesale: boolean;
   discount: {
     type: string,
@@ -79,11 +79,30 @@ const pushProduct = (product: Product) => {
         }
     }
 
-    form.products.push({ ...product, quantity: 1 })
+    let cartItem: CartItem = {
+        id: product.id,
+        name: product.name,
+        code: product.code,
+        sku: product.sku,
+        price: product.price + getPercentage(product.price, product.tax), // Con impuestos
+        image: product.image,
+        image_url: product.image_url,
+        quantity: 1,
+        stock: product.stock,
+        unit_type: product.unit_type,
+        tax: product.tax
+    };
+
+    if (form.wholesale && product?.wholesale_price) {
+        cartItem.price = product.wholesale_price + getPercentage(product.wholesale_price, product.tax)
+    }
+
+    form.products.push(cartItem)
+    toast.add({ severity: 'success', summary: 'Correcto', detail: 'Producto agregado correctamente', life: 1100 });
 }
 
 const totalSale = computed(() => {
-    let subtotal = form.products.reduce((acc, product) => acc + ((product.price * product.quantity) + getPercentage(product.price, product.tax)), 0)
+    let subtotal = form.products.reduce((acc, product) => acc + (product.price * product.quantity), 0)
     if (form.discount == null) {
         return subtotal
     }
@@ -185,6 +204,10 @@ const formatDiscount = computed(() => {
 onMounted(() => {
     fetchProducts()
 });
+
+watch(() => form.wholesale, () => {
+    clearSaleComponent()
+})
 </script>
 
 <template>
@@ -223,10 +246,14 @@ onMounted(() => {
                 </form>
             </div>
             <div class="customer w-full md:w-1/2">
-                <div class="flex justify-end w-full">
-                    <Button v-if="form.discount == null" label="Descuento" class="mr-2" icon="pi pi-tag" @click="showModalDiscount"></Button>
+                <div class="flex gap-2 justify-end w-full">
+                    <div class="flex items-center gap-1 text-gray-800">
+                        <ToggleSwitch v-model="form.wholesale" inputId="wholesale" />
+                        <label for="wholesale">Mayorista</label>
+                    </div>
+                    <Button v-if="form.discount == null" label="Descuento" icon="pi pi-tag" @click="showModalDiscount"></Button>
                     <div class="w-1/2">
-                        <div class="flex">
+                        <div class="flex gap-1">
                             <AutoComplete v-model="selectedCustomer" optionLabel="name" :suggestions="filteredCustomers"
                                 @complete="searchCustomer"
                                 @change="setCustomer"
@@ -241,7 +268,7 @@ onMounted(() => {
                                     </div>
                                 </template>
                             </AutoComplete>
-                            <Button v-tooltip.right="'Nuevo cliente'" icon="pi pi-plus" class="ml-2" severity="success" raised @click="showModalCreateCustomer"></Button>
+                            <Button v-tooltip.right="'Nuevo cliente'" icon="pi pi-plus" severity="success" raised @click="showModalCreateCustomer"></Button>
                         </div>
                     </div>
                 </div>

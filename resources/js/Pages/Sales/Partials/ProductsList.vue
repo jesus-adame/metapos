@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Card from '@/Components/Card.vue';
-import { formatMoneyNumber, getPercentage, percentageNumber } from '@/helpers';
-import { Product } from '@/types';
+import { formatMoneyNumber, percentageNumber } from '@/helpers';
+import { CartItem } from '@/types';
 import Button from 'primevue/button';
 import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
@@ -10,7 +10,7 @@ import InputNumber from 'primevue/inputnumber';
 import Message from 'primevue/message';
 
 const props = defineProps<{
-    products: Product[]
+    products: CartItem[]
 }>()
 
 const emit = defineEmits(['updateProducts'])
@@ -25,15 +25,15 @@ const removeProduct = (index: number) => {
     <Card width="full" padding="0">
         <DataTable :value="products" v-if="products.length">
             <Column header="Producto">
-                <template #body="slot">
+                <template #body="{data}">
                     <div class="flex">
-                        <div v-if="slot.data.image" class="overflow-hidden hidden lg:block shadow-lg rounded-md w-20 h-20">
-                            <Image :src="slot.data.image_url" :alt="slot.data.name" />
+                        <div v-if="data.image" class="overflow-hidden hidden lg:block shadow-lg rounded-md w-20 h-20">
+                            <Image :src="data.image_url" :alt="data.name" />
                         </div>
                         <div class="text-left ml-2">
-                            <span class="font-bold">{{ slot.data.name }}</span>
-                            <p class="text-sm">{{ slot.data.code }}</p>
-                            <p class="text-sm">SKU: {{ slot.data.sku || 'N/A' }}</p>
+                            <span class="font-bold">{{ data.name }}</span>
+                            <p class="text-sm">{{ data.code }}</p>
+                            <p class="text-sm">SKU: {{ data.sku || 'N/A' }}</p>
                         </div>
                     </div>
                 </template>
@@ -45,17 +45,17 @@ const removeProduct = (index: number) => {
             </Column>
             <Column header="Precio">
                 <template #body="{data}">
-                    {{ formatMoneyNumber(data.price + getPercentage(data.price, data.tax)) }}
+                    {{ formatMoneyNumber(data.price) }}
                 </template>
             </Column>
             <Column header="IVA">
                 <template #body="{data}">
-                    {{ percentageNumber(data.tax) ?? 'N/A' }}
+                    {{ percentageNumber(data.tax ?? 0) }}
                 </template>
             </Column>
             <Column header="Subtotal">
                 <template #body="{data}">
-                    {{ formatMoneyNumber((data.price + getPercentage(data.price, data.tax)) * data.quantity) }}
+                    {{ formatMoneyNumber(data.price * data.quantity) }}
                 </template>
             </Column>
             <Column header="">
