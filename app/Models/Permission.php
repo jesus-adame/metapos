@@ -36,6 +36,11 @@ class Permission extends ModelsPermission
     const UPDATE_USERS = 'update users';
     const DELETE_USERS = 'delete users';
 
+    const VIEW_CATEGORIES   = 'view categories';
+    const CREATE_CATEGORIES = 'create categories';
+    const UPDATE_CATEGORIES = 'update categories';
+    const DELETE_CATEGORIES = 'delete categories';
+
     const CREATE_PERMISSIONS = 'create permissions';
     const UPDATE_PERMISSION = 'update permissions';
     const DELETE_PERMISSIONS = 'delete permissions';

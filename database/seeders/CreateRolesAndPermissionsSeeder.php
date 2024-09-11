@@ -66,6 +66,11 @@ class CreateRolesAndPermissionsSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'update users']);
         Permission::firstOrCreate(['name' => 'delete users']);
 
+        Permission::firstOrCreate(['name' => 'view categories']);
+        Permission::firstOrCreate(['name' => 'create categories']);
+        Permission::firstOrCreate(['name' => 'update categories']);
+        Permission::firstOrCreate(['name' => 'delete categories']);
+
         Permission::firstOrCreate(['name' => 'create permissions']);
         Permission::firstOrCreate(['name' => 'update permissions']);
         Permission::firstOrCreate(['name' => 'delete permissions']);
@@ -98,6 +103,10 @@ class CreateRolesAndPermissionsSeeder extends Seeder
         $manager->givePermissionTo('create users');
         $manager->givePermissionTo('update users');
         $manager->givePermissionTo('delete users');
+        $manager->givePermissionTo('view categories');
+        $manager->givePermissionTo('create categories');
+        $manager->givePermissionTo('update categories');
+        $manager->givePermissionTo('delete categories');
         $manager->givePermissionTo('create customers');
         $manager->givePermissionTo('update customers');
         $manager->givePermissionTo('delete customers');
