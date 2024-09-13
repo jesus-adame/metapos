@@ -43,7 +43,7 @@ const tabItems: TabItem[] = [
     permission: 'view purchases'
   },
   {
-    icon: 'fi fi-sr-bank',
+    icon: 'fi fi-ss-expense',
     label: 'Gastos',
     route: route('expenses.index'),
     active: route().current('expenses.index'),
