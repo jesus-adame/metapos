@@ -98,6 +98,7 @@ export interface Location {
     rfc?: string
     email?: string
     type: string
+    timezone: string
     is_default: boolean
 }
 

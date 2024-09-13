@@ -9,7 +9,11 @@ class TicketService
 {
     public function execute($id)
     {
-        $sale = Sale::with('products')->findOrFail($id);
+        $sale = Sale::with([
+            'products' => function ($query) {
+                $query->withPivot('quantity', 'price', 'has_taxes', 'tax');
+            }
+        ])->findOrFail($id);
 
         $location = $sale->cashRegister->location;
 
@@ -19,8 +23,16 @@ class TicketService
         $company_email = $location->email;
         $company_rfc = $location->rfc;
 
+        $totalPayments = $sale->payments()->sum('amount');
+        $taxes = 0;
+
+        foreach ($sale->products as $product) {
+            $pivot = $product->pivot;
+            $taxes += $pivot->price * $pivot->tax / 100;
+        }
+
         $date = $sale->created_at;
-        $date->setTimezone('America/Mexico_City');
+        $date->setTimezone($location->timezone);
 
         // Suponiendo que quieres una relación de aspecto de 1:1.5
         $ancho_mm = 45;
@@ -33,6 +45,8 @@ class TicketService
         return Pdf::setPaper(array(0, 0, $ancho_puntos, $alto_puntos))
             ->loadView('tickets.print', compact(
                 'sale',
+                'taxes',
+                'totalPayments',
                 'ancho_mm',
                 'company_name',
                 'company_address',

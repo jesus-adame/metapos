@@ -25,6 +25,7 @@ class LocationController extends Controller
             'phone_number' => 'nullable|string|max:255',
             'email' => 'nullable|string|email|max:255',
             'type' => 'required|string|in:branch,warehouse',
+            'timezone' => 'required|timezone:all',
         ]);
 
         Location::create([
@@ -50,6 +51,7 @@ class LocationController extends Controller
             'phone_number' => 'nullable|string|max:255',
             'email' => 'nullable|string|email|max:255',
             'type' => 'required|string|in:branch,warehouse', // Validate type
+            'timezone' => 'required|timezone:all',
         ]);
 
         $location->update([
@@ -59,6 +61,7 @@ class LocationController extends Controller
             'email' => $request->email,
             'rfc' => $request->rfc,
             'type' => $request->type,
+            'timezone' => $request->timezone,
         ]);
 
         return response()->json([

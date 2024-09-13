@@ -38,7 +38,8 @@ class RegisteredUserController extends Controller
                 'name' => $request->location,
                 'address' => $request->address,
                 'type' => 'branch',
-                'is_default' => true
+                'is_default' => true,
+                'timezone' => 'America/Mexico_City'
             ]);
         }
 

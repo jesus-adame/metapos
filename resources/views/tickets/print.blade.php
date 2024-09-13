@@ -82,8 +82,9 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>Producto</th>
-                            <th>Cant.</th>
+                            <th>Concepto</th>
+                            <th>Qty</th>
+                            <th>IVA</th>
                             <th>Subtotal</th>
                         </tr>
                     </thead>
@@ -92,6 +93,7 @@
                             <tr>
                                 <td>{{ $product->name }}</td>
                                 <td>{{ $product->pivot->quantity }}</td>
+                                <td>%{{ $product->pivot->tax }}</td>
                                 <td>{{ number_format($product->pivot->quantity * $product->pivot->price, 2) }}</td>
                             </tr>
                         @endforeach
@@ -100,6 +102,8 @@
             </div>
             <div class="total">
                 <p>Total: ${{ number_format($sale->total, 2) }}</p>
+                <p>IVA: ${{ number_format($taxes, 2) }}</p>
+                <p>Pago: ${{ number_format($totalPayments, 2) }}</p>
                 <p>Cambio: ${{ number_format($sale->change, 2) }}</p>
             </div>
         </div>

@@ -17,6 +17,7 @@ const form = ref({
     phone_number: props.location?.phone_number,
     rfc: props.location?.rfc,
     email: props.location?.email,
+    timezone: props.location?.timezone,
     type: 'branch',
     _method: 'put',
 });
@@ -32,6 +33,7 @@ const submit = () => {
             phone_number: '',
             rfc: '',
             email: '',
+            timezone: '',
             type: 'branch',
             _method: 'put',
         };
@@ -84,6 +86,13 @@ const submit = () => {
             <InputText
                 class="mt-1 block w-full"
                 v-model="form.address"
+            />
+        </div>
+        <div class="mt-4">
+            <InputLabel for="email" value="Zona horaria" />
+            <InputText
+                class="mt-1 block w-full"
+                v-model="form.timezone"
             />
         </div>
         <div class="flex items-center justify-end mt-4">
