@@ -20,7 +20,7 @@ const form = reactive({
 
 const submit = () => {
     form.processing = true
-    axios.post(route('api.expense_categories.update', { category: category?.id }), form)
+    axios.post(route('api.expense_categories.update', { expense_category: category?.id }), form)
     .then((response: AxiosResponse) => {
         form.processing = false
         toast.add({ summary: 'Correcto', detail: response.data.message, severity: 'success', life: 2000})

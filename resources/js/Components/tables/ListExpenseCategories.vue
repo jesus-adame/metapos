@@ -47,11 +47,11 @@ const fetchItems = (pageNumber: number) => {
     const result = expenseCategoryService.paginate(pageNumber, rows.value)
 
     result.then((response: AxiosResponse) => {
-        const categories = response.data;
+        const expense_categories = response.data;
 
-        totalRecords.value = categories.total
-        items.value = JSON.parse(JSON.stringify(categories.data))
-        page.value = categories.current_page
+        totalRecords.value = expense_categories.total
+        items.value = JSON.parse(JSON.stringify(expense_categories.data))
+        page.value = expense_categories.current_page
     })
 }
 
@@ -84,7 +84,7 @@ const deleteItem = (url: string) => {
 const confirmDelete = (url: string) => {
     confirm.require({
         header: '¿Está seguro?',
-        message: 'Se eliminará el categoría',
+        message: 'Se eliminará la categoría',
         icon: 'pi pi-exclamation-triangle',
         rejectProps: {
             label: 'Cancelar',
@@ -127,7 +127,7 @@ const confirmDelete = (url: string) => {
             <template #body="{data}">
                 <div class="w-full flex gap-1 justify-center">
                     <Button raised v-if="can('update categories')" @click="showModalEdit(data)" icon="pi pi-pencil" severity="warn"></Button>
-                    <Button v-if="can('delete categories')" icon="pi pi-trash" severity="danger" @click="confirmDelete(route('api.categories.destroy', {category: data.id}))"></Button>
+                    <Button v-if="can('delete categories')" icon="pi pi-trash" severity="danger" @click="confirmDelete(route('api.expense_categories.destroy', {expense_category: data.id}))"></Button>
                 </div>
             </template>
         </Column>

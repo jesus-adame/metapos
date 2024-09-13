@@ -53,27 +53,27 @@ class ExpenseCategoryController extends Controller
         ]);
     }
 
-    public function update(Request $request, ExpenseCategory $category)
+    public function update(Request $request, ExpenseCategory $expenseCategory)
     {
         $request->validate([
             'name' => 'required',
             'description' => 'nullable',
         ]);
 
-        $category->update([
+        $expenseCategory->update([
             'name' => $request->name,
             'description' => $request->description,
         ]);
 
         return response()->json([
             'message' => 'Categoría actualizado correctamente.',
-            'category' => $category,
+            'category' => $expenseCategory,
         ]);
     }
 
-    public function destroy(ExpenseCategory $category)
+    public function destroy(ExpenseCategory $expenseCategory)
     {
-        $category->delete();
+        $expenseCategory->delete();
 
         return response()->json([
             'message' => 'Categoría eliminado correctamente.',
