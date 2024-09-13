@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use App\Services\InventoryTransacctions\CreateInventoryTransaction;
 use App\Models\Sale;
 use App\Models\Product;
+use App\Models\PaymentMethod;
 use App\Models\Payment;
 use App\Models\Location;
 use App\Models\CashRegister;
@@ -186,22 +187,23 @@ class RegisterSaleService
         $transferPayments = 0;
 
         foreach ($paymentMethods as $payment) {
-            /** @var string */
-            $method = $payment['method'];
+            /** @var PaymentMethod */
+            $method = PaymentMethod::where('code', $payment['method'])->first();
             /** @var float */
             $amount = $payment['amount'] ?? 0;
 
             Payment::create([
-                'sale_id' => $sale->id,
-                'method' => $method,
+                'payable_id' => $sale->id,
+                'payable_type' => $sale::class,
+                'payment_method_id' => $method->id,
                 'amount' => $amount,
             ]);
 
-            if ($method === 'cash') {
+            if ($method->code === 'cash') {
                 $cashPayments += $amount;
-            } elseif ($method === 'card') {
+            } elseif ($method->code === 'card') {
                 $cardPayments += $amount;
-            } elseif ($method === 'transfer') {
+            } elseif ($method->code === 'transfer') {
                 $transferPayments += $amount;
             }
         }

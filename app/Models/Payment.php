@@ -18,20 +18,20 @@ class Payment extends Model
     const TRANSFER_METHOD = 'transfer';
 
     protected $fillable = [
-        'sale_id',
-        'purchase_id',
-        'method',
+        'payment_method_id',
+        'payable_id',
+        'payable_type',
         'amount',
-        'description',
+        'timezone'
     ];
 
-    public function sale()
+    public function payable()
     {
-        return $this->belongsTo(Sale::class);
+        return $this->morphTo();
     }
 
-    public function purchase()
+    public function paymentMethod()
     {
-        return $this->belongsTo(Purchase::class);
+        return $this->belongsTo(PaymentMethod::class);
     }
 }

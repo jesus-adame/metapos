@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Card from '@/Components/Card.vue';
 import AddSaleCustomer from '@/Components/forms/AddSaleCustomer.vue';
-import { calculateMetodIcon, can, formatMoneyNumber, getPaymentName, getPercentage, percentageNumber, saleSeverity, saleStatus } from '@/helpers';
+import { calculateMetodIcon, can, formatMoneyNumber, getPercentage, percentageNumber, saleSeverity, saleStatus } from '@/helpers';
 import UserLayout from '@/Layouts/UserLayout.vue';
 import { Sale } from '@/types';
 import { Head, Link, router } from '@inertiajs/vue3';
@@ -124,14 +124,14 @@ const hideAddCustomerModal = () => {
                     <p class="text-lg font-bold px-6 py-4">Pago</p>
                     <DataTable :value="sale.payments">
                         <Column header="Nombre">
-                            <template #body="slot">
-                                <i class="pi mr-3 text-lg text-blue-700" :class="calculateMetodIcon(slot.data)"></i>
-                                {{ getPaymentName(slot.data) }}
+                            <template #body="{data}">
+                                <i class="pi mr-3 text-lg text-blue-700" :class="calculateMetodIcon(data.payment_method)"></i>
+                                {{ data.payment_method.name }}
                             </template>
                         </Column>
                         <Column header="Cantidad">
-                            <template #body="slot">
-                                {{ formatMoneyNumber(slot.data.amount) }}
+                            <template #body="{data}">
+                                {{ formatMoneyNumber(data.amount) }}
                             </template>
                         </Column>
                     </DataTable>

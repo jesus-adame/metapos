@@ -13,10 +13,9 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('sale_id')->nullable();
-            $table->unsignedBigInteger('purchase_id')->nullable();
             $table->unsignedBigInteger('cash_register_id')->nullable();
-            $table->enum('method', ['cash', 'card', 'transfer']);
+            $table->foreignId('payment_method_id')->nullable();
+            $table->morphs('payable');
             $table->decimal('amount', 15, 2);
             $table->text('description')->nullable();
             $table->timestamps();

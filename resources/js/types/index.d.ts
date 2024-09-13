@@ -48,7 +48,14 @@ export interface Purchase {
 
 export interface Payment {
     id: number
-    method: string
+    amount: string
+    payment_method: PaymentMethod
+}
+
+export interface PaymentMethod {
+    id: number
+    code: string
+    name: string
 }
 
 export interface Supplier {

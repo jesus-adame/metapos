@@ -184,10 +184,10 @@ const hideModalCreateSupplier = () => {
                         class="w-full"
                         inputClass="w-full"
                         placeholder="Proveedor" >
-                        <template #option="slot">
+                        <template #option="{option}">
                             <div class="flex align-options-center">
                                 <div>
-                                    {{ slot.option.name }} {{ slot.option.lastname }} | {{ slot.option.phone }}
+                                    {{ option.name }} {{ option.lastname }} | {{ option.phone }}
                                 </div>
                             </div>
                         </template>

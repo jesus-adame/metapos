@@ -1,4 +1,4 @@
-import { Location, Payment } from '@/types';
+import { Location, Payment, PaymentMethod } from '@/types';
 import { usePage } from '@inertiajs/vue3';
 import moment from 'moment-timezone';
 
@@ -133,22 +133,8 @@ export const purchaseSeverity = (status: string) => {
     }
 }
 
-export const getPaymentName = (payment: Payment) => {
-    switch (payment.method) {
-        case 'cash': {
-            return 'Efectivo'
-        }
-        case 'card': {
-            return 'Tarjeta de crédito/débito'
-        }
-        case 'transfer': {
-            return 'Transferencia'
-        }
-    }
-}
-
-export const calculateMetodIcon = (payment: Payment) => {
-    switch (payment.method) {
+export const calculateMetodIcon = (payment: PaymentMethod) => {
+    switch (payment.code) {
         case 'cash': {
             return 'pi-money-bill';
         }

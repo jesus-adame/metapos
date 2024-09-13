@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Card from '@/Components/Card.vue';
 import AddPurchaseSupplier from '@/Components/forms/AddPurchaseSupplier.vue';
-import { calculateMetodIcon, can, formatMoneyNumber, getPaymentName, purchaseSeverity, purchaseStatus } from '@/helpers';
+import { calculateMetodIcon, can, formatMoneyNumber, purchaseSeverity, purchaseStatus } from '@/helpers';
 import UserLayout from '@/Layouts/UserLayout.vue';
 import { Purchase } from '@/types';
 import { Head, Link, router } from '@inertiajs/vue3';
@@ -79,29 +79,29 @@ const hideAddSupplierModal = () => {
                 </Card>
                 <DataTable :value="purchase.products">
                     <Column field="name" header="Producto">
-                        <template #body="slot">
+                        <template #body="{data}">
                             <div class="flex">
-                                <Image v-if="slot.data.image" :src="slot.data.image_url" :alt="slot.data.name" class="shadow-lg rounded-md overflow-hidden" width="64" />
+                                <Image v-if="data.image" :src="data.image_url" :alt="data.name" class="shadow-lg rounded-md overflow-hidden" width="64" />
                                 <div class="text-left ml-5">
-                                    <span class="font-bold">{{ slot.data.name }}</span>
-                                    <p>{{ slot.data.code }}</p>
+                                    <span class="font-bold">{{ data.name }}</span>
+                                    <p>{{ data.code }}</p>
                                 </div>
                             </div>
                         </template>
                     </Column>
                     <Column header="Precio">
-                        <template #body="slot">
-                            {{ formatMoneyNumber(slot.data.pivot.price) }}
+                        <template #body="{data}">
+                            {{ formatMoneyNumber(data.pivot.price) }}
                         </template>
                     </Column>
                     <Column header="Cantidad">
-                        <template #body="slot">
-                            {{ slot.data.pivot.quantity }}
+                        <template #body="{data}">
+                            {{ data.pivot.quantity }}
                         </template>
                     </Column>
                     <Column header="Subtotal">
-                        <template #body="slot">
-                            {{ formatMoneyNumber(slot.data.pivot.price * slot.data.pivot.quantity) }}
+                        <template #body="{data}">
+                            {{ formatMoneyNumber(data.pivot.price * data.pivot.quantity) }}
                         </template>
                     </Column>
                 </DataTable>
@@ -111,14 +111,14 @@ const hideAddSupplierModal = () => {
                     <p class="text-lg font-bold px-6 py-4">Pago</p>
                     <DataTable :value="purchase.payments">
                         <Column header="Nombre">
-                            <template #body="slot">
-                                <i class="pi mr-3 text-lg text-blue-700" :class="calculateMetodIcon(slot.data)"></i>
-                                {{ getPaymentName(slot.data) }}
+                            <template #body="{data}">
+                                <i class="pi mr-3 text-lg text-blue-700" :class="calculateMetodIcon(data.payment_method)"></i>
+                                {{ data.payment_method.name }}
                             </template>
                         </Column>
                         <Column header="Cantidad">
-                            <template #body="slot">
-                                {{ formatMoneyNumber(slot.data.amount) }}
+                            <template #body="{data}">
+                                {{ formatMoneyNumber(data.amount) }}
                             </template>
                         </Column>
                     </DataTable>

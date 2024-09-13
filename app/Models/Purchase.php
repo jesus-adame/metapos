@@ -41,7 +41,7 @@ class Purchase extends Model implements Cashable
 
     public function payments()
     {
-        return $this->hasMany(Payment::class);
+        return $this->morphMany(Payment::class, 'payable');
     }
 
     public function products()

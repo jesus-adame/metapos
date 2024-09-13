@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             CustomerSeeder::class,
             CreateRolesAndPermissionsSeeder::class,
             CreateSettingSeeder::class,
+            PaymentMethodSeeder::class
         ]);
     }
 }

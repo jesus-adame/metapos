@@ -39,6 +39,11 @@ class CreateRolesAndPermissionsSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'update purchases']);
         Permission::firstOrCreate(['name' => 'delete purchases']);
 
+        Permission::firstOrCreate(['name' => 'view expenses']);
+        Permission::firstOrCreate(['name' => 'create expenses']);
+        Permission::firstOrCreate(['name' => 'update expenses']);
+        Permission::firstOrCreate(['name' => 'delete expenses']);
+
         Permission::firstOrCreate(['name' => 'view cashflows']);
         Permission::firstOrCreate(['name' => 'update cashflows']);
         Permission::firstOrCreate(['name' => 'delete cashflows']);
