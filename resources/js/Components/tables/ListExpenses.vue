@@ -5,20 +5,21 @@ import { onMounted, ref, watch } from 'vue';
 import ExpenseService from "@/Services/ExpenseService";
 import axios, { AxiosResponse } from 'axios';
 import { DataTablePageEvent } from 'primevue/datatable';
-import { can, formatDate } from '@/helpers';
+import { can, formatDateTime, formatMoneyNumber, locationIcon } from '@/helpers';
 import { Expense } from '@/types';
 import { useConfirm } from 'primevue/useconfirm';
 import { useToast } from 'primevue/usetoast';
-import { useCategoryStore } from '@/stores/CategoryStore';
+import { useExpenseStore } from '@/stores/ExpenseStore';
 import CreateExpense from '../forms/CreateExpense.vue';
-import EditExpensive from '../forms/EditExpensive.vue';
+import EditExpense from '../forms/EditExpense.vue';
+import UserIcon from '../icons/UserIcon.vue';
 
 const expenseService = new ExpenseService()
 const items = ref([])
 const rows = ref(10)
 const totalRecords = ref(0)
 const page = ref(1)
-const categoryStore = useCategoryStore()
+const expenseStore = useExpenseStore()
 const modalCreate = ref(false)
 const modalEdit = ref(false)
 const selectedExpense = ref<Expense | null>(null)
@@ -47,11 +48,11 @@ const fetchItems = (pageNumber: number) => {
     const result = expenseService.paginate(pageNumber, rows.value)
 
     result.then((response: AxiosResponse) => {
-        const categories = response.data;
+        const expenses = response.data;
 
-        totalRecords.value = categories.total
-        items.value = JSON.parse(JSON.stringify(categories.data))
-        page.value = categories.current_page
+        totalRecords.value = expenses.total
+        items.value = JSON.parse(JSON.stringify(expenses.data))
+        page.value = expenses.current_page
     })
 }
 
@@ -64,7 +65,7 @@ onMounted(() => {
     fetchItems(page.value)
 })
 
-watch(categoryStore.getCategories, () => {
+watch(expenseStore.getExpenses, () => {
     fetchItems(page.value)
 })
 
@@ -84,7 +85,7 @@ const deleteItem = (url: string) => {
 const confirmDelete = (url: string) => {
     confirm.require({
         header: '¿Está seguro?',
-        message: 'Se eliminará el categoría',
+        message: 'Se eliminará el gasto',
         icon: 'pi pi-exclamation-triangle',
         rejectProps: {
             label: 'Cancelar',
@@ -106,21 +107,43 @@ const confirmDelete = (url: string) => {
     </Dialog>
 
     <Dialog v-model:visible="modalEdit" modal header="Editar gasto" :style="{ width: '35rem' }">
-        <EditExpensive :expense="selectedExpense" @save="hideModalEdit"></EditExpensive>
+        <EditExpense :expense="selectedExpense" @save="hideModalEdit"></EditExpense>
     </Dialog>
 
     <DataTable :value="items" class="shadow-md" :paginator="true" :rows="rows" :lazy="true" :totalRecords="totalRecords" @page="onPage">
         <Column field="id" header="#"></Column>
-        <Column field="name" header="Nombre"></Column>
-        <Column field="description" header="Descripción"></Column>
-        <Column field="created_at" header="Creación">
+        <Column field="created_at" header="Fecha y hora">
             <template #body="{data}">
-                {{ formatDate(data.created_at) }}
+                {{ formatDateTime(data.created_at) }}
             </template>
         </Column>
-        <Column field="updated_at" header="Edición">
+        <Column field="description" header="Descripción">
             <template #body="{data}">
-                {{ formatDate(data.updated_at) }}
+                {{ data.expense_category.name }}
+            </template>
+        </Column>
+        <Column field="creator" header="Autor">
+            <template #body="{data}">
+                <UserIcon>
+                    {{ data.creator.name }} {{ data.creator.lastname }}
+                </UserIcon>
+            </template>
+        </Column>
+        <Column field="location" header="Ubicación">
+            <template #body="{data}">
+                <div class="flex items-center">
+                    <div class="py-2 px-3 bg-gray-200 rounded-full mr-3 text-gray-500">
+                        <i :class="locationIcon(data.location)"></i>
+                    </div>
+                    <div>
+                        <span>{{ data.location.name }}</span>
+                    </div>
+                </div>
+            </template>
+        </Column>
+        <Column field="amount" header="Monto">
+            <template #body="{data}">
+                {{ formatMoneyNumber(data.amount) }}
             </template>
         </Column>
         <Column field="" header="">
@@ -131,8 +154,8 @@ const confirmDelete = (url: string) => {
             </template>
             <template #body="{data}">
                 <div class="w-full flex gap-1 justify-center">
-                    <Button raised v-if="can('update categories')" @click="showModalEdit(data)" icon="pi pi-pencil" severity="warn"></Button>
-                    <Button v-if="can('delete categories')" icon="pi pi-trash" severity="danger" @click="confirmDelete(route('api.categories.destroy', {category: data.id}))"></Button>
+                    <Button raised v-if="can('update expenses')" @click="showModalEdit(data)" icon="pi pi-pencil" severity="warn"></Button>
+                    <Button v-if="can('delete expenses')" icon="pi pi-trash" severity="danger" @click="confirmDelete(route('api.expenses.destroy', {expense: data.id}))"></Button>
                 </div>
             </template>
         </Column>

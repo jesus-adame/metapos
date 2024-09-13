@@ -14,6 +14,8 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\LocationController;
 use App\Http\Controllers\Api\InventoryTransactionController;
+use App\Http\Controllers\Api\ExpenseController;
+use App\Http\Controllers\Api\ExpenseCategoryController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\CategoryController;
@@ -30,6 +32,8 @@ Route::middleware(['auth:sanctum', InitializeTenancyByDomain::class])->name('api
     Route::resource('products', ProductController::class);
     Route::resource('sales', SaleController::class);
     Route::resource('purchases', PurchaseController::class);
+    Route::resource('expenses', ExpenseController::class);
+    Route::resource('expense_categories', ExpenseCategoryController::class);
     Route::resource('customers', CustomerController::class);
     Route::resource('suppliers', SupplierController::class);
     Route::resource('cash-flows', CashFlowController::class)->only(['index', 'store']);

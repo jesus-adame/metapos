@@ -116,22 +116,22 @@ const confirmDelete = (url: string) => {
     <DataTable :value="items" paginator lazy :rows="rows" @page="onPage" :totalRecords="totalRecords">
         <Column field="id" header="#"></Column>
         <Column field="name" header="Nombre">
-            <template #body="slot">
+            <template #body="{data}">
                 <div class="flex items-center">
                     <div class="py-2 px-3 bg-gray-200 rounded-full mr-3 text-gray-500">
-                        <i :class="locationIcon(slot.data)"></i>
+                        <i :class="locationIcon(data)"></i>
                     </div>
                     <div>
-                        <span>{{ slot.data.name }}</span>
-                        <Tag class="ml-2" v-if="slot.data.is_default" :value="'default'" severity="info"></Tag>
+                        <span>{{ data.name }}</span>
+                        <Tag class="ml-2" v-if="data.is_default" :value="'default'" severity="info"></Tag>
                     </div>
                 </div>
             </template>
         </Column>
         <Column field="address" header="Ubicación"></Column>
         <Column field="type" header="Tipo">
-            <template #body="slot">
-                {{ calculateTypeLabel(slot.data.type) }}
+            <template #body="{data}">
+                {{ calculateTypeLabel(data.type) }}
             </template>
         </Column>
         <Column field="" header="">

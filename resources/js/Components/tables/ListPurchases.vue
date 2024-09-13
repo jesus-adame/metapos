@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { formatDateTime, formatMoneyNumber, purchaseSeverity, purchaseStatus } from '@/helpers';
+import { formatDateTime, formatMoneyNumber, locationIcon, purchaseSeverity, purchaseStatus } from '@/helpers';
 import Button from 'primevue/button';
 import Column from 'primevue/column';
 import Tag from 'primevue/tag';
@@ -39,8 +39,8 @@ const onPage = (event: DataTablePageEvent) => {
     <DataTable :value="items" @page="onPage" :total-records="totalRecords" :rows="rows" lazy paginator>
         <Column field="id" header="#"></Column>
         <Column header="Fecha y hora">
-            <template #body="slot">
-                {{ formatDateTime(slot.data.applicated_at) }}
+            <template #body="{data}">
+                {{ formatDateTime(data.applicated_at) }}
             </template>
         </Column>
         <Column header="Estatus">
@@ -49,17 +49,31 @@ const onPage = (event: DataTablePageEvent) => {
             </template>
         </Column>
         <Column header="Proveedor">
-            <template #body="slot">
+            <template #body="{data}">
                 <UserIcon>
-                    {{ slot.data.supplier?.name || '-' }} {{ slot.data.supplier?.lastname }}
+                    {{ data.supplier?.name || '-' }} {{ data.supplier?.lastname }}
                 </UserIcon>
             </template>
         </Column>
         <Column header="Comprador">
-            <template #body="slot">
+            <template #body="{data}">
                 <UserIcon>
-                    {{ slot.data.buyer?.name }} {{ slot.data.buyer?.lastname }}
+                    <span>
+                        {{ data.buyer?.name }} {{ data.buyer?.lastname }}
+                    </span>
                 </UserIcon>
+            </template>
+        </Column>
+        <Column field="location" header="Ubicación">
+            <template #body="{data}">
+                <div class="flex items-center">
+                    <div class="py-2 px-3 bg-gray-200 rounded-full mr-3 text-gray-500">
+                        <i :class="locationIcon(data.location)"></i>
+                    </div>
+                    <div>
+                        <span>{{ data.location.name }}</span>
+                    </div>
+                </div>
             </template>
         </Column>
         <Column field="total" header="Total">
@@ -70,8 +84,8 @@ const onPage = (event: DataTablePageEvent) => {
             </template>
         </Column>
         <Column header="">
-            <template #body="slot">
-                <Link :href="route('purchases.show', {purchase: slot.data.id})">
+            <template #body="{data}">
+                <Link :href="route('purchases.show', {purchase: data.id})">
                     <Button icon="pi pi-eye" severity="info"></Button>
                 </Link>
             </template>

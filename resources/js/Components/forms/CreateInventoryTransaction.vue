@@ -107,8 +107,8 @@ const types = ref([
             <label for="description" class="block">Motivo</label>
             <Textarea v-model="form.description" id="description" class="w-full" rows="4"></Textarea>
         </div>
-        <div class="mt-6">
-            <Button raised type="submit" :disabled="form.processing" label="Registrar" severity="success"></Button>
+        <div class="flex items-center justify-end mt-4">
+            <Button label="Registrar" type="submit" class="ms-4" severity="success" raised></Button>
         </div>
     </form>
 </template>

@@ -113,22 +113,22 @@ const confirmDelete = (url: string) => {
     <DataTable :value="items" class="shadow-md" :paginator="true" :rows="rows" :lazy="true" :totalRecords="totalRecords" @page="onPage">
         <Column field="id" header="#"></Column>
         <Column field="name" header="Nombre">
-            <template #body="slot">
+            <template #body="{data}">
                 <UserIcon>
-                    {{ slot.data.name }} {{ slot.data.lastname }}
+                    {{ data.name }} {{ data.lastname }}
                 </UserIcon>
             </template>
         </Column>
         <Column field="phone" header="Teléfono"></Column>
         <Column field="email" header="Email"></Column>
         <Column field="created_at" header="Creación">
-            <template #body="slot">
-                {{ formatDate(slot.data.created_at) }}
+            <template #body="{data}">
+                {{ formatDate(data.created_at) }}
             </template>
         </Column>
         <Column field="updated_at" header="Edición">
-            <template #body="slot">
-                {{ formatDate(slot.data.updated_at) }}
+            <template #body="{data}">
+                {{ formatDate(data.updated_at) }}
             </template>
         </Column>
         <Column field="" header="">

@@ -12,15 +12,24 @@ class Expense extends Model
     protected $fillable = [
         'expense_category_id',
         'creator_id',
-        'expense',
+        'location_id',
         'expense_date',
         'amount',
         'status',
-        'description'
     ];
 
     public function expenseCategory()
     {
         return $this->belongsTo(ExpenseCategory::class);
+    }
+
+    public function location()
+    {
+        return $this->belongsTo(Location::class);
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'creator_id');
     }
 }

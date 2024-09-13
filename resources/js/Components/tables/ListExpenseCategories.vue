@@ -1,26 +1,27 @@
 <script lang="ts" setup>
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
-import { onMounted, ref } from 'vue';
-import SupplierService from "@/Services/SupplierService";
+import { onMounted, ref, watch } from 'vue';
+import ExpenseCategoryService from "@/Services/ExpenseCategoryService";
 import axios, { AxiosResponse } from 'axios';
 import { DataTablePageEvent } from 'primevue/datatable';
-import CreateSupplier from '../forms/CreateSupplier.vue';
 import { can, formatDate } from '@/helpers';
-import UserIcon from '../icons/UserIcon.vue';
-import EditSupplier from '../forms/EditSupplier.vue';
-import { Supplier } from '@/types';
+import { ExpenseCategory } from '@/types';
 import { useConfirm } from 'primevue/useconfirm';
 import { useToast } from 'primevue/usetoast';
+import { useExpenseCategoryStore } from '@/stores/ExpenseCategoryStore';
+import CreateExpenseCategory from '../forms/CreateExpenseCategory.vue';
+import EditExpenseCategory from '../forms/EditExpenseCategory.vue';
 
-const supplierService: SupplierService = new SupplierService()
+const expenseCategoryService = new ExpenseCategoryService()
 const items = ref([])
 const rows = ref(10)
 const totalRecords = ref(0)
 const page = ref(1)
+const categoryStore = useExpenseCategoryStore()
 const modalCreate = ref(false)
 const modalEdit = ref(false)
-const selectedSupplier = ref<Supplier | null>(null)
+const selectedCategory = ref<ExpenseCategory | null>(null)
 const confirm = useConfirm()
 const toast = useToast()
 
@@ -30,12 +31,11 @@ const showModalCreate = () => {
 
 const hideModalCreate = () => {
     modalCreate.value = false
-    fetchItems(page.value)
 }
 
-const showModalEdit = (supplier: Supplier) => {
+const showModalEdit = (category: ExpenseCategory) => {
     modalEdit.value = true
-    selectedSupplier.value = supplier
+    selectedCategory.value = category
 }
 
 const hideModalEdit = () => {
@@ -44,14 +44,14 @@ const hideModalEdit = () => {
 }
 
 const fetchItems = (pageNumber: number) => {
-    const result = supplierService.paginate(pageNumber, rows.value)
+    const result = expenseCategoryService.paginate(pageNumber, rows.value)
 
     result.then((response: AxiosResponse) => {
-        const suppliers = response.data;
+        const categories = response.data;
 
-        totalRecords.value = suppliers.total
-        items.value = JSON.parse(JSON.stringify(suppliers.data))
-        page.value = suppliers.current_page
+        totalRecords.value = categories.total
+        items.value = JSON.parse(JSON.stringify(categories.data))
+        page.value = categories.current_page
     })
 }
 
@@ -61,6 +61,10 @@ const onPage = (event: DataTablePageEvent) => {
 }
 
 onMounted(() => {
+    fetchItems(page.value)
+})
+
+watch(categoryStore.getCategories, () => {
     fetchItems(page.value)
 })
 
@@ -80,7 +84,7 @@ const deleteItem = (url: string) => {
 const confirmDelete = (url: string) => {
     confirm.require({
         header: '¿Está seguro?',
-        message: 'Se eliminará el cliente',
+        message: 'Se eliminará el categoría',
         icon: 'pi pi-exclamation-triangle',
         rejectProps: {
             label: 'Cancelar',
@@ -97,45 +101,33 @@ const confirmDelete = (url: string) => {
 }
 </script>
 <template>
-    <Dialog v-model:visible="modalCreate" modal header="Nuevo proveedor" :style="{ width: '35rem' }">
-        <CreateSupplier class="mt-4" @save="hideModalCreate"></CreateSupplier>
+    <Dialog v-model:visible="modalCreate" modal header="Nueva categoría" :style="{ width: '35rem' }">
+        <CreateExpenseCategory @save="hideModalCreate"></CreateExpenseCategory>
     </Dialog>
-    <Dialog v-model:visible="modalEdit" modal header="Editar proveedor" :style="{ width: '35rem' }">
-        <EditSupplier class="mt-4" @save="hideModalEdit" :supplier="selectedSupplier"></EditSupplier>
+
+    <Dialog v-model:visible="modalEdit" modal header="Editar categoría" :style="{ width: '35rem' }">
+        <EditExpenseCategory :category="selectedCategory" @save="hideModalEdit"></EditExpenseCategory>
     </Dialog>
 
     <DataTable :value="items" class="shadow-md" :paginator="true" :rows="rows" :lazy="true" :totalRecords="totalRecords" @page="onPage">
         <Column field="id" header="#"></Column>
-        <Column field="name" header="Nombre">
-            <template #body="{data}">
-                <UserIcon>
-                    {{ data.name }} {{ data.lastname }}
-                </UserIcon>
-            </template>
-        </Column>
-        <Column field="email" header="Email"></Column>
-        <Column field="company_name" header="Empresa"></Column>
-        <Column field="phone" header="Teléfono"></Column>
+        <Column field="name" header="Nombre"></Column>
+        <Column field="description" header="Descripción"></Column>
         <Column field="created_at" header="Creación">
             <template #body="{data}">
                 {{ formatDate(data.created_at) }}
             </template>
         </Column>
-        <Column field="updated_at" header="Edición">
-            <template #body="{data}">
-                {{ formatDate(data.updated_at) }}
-            </template>
-        </Column>
         <Column field="" header="">
             <template #header>
-                <div v-if="can('create suppliers')" class="w-full flex justify-center">
+                <div class="w-full flex justify-center">
                     <Button icon="pi pi-plus" rounded severity="success" raised @click="showModalCreate"></Button>
                 </div>
             </template>
             <template #body="{data}">
-                <div  class="flex gap-1 justify-center">
-                    <Button raised v-if="can('update suppliers')" @click="showModalEdit(data)" icon="pi pi-pencil" severity="warn"></Button>
-                    <Button raised v-if="can('delete suppliers')" @click="confirmDelete(route('api.suppliers.destroy', {supplier: data.id}))" icon="pi pi-trash" severity="danger"></Button>
+                <div class="w-full flex gap-1 justify-center">
+                    <Button raised v-if="can('update categories')" @click="showModalEdit(data)" icon="pi pi-pencil" severity="warn"></Button>
+                    <Button v-if="can('delete categories')" icon="pi pi-trash" severity="danger" @click="confirmDelete(route('api.categories.destroy', {category: data.id}))"></Button>
                 </div>
             </template>
         </Column>

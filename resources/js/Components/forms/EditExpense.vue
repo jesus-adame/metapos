@@ -1,31 +1,34 @@
 <script setup lang="ts">
+import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
+import { Expense } from '@/types';
 import { onMounted, reactive } from 'vue';
 import axios, { AxiosResponse } from 'axios';
 import { useToast } from 'primevue/usetoast';
-import { useExpenseStore } from '@/stores/ExpenseStore';
-import { useExpenseCategoryStore } from '@/stores/ExpenseCategoryStore';
 import DatePicker from 'primevue/datepicker';
-import Select from 'primevue/select';
+import { useExpenseCategoryStore } from '@/stores/ExpenseCategoryStore';
 
+const { expense } = defineProps<{
+    expense: Expense | null
+}>()
 const toast = useToast();
-const expenseService = useExpenseStore()
 const expenseCategoryStore = useExpenseCategoryStore()
 const emit = defineEmits(['save'])
 const form = reactive({
-    amount: null,
-    category_id: null,
-    expense_date: null,
+    amount: expense?.amount,
+    description: expense?.description,
+    expense_date: expense?.expense_date,
+    category_id: expense?.expense_category.id,
+    _method: 'put',
     processing: false,
 });
 
 const submit = () => {
     form.processing = true
-    axios.post(route('api.expenses.store'), form)
+    axios.post(route('api.expenses.update', { expense: expense?.id }), form)
     .then((response: AxiosResponse) => {
         form.processing = false
         toast.add({ summary: 'Correcto', detail: response.data.message, severity: 'success', life: 2000})
-        expenseService.pushItem(response.data.data)
         emit('save')
     })
     .catch(({response}) => {
@@ -38,8 +41,9 @@ onMounted(() => {
     expenseCategoryStore.fetchItems()
 })
 </script>
+
 <template>
-    <div class="grid gap-2">
+    <form @submit.prevent="submit">
         <div class="w-full">
             <label for="description" class="block">Descripción</label>
             <Select class="w-full" v-model="form.category_id" :options="expenseCategoryStore.categories" option-label="name" option-value="id"></Select>
@@ -61,7 +65,7 @@ onMounted(() => {
                 placeholder="DD/MM/YYYY"></DatePicker>
         </div>
         <div class="mt-4 flex justify-end">
-            <Button @click="submit" :disabled="form.processing" label="Registrar" severity="success"></Button>
+            <Button type="submit" :disabled="form.processing" severity="warn" label="Actualizar"></Button>
         </div>
-    </div>
+    </form>
 </template>

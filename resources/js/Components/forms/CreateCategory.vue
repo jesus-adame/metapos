@@ -42,7 +42,7 @@ const submit = () => {
                 <InputText name="description" class="w-full" v-model="form.description"></InputText>
             </div>
         </div>
-        <div class="mt-4">
+        <div class="mt-4 flex justify-end">
             <Button type="submit" :disabled="form.processing" label="Registrar" severity="success"></Button>
         </div>
     </form>

@@ -72,8 +72,8 @@ const submit = () => {
             <label for="address" class="block">Dirección</label>
             <InputText name="address" class="w-full" v-model="form.address"></InputText>
         </div>
-        <div class="mt-4">
-            <Button raised type="submit" :disabled="form.processing" label="Actualizar" severity="warn"></Button>
+        <div class="mt-4 flex justify-end">
+            <Button type="submit" :disabled="form.processing" severity="warn" label="Actualizar"></Button>
         </div>
     </form>
 </template>

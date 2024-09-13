@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { Head, Link } from '@inertiajs/vue3';
+import { Head } from '@inertiajs/vue3';
 import UserLayout from '@/Layouts/UserLayout.vue';
-import Button from 'primevue/button';
 import ListExpenses from '@/Components/tables/ListExpenses.vue';
+import ListExpenseCategories from '@/Components/tables/ListExpenseCategories.vue';
 
 </script>
 
@@ -14,10 +14,12 @@ import ListExpenses from '@/Components/tables/ListExpenses.vue';
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Expenses</h2>
         </template>
         <div class="my-4">
-            <Link :href="route('sales.index')">
-                <Button class="mb-4" label="Ventas" severity="info" icon="pi pi-money-bill"></Button>
-            </Link>
             <ListExpenses></ListExpenses>
+        </div>
+
+        <h3 class="text uppercase font-bold">Categorías de gastos</h3>
+        <div class="my-4">
+            <ListExpenseCategories></ListExpenseCategories>
         </div>
     </UserLayout>
 </template>

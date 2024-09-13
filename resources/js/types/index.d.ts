@@ -37,7 +37,7 @@ export interface Sale {
 export interface Purchase {
     id: number
     supplier?: Supplier
-    seller: User
+    buyer: User
     cash_register?: CashRegister
     location: Location
     total: number

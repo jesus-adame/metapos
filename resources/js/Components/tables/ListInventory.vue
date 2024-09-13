@@ -196,8 +196,8 @@ watch(() => authStore.cashRegister, () => {
             </template>
         </Column>
         <Column field="unit" header="Unidad">
-            <template #body="slot">
-                {{ slot.data.unit_type }}
+            <template #body="{data}">
+                {{ data.unit_type }}
             </template>
         </Column>
         <Column header="Estatus">

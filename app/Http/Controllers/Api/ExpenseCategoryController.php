@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use App\Models\Category;
+use App\Models\ExpenseCategory;
 use App\Http\Controllers\Controller;
 
-class CategoryController extends Controller
+class ExpenseCategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         $perPage = $request->input('rows', 10);
-        $categories = Category::orderBy('created_at', 'desc')->paginate($perPage);
+        $categories = ExpenseCategory::orderBy('created_at', 'desc')->paginate($perPage);
 
         return response()->json($categories);
     }
@@ -28,7 +28,7 @@ class CategoryController extends Controller
             return response()->json([]);
         }
 
-        $categories = Category::where('name', 'like', "%$request->code%")
+        $categories = ExpenseCategory::where('name', 'like', "%$request->code%")
             ->orWhere('description', 'like', "%$request->code%")
             ->get();
 
@@ -42,7 +42,7 @@ class CategoryController extends Controller
             'description' => 'nullable',
         ]);
 
-        $category = Category::create([
+        $category = ExpenseCategory::create([
             'name' => $request->name,
             'description' => $request->description,
         ]);
@@ -53,7 +53,7 @@ class CategoryController extends Controller
         ]);
     }
 
-    public function update(Request $request, Category $category)
+    public function update(Request $request, ExpenseCategory $category)
     {
         $request->validate([
             'name' => 'required',
@@ -71,7 +71,7 @@ class CategoryController extends Controller
         ]);
     }
 
-    public function destroy(Category $category)
+    public function destroy(ExpenseCategory $category)
     {
         $category->delete();
 

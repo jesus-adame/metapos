@@ -121,13 +121,13 @@ const onPage = (event: DataTablePageEvent) => {
             </template>
         </Column>
         <Column header="Tipo">
-            <template #body="slot">
-                <Tag :value="calculateLabel(slot.data)" :severity="calculateSeverity(slot.data)" :icon="calculateIcon(slot.data)"></Tag>
+            <template #body="{data}">
+                <Tag :value="calculateLabel(data)" :severity="calculateSeverity(data)" :icon="calculateIcon(data)"></Tag>
             </template>
         </Column>
         <Column header="Producto">
-            <template #body="slot">
-                {{ slot.data.product.name }}
+            <template #body="{data}">
+                {{ data.product.name }}
             </template>
         </Column>
         <Column field="quantity" header="Cantidad"></Column>

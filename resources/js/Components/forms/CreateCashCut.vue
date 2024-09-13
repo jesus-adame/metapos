@@ -52,8 +52,8 @@ const submit = () => {
                 </div>
             </div>
         </div>
-        <div class="mt-6">
-            <Button raised type="submit" :disabled="form.processing" label="Guardar" severity="success"></Button>
+        <div class="flex items-center justify-end mt-4">
+            <Button label="Guardar" type="submit" class="ms-4" severity="success" raised></Button>
         </div>
     </form>
 </template>

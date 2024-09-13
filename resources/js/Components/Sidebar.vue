@@ -42,12 +42,13 @@ const tabItems: TabItem[] = [
     active: route().current('purchases.index'),
     permission: 'view purchases'
   },
-  // {
-  //   icon: 'fi fi-sr-bank',
-  //   label: 'Banco',
-  //   route: route('bank-transactions.index'),
-  //   active: route().current('bank-transactions.index')
-  // },
+  {
+    icon: 'fi fi-sr-bank',
+    label: 'Gastos',
+    route: route('expenses.index'),
+    active: route().current('expenses.index'),
+    permission: 'view purchases'
+  },
   {
     icon: 'fi fi-sr-boxes',
     label: 'Inventario',

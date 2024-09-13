@@ -68,8 +68,8 @@ const submit = () => {
             <label for="address" class="block">Dirección</label>
             <InputText name="address" class="w-full" v-model="form.address"></InputText>
         </div>
-        <div class="mt-4">
-            <Button raised type="submit" :disabled="form.processing" label="Registrar" severity="success"></Button>
+        <div class="flex items-center justify-end mt-4">
+            <Button label="Guardar" type="submit" class="ms-4" severity="success" raised></Button>
         </div>
     </form>
 </template>
