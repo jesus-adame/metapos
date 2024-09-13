@@ -1,13 +1,15 @@
 <script lang="ts" setup>
 import { formatMoneyNumber } from '@/helpers';
+import { useCategoryStore } from '@/stores/CategoryStore';
 import { Product } from '@/types';
 import axios, { AxiosResponse } from 'axios';
 import Button from 'primevue/button';
 import Checkbox from 'primevue/checkbox';
 import InputText from 'primevue/inputtext';
 import { useToast } from 'primevue/usetoast';
-import { ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 
+const categoryStore = useCategoryStore()
 const emit = defineEmits(['save'])
 const toast = useToast()
 const axiosOptions = {
@@ -45,6 +47,7 @@ const form = ref<Product>({
     tax: 0,
     has_taxes: false,
     description: null,
+    categories: [],
 })
 
 function submit() {
@@ -95,6 +98,10 @@ watch([() => form.value.price, () => form.value.tax], ([precioSinImpuesto, tasaI
         isUpdatingPriceWithTax = false;
     }
 });
+
+onMounted(() => {
+    categoryStore.fetchItems()
+})
 </script>
 <template>
     <form @submit.prevent="submit" class="grid grid-cols-1 lg:grid-cols-2 gap-2">
@@ -155,7 +162,17 @@ watch([() => form.value.price, () => form.value.tax], ([precioSinImpuesto, tasaI
             </div>
         </div>
         <div class="flex flex-col justify-between">
-            <div>
+            <div class="grid gap-2">
+                <div class="w-full">
+                    <label for="description" class="block">Categorías</label>
+                    <div class="card flex justify-center">
+                        <MultiSelect v-model="form.categories"
+                            display="chip"
+                            :options="categoryStore.categories"
+                            optionLabel="name" option-value="id" placeholder="Elegir"
+                            :maxSelectedLabels="5" class="w-full" />
+                    </div>
+                </div>
                 <div>
                     <label for="description" class="block">Descripción</label>
                     <Textarea v-model="form.description" rows="5" class="w-full"></Textarea>
