@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
+use OwenIt\Auditing\Contracts\Auditable;
+use OwenIt\Auditing\Auditable as AuditingAuditable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Contracts\Locationable;
 
-class Location extends Model implements Locationable
+class Location extends Model implements Locationable, Auditable
 {
-    use HasFactory;
+    use HasFactory, AuditingAuditable;
 
     protected $fillable = [
         'name',

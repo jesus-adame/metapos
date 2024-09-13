@@ -6,4 +6,5 @@ return [
     App\Providers\HelpersProvider::class,
     App\Providers\TenancyServiceProvider::class,
     Spatie\Permission\PermissionServiceProvider::class,
+    OwenIt\Auditing\AuditingServiceProvider::class,
 ];

@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
+use OwenIt\Auditing\Contracts\Auditable;
+use OwenIt\Auditing\Auditable as AuditingAuditable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use App\Contracts\Locationable;
 
-class Product extends Model
+class Product extends Model implements Auditable
 {
-    use HasFactory;
+    use HasFactory, AuditingAuditable;
 
     protected $fillable = [
         'code',
