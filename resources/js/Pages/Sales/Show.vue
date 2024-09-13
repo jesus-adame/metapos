@@ -112,7 +112,7 @@ const hideAddCustomerModal = () => {
                         </Column>
                         <Column header="Subtotal">
                             <template #body="{data}">
-                                {{ formatMoneyNumber((data.pivot.price + getPercentage(data.pivot.price, data.pivot.tax)) * data.pivot.quantity) }}
+                                {{ formatMoneyNumber(data.pivot.price * data.pivot.quantity) }}
                             </template>
                         </Column>
                     </DataTable>
