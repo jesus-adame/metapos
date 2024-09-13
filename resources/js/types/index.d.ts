@@ -46,6 +46,22 @@ export interface Purchase {
     products: Product[]
 }
 
+export interface Expense {
+    id: number
+    creator: User
+    expense_category: ExpenseCategory
+    expense_date?: string
+    amount: number
+    status: string
+    description: string
+}
+
+export interface ExpenseCategory {
+    id: number
+    name: string
+    description?: string
+}
+
 export interface Payment {
     id: number
     amount: string

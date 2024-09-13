@@ -2,18 +2,18 @@
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
 import { onMounted, ref, watch } from 'vue';
-import CategoryService from "@/Services/CategoryService";
+import ExpenseService from "@/Services/ExpenseService";
 import axios, { AxiosResponse } from 'axios';
 import { DataTablePageEvent } from 'primevue/datatable';
-import CreateCategory from '../forms/CreateCategory.vue';
 import { can, formatDate } from '@/helpers';
-import EditCategory from '../forms/EditCategory.vue';
-import { Category } from '@/types';
+import { Expense } from '@/types';
 import { useConfirm } from 'primevue/useconfirm';
 import { useToast } from 'primevue/usetoast';
 import { useCategoryStore } from '@/stores/CategoryStore';
+import CreateExpense from '../forms/CreateExpense.vue';
+import EditExpensive from '../forms/EditExpensive.vue';
 
-const categoryService = new CategoryService()
+const expenseService = new ExpenseService()
 const items = ref([])
 const rows = ref(10)
 const totalRecords = ref(0)
@@ -21,7 +21,7 @@ const page = ref(1)
 const categoryStore = useCategoryStore()
 const modalCreate = ref(false)
 const modalEdit = ref(false)
-const selectedCategory = ref<Category | null>(null)
+const selectedExpense = ref<Expense | null>(null)
 const confirm = useConfirm()
 const toast = useToast()
 
@@ -33,9 +33,9 @@ const hideModalCreate = () => {
     modalCreate.value = false
 }
 
-const showModalEdit = (category: Category) => {
+const showModalEdit = (category: Expense) => {
     modalEdit.value = true
-    selectedCategory.value = category
+    selectedExpense.value = category
 }
 
 const hideModalEdit = () => {
@@ -44,7 +44,7 @@ const hideModalEdit = () => {
 }
 
 const fetchItems = (pageNumber: number) => {
-    const result = categoryService.paginate(pageNumber, rows.value)
+    const result = expenseService.paginate(pageNumber, rows.value)
 
     result.then((response: AxiosResponse) => {
         const categories = response.data;
@@ -101,12 +101,12 @@ const confirmDelete = (url: string) => {
 }
 </script>
 <template>
-    <Dialog v-model:visible="modalCreate" modal header="Nueva categoría" :style="{ width: '35rem' }">
-        <CreateCategory @save="hideModalCreate"></CreateCategory>
+    <Dialog v-model:visible="modalCreate" modal header="Nuevo gasto" :style="{ width: '35rem' }">
+        <CreateExpense @save="hideModalCreate"></CreateExpense>
     </Dialog>
 
-    <Dialog v-model:visible="modalEdit" modal header="Editar categoría" :style="{ width: '35rem' }">
-        <EditCategory :category="selectedCategory" @save="hideModalEdit"></EditCategory>
+    <Dialog v-model:visible="modalEdit" modal header="Editar gasto" :style="{ width: '35rem' }">
+        <EditExpensive :expense="selectedExpense" @save="hideModalEdit"></EditExpensive>
     </Dialog>
 
     <DataTable :value="items" class="shadow-md" :paginator="true" :rows="rows" :lazy="true" :totalRecords="totalRecords" @page="onPage">

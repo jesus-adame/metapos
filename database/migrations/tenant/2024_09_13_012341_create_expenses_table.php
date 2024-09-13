@@ -15,12 +15,14 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('creator_id')->nullable();
             $table->unsignedBigInteger('expense_category_id')->nullable();
+            $table->unsignedBigInteger('location_id')->nullable();
             $table->dateTime('expense_date');
             $table->decimal('amount', 10, 2);
             $table->enum('status', ['pending', 'completed', 'canceled']);
             $table->timestamps();
 
             $table->foreign('creator_id')->references('id')->on('users')->onDelete('set null');
+            $table->foreign('location_id')->references('id')->on('locations')->onDelete('set null');
             $table->foreign('expense_category_id')->references('id')->on('expense_categories')->onDelete('set null');
         });
     }

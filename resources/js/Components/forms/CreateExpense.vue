@@ -1,0 +1,55 @@
+<script setup lang="ts">
+import InputText from 'primevue/inputtext';
+import Button from 'primevue/button';
+import { reactive } from 'vue';
+import axios, { AxiosResponse } from 'axios';
+import { useToast } from 'primevue/usetoast';
+import { useCategoryStore } from '@/stores/CategoryStore';
+
+const toast = useToast();
+const categoryStore = useCategoryStore()
+const emit = defineEmits(['save'])
+const form = reactive({
+    amount: null,
+    description: null,
+    expense_date: null,
+    _method: 'put',
+    processing: false,
+});
+
+const submit = () => {
+    form.processing = true
+    axios.post(route('api.expenses.store'), form)
+    .then((response: AxiosResponse) => {
+        form.processing = false
+        toast.add({ summary: 'Correcto', detail: response.data.message, severity: 'success', life: 2000})
+        categoryStore.pushItem(response.data.category)
+        emit('save')
+    })
+    .catch(({response}) => {
+        form.processing = false
+        toast.add({ summary: 'Error', detail: response.data.message, severity: 'error', life: 2000})
+    })
+};
+</script>
+<template>
+    <form @submit.prevent="submit">
+        <div class="flex">
+            <div class="w-full mr-2">
+                <label for="amount" class="block">Monto</label>
+                <InputText name="amount" class="w-full" v-model="form.amount"></InputText>
+            </div>
+            <div class="w-full">
+                <label for="description" class="block">Descripción</label>
+                <InputText name="description" class="w-full" v-model="form.description"></InputText>
+            </div>
+            <div class="w-full">
+                <label for="expense_date" class="block">Fecha de gasto</label>
+                <InputText name="expense_date" class="w-full" v-model="form.expense_date"></InputText>
+            </div>
+        </div>
+        <div class="mt-4">
+            <Button type="submit" :disabled="form.processing" label="Registrar" severity="success"></Button>
+        </div>
+    </form>
+</template>
