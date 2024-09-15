@@ -14,7 +14,7 @@ class CustomerController extends Controller
     public function index(Request $request)
     {
         $perPage = $request->input('rows', 10);
-        $customers = Customer::orderBy('updated_at', 'desc')->paginate($perPage);
+        $customers = Customer::orderBy('created_at', 'desc')->paginate($perPage);
 
         return response()->json($customers);
     }

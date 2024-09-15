@@ -15,7 +15,7 @@ import Button from 'primevue/button';
         </template>
         <div class="my-4">
             <Link :href="route('sales.index')">
-                <Button class="mb-4" label="Ventas" severity="info" icon="pi pi-money-bill"></Button>
+                <Button raised class="mb-4" label="Ventas" severity="info" icon="pi pi-money-bill"></Button>
             </Link>
             <ListCustomers></ListCustomers>
         </div>

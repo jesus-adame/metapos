@@ -121,6 +121,7 @@ const confirmDelete = (url: string) => {
         </Column>
         <Column field="phone" header="Teléfono"></Column>
         <Column field="email" header="Email"></Column>
+        <Column field="sales_count" header="Ventas"></Column>
         <Column field="created_at" header="Creación">
             <template #body="{data}">
                 {{ formatDate(data.created_at) }}
@@ -140,7 +141,7 @@ const confirmDelete = (url: string) => {
             <template #body="{data}">
                 <div class="w-full flex gap-1 justify-center">
                     <Button raised v-if="can('update customers')" @click="showModalEdit(data)" icon="pi pi-pencil" severity="warn"></Button>
-                    <Button v-if="can('delete customers')" icon="pi pi-trash" severity="danger" @click="confirmDelete(route('api.customers.destroy', {customer: data.id}))"></Button>
+                    <Button raised v-if="can('delete customers')" icon="pi pi-trash" severity="danger" @click="confirmDelete(route('api.customers.destroy', {customer: data.id}))"></Button>
                 </div>
             </template>
         </Column>

@@ -251,7 +251,7 @@ watch(() => form.wholesale, () => {
                         <ToggleSwitch v-model="form.wholesale" inputId="wholesale" />
                         <label for="wholesale">Mayorista</label>
                     </div>
-                    <Button v-if="form.discount == null" label="Descuento" icon="pi pi-tag" @click="showModalDiscount"></Button>
+                    <Button raised v-if="form.discount == null" label="Descuento" icon="pi pi-tag" @click="showModalDiscount"></Button>
                     <div class="w-1/2">
                         <div class="flex gap-1">
                             <AutoComplete v-model="selectedCustomer" optionLabel="name" :suggestions="filteredCustomers"
@@ -300,6 +300,7 @@ watch(() => form.wholesale, () => {
                     </div>
                     <div class="flex justify-center w-full">
                         <Button
+                            raised
                             :disabled="totalSale <= 0"
                             @click="showModalPayments"
                             severity="success"
@@ -309,9 +310,9 @@ watch(() => form.wholesale, () => {
                             class="w-full text-xl"/>
                     </div>
                     <div class="flex mt-3 w-full">
-                        <Button @click="showModalMovements" label="Entrada / Salida" severity="danger" class="w-1/2 mr-2" icon="pi pi-arrow-right-arrow-left"></Button>
+                        <Button raised @click="showModalMovements" label="Entrada / Salida" severity="danger" class="w-1/2 mr-2" icon="pi pi-arrow-right-arrow-left"></Button>
                         <Link :href="route('cash-flows.index')" class="d-block w-1/2">
-                            <Button label="Ver de caja" severity="warn" class="w-full" icon="pi pi-inbox"></Button>
+                            <Button raised label="Ver de caja" severity="warn" class="w-full" icon="pi pi-inbox"></Button>
                         </Link>
                     </div>
                 </div>

@@ -19,8 +19,15 @@ class Customer extends Model implements Auditable
         'address',
     ];
 
+    protected $appends = ['sales_count'];
+
     public function sales()
     {
         return $this->hasMany(Sale::class);
+    }
+
+    public function getSalesCountAttribute()
+    {
+        return $this->sales()->count();
     }
 }

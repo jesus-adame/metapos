@@ -18,7 +18,7 @@ const authStore = useAuthStore()
         </template>
         <div class="mb-4 mt-4">
             <Link :href="route('sales.create')">
-                <Button label="Vender" icon="pi pi-shopping-cart" class="ml-2" severity="success"></Button>
+                <Button raised label="Vender" icon="pi pi-shopping-cart" severity="success"></Button>
             </Link>
         </div>
         <div class="">

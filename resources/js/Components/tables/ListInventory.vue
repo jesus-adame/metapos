@@ -144,7 +144,7 @@ const openLabels = () => {
                 <span>Número de etiquetas</span>
                 <InputNumber v-model="quantity" class="w-full"></InputNumber>
             </div>
-            <Button label="Descargar" @click="openLabels"></Button>
+            <Button :disabled="!quantity" label="Descargar" @click="openLabels"></Button>
         </div>
     </Dialog>
 

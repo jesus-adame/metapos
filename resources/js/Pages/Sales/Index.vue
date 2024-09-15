@@ -47,13 +47,13 @@ const clearStatus = () => {
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Ventas</h2>
         </template>
 
-        <div class="mt-6 mb-4 flex justify-between">
+        <div class="mt-4 mb-4 flex justify-between">
             <div>
                 <Link :href="route('sales.create')">
-                    <Button label="Nueva venta" severity="success" icon="pi pi-plus"></Button>
+                    <Button raised label="Nueva venta" severity="success" icon="pi pi-plus"></Button>
                 </Link>
                 <Link :href="route('customers.index')" class="ml-2">
-                    <Button label="Clientes" severity="info" icon="pi pi-users"></Button>
+                    <Button raised label="Clientes" severity="info" icon="pi pi-users"></Button>
                 </Link>
             </div>
             <div class="flex gap-2 items-center">
