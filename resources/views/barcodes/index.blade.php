@@ -10,20 +10,32 @@
             margin: 0%;
             padding: 0%;
             box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif
         }
         .content {
         }
         .barcode {
-            padding: 2px;
+            padding: 3px 10px;
             border: 1px solid;
-            border-color: #a5a5a5;
+            border-color: #d0d0d0;
             text-align: center;
-            border-radius: 5px;
-            width: 160px;
-            width: 38mm;
+            width: 50mm;
+        }
+        .barcode .bars {
+            margin: auto;
+        }
+        .barcode .bars img {
+            width: 80%;
         }
         .barcode .name {
-            font-size: 13px
+            font-size: 12px
+        }
+        .barcode .price {
+            font-size: 24px
+        }
+        .barcode .location {
+            font-size: 8px;
+            text-transform: uppercase
         }
     </style>
 </head>
@@ -31,11 +43,12 @@
     <div class="content">
         @foreach ($barcodes as $barcode)
             <div class="barcode" style="display: {{ $style }}">
+                <p class="location">{{ $barcode['location'] }}</p>
                 <span class="name">{{ $barcode['name'] }}</span>
-                <h2>${{ $barcode['price'] }}</h2>
-                <div style="margin: auto; display: inline-block">
-                    {!! $barcode['bars'] !!}
-                </div><br>
+                <p class="price">{{ $barcode['price'] }}</p>
+                <div class="bars">
+                    <img src="data:image/png;base64,{{ base64_encode($barcode['bars']) }}">
+                </div>
                 <span style="font-size: 12px">{{ $barcode['code'] }}</span>
             </div>
         @endforeach

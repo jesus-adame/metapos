@@ -61,7 +61,7 @@ onMounted(() => {
                 placeholder="DD/MM/YYYY"></DatePicker>
         </div>
         <div class="mt-4 flex justify-end">
-            <Button @click="submit" :disabled="form.processing" label="Registrar" severity="success"></Button>
+            <Button raised @click="submit" :disabled="form.processing" label="Registrar" severity="success"></Button>
         </div>
     </div>
 </template>

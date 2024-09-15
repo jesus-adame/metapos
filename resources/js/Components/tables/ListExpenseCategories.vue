@@ -127,7 +127,7 @@ const confirmDelete = (url: string) => {
             <template #body="{data}">
                 <div class="w-full flex gap-1 justify-center">
                     <Button raised v-if="can('update categories')" @click="showModalEdit(data)" icon="pi pi-pencil" severity="warn"></Button>
-                    <Button v-if="can('delete categories')" icon="pi pi-trash" severity="danger" @click="confirmDelete(route('api.expense_categories.destroy', {expense_category: data.id}))"></Button>
+                    <Button raised v-if="can('delete categories')" icon="pi pi-trash" severity="danger" @click="confirmDelete(route('api.expense_categories.destroy', {expense_category: data.id}))"></Button>
                 </div>
             </template>
         </Column>

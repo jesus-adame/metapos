@@ -36,6 +36,8 @@ class Product extends Model implements Auditable
         'has_taxes' => 'boolean',
     ];
 
+    protected $appends = ['final_price'];
+
     public function scopeWithStock(Builder $query, ?Locationable $location = null): Builder
     {
         return $query->withSum(['inventories as stock' => function ($query) use ($location) {
@@ -50,6 +52,11 @@ class Product extends Model implements Auditable
         return $query->whereHas('inventories', function ($query) use ($location) {
             $query->where('location_id', $location->id);
         });
+    }
+
+    public function getFinalPriceAttribute()
+    {
+        return round($this->price * (1 + ($this->tax / 100)), 2);
     }
 
     public function inventories()

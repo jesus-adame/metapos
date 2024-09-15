@@ -25,7 +25,7 @@
         }
         .header h1 {
             margin: 0;
-            font-size: 15px;
+            font-size: 14px;
         }
         .header p {
             margin: 0;
@@ -52,7 +52,12 @@
         }
         .total {
             text-align: right;
+        }
+        .total p {
             font-weight: bold;
+        }
+        .total span {
+            display: block;
         }
         .footer {
             text-align: center;
@@ -102,9 +107,9 @@
             </div>
             <div class="total">
                 <p>Total: ${{ number_format($sale->total, 2) }}</p>
-                <p>IVA: ${{ number_format($taxes, 2) }}</p>
-                <p>Pago: ${{ number_format($totalPayments, 2) }}</p>
-                <p>Cambio: ${{ number_format($sale->change, 2) }}</p>
+                <span>IVA: ${{ number_format($taxes, 2) }}</span>
+                <span>Pago: ${{ number_format($totalPayments, 2) }}</span>
+                <span>Cambio: ${{ number_format($sale->change, 2) }}</span>
             </div>
         </div>
         <div class="footer">

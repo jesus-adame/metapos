@@ -151,7 +151,7 @@ const confirmDelete = (url: string) => {
             <template #body="{data}">
                 <div class="w-full flex gap-1 justify-center">
                     <Button raised v-if="can('update expenses')" @click="showModalEdit(data)" icon="pi pi-pencil" severity="warn"></Button>
-                    <Button v-if="can('delete expenses')" icon="pi pi-trash" severity="danger" @click="confirmDelete(route('api.expenses.destroy', {expense: data.id}))"></Button>
+                    <Button raised v-if="can('delete expenses')" icon="pi pi-trash" severity="danger" @click="confirmDelete(route('api.expenses.destroy', {expense: data.id}))"></Button>
                 </div>
             </template>
         </Column>

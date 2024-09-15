@@ -17,4 +17,11 @@ class MathNumberHelper extends Facade
 
         return $number * $percentageDecimal;
     }
+
+    public static function formatMoneyFormat(float $number)
+    {
+        $rounded = round($number, 2);
+
+        return '$' . number_format($rounded, 2);
+    }
 }

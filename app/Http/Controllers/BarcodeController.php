@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Picqer\Barcode\BarcodeGeneratorSVG;
+use Picqer\Barcode\BarcodeGeneratorPNG;
 use Picqer\Barcode\BarcodeGeneratorHTML;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Product;
 use App\Http\Controllers\Controller;
+use App\Helpers\MathNumberHelper;
 
 class BarcodeController extends Controller
 {
@@ -17,7 +21,7 @@ class BarcodeController extends Controller
 
         foreach ($products as $product) {
             $barcode = [
-                'bars' => $generator->getBarcode($product->code, $generator::TYPE_CODE_128, 1),
+                'bars' => $generator->getBarcode($product->code, $generator::TYPE_CODE_128, 2, 35),
                 'code' => $product->code,
                 'name' => $product->name,
                 'price' => $product->price,
@@ -39,16 +43,17 @@ class BarcodeController extends Controller
         return $pdf->stream('barcodes.pdf');
     }
 
-    public function show(BarcodeGeneratorHTML $generator, $productId, $quantity)
+    public function show(BarcodeGeneratorPNG $generator, $productId, $quantity)
     {
         $product = Product::find($productId);
         $barcodes = [];
 
         $barcode = [
-            'bars' => $generator->getBarcode($product->code, $generator::TYPE_CODE_128, 1),
+            'location' => Auth::user()->location->name,
+            'bars' => $generator->getBarcode($product->code, $generator::TYPE_CODE_128, 3, 50),
             'code' => $product->code,
             'name' => $product->name,
-            'price' => $product->price,
+            'price' => MathNumberHelper::formatMoneyFormat($product->final_price),
         ];
 
         for ($i = 1; $i <= $quantity; $i++) {
