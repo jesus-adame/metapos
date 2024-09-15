@@ -118,7 +118,7 @@ const confirmDelete = (url: string) => {
         <Column field="name" header="Nombre">
             <template #body="{data}">
                 <div class="flex items-center">
-                    <div class="py-2 px-3 bg-gray-200 rounded-full mr-3 text-gray-500">
+                    <div class="py-1 px-2 bg-gray-200 rounded-full mr-3 text-gray-500">
                         <i :class="locationIcon(data)"></i>
                     </div>
                     <div>

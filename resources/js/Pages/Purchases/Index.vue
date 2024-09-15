@@ -16,10 +16,10 @@ import ListPurchases from '@/Components/tables/ListPurchases.vue';
 
         <div class="mt-6 mb-4">
             <Link v-if="can('create purchases')" :href="route('purchases.create')" class="mr-2">
-                <Button label="Nueva compra" icon="pi pi-plus" severity="success"></Button>
+                <Button raised label="Nueva compra" icon="pi pi-plus" severity="success"></Button>
             </Link>
             <Link v-if="can('view purchases')" :href="route('suppliers.index')">
-                <Button label="Proveedores" icon="pi pi-users" severity="info"></Button>
+                <Button raised label="Proveedores" icon="pi pi-users" severity="info"></Button>
             </Link>
         </div>
 

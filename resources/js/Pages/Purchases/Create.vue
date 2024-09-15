@@ -219,12 +219,13 @@ const hideModalCreateSupplier = () => {
                                     icon="pi pi-dollar"
                                     type="submit"
                                     label="Pagar"
+                                    raised
                                     class="w-full text-xl uppercase"/>
                             </div>
                         </div>
                         <div class="w-1/2">
                             <Link :href="route('purchases.index')" class="flex justify-center w-full">
-                                <Button class="w-full text-xl uppercase" label="Ver compras" severity="info"></Button>
+                                <Button raised class="w-full text-xl uppercase" label="Ver compras" severity="info"></Button>
                             </Link>
                         </div>
                     </div>

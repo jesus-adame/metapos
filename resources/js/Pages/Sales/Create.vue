@@ -279,9 +279,9 @@ watch(() => form.wholesale, () => {
             <div>
                 <SelectProduct :products="products" @selected="pushProduct"></SelectProduct>
             </div>
-            <div>
+            <div class="flex flex-col gap-2">
                 <ProductsList :products="form.products"></ProductsList>
-                <div class="bg-white p-4 shadow-md rounded mt-3">
+                <div class="bg-white p-4 shadow-md rounded">
                     <div class="flex justify-end w-full">
                         <div
                             v-if="form.discount"

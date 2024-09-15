@@ -78,8 +78,8 @@ onMounted(() => {
             <span class="inline-flex rounded-md">
                 <button type="button">
                     <div class="text-gray-700 px-4 py-2 shadow-md flex items-center justify-between w-62 cursor-pointer rounded-md">
-                        <div class="flex items-center">
-                            <div class="py-2 px-3 bg-gray-300 rounded-full mr-1 text-gray-500">
+                        <div class="flex gap-1 items-center">
+                            <div class="py-2 px-3 bg-gray-300 rounded-full text-gray-500">
                                 <i :class="locationIcon(authStore.location)"></i>
                             </div>
                             <div class="ml-2 text-left">

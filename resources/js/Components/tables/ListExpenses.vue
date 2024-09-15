@@ -13,6 +13,7 @@ import { useExpenseStore } from '@/stores/ExpenseStore';
 import CreateExpense from '../forms/CreateExpense.vue';
 import EditExpense from '../forms/EditExpense.vue';
 import UserIcon from '../icons/UserIcon.vue';
+import LocationIcon from '../icons/LocationIcon.vue';
 
 const expenseService = new ExpenseService()
 const items = ref([])
@@ -131,14 +132,9 @@ const confirmDelete = (url: string) => {
         </Column>
         <Column field="location" header="Ubicación">
             <template #body="{data}">
-                <div class="flex items-center">
-                    <div class="py-2 px-3 bg-gray-200 rounded-full mr-3 text-gray-500">
-                        <i :class="locationIcon(data.location)"></i>
-                    </div>
-                    <div>
-                        <span>{{ data.location.name }}</span>
-                    </div>
-                </div>
+                <LocationIcon :location="data.location">
+                    <span>{{ data.location.name }}</span>
+                </LocationIcon>
             </template>
         </Column>
         <Column field="amount" header="Monto">

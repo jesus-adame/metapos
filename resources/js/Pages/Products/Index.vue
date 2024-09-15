@@ -46,11 +46,11 @@ const saved = () => {
 
         <div class="flex mb-4 mt-6">
             <Link :href="route('inventory-transactions.index')" class="mr-2">
-                <Button label="Historial de movimientos" icon="pi pi-list"></Button>
+                <Button raised label="Historial de movimientos" icon="pi pi-list"></Button>
             </Link>
-            <Button v-if="can('update products')" class="mr-2" label="Registrar movimiento" icon="pi pi-sort-alt" severity="info" @click="openModalCreate"></Button>
+            <Button raised v-if="can('update products')" class="mr-2" label="Registrar movimiento" icon="pi pi-sort-alt" severity="info" @click="openModalCreate"></Button>
             <Link v-if="can('create purchases')" :href="route('purchases.create')">
-                <Button label="Nueva compra" icon="pi pi-plus" severity="success"></Button>
+                <Button raised label="Nueva compra" icon="pi pi-plus" severity="success"></Button>
             </Link>
         </div>
         <ListInventory></ListInventory>

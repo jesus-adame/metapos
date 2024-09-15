@@ -10,6 +10,7 @@ import { onMounted, ref } from 'vue';
 import { Purchase } from '@/types';
 import { DataTablePageEvent } from 'primevue/datatable';
 import { Link } from '@inertiajs/vue3';
+import LocationIcon from '../icons/LocationIcon.vue';
 
 const items = ref<Purchase[]>([])
 const purchaseService = new PurchaseService()
@@ -66,14 +67,9 @@ const onPage = (event: DataTablePageEvent) => {
         </Column>
         <Column field="location" header="Ubicación">
             <template #body="{data}">
-                <div class="flex items-center">
-                    <div class="py-2 px-3 bg-gray-200 rounded-full mr-3 text-gray-500">
-                        <i :class="locationIcon(data.location)"></i>
-                    </div>
-                    <div>
-                        <span>{{ data.location.name }}</span>
-                    </div>
-                </div>
+                <LocationIcon :location="data.location">
+                    <span>{{ data.location.name }}</span>
+                </LocationIcon>
             </template>
         </Column>
         <Column field="total" header="Total">
@@ -86,7 +82,7 @@ const onPage = (event: DataTablePageEvent) => {
         <Column header="">
             <template #body="{data}">
                 <Link :href="route('purchases.show', {purchase: data.id})">
-                    <Button icon="pi pi-eye" severity="info"></Button>
+                    <Button raised icon="pi pi-eye" severity="info"></Button>
                 </Link>
             </template>
         </Column>

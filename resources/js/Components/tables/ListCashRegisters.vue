@@ -10,6 +10,7 @@ import { formatDate } from '@/helpers';
 import CashRegisterIcon from '../icons/CashRegisterIcon.vue';
 import { useConfirm } from 'primevue/useconfirm';
 import { useToast } from 'primevue/usetoast';
+import LocationIcon from '../icons/LocationIcon.vue';
 
 const cashRegisterService: CashRegisterService = new CashRegisterService()
 const modalCreate = ref(false)
@@ -82,7 +83,7 @@ const confirmDelete = (url: string) => {
 </script>
 <template>
     <Dialog v-model:visible="modalCreate" modal header="Registrar caja" :style="{ width: '35rem' }">
-        <CreateCashRegister class="mt-4" @save="hideModalCreate"></CreateCashRegister>
+        <CreateCashRegister @save="hideModalCreate"></CreateCashRegister>
     </Dialog>
 
     <DataTable :value="items" paginator :rows="rows" lazy @page="onPage" :totalRecords="totalRecords">
@@ -97,12 +98,9 @@ const confirmDelete = (url: string) => {
         </Column>
         <Column field="location" header="Ubicación">
             <template #body="{data}">
-                <div class="flex items-center">
-                    <div class="rounded-full px-3 py-2 bg-gray-200 mr-2">
-                        <i class="pi pi-building"></i>
-                    </div>
+                <LocationIcon :location="data.location">
                     <span>{{ data.location.name }}</span>
-                </div>
+                </LocationIcon>
             </template>
         </Column>
         <Column field="created_at" header="Creado">
