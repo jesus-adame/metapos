@@ -79,7 +79,7 @@ const methods = [
             <Textarea v-model="form.description" id="description" class="w-full" rows="4" placeholder="Reposición de dinero"></Textarea>
         </div>
         <div class="mt-4 flex justify-end">
-            <Button raised type="submit" :disabled="form.processing" severity="success">Registrar</Button>
+            <Button label="Registrar" raised type="submit" :disabled="form.processing" severity="success"></Button>
             <slot></slot>
         </div>
     </form>

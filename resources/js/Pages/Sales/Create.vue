@@ -213,7 +213,7 @@ watch(() => form.wholesale, () => {
 <template>
     <Head title="Punto de Venta" />
 
-    <Dialog v-model:visible="modalDiscount" modal header="Agregar Descuento" :style="{ width: '35rem' }">
+    <Dialog v-model:visible="modalDiscount" modal header="Descuento" :style="{ width: '35rem' }">
         <Discount :totalSale="totalSale" :form="form" @cancel="hideModalDiscount" @apply="setSuccessDiscount"></Discount>
     </Dialog>
 
@@ -223,7 +223,7 @@ watch(() => form.wholesale, () => {
 
     <Dialog v-model:visible="modalCashMovements" modal header="Registrar movimiento" :style="{ width: '35rem' }">
         <CreateCashMovement>
-            <Button label="Cancelar" @click="hideModalMovements" class="ml-2"></Button>
+            <Button label="Cancelar" @click="hideModalMovements" class="ml-2" raised></Button>
         </CreateCashMovement>
     </Dialog>
 
@@ -236,7 +236,7 @@ watch(() => form.wholesale, () => {
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">POS</h2>
         </template>
 
-        <div class="flex flex-wrap gap-2 items-baseline justify-between mb-4 mt-4 w-full">
+        <div class="flex flex-wrap gap-2 items-baseline justify-between mb-3 mt-3 w-full">
             <div class="search w-full md:w-1/3">
                 <form @submit.prevent="addSearchedProduct" class="flex items-center">
                     <IconField iconPosition="left" class="w-full">
@@ -281,7 +281,7 @@ watch(() => form.wholesale, () => {
             </div>
             <div>
                 <ProductsList :products="form.products"></ProductsList>
-                <div class="bg-white p-4 shadow-md rounded mt-4">
+                <div class="bg-white p-4 shadow-md rounded mt-3">
                     <div class="flex justify-end w-full">
                         <div
                             v-if="form.discount"
@@ -306,12 +306,12 @@ watch(() => form.wholesale, () => {
                             icon="pi pi-dollar"
                             type="submit"
                             label="Pagar"
-                            class="w-full text-xl uppercase"/>
+                            class="w-full text-xl"/>
                     </div>
-                    <div class="flex mt-4 w-full">
-                        <Button @click="showModalMovements" label="Entrada / Salida" severity="danger" class="w-1/2 text-xl uppercase mr-2" icon="pi pi-arrow-right-arrow-left"></Button>
+                    <div class="flex mt-3 w-full">
+                        <Button @click="showModalMovements" label="Entrada / Salida" severity="danger" class="w-1/2 mr-2" icon="pi pi-arrow-right-arrow-left"></Button>
                         <Link :href="route('cash-flows.index')" class="d-block w-1/2">
-                            <Button label="Ver de caja" severity="warn" class="w-full text-xl uppercase" icon="pi pi-inbox"></Button>
+                            <Button label="Ver de caja" severity="warn" class="w-full" icon="pi pi-inbox"></Button>
                         </Link>
                     </div>
                 </div>

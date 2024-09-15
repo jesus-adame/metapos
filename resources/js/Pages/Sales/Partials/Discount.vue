@@ -41,7 +41,7 @@ const submitButton = computed(() => {
             </div>
             <InputNumber v-model="form.amount" :min-fraction-digits="2" :max-fraction-digits="2" class="w-full" :prefix="prefixIcon" placeholder="0.00"></InputNumber>
             <div class="flex justify-end">
-                <Button label="Aplicar" type="submit" :disabled="submitButton"></Button>
+                <Button label="Aplicar" type="submit" :disabled="submitButton" raised></Button>
             </div>
         </form>
     </div>

@@ -16,9 +16,12 @@ import { useConfirm } from 'primevue/useconfirm';
 import EditProduct from '../forms/EditProduct.vue';
 import { Link } from '@inertiajs/vue3';
 import { useAuthStore } from '@/stores/AuthStore';
+import PDFObject from '../PDFObject.vue';
+import InputNumber from 'primevue/inputnumber';
 
 const createModal = ref<Boolean>(false)
 const editModal = ref<Boolean>(false)
+const barcodeModal = ref<Boolean>(false)
 const toast = useToast()
 const confirm = useConfirm()
 const productService = new ProductService()
@@ -28,6 +31,8 @@ const rows = ref<number>(10)
 const current_page = ref(1)
 const totalRecords = ref(0)
 const authStore = useAuthStore()
+const quantity = ref(1)
+const printer = ref(false)
 
 const getSeverity = (product: Product) => {
     switch (product.stock > 0) {
@@ -59,6 +64,12 @@ const closeModalEdit = () => {
     fetchItems(current_page.value)
 }
 
+const openModalBarcode = (productData: Product) => {
+    product.value = productData
+    barcodeModal.value = true
+    quantity.value = 1
+}
+
 const fetchItems = (pageNumber: number) => {
     productService.paginate(pageNumber, rows.value)
     .then((response: AxiosResponse) => {
@@ -76,7 +87,6 @@ onMounted(() => {
 const deleteItem = (url: string) => {
     axios.post(url, { _method: 'delete' })
     .then((response: AxiosResponse) => {
-        console.log(response);
         toast.add({ summary: 'Correcto', detail: response.data.message, severity: 'success', life: 1500 })
         fetchItems(current_page.value)
     })
@@ -113,6 +123,11 @@ const onPage = (event: DataTablePageEvent) => {
 watch(() => authStore.cashRegister, () => {
     fetchItems(current_page.value)
 })
+
+const openLabels = () => {
+    printer.value = true
+    barcodeModal.value = false
+}
 </script>
 <template>
     <Dialog v-model:visible="createModal" header="Nuevo producto" :modal="true" :style="{ width: '65rem' }">
@@ -121,6 +136,20 @@ watch(() => authStore.cashRegister, () => {
 
     <Dialog v-model:visible="editModal" header="Editar producto" :modal="true" @hide="fetchItems(current_page)" :style="{ width: '65rem' }">
         <EditProduct @save="closeModalEdit" :product="product ?? undefined"></EditProduct>
+    </Dialog>
+
+    <Dialog v-model:visible="barcodeModal" header="Código de barras" :modal="true">
+        <div class="grid gap-4">
+            <div>
+                <span>Número de etiquetas</span>
+                <InputNumber v-model="quantity" class="w-full"></InputNumber>
+            </div>
+            <Button label="Descargar" @click="openLabels"></Button>
+        </div>
+    </Dialog>
+
+    <Dialog v-model:visible="printer" header="Código de barras" :modal="true">
+        <PDFObject :url="route('barcodes.show', {productId: product?.id, quantity: quantity})" :options="{ height: '100vh', width: '30vw', border: '1px', solid: '#ccc' }" />
     </Dialog>
 
     <DataTable :value="items" paginator :rows="rows" @page="onPage" :totalRecords="totalRecords" lazy>
@@ -215,6 +244,7 @@ watch(() => authStore.cashRegister, () => {
             </template>
             <template #body="{data}">
                 <div class="flex gap-1 justify-center">
+                    <Button raised icon="pi pi-barcode" v-tooltip.top="'Código de barras'" @click="openModalBarcode(data)"></Button>
                     <Button raised v-if="can('update products')" icon="pi pi-pencil" severity="warn" @click="openModalEdit(data)"></Button>
                     <Button raised v-if="can('delete products')" icon="pi pi-trash" severity="danger" @click="confirmDelete(route('api.products.destroy', { product: data.id }))"></Button>
                 </div>

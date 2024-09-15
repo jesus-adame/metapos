@@ -10,7 +10,7 @@ export default {
             // Sizes & Spacing
             'leading-[normal]',
             {
-                'px-3 py-2': props.size === null,
+                'px-4 py-2': props.size === null,
                 'text-sm py-1.5 px-3': props.size === 'small',
                 'text-xl py-3 px-4': props.size === 'large'
             },
@@ -25,8 +25,8 @@ export default {
 
             // Shapes
             { 'shadow-lg': props.raised },
-            { 'rounded-md': !props.rounded, 'rounded-full': props.rounded },
-            { 'rounded-none first:rounded-l-md last:rounded-r-md': parent.instance.$name == 'InputGroup' },
+            { 'rounded': !props.rounded, 'rounded-full': props.rounded },
+            { 'rounded-none first:rounded-l last:rounded-r': parent.instance.$name == 'InputGroup' },
 
             // Link Button
             { 'text-primary-600 bg-transparent border-transparent': props.link },
@@ -210,6 +210,7 @@ export default {
         class: [
             'duration-200',
             'font-medium',
+            'uppercase',
             {
                 'hover:underline': props.link
             },
