@@ -24,6 +24,8 @@ class SaleController extends Controller
         $since = $request->dates[0] ?? null;
         $until = $request->dates[1] ?? null;
 
+        $location = $request->user()->location;
+
         $perPage = $request->input('rows', 10);
         $builder = Sale::with('customer', 'seller', 'cashRegister');
 
@@ -31,8 +33,8 @@ class SaleController extends Controller
             $splitSince = explode('T', $since);
             $splitUntil = explode('T', $until);
 
-            $sinceStr = $splitSince[0] . ' 00:00:00 ' . 'America/Mexico_City';
-            $untilStr = $splitUntil[0] . ' 23:59:59 ' . 'America/Mexico_City';
+            $sinceStr = $splitSince[0] . ' 00:00:00 ' . $location->timezone;
+            $untilStr = $splitUntil[0] . ' 23:59:59 ' . $location->timezone;
 
             $since = Carbon::parse($sinceStr);
             $builder->where('created_at', '>=', $since->utc());

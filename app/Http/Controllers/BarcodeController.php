@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Picqer\Barcode\BarcodeGeneratorSVG;
 use Picqer\Barcode\BarcodeGeneratorPNG;
 use Picqer\Barcode\BarcodeGeneratorHTML;
 use Illuminate\Support\Facades\Auth;
@@ -31,10 +30,6 @@ class BarcodeController extends Controller
 
         $style = 'block'; // block
 
-        // return view('barcodes.index', [
-        //     'barcodes' => $barcodes,
-        // ]);
-
         $pdf = Pdf::loadView('barcodes.index', [
             'barcodes' => $barcodes,
             'style' => $style
@@ -61,10 +56,6 @@ class BarcodeController extends Controller
         }
 
         $style = 'block'; // block
-
-        // return view('barcodes.index', [
-        //     'barcodes' => $barcodes,
-        // ]);
 
         $pdf = Pdf::loadView('barcodes.index', [
             'barcodes' => $barcodes,
