@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\ExpenseController;
 use App\Http\Controllers\Api\ExpenseCategoryController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\CustomerController;
+use App\Http\Controllers\Api\ChartController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CashRegisterController;
 use App\Http\Controllers\Api\CashFlowController;
@@ -61,4 +62,5 @@ Route::middleware(['auth:sanctum', InitializeTenancyByDomain::class])->name('api
     Route::get('/cash-flows/resume', [CashFlowController::class, 'resume'])->name('cash-flows.resume');
     Route::post('/cash-registers/select', [CashRegisterController::class, 'select'])->name('cash-registers.select');
     Route::get('/dashboard/resume', [DashboardController::class, 'resume'])->name('dashboard.resume');
+    Route::get('/charts/sales-by-week', [ChartController::class, 'salesByWeek'])->name('charts.salesByWeek');
 });
