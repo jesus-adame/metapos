@@ -123,11 +123,28 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
-    /**
-     * Default Super Admin
-     */
+    /*
+    |---------------------------------------------------------------------
+    | Default Super Admin
+    |---------------------------------------------------------------------
+    */
     'admin' => [
         'email' => env('APP_ADMIN_EMAIL', 'admin@admin.org'),
         'password' => env('APP_ADMIN_PASSWORD', 'secret123'),
     ],
+
+    /*
+    |---------------------------------------------------------------------
+    | Money settings
+    |---------------------------------------------------------------------
+    |
+    | Money exchange rates settings
+    |
+    */
+    'exchange_api' => [
+        'aplication_currency' => 'MXN', // Default currency for register products and locations
+        'base_url' => env('EXCHANGE_RATE_API_HOST', 'https://v6.exchangerate-api.com'),
+        'base_currency' => 'USD', // Base currency for exchange calculations
+        'key' => env('EXCHANGE_RATE_API_KEY', ''),
+    ]
 ];

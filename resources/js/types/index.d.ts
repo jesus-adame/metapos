@@ -204,6 +204,13 @@ export interface Setting {
     value: string
 }
 
+export interface Currency {
+    id: ?number
+    name: string
+    symbol: string
+    exchange_rate: number
+}
+
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
     auth: {
         user: User;

@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\ExpenseController;
 use App\Http\Controllers\Api\ExpenseCategoryController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\CustomerController;
+use App\Http\Controllers\Api\CurrencyController;
 use App\Http\Controllers\Api\ChartController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CashRegisterController;
@@ -46,6 +47,7 @@ Route::middleware(['auth:sanctum', InitializeTenancyByDomain::class])->name('api
     Route::resource('permissions', PermissionController::class);
     Route::resource('settings', SettingController::class);
     Route::resource('categories', CategoryController::class);
+    Route::resource('currencies', CurrencyController::class)->only(['index']);
 
     Route::post('/login', [AuthenticatedApiController::class, 'store']);
     Route::post('/logout', [AuthenticatedApiController::class, 'destroy']);
@@ -63,4 +65,7 @@ Route::middleware(['auth:sanctum', InitializeTenancyByDomain::class])->name('api
     Route::post('/cash-registers/select', [CashRegisterController::class, 'select'])->name('cash-registers.select');
     Route::get('/dashboard/resume', [DashboardController::class, 'resume'])->name('dashboard.resume');
     Route::get('/charts/sales-by-week', [ChartController::class, 'salesByWeek'])->name('charts.salesByWeek');
+    Route::post('/currencies/convert', [CurrencyController::class, 'convert'])->name('currencies.convert');
+    Route::post('/currencies/refresh-rates', [CurrencyController::class, 'refreshRates'])->name('currencies.refreshRates');
+    Route::put('/currencies/update-rate', [CurrencyController::class, 'updateRate'])->name('currencies.updateRate');
 });

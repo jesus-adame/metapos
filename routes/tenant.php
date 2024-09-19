@@ -18,6 +18,7 @@ use App\Http\Controllers\InventoryTransactionController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CashRegisterController;
 use App\Http\Controllers\CashFlowController;
@@ -68,6 +69,7 @@ Route::middleware([
         Route::resource('cash-registers', CashRegisterController::class);
         Route::resource('categories', CategoryController::class);
         Route::resource('quotations', QuotationController::class);
+        Route::resource('currencies', CurrencyController::class)->only(['index']);
     });
 
     Route::get('/offline', function () {
