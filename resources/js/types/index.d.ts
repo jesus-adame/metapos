@@ -34,6 +34,16 @@ export interface Sale {
     products: Product[]
 }
 
+export interface Quote {
+    id: number
+    customer?: Customer
+    seller: User
+    wholesale_sale: boolean
+    total: number
+    status: string
+    products: Product[]
+}
+
 export interface Purchase {
     id: number
     supplier?: Supplier

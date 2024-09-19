@@ -9,6 +9,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
@@ -66,6 +67,7 @@ Route::middleware([
         Route::resource('locations', LocationController::class);
         Route::resource('cash-registers', CashRegisterController::class);
         Route::resource('categories', CategoryController::class);
+        Route::resource('quotations', QuotationController::class);
     });
 
     Route::get('/offline', function () {
