@@ -42,7 +42,7 @@
 <body>
     <div class="content">
         @foreach ($barcodes as $barcode)
-            <div class="barcode" style="display: {{ $style }}" style="transform: rotate(90deg);">
+            <div class="barcode" style="display: {{ $style }}">
                 <p class="location">{{ $barcode['location'] }}</p>
                 <span class="name">{{ $barcode['name'] }}</span>
                 <p class="price">{{ $barcode['price'] }}</p>
