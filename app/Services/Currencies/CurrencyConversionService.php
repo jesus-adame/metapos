@@ -3,7 +3,6 @@
 namespace App\Services\Currencies;
 
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Cache;
 use App\Models\Currency;
 
 class CurrencyConversionService

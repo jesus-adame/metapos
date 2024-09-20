@@ -3,7 +3,7 @@ import { onMounted, ref, watch } from 'vue';
 import CurrencyService from "@/Services/CurrencyService";
 import { AxiosResponse } from 'axios';
 import { DataTablePageEvent } from 'primevue/datatable';
-import { formatDateTime, formatMoneyNumber } from '@/helpers';
+import { formatDateTime } from '@/helpers';
 import { useCurrencyStore } from '@/stores/CurrencyStore';
 
 const currencyService = new CurrencyService()
