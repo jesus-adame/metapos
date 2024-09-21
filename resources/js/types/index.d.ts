@@ -133,7 +133,7 @@ export interface Product {
     currency?: Currency
 }
 
-export interface CartItem {
+export interface ProductSale {
     id?: number
     name: string
     code: ?string
@@ -148,6 +148,37 @@ export interface CartItem {
     tax_rate: number
     subtotal: number
     line_total: number
+}
+
+export interface ProductPurchase {
+    id?: number
+    name: string
+    code: ?string
+    sku: ?string
+    price: number
+    image: ?string | File
+    image_url: ?string
+    quantity: number
+    stock: number
+    unit_type: string
+    tax: number
+    tax_rate: number
+    subtotal: number
+    line_total: number
+}
+
+export interface CartItem {
+    id?: number
+    name: string
+    code: ?string
+    sku: ?string
+    price: number
+    image: ?string | File
+    image_url: ?string
+    quantity: number
+    stock: number
+    unit_type: string
+    tax: number
 }
 
 export interface Category {
