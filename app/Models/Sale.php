@@ -57,4 +57,9 @@ class Sale extends Model implements Cashable
     {
         return $this->morphMany(CashFlow::class, 'cashable');
     }
+
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class);
+    }
 }

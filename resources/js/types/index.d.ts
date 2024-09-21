@@ -110,6 +110,7 @@ export interface Location {
     type: string
     timezone: string
     is_default: boolean
+    currency: ?string
 }
 
 export interface Product {
@@ -130,6 +131,7 @@ export interface Product {
     has_taxes: ?boolean
     description: ?string
     categories?: Category[]
+    currency?: Currency
 }
 
 export interface CartItem {

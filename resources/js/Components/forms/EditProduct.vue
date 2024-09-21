@@ -115,6 +115,10 @@ const removeCategory = (category: Category) => {
 <template>
     <div class="grid grid-cols-1 xl:grid-cols-2 gap-2">
         <div class="flex flex-col gap-2">
+            <div class="">
+                <label for="name" class="block">Nombre</label>
+                <InputText v-model="form.name" class="w-full"></InputText>
+            </div>
             <div class="flex gap-2 justify-between">
                 <div class="w-full">
                     <label for="code" class="block">Código</label>
@@ -125,9 +129,9 @@ const removeCategory = (category: Category) => {
                     <InputText v-model="form.sku" class="w-full"></InputText>
                 </div>
             </div>
-            <div class="">
-                <label for="name" class="block">Nombre</label>
-                <InputText v-model="form.name" class="w-full"></InputText>
+            <div class="w-full">
+                <label for="unit_type" class="block">Unidad</label>
+                <Select v-model="form.unit_type" class="w-full" :options="unities" optionLabel="label" optionValue="label"></Select>
             </div>
             <div class="flex gap-2 justify-between ">
                 <div class="w-full">
@@ -139,17 +143,9 @@ const removeCategory = (category: Category) => {
                     <InputNumber v-model="form.price" showButtons :minFractionDigits="2" :maxFractionDigits="2" class="w-full" placeholder="0.00"></InputNumber>
                 </div>
             </div>
-            <div class="w-full">
-                <label for="unit_type" class="block">Unidad</label>
-                <Select v-model="form.unit_type" class="w-full" :options="unities" optionLabel="label" optionValue="label"></Select>
-            </div>
-            <div class="w-full flex items-center gap-2 py-1">
-                <Checkbox v-model="form.has_taxes" :binary="true" inputId="hasTaxes"></Checkbox>
-                <label for="hasTaxes" class="block">Tiene impuestos</label>
-            </div>
-            <div v-if="form.has_taxes" class="flex gap-2">
+            <div class="flex gap-2">
                 <div class="w-full">
-                    <label for="tax" class="block">Procentaje</label>
+                    <label for="tax" class="block">IVA</label>
                     <InputNumber v-model="form.tax" showButtons prefix="%" :maxFractionDigits="1" class="w-full" placeholder="%0.0"></InputNumber>
                 </div>
                 <div class="w-full">
@@ -162,7 +158,7 @@ const removeCategory = (category: Category) => {
                     <label for="wholesale_price" class="block">Precio mayorista</label>
                     <InputNumber v-model="form.wholesale_price" showButtons :minFractionDigits="2" :maxFractionDigits="2" class="w-full" placeholder="0.00"></InputNumber>
                 </div>
-                <div v-if="form.has_taxes" class="w-full">
+                <div class="w-full">
                     <label for="tax" class="block">Con impuesto</label>
                     <span v-if="form.wholesale_price != null && form.tax != null" class="block py-2 px-3 w-full border border-1 rounded-md bg-gray-100">
                         {{ formatMoneyNumber(((form?.tax / 100) * form?.wholesale_price) + form?.wholesale_price) }}

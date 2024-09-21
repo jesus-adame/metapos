@@ -13,6 +13,8 @@ const form = ref({
     phone_number: '',
     rfc: '',
     email: '',
+    timezone: '',
+    currency: '',
     type: 'branch'
 });
 
@@ -27,6 +29,8 @@ const submit = () => {
             phone_number: '',
             rfc: '',
             email: '',
+            timezone: '',
+            currency: '',
             type: 'branch'
         };
 
@@ -79,6 +83,22 @@ const submit = () => {
                 class="mt-1 block w-full"
                 v-model="form.address"
             />
+        </div>
+        <div class="flex gap-2 mt-4">
+            <div class="w-full">
+                <InputLabel for="timezone" value="Zona horaria" />
+                <InputText
+                    class="mt-1 block w-full"
+                    v-model="form.timezone"
+                />
+            </div>
+            <div class="w-full">
+                <InputLabel for="currency" value="Moneda" />
+                <InputText
+                    class="mt-1 block w-full"
+                    v-model="form.currency"
+                />
+            </div>
         </div>
         <div class="flex items-center justify-end mt-4">
             <Button label="Guardar" type="submit" class="ms-4" severity="success"></Button>

@@ -68,4 +68,9 @@ class Product extends Model implements Auditable
     {
         return $this->belongsToMany(Category::class);
     }
+
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class);
+    }
 }

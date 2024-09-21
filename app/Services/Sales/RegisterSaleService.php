@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\Models\PaymentMethod;
 use App\Models\Payment;
 use App\Models\Location;
+use App\Models\Currency;
 use App\Models\CashRegister;
 use App\Models\CashFlow;
 use App\Helpers\MathNumberHelper;
@@ -117,6 +118,8 @@ class RegisterSaleService
         CashRegister $cashRegister,
         ?array $discount = null,
     ): Sale {
+        $currency = Currency::where('name', 'MXN')->first();
+
         $sale = new Sale();
         $sale->customer_id = $customerId;
         $sale->seller_id = $sellerId;
@@ -144,6 +147,7 @@ class RegisterSaleService
             }
         }
 
+        $sale->currency()->associate($currency);
         $sale->total = $calculatedTotal - $discountAmount;
         $sale->save();
 

@@ -26,6 +26,7 @@ class LocationController extends Controller
             'email' => 'nullable|string|email|max:255',
             'type' => 'required|string|in:branch,warehouse',
             'timezone' => 'required|timezone:all',
+            'currency' => 'required|exists:currencies,code',
         ]);
 
         Location::create([
@@ -36,6 +37,7 @@ class LocationController extends Controller
             'rfc' => $request->rfc,
             'type' => 'branch',
             'is_default' => false,
+            'currency' => $request->currency,
         ]);
 
         return response()->json([
@@ -52,6 +54,7 @@ class LocationController extends Controller
             'email' => 'nullable|string|email|max:255',
             'type' => 'required|string|in:branch,warehouse', // Validate type
             'timezone' => 'required|timezone:all',
+            'currency' => 'required|exists:currencies,code',
         ]);
 
         $location->update([
@@ -62,6 +65,7 @@ class LocationController extends Controller
             'rfc' => $request->rfc,
             'type' => $request->type,
             'timezone' => $request->timezone,
+            'currency' => $request->currency,
         ]);
 
         return response()->json([

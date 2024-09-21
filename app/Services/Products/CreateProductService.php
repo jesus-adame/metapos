@@ -5,12 +5,14 @@ namespace App\Services\Products;
 use App\Models\Product;
 use App\Models\Location;
 use App\Models\Inventory;
+use App\Models\Currency;
 
 class CreateProductService
 {
     public function execute($attrs, $author, $hasImage, $image)
     {
         $locationId = $author->location_id;
+        $currency = Currency::where('name', 'MXN')->first();
 
         if ($hasImage) {
             // $file = $attrs->file('image'); // Add name file
@@ -22,6 +24,7 @@ class CreateProductService
             $imageUrl = null;
         }
 
+        /** @var Product */
         $product = Product::create([
             'name' => $attrs->name,
             'code' => $attrs->code,
@@ -38,6 +41,8 @@ class CreateProductService
         ]);
 
         $product->categories()->attach($attrs['categories']);
+        $product->currency()->associate($currency);
+        $product->save();
 
         foreach (Location::all() as $location) {
             Inventory::create([

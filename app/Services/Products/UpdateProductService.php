@@ -4,11 +4,14 @@ namespace App\Services\Products;
 
 use Illuminate\Support\Facades\Storage;
 use App\Models\Product;
+use App\Models\Currency;
 
 class UpdateProductService
 {
     public function execute(Product $product, $attrs)
     {
+        $currency = Currency::where('name', 'MXN')->first();
+
         if ($attrs->hasFile('image')) {
             // $file = $attrs->file('image'); // Add name file
             // $imageName = $file->hashName();
@@ -39,6 +42,8 @@ class UpdateProductService
         ]);
 
         $product->categories()->attach($attrs['categories']);
+        $product->currency()->associate($currency);
+        $product->save();
 
         return $product;
     }
