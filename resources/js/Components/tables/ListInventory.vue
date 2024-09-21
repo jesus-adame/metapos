@@ -18,6 +18,7 @@ import { Link } from '@inertiajs/vue3';
 import { useAuthStore } from '@/stores/AuthStore';
 import PDFObject from '../PDFObject.vue';
 import InputNumber from 'primevue/inputnumber';
+import PrintTicketButton from '../prints/PrintTicketButton.vue';
 
 const createModal = ref<Boolean>(false)
 const editModal = ref<Boolean>(false)
@@ -142,7 +143,10 @@ const openLabels = () => {
         <div class="grid gap-4">
             <div>
                 <span>Número de etiquetas</span>
-                <InputNumber v-model="quantity" class="w-full"></InputNumber>
+                <div class="flex gap-2">
+                    <InputNumber v-model="quantity" class="w-full"></InputNumber>
+                    <PrintTicketButton :pdfUrl="route('barcodes.show', {productId: product?.id, quantity: quantity})"></PrintTicketButton>
+                </div>
             </div>
             <Button :disabled="!quantity" label="Descargar" @click="openLabels"></Button>
         </div>
