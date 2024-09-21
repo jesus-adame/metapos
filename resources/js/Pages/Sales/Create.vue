@@ -210,7 +210,6 @@ onMounted(() => {
         e.preventDefault()
         if (paymentButton.value) {
             paymentButton.value.$el.click()
-            console.log(paymentButton.value.$el);
         }
     })
 

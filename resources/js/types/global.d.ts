@@ -27,3 +27,9 @@ declare module 'pdfobject-vue' {
     const PDFObjectPlugin: any;
     export default PDFObjectPlugin;
 }
+
+declare module 'mousetrap' {
+    interface MousetrapStatic {
+        bindGlobal(keys: string, callback: (event: Event) => void): void;
+    }
+}
