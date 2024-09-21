@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { can, formatDateTime, formatMoneyNumber, saleSeverity, saleStatus } from '@/helpers';
+import { can, formatDateTime, formatMoneyNumber, getPrinter, saleSeverity, saleStatus } from '@/helpers';
 import Column from 'primevue/column';
 import CashRegisterIcon from '@/Components/icons/CashRegisterIcon.vue';
 import UserIcon from '@/Components/icons/UserIcon.vue';
@@ -63,7 +63,7 @@ onMounted(() => {
     <Dialog v-model:visible="modalTicket" modal :header="'Venta #' + saleId">
         <PDFObject :url="route('sales.ticket', {id: saleId})" :options="{ height: '100vh', width: '30vw', border: '1px', solid: '#ccc' }" />
         <div class="flex w-full justify-end pt-2">
-            <PrintTicketButton :pdf-url="pdfUrl"></PrintTicketButton>
+            <PrintTicketButton :pdf-url="pdfUrl" :printer="getPrinter()"></PrintTicketButton>
         </div>
     </Dialog>
 

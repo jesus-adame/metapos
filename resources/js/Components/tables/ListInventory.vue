@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { can, formatMoneyNumber, percentageNumber } from '@/helpers';
+import { can, formatMoneyNumber, getLabelPrinter, percentageNumber } from '@/helpers';
 import { Product } from '@/types';
 import Button from 'primevue/button';
 import Column from 'primevue/column';
@@ -139,21 +139,21 @@ const openLabels = () => {
         <EditProduct @save="closeModalEdit" :product="product ?? undefined"></EditProduct>
     </Dialog>
 
+    <Dialog v-model:visible="printer" header="Código de barras" :modal="true">
+        <PDFObject :url="route('barcodes.show', {productId: product?.id, quantity: quantity})" :options="{ height: '100vh', width: '30vw', border: '1px', solid: '#ccc' }" />
+    </Dialog>
+
     <Dialog v-model:visible="barcodeModal" header="Código de barras" :modal="true">
         <div class="grid gap-4">
             <div>
                 <span>Número de etiquetas</span>
                 <div class="flex gap-2">
                     <InputNumber v-model="quantity" class="w-full"></InputNumber>
-                    <PrintTicketButton :pdfUrl="route('barcodes.show', {productId: product?.id, quantity: quantity})"></PrintTicketButton>
+                    <PrintTicketButton :printer="getLabelPrinter()" :pdfUrl="route('barcodes.show', {productId: product?.id, quantity: quantity})"></PrintTicketButton>
                 </div>
             </div>
             <Button :disabled="!quantity" label="Descargar" @click="openLabels"></Button>
         </div>
-    </Dialog>
-
-    <Dialog v-model:visible="printer" header="Código de barras" :modal="true">
-        <PDFObject :url="route('barcodes.show', {productId: product?.id, quantity: quantity})" :options="{ height: '100vh', width: '30vw', border: '1px', solid: '#ccc' }" />
     </Dialog>
 
     <DataTable :value="items" paginator :rows="rows" @page="onPage" :totalRecords="totalRecords" lazy>

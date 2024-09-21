@@ -3,11 +3,11 @@ import axios from 'axios';
 import { onMounted, onUnmounted, ref } from 'vue';
 import qz from 'qz-tray';
 import Button from 'primevue/button';
-import { getPrinter } from '@/helpers';
 
 const config = ref()
 const props = defineProps<{
     pdfUrl: string,
+    printer: string
 }>()
 
 const print = () => {
@@ -37,7 +37,7 @@ const print = () => {
 onMounted(() => {
     qz.websocket.connect().then(() => {
         console.log("Conectado a QZ Tray");
-        config.value = qz.configs.create(getPrinter() ?? '');
+        config.value = qz.configs.create(props.printer);
     }).catch((err: any) => console.error(err));
 })
 

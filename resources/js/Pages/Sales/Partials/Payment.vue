@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import PrintTicketButton from '@/Components/prints/PrintTicketButton.vue';
-import { formatMoneyNumber } from '@/helpers';
+import { formatMoneyNumber, getPrinter } from '@/helpers';
 import axios from 'axios';
 import Button from 'primevue/button';
 import { computed, ref } from 'vue';
@@ -109,7 +109,7 @@ const closeDialogResponse = () => {
       <strong>{{ dialogResponseData.content }}</strong>
     </p>
     <div class="flex w-full">
-      <PrintTicketButton :pdf-url="route('sales.ticket', {id: saleId})"></PrintTicketButton>
+      <PrintTicketButton :pdf-url="route('sales.ticket', {id: saleId})" :printer="getPrinter()"></PrintTicketButton>
       <Button v-if="saleStatus == 'paid'" severity="success" label="Continuar" class="ml-2" @click="closeDialogResponse"></Button>
       <Button v-if="saleStatus != 'paid'" class="ml-2" label="Aceptar" @click="closeDialogResponse"></Button>
     </div>

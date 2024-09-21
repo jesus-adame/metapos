@@ -177,5 +177,9 @@ export function hasRole(name: string) {
 }
 
 export function getPrinter() {
-    return localStorage.getItem('selectedPrinter');
+    return localStorage.getItem('selectedPrinter') ?? '';
+}
+
+export function getLabelPrinter() {
+    return localStorage.getItem('selectedLabelPrinter') ?? '';
 }
