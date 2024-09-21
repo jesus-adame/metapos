@@ -75,7 +75,7 @@ class CurrencyController extends Controller
     {
         try {
             $this->currencyService->refreshExchangeRates();
-            return response()->json(['message' => 'Exchange rate updated successfully']);
+            return response()->json(['message' => 'Tasas actualizadas correctamente']);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 400);
         }

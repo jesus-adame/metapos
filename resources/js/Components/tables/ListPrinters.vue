@@ -26,9 +26,7 @@ const saveSelectedLabelPrinter = () => {
 const findPrinters = () => {
     if (qz.websocket.isActive()) {
         qz.printers.find().then((finded_printers: any) => {
-            console.log(finded_printers);  // Lista de impresoras disponibles
             // Puedes seleccionar una impresora por su nombre
-
             printers.value = finded_printers
         }).catch((err: any) => console.error(err));
     }
@@ -36,17 +34,13 @@ const findPrinters = () => {
 
 const connectQZ = () => {
     if (!qz.websocket.isActive()) {
-        qz.websocket.connect().then(() => {
-            console.log("Conectado a QZ Tray");
-        }).catch((err: any) => console.error(err));
+        qz.websocket.connect().catch((err: any) => console.error(err));
     }
 }
 
 const disconnectQZ = () => {
     if (qz.websocket.isActive()) {
-        qz.websocket.disconnect().then(() => {
-           console.log("Desconectado de QZ Tray");
-        }).catch(err => console.error(err));
+        qz.websocket.disconnect().catch(err => console.error(err));
     }
 }
 

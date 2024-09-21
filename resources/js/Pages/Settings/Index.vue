@@ -14,9 +14,10 @@ import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import { useToast } from 'primevue/usetoast';
 import ListPrinters from '@/Components/tables/ListPrinters.vue';
+import ListCurrencies from '@/Components/tables/ListCurrencies.vue';
 
 const modalCreate = ref(false)
-const activePage = ref('users')
+const activePage = ref('printers')
 const settingService = new SettingService()
 const toast = useToast()
 
@@ -42,16 +43,26 @@ onMounted(() => {
 })
 
 const items = ref([
-    // {
-    //     label: 'General',
-    //     items: [
-    //         {
-    //             label: 'Ajustes',
-    //             icon: 'pi pi-cog',
-    //             module: 'settings'
-    //         }
-    //     ]
-    // },
+    {
+        label: 'General',
+        items: [
+            // {
+            //     label: 'Ajustes',
+            //     icon: 'pi pi-cog',
+            //     module: 'settings'
+            // },
+            {
+                label: 'Impresoras',
+                icon: 'pi pi-print',
+                module: 'printers'
+            },
+            {
+                label: 'Monedas',
+                icon: 'pi pi-euro',
+                module: 'currencies'
+            }
+        ]
+    },
     {
         label: 'Usuarios',
         items: [
@@ -79,11 +90,6 @@ const items = ref([
                 label: 'Cajas',
                 icon: 'pi pi-shopping-cart',
                 module: 'cashRegisters'
-            },
-            {
-                label: 'Impresoras',
-                icon: 'pi pi-print',
-                module: 'printers'
             }
         ]
     }
@@ -140,6 +146,9 @@ const updateSettings = () => {
                 </div>
                 <div v-if="activePage == 'printers'" class="w-full shadow-md">
                     <ListPrinters></ListPrinters>
+                </div>
+                <div v-if="activePage == 'currencies'" class="w-full shadow-md">
+                    <ListCurrencies></ListCurrencies>
                 </div>
             </div>
         </div>
