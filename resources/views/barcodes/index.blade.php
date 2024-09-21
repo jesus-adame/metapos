@@ -11,7 +11,7 @@
         .content {
         }
         .barcode {
-            padding: 70px 20px;
+            padding-top: 90px;
             text-align: center;
             width: 100%;
         }
@@ -22,23 +22,23 @@
             width: 75%;
         }
         .barcode .name {
-            font-size: 60px
+            font-size: 70px
         }
         .barcode .price {
-            font-size: 160px
+            font-size: 180px
         }
         .barcode .code {
-            font-size: 45px
+            font-size: 50px
         }
         .barcode .location {
-            font-size: 30px;
+            font-size: 35px;
             text-transform: uppercase
         }
     </style>
 </head>
 <body>
     <div class="content">
-        @foreach ($barcodes as $barcode)
+        @foreach ($barcodes as $index => $barcode)
             <div class="barcode" style="display: {{ $style }}">
                 <p class="location">{{ $barcode['location'] }}</p>
                 <span class="name">{{ $barcode['name'] }}</span>
@@ -48,6 +48,9 @@
                 </div>
                 <span class="code">{{ $barcode['code'] }}</span>
             </div>
+            @if (($index + 1) < count($barcodes))
+                <div style="page-break-after:always;"></div>
+            @endif
         @endforeach
     </div>
 </body>
