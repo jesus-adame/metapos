@@ -62,6 +62,8 @@ class BarcodeController extends Controller
             'style' => $style
         ]);
 
+        $pdf->setPaper('A4', 'landscape');
+
         return $pdf->stream('barcodes.pdf');
     }
 }

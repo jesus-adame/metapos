@@ -11,26 +11,27 @@
         .content {
         }
         .barcode {
-            padding: 3px 10px;
-            border: 1px solid;
-            border-color: #d0d0d0;
+            padding: 70px 20px;
             text-align: center;
-            width: 50mm;
+            width: 100%;
         }
         .barcode .bars {
             margin: auto;
         }
         .barcode .bars img {
-            width: 80%;
+            width: 75%;
         }
         .barcode .name {
-            font-size: 12px
+            font-size: 60px
         }
         .barcode .price {
-            font-size: 24px
+            font-size: 160px
+        }
+        .barcode .code {
+            font-size: 45px
         }
         .barcode .location {
-            font-size: 8px;
+            font-size: 30px;
             text-transform: uppercase
         }
     </style>
@@ -45,7 +46,7 @@
                 <div class="bars">
                     <img src="data:image/png;base64,{{ base64_encode($barcode['bars']) }}">
                 </div>
-                <span style="font-size: 12px">{{ $barcode['code'] }}</span>
+                <span class="code">{{ $barcode['code'] }}</span>
             </div>
         @endforeach
     </div>
