@@ -77,14 +77,14 @@ onMounted(() => {
         <template #trigger>
             <span class="inline-flex rounded-md">
                 <button type="button">
-                    <div class="text-gray-700 px-4 py-2 shadow-md flex items-center justify-between w-62 cursor-pointer rounded-md">
+                    <div class="text-gray-700 px-3 py-1 shadow-md flex items-center justify-between w-62 cursor-pointer rounded-md">
                         <div class="flex gap-1 items-center">
-                            <div class="py-2 px-3 bg-gray-300 rounded-full text-gray-500">
+                            <div class="py-1 px-2 bg-gray-300 rounded-full text-gray-500">
                                 <i :class="locationIcon(authStore.location)"></i>
                             </div>
-                            <div class="ml-2 text-left">
+                            <div class="ml-2 text-left font-medium">
                                 <p>{{ authStore.location?.name }}</p>
-                                <span class="rounded-lg bg-yellow-500 px-2 text-sm text-yellow-100">{{ authStore.cashRegister?.name }}</span>
+                                <span class="rounded-lg bg-yellow-500 px-2 text-xs text-yellow-100">{{ authStore.cashRegister?.name }}</span>
                             </div>
                         </div>
                         <svg

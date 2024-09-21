@@ -54,6 +54,24 @@ class ProductController extends Controller
         return response()->json($products);
     }
 
+    public function byCategory(Request $request): JsonResponse
+    {
+        Gate::allows(Permission::VIEW_PRODUCTS);
+
+        if (is_null($request->category)) {
+            return response()->json([]);
+        }
+
+        $perPage = $request->input('rows', 10);
+        $category = $request->category;
+
+        $products = Product::whereHas('categories', function ($query) use ($category) {
+            $query->where('categories.name', $category);
+        })->with('categories')->paginate($perPage);
+
+        return response()->json($products);
+    }
+
     public function store(CreateProductRequest $request, CreateProductService $service): JsonResponse
     {
         $product = $service->execute($request, Auth::user(), $request->hasFile('image'), $request->file('image'));

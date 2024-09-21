@@ -178,7 +178,7 @@ onMounted(() => {
                 </div>
             </div>
             <div>
-                <Button :style="{ width: '100%' }" type="submit" severity="success" raised>Registrar</Button>
+                <Button :style="{ width: '100%' }" type="submit" severity="success" label="Registrar" raised></Button>
             </div>
         </div>
     </form>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { ref, computed, reactive } from 'vue';
 import { useForm, Head, usePage, Link } from '@inertiajs/vue3';
 import UserLayout from '@/Layouts/UserLayout.vue';
 import Button from 'primevue/button';
@@ -18,21 +18,21 @@ import ProductsList from './Partials/ProductsList.vue';
 import SelectProduct from './Partials/SelectProduct.vue';
 import SupplierService from '@/Services/SupplierService';
 import CreateSupplier from '@/Components/forms/CreateSupplier.vue';
+import UserIcon from '@/Components/icons/UserIcon.vue';
 
 // Retrieve suppliers and products from the server
 const page = usePage();
-const products = ref<Product[]>([]);
 const productService = new ProductService();
 const supplierService = new SupplierService();
 const searchQuery = ref('');
 const toast = useToast();
-const selectedSupplier = ref<Supplier>();
+const selectedSupplier = ref();
 const filteredSuppliers = ref<Supplier[]>([]);
 const modalPayments = ref(false)
 const modalCreateSupplier = ref(false)
 
 // Initialize the form
-const form = useForm<{
+const form = reactive<{
     supplier_id: number | null,
     products: Product[],
     applicated_at: string | null,
@@ -79,6 +79,10 @@ const searchSupplier = (event: AutoCompleteCompleteEvent) => {
     }, 250);
 }
 
+const setSupplier = () => {
+    form.supplier_id = selectedSupplier.value?.id
+}
+
 const pushProduct = (product: Product) => {
     toast.add({ severity: 'success', summary: 'Correcto', detail: 'Producto agregado correctamente', life: 1100 });
 
@@ -119,14 +123,6 @@ const hideModalPayments = () => {
     modalPayments.value = false
 }
 
-onMounted(() => {
-    productService.fetchAll()
-    .then(response => {
-        const paginate = response.data
-        products.value = [...paginate.data]
-    });
-});
-
 const totalPurchase = computed(() => {
     return form.products.reduce((acc, product) => acc + (product.cost * product.quantity), 0);
 });
@@ -156,7 +152,7 @@ const hideModalCreateSupplier = () => {
     </Dialog>
 
     <Dialog v-model:visible="modalCreateSupplier" modal header="Registrar proveedor" :style="{ width: '35rem' }">
-        <CreateSupplier class="mt-4" @save="hideModalCreateSupplier"></CreateSupplier>
+        <CreateSupplier @save="hideModalCreateSupplier"></CreateSupplier>
     </Dialog>
 
     <UserLayout>
@@ -178,9 +174,10 @@ const hideModalCreateSupplier = () => {
             </div>
 
             <div class="supplier md:w-1/3">
-                <div class="flex">
+                <div v-if="!selectedSupplier?.name" class="flex gap-1">
                     <AutoComplete v-model="selectedSupplier" optionLabel="name" :suggestions="filteredSuppliers"
                         @complete="searchSupplier"
+                        @change="setSupplier"
                         class="w-full"
                         inputClass="w-full"
                         placeholder="Proveedor" >
@@ -194,15 +191,20 @@ const hideModalCreateSupplier = () => {
                     </AutoComplete>
                     <Button icon="pi pi-plus" class="ml-2" severity="success" raised @click="showModalCreateSupplier"></Button>
                 </div>
+                <div v-if="selectedSupplier?.name" class="flex items-center justify-end font-bold cursor-pointer px-1" @click="selectedSupplier = ''">
+                    <UserIcon v-tooltip="'Cliente'">
+                        {{ selectedSupplier.name }} {{ selectedSupplier.lastname }}
+                    </UserIcon>
+                </div>
             </div>
         </div>
 
         <div class="flex gap-2">
-            <div id="shoppingTable" class="w-1/3">
-                <SelectProduct :products="products" @selected="pushProduct"></SelectProduct>
+            <div id="shoppingTable" class="w-1/2">
+                <SelectProduct @selected="pushProduct"></SelectProduct>
             </div>
 
-            <div class="w-2/3">
+            <div class="w-1/2">
                 <ProductsList :products="form.products"></ProductsList>
                 <Card width="full" class="mt-5">
                     <div class="text-3xl font-bold flex justify-center w-full mb-5">

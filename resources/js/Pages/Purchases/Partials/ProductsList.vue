@@ -27,7 +27,7 @@ const removeProduct = (index: number) => {
             <Column header="Producto">
                 <template #body="{data}">
                     <div class="flex">
-                        <div v-if="data.image" class="overflow-hidden hidden lg:block shadow-lg rounded-md w-16 h-16">
+                        <div v-if="data.image" class="overflow-hidden hidden lg:block shadow-lg rounded-md max-w-16 max-h-16">
                             <Image :src="data.image_url" :alt="data.name" />
                         </div>
                         <div class="text-left ml-2">

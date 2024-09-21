@@ -12,7 +12,7 @@ class PurchaseController extends Controller
     {
         Gate::authorize(Permission::VIEW_PURCHASES);
 
-        $purchases = Purchase::with('supplier', 'buyer', 'location')
+        $purchases = Purchase::with('supplier', 'buyer', 'location', 'payments')
             ->orderBy('updated_at', 'desc')
             ->get();
 
@@ -27,7 +27,14 @@ class PurchaseController extends Controller
             ->with('supplier')
             ->with('buyer')
             ->with('location')
-            ->with('payments')
+            ->with([
+                'products' => function ($query) {
+                    $query->withPivot('quantity', 'price', 'has_taxes', 'tax'); // Asegúrate de incluir los pivotes aquí
+                },
+                'payments' => function ($query) {
+                    $query->with('paymentMethod');
+                },
+            ])
             ->where('id', $purchaseId)
             ->first();
 

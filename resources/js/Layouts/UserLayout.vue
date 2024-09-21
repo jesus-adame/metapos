@@ -10,7 +10,7 @@ import Toast from 'primevue/toast';
   <!-- component -->
   <div class="min-h-screen bg-gray-100 overflow-auto">
     <Sidebar></Sidebar>
-    <div class="py-4 px-10 xl:ml-10">
+    <div class="py-2 px-10 xl:ml-10">
       <Breadcrumb>
         <slot name="header" />
       </Breadcrumb>

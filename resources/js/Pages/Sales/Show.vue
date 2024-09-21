@@ -95,14 +95,14 @@ const hideAddCustomerModal = () => {
                                 </div>
                             </template>
                         </Column>
-                        <Column header="Precio (Sin IVA)">
+                        <Column header="Precio">
                             <template #body="{data}">
                                 {{ formatMoneyNumber(data.pivot.price) }}
                             </template>
                         </Column>
                         <Column header="Cantidad">
-                            <template #body="slot">
-                                {{ slot.data.pivot.quantity }}
+                            <template #body="{data}">
+                                {{ data.pivot.quantity }}
                             </template>
                         </Column>
                         <Column header="IVA">

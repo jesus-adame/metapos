@@ -52,6 +52,7 @@ Route::middleware(['auth:sanctum', InitializeTenancyByDomain::class])->name('api
     Route::post('/login', [AuthenticatedApiController::class, 'store']);
     Route::post('/logout', [AuthenticatedApiController::class, 'destroy']);
     Route::post('/products/search', [ProductController::class, 'search'])->name('products.search');
+    Route::post('/products/category', [ProductController::class, 'byCategory'])->name('products.category');
     Route::post('/users/search', [UserController::class, 'search'])->name('users.search');
     Route::post('/customers/search', [CustomerController::class, 'search'])->name('customers.search');
     Route::post('/suppliers/search', [SupplierController::class, 'search'])->name('suppliers.search');

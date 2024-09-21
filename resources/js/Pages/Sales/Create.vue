@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref, watch } from 'vue';
+import { computed, reactive, ref, watch } from 'vue';
 import { Head, Link } from '@inertiajs/vue3';
 import UserLayout from '@/Layouts/UserLayout.vue';
 import ProductService from '@/Services/ProductService';
@@ -17,6 +17,7 @@ import { AutoCompleteCompleteEvent } from 'primevue/autocomplete';
 import SelectProduct from '@/Components/grids/SelectProduct.vue';
 import Discount from './Partials/Discount.vue';
 import CreateCustomer from '@/Components/forms/CreateCustomer.vue';
+import UserIcon from '@/Components/icons/UserIcon.vue';
 
 // Retrieve customers and products from the server
 const productService = new ProductService();
@@ -25,7 +26,6 @@ const searchQuery = ref('');
 const toast = useToast();
 const selectedCustomer = ref();
 const filteredCustomers = ref<Customer[]>([]);
-const products = ref<Product[]>([]);
 const modalPayments = ref(false)
 const modalCashMovements = ref(false)
 const modalDiscount = ref(false)
@@ -128,14 +128,6 @@ const clearSaleComponent = () => {
     form.products = [];
 }
 
-const fetchProducts = () => {
-    productService.fetchAll()
-    .then(response => {
-        const paginate = response.data
-        products.value = [...paginate.data]
-    });
-}
-
 const setCustomer = () => {
     form.customer_id = selectedCustomer.value?.id
 }
@@ -175,7 +167,6 @@ const setSuccessPayment = () => {
     hideModalPayments();
     clearSaleComponent();
     removeDiscount();
-    fetchProducts();
 }
 
 const setSuccessDiscount = (amount: number, type: string) => {
@@ -201,10 +192,6 @@ const formatDiscount = computed(() => {
     }
 })
 
-onMounted(() => {
-    fetchProducts()
-});
-
 watch(() => form.wholesale, () => {
     clearSaleComponent()
 })
@@ -227,7 +214,7 @@ watch(() => form.wholesale, () => {
         </CreateCashMovement>
     </Dialog>
 
-    <Dialog v-model:visible="modalCreateCustomer" modal header="Registrar cliente" :style="{ width: '35rem' }">
+    <Dialog v-model:visible="modalCreateCustomer" modal header="Nuevo cliente" :style="{ width: '35rem' }">
         <CreateCustomer @save="hideModalCreateCustomer"></CreateCustomer>
     </Dialog>
 
@@ -247,29 +234,32 @@ watch(() => form.wholesale, () => {
             </div>
             <div class="customer w-full md:w-1/2">
                 <div class="flex gap-2 justify-end w-full">
-                    <div class="flex items-center gap-1 text-gray-800">
+                    <Button raised v-if="form.discount == null" label="Descuento" rounded icon="pi pi-tag" @click="showModalDiscount"></Button>
+                    <div class="flex items-center gap-2 px-1 text-gray-800">
                         <ToggleSwitch v-model="form.wholesale" inputId="wholesale" />
                         <label for="wholesale">Mayorista</label>
                     </div>
-                    <Button raised v-if="form.discount == null" label="Descuento" icon="pi pi-tag" @click="showModalDiscount"></Button>
-                    <div class="w-1/2">
-                        <div class="flex gap-1">
-                            <AutoComplete v-model="selectedCustomer" optionLabel="name" :suggestions="filteredCustomers"
-                                @complete="searchCustomer"
-                                @change="setCustomer"
-                                class="w-full"
-                                inputClass="w-full"
-                                placeholder="Cliente">
-                                <template #option="slot">
-                                    <div class="flex align-options-center">
-                                        <div>
-                                            {{ slot.option.name }} {{ slot.option.lastname }} | {{ slot.option.phone }}
-                                        </div>
+                    <div v-if="!selectedCustomer?.name" class="flex gap-1">
+                        <AutoComplete v-model="selectedCustomer" optionLabel="name" :suggestions="filteredCustomers"
+                            @complete="searchCustomer"
+                            @change="setCustomer"
+                            class="w-full"
+                            inputClass="w-full"
+                            placeholder="Cliente">
+                            <template #option="{option}">
+                                <div class="flex align-options-center">
+                                    <div>
+                                        {{ option.name }} {{ option.lastname }} | {{ option.phone }}
                                     </div>
-                                </template>
-                            </AutoComplete>
-                            <Button v-tooltip.right="'Nuevo cliente'" icon="pi pi-plus" severity="success" raised @click="showModalCreateCustomer"></Button>
-                        </div>
+                                </div>
+                            </template>
+                        </AutoComplete>
+                        <Button v-tooltip.right="'Nuevo cliente'" icon="pi pi-plus" severity="success" raised @click="showModalCreateCustomer"></Button>
+                    </div>
+                    <div v-if="selectedCustomer?.name" class="flex items-center justify-end font-bold cursor-pointer px-1" @click="selectedCustomer = ''">
+                        <UserIcon v-tooltip="'Cliente'">
+                            {{ selectedCustomer.name }} {{ selectedCustomer.lastname }}
+                        </UserIcon>
                     </div>
                 </div>
             </div>
@@ -277,7 +267,7 @@ watch(() => form.wholesale, () => {
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
             <div>
-                <SelectProduct :products="products" @selected="pushProduct"></SelectProduct>
+                <SelectProduct @selected="pushProduct"></SelectProduct>
             </div>
             <div class="flex flex-col gap-2">
                 <ProductsList :products="form.products"></ProductsList>

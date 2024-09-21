@@ -13,7 +13,7 @@ export interface User {
 }
 
 export interface Customer {
-    id: number;
+    id?: number;
     name: string;
     lastname: string;
     email: string;
@@ -85,7 +85,7 @@ export interface PaymentMethod {
 }
 
 export interface Supplier {
-    id: number;
+    id?: number;
     name: string;
     lastname?: string;
     email?: string;

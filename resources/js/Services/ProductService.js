@@ -11,8 +11,16 @@ export default class ProductService {
     }
 
     async findByCode(code) {
-        const url = '/api/products/search';
+        const url = route('api.products.search');
         const response = await axios.post(url, { code: code });
+        this.products.value = response.data
+
+        return response
+    }
+
+    async findByCategory(category) {
+        const url = route('api.products.category');
+        const response = await axios.post(url, { category: category });
         this.products.value = response.data
 
         return response

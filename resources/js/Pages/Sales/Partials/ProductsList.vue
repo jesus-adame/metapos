@@ -26,36 +26,43 @@ const removeProduct = (index: number) => {
         <DataTable :value="products" v-if="products.length">
             <Column header="Producto">
                 <template #body="{data}">
-                    <div class="flex">
-                        <div v-if="data.image" class="overflow-hidden hidden xl:block shadow-lg rounded-md w-16 h-16">
+                    <div class="flex items-center">
+                        <div v-if="data.image" class="overflow-hidden hidden xl:block shadow-lg rounded-md max-w-16 max-h-16">
                             <Image :src="data.image_url" :alt="data.name" />
                         </div>
                         <div class="text-left ml-2">
                             <span class="font-bold">{{ data.name }}</span>
-                            <p class="text-sm">{{ data.code }}</p>
-                            <p class="text-sm">SKU: {{ data.sku || 'N/A' }}</p>
+                            <p class="text-sm font-medium text-gray-500">{{ data.code }}</p>
+                            <p class="text-sm font-medium text-gray-500">SKU: {{ data.sku || 'N/A' }}</p>
                         </div>
                     </div>
                 </template>
             </Column>
-            <Column header="Cantidad">
+            <Column header="Cant">
                 <template #body="{data}">
                     <InputNumber v-model="data.quantity" showButtons buttonLayout="vertical" :min="1" :max="data.stock"></InputNumber>
+                    <!-- <span class="text-center block">{{data.quantity}}</span> -->
                 </template>
             </Column>
             <Column header="Precio">
                 <template #body="{data}">
-                    {{ formatMoneyNumber(data.price) }}
+                    <span class="block text-end font-medium">
+                        {{ formatMoneyNumber(data.price) }}
+                    </span>
                 </template>
             </Column>
             <Column header="IVA">
                 <template #body="{data}">
-                    {{ percentageNumber(data.tax ?? 0) }}
+                    <span class="font-medium">
+                        {{ percentageNumber(data.tax ?? 0) }}
+                    </span>
                 </template>
             </Column>
             <Column header="Subtotal">
                 <template #body="{data}">
-                    {{ formatMoneyNumber(data.price * data.quantity) }}
+                    <span class="block text-end font-medium">
+                        {{ formatMoneyNumber(data.price * data.quantity) }}
+                    </span>
                 </template>
             </Column>
             <Column header="">

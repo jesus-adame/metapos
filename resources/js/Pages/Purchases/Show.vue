@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Card from '@/Components/Card.vue';
 import AddPurchaseSupplier from '@/Components/forms/AddPurchaseSupplier.vue';
-import { calculateMetodIcon, can, formatMoneyNumber, purchaseSeverity, purchaseStatus } from '@/helpers';
+import { calculateMetodIcon, can, formatMoneyNumber, percentageNumber, purchaseSeverity, purchaseStatus } from '@/helpers';
 import UserLayout from '@/Layouts/UserLayout.vue';
 import { Purchase } from '@/types';
 import { Head, Link, router } from '@inertiajs/vue3';
@@ -81,10 +81,13 @@ const hideAddSupplierModal = () => {
                     <Column field="name" header="Producto">
                         <template #body="{data}">
                             <div class="flex">
-                                <Image v-if="data.image" :src="data.image_url" :alt="data.name" class="shadow-lg rounded-md overflow-hidden" width="64" />
+                                <div v-if="data.image" class="overflow-hidden hidden lg:block shadow-lg rounded-md w-16 h-16">
+                                    <Image :src="data.image_url" :alt="data.name" />
+                                </div>
                                 <div class="text-left ml-5">
                                     <span class="font-bold">{{ data.name }}</span>
-                                    <p>{{ data.code }}</p>
+                                    <p class="text-sm">{{ data.code }}</p>
+                                    <p class="text-sm">SKU {{ data.sku }}</p>
                                 </div>
                             </div>
                         </template>
@@ -99,6 +102,11 @@ const hideAddSupplierModal = () => {
                             {{ data.pivot.quantity }}
                         </template>
                     </Column>
+                    <Column header="IVA">
+                            <template #body="{data}">
+                                {{ percentageNumber(data.pivot.tax) ?? 'N/A' }}
+                            </template>
+                        </Column>
                     <Column header="Subtotal">
                         <template #body="{data}">
                             {{ formatMoneyNumber(data.pivot.price * data.pivot.quantity) }}
