@@ -21,7 +21,7 @@
             text-align: center;
         }
         .header h1 {
-            margin: 0;
+            margin-bottom: 5px;
             font-size: 14px;
         }
         .header p {
@@ -85,8 +85,8 @@
                     <thead>
                         <tr>
                             <th>Concepto</th>
-                            <th>Qty</th>
-                            <th>IVA</th>
+                            <th>Precio</th>
+                            <th>Cant</th>
                             <th>Subtotal</th>
                         </tr>
                     </thead>
@@ -94,8 +94,8 @@
                         @foreach($sale->products as $product)
                             <tr>
                                 <td>{{ $product->name }}</td>
-                                <td>{{ $product->pivot->quantity }}</td>
-                                <td>%{{ $product->pivot->tax }}</td>
+                                <td style="text-align: right">{{ number_format($product->pivot->price, 2) }}</td>
+                                <td style="text-align: right">{{ $product->pivot->quantity }}</td>
                                 <td style="text-align: right">{{ number_format($product->pivot->quantity * $product->pivot->price, 2) }}</td>
                             </tr>
                         @endforeach
@@ -103,8 +103,8 @@
                 </table>
             </div>
             <div class="total">
+                <span style="font-size: 10px">IVA: ${{ number_format($taxes, 2) }}</span>
                 <p>Total: ${{ number_format($sale->total, 2) }}</p>
-                <span>IVA: ${{ number_format($taxes, 2) }}</span>
                 <span>Pago: ${{ number_format($totalPayments, 2) }}</span>
                 <span>Cambio: ${{ number_format($sale->change, 2) }}</span>
             </div>
