@@ -108,8 +108,8 @@ const closeDialogResponse = () => {
     <p class="my-4 text-2xl">
       <strong>{{ dialogResponseData.content }}</strong>
     </p>
-    <div class="flex w-full">
-      <PrintTicketButton :pdf-url="route('sales.ticket', {id: saleId})" :printer="getPrinter()"></PrintTicketButton>
+    <div class="flex justify-end w-full">
+      <PrintTicketButton v-if="saleStatus == 'paid'" :pdf-url="route('sales.ticket', {id: saleId})" :printer="getPrinter()"></PrintTicketButton>
       <Button v-if="saleStatus == 'paid'" severity="success" label="Continuar" class="ml-2" @click="closeDialogResponse"></Button>
       <Button v-if="saleStatus != 'paid'" class="ml-2" label="Aceptar" @click="closeDialogResponse"></Button>
     </div>

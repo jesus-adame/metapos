@@ -126,29 +126,35 @@ class RegisterSaleService
         $sale->cash_register_id = $cashRegister->id;
         $sale->status = 'pending';
         $sale->total = 0; // Inicializamos el total a 0
+        $lineTotals = 0;
 
-        $calculatedTotal = 0;
         foreach ($products as $arrayProduct) {
+            /** @var Product */
+            $product = Product::find($arrayProduct['id']);
             /** @var int */
             $quantity = $arrayProduct['quantity'];
             /** @var float */
-            $price = $arrayProduct['price'];
+            $price = $product->price;
+            /** @var float */
+            $tax_rate = $product->tax / 100;
+            /** @var float */
+            $tax_amount = round($product->price * $tax_rate, 6);
 
-            $calculatedTotal += $price * $quantity;
+            $lineTotals += round($price + $tax_amount, 2) * $quantity;
         }
 
         $discountAmount = 0;
 
         if (!is_null($discount)) {
             if ($discount['type'] == 'percentage') {
-                $discountAmount = MathNumberHelper::getPercentage($calculatedTotal, $discount['amount']);
+                $discountAmount = MathNumberHelper::getPercentage($lineTotals, $discount['amount']);
             } else {
                 $discountAmount = $discount['amount'];
             }
         }
 
         $sale->currency()->associate($currency);
-        $sale->total = $calculatedTotal - $discountAmount;
+        $sale->total = $lineTotals - $discountAmount;
         $sale->save();
 
         return $sale;
@@ -162,15 +168,19 @@ class RegisterSaleService
             /** @var int */
             $quantity = $arrayProduct['quantity'];
             /** @var float */
-            $price = $arrayProduct['price'];
+            $price = $product->price;
             /** @var float */
-            $taxes = $arrayProduct['tax'] ?? 0;
+            $tax_rate = $product->tax / 100;
+            /** @var float */
+            $tax_amount = round($product->price * $tax_rate, 6);
 
             $sale->products()->attach($product, [
                 'quantity' => $quantity,
                 'price' => $price,
-                'has_taxes' => 1,
-                'tax' => $taxes,
+                'tax' => $tax_amount,
+                'tax_rate' => $tax_rate,
+                'subtotal' => $price * $quantity,
+                'line_total' => round($price + $tax_amount, 2) * $quantity,
             ]);
 
             $this->inventoryTransactionService->execute(

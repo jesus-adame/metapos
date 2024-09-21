@@ -29,7 +29,7 @@ class PurchaseController extends Controller
             ->with('location')
             ->with([
                 'products' => function ($query) {
-                    $query->withPivot('quantity', 'price', 'has_taxes', 'tax'); // Asegúrate de incluir los pivotes aquí
+                    $query->withPivot('quantity', 'price', 'tax', 'tax_rate', 'subtotal', 'line_total'); // Asegúrate de incluir los pivotes aquí
                 },
                 'payments' => function ($query) {
                     $query->with('paymentMethod');

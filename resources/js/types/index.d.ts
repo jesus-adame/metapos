@@ -31,7 +31,7 @@ export interface Sale {
     change: number
     status: string
     payments: Payment[]
-    products: Product[]
+    products: CartItem[]
 }
 
 export interface Quote {
@@ -53,7 +53,7 @@ export interface Purchase {
     total: number
     status: string
     payments: Payment[]
-    products: Product[]
+    products: CartItem[]
 }
 
 export interface Expense {
@@ -128,7 +128,6 @@ export interface Product {
     stock: number
     unit_type: string
     tax: number
-    has_taxes: ?boolean
     description: ?string
     categories?: Category[]
     currency?: Currency
@@ -146,6 +145,9 @@ export interface CartItem {
     stock: number
     unit_type: string
     tax: number
+    tax_rate: number
+    subtotal: number
+    line_total: number
 }
 
 export interface Category {

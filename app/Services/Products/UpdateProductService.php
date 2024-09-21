@@ -38,7 +38,6 @@ class UpdateProductService
             'image' => $imagePath,
             'image_url' => $imageUrl,
             'tax' => $attrs->tax,
-            'has_taxes' => $attrs->has_taxes == 'true' ? 1 : 0,
         ]);
 
         $product->categories()->attach($attrs['categories']);

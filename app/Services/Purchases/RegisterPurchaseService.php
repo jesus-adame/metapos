@@ -141,9 +141,17 @@ class RegisterPurchaseService
 
         $total = 0;
         foreach ($products as $productData) {
+            /** @var Product */
+            $product = Product::find($productData['id']);
             $quantity = $productData['quantity'];
-            $cost = $productData['cost'];
-            $total += $cost * $quantity;
+            /** @var float */
+            $cost = $product->cost;
+            // /** @var float */
+            // $tax_rate = $product->tax / 100;
+            // /** @var float */
+            // $tax_amount = round($product->cost * $tax_rate, 6);
+
+            $total += round($cost, 2) * $quantity;
         }
 
         // Actualizar el total de la compra
@@ -160,11 +168,19 @@ class RegisterPurchaseService
             /** @var int */
             $quantity = $productData['quantity'];
             /** @var float */
-            $cost = $productData['cost'];
+            $cost = $product->cost;
+            // /** @var float */
+            // $tax_rate = $product->tax / 100;
+            // /** @var float */
+            // $tax_amount = round($product->cost * $tax_rate, 6);
 
             $purchase->products()->attach($product, [
                 'quantity' => $quantity,
                 'price' => $cost,
+                'tax' => 0,
+                'tax_rate' => 0,
+                'subtotal' => $cost * $quantity,
+                'line_total' => round($cost, 2) * $quantity,
             ]);
 
             $this->inventoryTransactionService->execute(

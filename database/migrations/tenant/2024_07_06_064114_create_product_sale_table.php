@@ -17,8 +17,10 @@ return new class extends Migration
             $table->unsignedBigInteger('sale_id');
             $table->integer('quantity');
             $table->decimal('price', 10, 2);
-            $table->decimal('tax', 5, 2)->default(0); // 5, 2 means max value 999.99
-            $table->boolean('has_taxes')->default(false);
+            $table->decimal('tax', 10, 2);
+            $table->decimal('tax_rate', 5, 2); // 5, 2 means max value 999.99
+            $table->decimal('subtotal', 10, 2);
+            $table->decimal('line_total', 10, 2);
             $table->timestamps();
             $table->softDeletes();
 

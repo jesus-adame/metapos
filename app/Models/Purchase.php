@@ -47,7 +47,8 @@ class Purchase extends Model implements Cashable
     public function products()
     {
         return $this->belongsToMany(Product::class, 'product_purchase')
-            ->withPivot('quantity', 'price')
-            ->withTimestamps();
+            ->withPivot('quantity', 'price', 'tax', 'tax_rate', 'subtotal', 'line_total')
+            ->withTimestamps()
+            ->using(ProductPurchasePivot::class);
     }
 }

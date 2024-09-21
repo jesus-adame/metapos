@@ -11,7 +11,7 @@ class TicketService
     {
         $sale = Sale::with([
             'products' => function ($query) {
-                $query->withPivot('quantity', 'price', 'has_taxes', 'tax');
+                $query->withPivot('quantity', 'price', 'tax', 'tax_rate', 'subtotal', 'line_total');
             }
         ])->findOrFail($id);
 
@@ -28,7 +28,7 @@ class TicketService
 
         foreach ($sale->products as $product) {
             $pivot = $product->pivot;
-            $taxes += $pivot->price * $pivot->tax / 100;
+            $taxes += $pivot->tax;
         }
 
         $date = $sale->created_at;

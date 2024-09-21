@@ -43,7 +43,6 @@ class StoreSaleRequest extends FormRequest
         return [
             'customer_id.required' => 'El cliente es obligatorio.',
             'wholesale.required' => 'El precio mayorista es obligatorio.',
-            'has_taxes.required' => 'El campo impuestos no puede ir vacío.',
             'customer_id.exists' => 'El cliente no existe.',
             'products.required' => 'Debes agregar al menos un producto.',
             'products.array' => 'El campo productos debe ser un array.',

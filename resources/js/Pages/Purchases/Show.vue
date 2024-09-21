@@ -99,17 +99,27 @@ const hideAddSupplierModal = () => {
                     </Column>
                     <Column header="Cantidad">
                         <template #body="{data}">
-                            {{ data.pivot.quantity }}
+                            <span class="block text-center w-full">
+                                {{ data.pivot.quantity }}
+                            </span>
                         </template>
                     </Column>
-                    <Column header="IVA">
-                            <template #body="{data}">
-                                {{ percentageNumber(data.pivot.tax) ?? 'N/A' }}
-                            </template>
-                        </Column>
+                    <Column header="">
+                        <template #header>
+                            <span class="text-center block w-full">IVA</span>
+                        </template>
+                        <template #body="{data}">
+                            <span class="block text-center w-full">
+                                {{ formatMoneyNumber(data.pivot.tax) }}
+                                ({{ percentageNumber(data.pivot.tax_rate * 100) }})
+                            </span>
+                        </template>
+                    </Column>
                     <Column header="Subtotal">
                         <template #body="{data}">
-                            {{ formatMoneyNumber(data.pivot.price * data.pivot.quantity) }}
+                            <span class="block text-center w-full">
+                                {{ formatMoneyNumber(data.pivot.line_total) }}
+                            </span>
                         </template>
                     </Column>
                 </DataTable>

@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class ProductSalePivot extends Pivot
+class ProductPurchasePivot extends Pivot
 {
     protected $casts = [
         'quantity' => 'int',

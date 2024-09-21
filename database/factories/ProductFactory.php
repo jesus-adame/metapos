@@ -14,7 +14,6 @@ class ProductFactory extends Factory
         return [
             'name' => $this->faker->word,
             'sku' => $this->faker->word,
-            'has_taxes' => true,
             'description' => $this->faker->paragraph,
             'price' => $this->faker->randomFloat(2, 1, 100),
             'cost' => $this->faker->randomFloat(2, 1, 100),

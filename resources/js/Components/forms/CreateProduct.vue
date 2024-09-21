@@ -44,7 +44,6 @@ const form = ref<Product>({
     stock: 0,
     unit_type: 'Unidad',
     tax: 0,
-    has_taxes: false,
     description: null,
     categories: [],
 })

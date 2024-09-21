@@ -23,8 +23,7 @@ class Product extends Model implements Auditable
         'image',
         'image_url',
         'unit_type',
-        'tax',
-        'has_taxes',
+        'tax', // Tax rate percentage (16%)
     ];
 
     protected $casts = [
@@ -33,7 +32,6 @@ class Product extends Model implements Auditable
         'cost' => 'float',
         'stock' => 'integer',
         'tax' => 'float',
-        'has_taxes' => 'boolean',
     ];
 
     protected $appends = ['final_price'];

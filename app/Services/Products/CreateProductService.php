@@ -37,7 +37,6 @@ class CreateProductService
             'location_id' => $locationId,
             'unit_type' => $attrs->unit_type,
             'tax' => $attrs->tax,
-            'has_taxes' => $attrs->has_taxes == 'true' ? 1 : 0,
         ]);
 
         $product->categories()->attach($attrs['categories']);

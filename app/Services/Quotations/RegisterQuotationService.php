@@ -91,7 +91,6 @@ class RegisterQuotationService
             $quotation->products()->attach($product, [
                 'quantity' => $quantity,
                 'price' => $price,
-                'has_taxes' => 1,
                 'tax' => $taxes,
             ]);
         }

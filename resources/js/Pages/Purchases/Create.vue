@@ -109,7 +109,6 @@ const pushProduct = (product: Product) => {
         quantity: 1,
         stock: product.stock,
         tax: product.tax,
-        has_taxes: product.has_taxes,
         unit_type: product.unit_type,
         description: '',
     })

@@ -47,7 +47,6 @@ const form = ref({
     cost: product?.cost,
     image: null as File | null,
     unit_type: product?.unit_type,
-    has_taxes: product?.has_taxes,
     tax: product?.tax,
     categories: [],
     _method: 'put'

@@ -20,7 +20,7 @@ class Quotation extends Model
     public function products()
     {
         return $this->belongsToMany(Product::class, 'product_sale')
-            ->withPivot('quantity', 'price', 'has_taxes', 'tax')
+            ->withPivot('quantity', 'price', 'tax', 'tax_rate', 'subtotal', 'line_total')
             ->withTimestamps()
             ->using(ProductQuotePivot::class);
     }

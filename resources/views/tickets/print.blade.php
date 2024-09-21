@@ -94,9 +94,9 @@
                         @foreach($sale->products as $product)
                             <tr>
                                 <td>{{ $product->name }}</td>
-                                <td style="text-align: right">{{ number_format($product->pivot->price, 2) }}</td>
+                                <td style="text-align: right">{{ number_format($product->pivot->price + $product->pivot->tax, 2) }}</td>
                                 <td style="text-align: right">{{ $product->pivot->quantity }}</td>
-                                <td style="text-align: right">{{ number_format($product->pivot->quantity * $product->pivot->price, 2) }}</td>
+                                <td style="text-align: right">{{ number_format($product->pivot->line_total, 2) }}</td>
                             </tr>
                         @endforeach
                     </tbody>

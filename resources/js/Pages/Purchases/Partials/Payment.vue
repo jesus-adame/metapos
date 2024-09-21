@@ -40,7 +40,7 @@ const submitPayment = () => {
 };
 
 const applyPayment = () => {
-  const formData = props.form?.data();
+  const formData = props.form;
   formData.supplier_id = props.supplier?.id;
   formData.update_cash_register = updateCashRegister.value;
   formData.payment_methods = payments.value;

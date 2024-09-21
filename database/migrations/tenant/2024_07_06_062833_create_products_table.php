@@ -21,7 +21,6 @@ return new class extends Migration
             $table->decimal('price', 8, 2);
             $table->decimal('wholesale_price', 10, 2)->default(0);
             $table->string('unit_type')->nullable();
-            $table->boolean('has_taxes')->default(false);
             $table->decimal('tax', 8, 2);
             $table->timestamps();
             $table->softDeletes();
