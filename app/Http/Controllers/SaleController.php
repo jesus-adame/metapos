@@ -51,4 +51,11 @@ class SaleController extends Controller
 
         return $pdf->stream('sale_ticket.pdf');
     }
+
+    public function ticketDownload($id, TicketService $service)
+    {
+        $pdf = $service->execute($id);
+
+        return $pdf->download('sale_ticket.pdf');
+    }
 }

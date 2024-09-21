@@ -13,6 +13,7 @@ import axios, { AxiosResponse } from 'axios';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import { useToast } from 'primevue/usetoast';
+import ListPrinters from '@/Components/tables/ListPrinters.vue';
 
 const modalCreate = ref(false)
 const activePage = ref('users')
@@ -78,6 +79,11 @@ const items = ref([
                 label: 'Cajas',
                 icon: 'pi pi-shopping-cart',
                 module: 'cashRegisters'
+            },
+            {
+                label: 'Impresoras',
+                icon: 'pi pi-print',
+                module: 'printers'
             }
         ]
     }
@@ -131,6 +137,9 @@ const updateSettings = () => {
                 </div>
                 <div v-if="activePage == 'cashRegisters'" class="w-full shadow-md">
                     <ListCashRegisters></ListCashRegisters>
+                </div>
+                <div v-if="activePage == 'printers'" class="w-full shadow-md">
+                    <ListPrinters></ListPrinters>
                 </div>
             </div>
         </div>

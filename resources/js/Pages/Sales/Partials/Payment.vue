@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import PDFObject from '@/Components/PDFObject.vue';
+import PrintTicketButton from '@/Components/prints/PrintTicketButton.vue';
 import { formatMoneyNumber } from '@/helpers';
 import axios from 'axios';
 import Button from 'primevue/button';
@@ -8,7 +8,6 @@ import { computed, ref } from 'vue';
 const emit = defineEmits(['cancel', 'save']);
 const selectedPayment = ref('Efectivo');
 const saleStatus = ref('pending');
-const modalTicket = ref<boolean>(false)
 const saleId = ref<number | null>()
 
 const props = defineProps<{
@@ -101,24 +100,16 @@ const closeDialogResponse = () => {
     submitPayment();
   }
 }
-
-const openModaTicket = () => {
-  modalTicket.value = true
-}
 </script>
 
 <template>
-    <Dialog v-model:visible="modalTicket" modal :header="'Venta #' + saleId">
-      <PDFObject :url="route('sales.ticket', {id: saleId})" :options="{ height: '100vh', width: '30vw', border: '1px', solid: '#ccc' }" />
-    </Dialog>
-
   <Dialog v-model:visible="modalResponse" modal header="Completado" :closable="false">
     <Message class="mt-2" :closable="false" severity="info">{{ dialogResponseData.message }}</Message>
     <p class="my-4 text-2xl">
       <strong>{{ dialogResponseData.content }}</strong>
     </p>
     <div class="flex w-full">
-      <Button v-if="saleStatus == 'paid'" class="ml-auto" @click="openModaTicket" icon="pi pi-print" label="Imprimir" severity="info"></Button>
+      <PrintTicketButton :pdf-url="route('sales.ticket', {id: saleId})"></PrintTicketButton>
       <Button v-if="saleStatus == 'paid'" severity="success" label="Continuar" class="ml-2" @click="closeDialogResponse"></Button>
       <Button v-if="saleStatus != 'paid'" class="ml-2" label="Aceptar" @click="closeDialogResponse"></Button>
     </div>

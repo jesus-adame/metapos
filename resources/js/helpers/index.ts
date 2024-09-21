@@ -175,3 +175,7 @@ export function hasRole(name: string) {
     const page = usePage();
     return page.props.roles.some((value: string) => value == name);
 }
+
+export function getPrinter() {
+    return localStorage.getItem('selectedPrinter');
+}

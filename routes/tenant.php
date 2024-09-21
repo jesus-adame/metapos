@@ -50,6 +50,7 @@ Route::middleware([
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
         Route::get('/sales/{id}/ticket', [SaleController::class, 'generateTicket'])->name('sales.ticket');
+        Route::get('/sales/{id}/ticket-download', [SaleController::class, 'ticketDownload'])->name('sales.ticket-download');
         Route::post('/cash-registers/select', [CashRegisterController::class, 'select'])->name('cash-registers.select');
         Route::get('/barcodes', [BarcodeController::class, 'index'])->name('barcodes.index');
         Route::get('/barcodes/{productId}/{quantity}', [BarcodeController::class, 'show'])->name('barcodes.show');

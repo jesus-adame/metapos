@@ -13,21 +13,20 @@ import { useConfirm } from 'primevue/useconfirm';
 import { useToast } from 'primevue/usetoast';
 import Tag from 'primevue/tag';
 import { useSaleStore } from '@/stores/SaleStore';
+import PrintTicketButton from '../prints/PrintTicketButton.vue';
 
 const modalTicket = ref<boolean>(false)
 const saleId = ref<number | null>(null)
 const confirm = useConfirm()
 const toast = useToast()
 const saleStore = useSaleStore()
+const pdfUrl = ref('');
 
 const openModaTicket = (id: number) => {
     saleId.value = id
     modalTicket.value = true
+    pdfUrl.value = route('sales.ticket-download', {id: saleId.value})
 }
-
-onMounted(() => {
-    saleStore.fetchItems()
-})
 
 const confirmDelete = (url: string) => {
     confirm.require({
@@ -55,10 +54,17 @@ const confirmDelete = (url: string) => {
         }
     });
 }
+
+onMounted(() => {
+    saleStore.fetchItems()
+})
 </script>
 <template>
     <Dialog v-model:visible="modalTicket" modal :header="'Venta #' + saleId">
         <PDFObject :url="route('sales.ticket', {id: saleId})" :options="{ height: '100vh', width: '30vw', border: '1px', solid: '#ccc' }" />
+        <div class="flex w-full justify-end pt-2">
+            <PrintTicketButton :pdf-url="pdfUrl"></PrintTicketButton>
+        </div>
     </Dialog>
 
     <DataTable :value="saleStore.sales" paginator :rows="saleStore.rows" :total-records="saleStore.totalRecords" @page="saleStore.onPage" lazy>

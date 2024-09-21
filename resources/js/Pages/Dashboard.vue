@@ -21,7 +21,7 @@ const authStore = useAuthStore()
         </div>
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg my-4">
             <div class="p-6 text-gray-900 text-lg">
-                Buen día {{ authStore.user?.name }}
+                <p>Buen día {{ authStore.user?.name }}</p>
             </div>
         </div>
         <div v-if="can('view finances')" class="grid md:grid-cols-2 py-4 my-6">

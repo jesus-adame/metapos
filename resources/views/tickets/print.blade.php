@@ -1,8 +1,5 @@
-<!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ticket de Venta</title>
     <style>
         * {
@@ -62,9 +59,9 @@
         .footer {
             text-align: center;
             margin-top: 20px;
+            margin-bottom: 10px;
         }
         .footer p {
-            margin: 0;
             font-size: 10px;
         }
     </style>
@@ -99,7 +96,7 @@
                                 <td>{{ $product->name }}</td>
                                 <td>{{ $product->pivot->quantity }}</td>
                                 <td>%{{ $product->pivot->tax }}</td>
-                                <td>{{ number_format($product->pivot->quantity * $product->pivot->price, 2) }}</td>
+                                <td style="text-align: right">{{ number_format($product->pivot->quantity * $product->pivot->price, 2) }}</td>
                             </tr>
                         @endforeach
                     </tbody>
