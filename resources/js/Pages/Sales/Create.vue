@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, reactive, ref, watch } from 'vue';
+import { computed, onMounted, onUnmounted, reactive, ref, watch } from 'vue';
 import { Head, Link } from '@inertiajs/vue3';
 import UserLayout from '@/Layouts/UserLayout.vue';
 import ProductService from '@/Services/ProductService';
@@ -18,6 +18,8 @@ import SelectProduct from '@/Components/grids/SelectProduct.vue';
 import Discount from './Partials/Discount.vue';
 import CreateCustomer from '@/Components/forms/CreateCustomer.vue';
 import UserIcon from '@/Components/icons/UserIcon.vue';
+import Mousetrap from 'mousetrap';
+import 'mousetrap-global-bind';
 
 // Retrieve customers and products from the server
 const productService = new ProductService();
@@ -30,6 +32,11 @@ const modalPayments = ref(false)
 const modalCashMovements = ref(false)
 const modalDiscount = ref(false)
 const modalCreateCustomer = ref(false)
+
+// Inputs for shortcuts
+const searchInput = ref();
+const customerInput = ref();
+const paymentButton = ref();
 
 // Initialize the form
 const form = reactive<{
@@ -55,6 +62,8 @@ const addSearchedProduct = () => {
         if (response.data.length > 0) {
             const product = response.data[0];
             pushProduct(product);
+        } else {
+            toast.add({ severity: 'warn', summary: 'Atención', detail: 'No se encontró el producto', life: 3000 });
         }
     })
 }
@@ -195,6 +204,34 @@ const formatDiscount = computed(() => {
 watch(() => form.wholesale, () => {
     clearSaleComponent()
 })
+
+onMounted(() => {
+    Mousetrap.bindGlobal('ctrl+enter', (e: Event) => {
+        e.preventDefault()
+        if (paymentButton.value) {
+            paymentButton.value.$el.click()
+            console.log(paymentButton.value.$el);
+        }
+    })
+
+    Mousetrap.bind('ctrl+a', (e: Event) => {
+        e.preventDefault()
+        if (searchInput.value) {
+            searchInput.value.$el.focus()
+        }
+    })
+
+    Mousetrap.bind('ctrl+c', (e: Event) => {
+        e.preventDefault()
+        if (customerInput.value) {
+            customerInput.value.$el.querySelector('input').focus()
+        }
+    })
+})
+
+onUnmounted(() => {
+    Mousetrap.reset()
+})
 </script>
 
 <template>
@@ -228,7 +265,7 @@ watch(() => form.wholesale, () => {
                 <form @submit.prevent="addSearchedProduct" class="flex items-center">
                     <IconField iconPosition="left" class="w-full">
                         <InputIcon class="pi pi-search"></InputIcon>
-                        <InputText type="text" v-model="searchQuery" class="w-full" placeholder="Producto" autofocus/>
+                        <InputText ref="searchInput" type="text" v-model="searchQuery" class="w-full" placeholder="Producto (ctrl+A)" autofocus/>
                     </IconField>
                 </form>
             </div>
@@ -243,9 +280,10 @@ watch(() => form.wholesale, () => {
                         <AutoComplete v-model="selectedCustomer" optionLabel="name" :suggestions="filteredCustomers"
                             @complete="searchCustomer"
                             @change="setCustomer"
+                            ref="customerInput"
                             class="w-full"
                             inputClass="w-full"
-                            placeholder="Cliente">
+                            placeholder="Cliente (ctrl+C)">
                             <template #option="{option}">
                                 <div class="flex align-options-center">
                                     <div>
@@ -293,10 +331,11 @@ watch(() => form.wholesale, () => {
                             raised
                             :disabled="totalSale <= 0"
                             @click="showModalPayments"
+                            ref="paymentButton"
                             severity="success"
                             icon="pi pi-dollar"
                             type="submit"
-                            label="Pagar"
+                            label="Pagar (ctrl+enter)"
                             class="w-full text-xl"/>
                     </div>
                     <div class="flex mt-3 w-full">
