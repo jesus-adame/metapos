@@ -2,7 +2,7 @@
 import { onMounted, onUnmounted, ref } from 'vue';
 import qz from 'qz-tray';
 import Button from 'primevue/button';
-import { getLabelPrinter, getPrinter } from '@/helpers';
+import { connectQZ, disconnectQZ, getLabelPrinter, getPrinter, signingQZ } from '@/helpers';
 
 const selectedPrinter = ref('')
 const selectedLabelPrinter = ref('')
@@ -29,18 +29,6 @@ const findPrinters = () => {
             // Puedes seleccionar una impresora por su nombre
             printers.value = finded_printers
         }).catch((err: any) => console.error(err));
-    }
-}
-
-const connectQZ = () => {
-    if (!qz.websocket.isActive()) {
-        qz.websocket.connect().catch((err: any) => console.error(err));
-    }
-}
-
-const disconnectQZ = () => {
-    if (qz.websocket.isActive()) {
-        qz.websocket.disconnect().catch(err => console.error(err));
     }
 }
 

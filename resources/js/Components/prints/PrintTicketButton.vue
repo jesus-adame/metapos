@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import axios from 'axios';
-import { onMounted, onUnmounted, ref } from 'vue';
+import { onMounted, onUnmounted } from 'vue';
 import qz from 'qz-tray';
 import Button from 'primevue/button';
+import { connectQZ, disconnectQZ } from '@/helpers';
 
-const config = ref()
 const props = defineProps<{
     pdfUrl: string,
     printer: string
@@ -14,6 +14,7 @@ const print = () => {
     axios.get(props.pdfUrl, {
         responseType: 'arraybuffer'  // Para obtener el archivo binario
     }).then(response => {
+        const config = qz.configs.create(props.printer);
         const base64PDF = btoa(
             new Uint8Array(response.data).reduce((data, byte) => data + String.fromCharCode(byte), '')
         );
@@ -26,7 +27,7 @@ const print = () => {
         }];
 
         // Enviar a imprimir
-        qz.print(config.value, data).then(() => {
+        qz.print(config, data).then(() => {
             console.log("Impresión exitosa");
         }).catch((err: any) => console.error("Error de impresión:", err));
     }).catch(error => {
@@ -35,16 +36,11 @@ const print = () => {
 }
 
 onMounted(() => {
-    qz.websocket.connect().then(() => {
-        console.log("Conectado a QZ Tray");
-        config.value = qz.configs.create(props.printer);
-    }).catch((err: any) => console.error(err));
+    connectQZ()
 })
 
 onUnmounted(() => {
-    qz.websocket.disconnect().then(() => {
-        console.log("Desconectado de QZ Tray");
-    }).catch(err => console.error(err));
+    disconnectQZ()
 })
 </script>
 <template>

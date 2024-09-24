@@ -1,6 +1,7 @@
-import { Location, Payment, PaymentMethod } from '@/types';
+import { Location, PaymentMethod } from '@/types';
 import { usePage } from '@inertiajs/vue3';
 import moment from 'moment-timezone';
+import qz from 'qz-tray';
 
 export const formatMoneyNumber = (number: number | null) => {
     if (number == null) return null
@@ -182,4 +183,32 @@ export function getPrinter() {
 
 export function getLabelPrinter() {
     return localStorage.getItem('selectedLabelPrinter') ?? '';
+}
+
+export const signingQZ = () => {
+    qz.security.setCertificatePromise(function (resolve, reject) {
+        fetch("assets/signing/keys/digital-certificate.txt", { cache: 'no-store', headers: { 'Content-Type': 'text/plain' } })
+            .then(function (data: any) { data.ok ? resolve(data.text()) : reject(data.text()); });
+    });
+
+    qz.security.setSignatureAlgorithm("SHA512"); // Since 2.1
+    qz.security.setSignaturePromise(function (toSign) {
+        return function (resolve, reject) {
+            fetch("assets/signing/sign-message.php?request=" + toSign, { cache: 'no-store', headers: { 'Content-Type': 'text/plain' } })
+                .then(function (data: any) { data.ok ? resolve(data.text()) : reject(data.text()); });
+        };
+    });
+}
+
+export const disconnectQZ = () => {
+    if (qz.websocket.isActive()) {
+        qz.websocket.disconnect().catch(err => console.error(err));
+    }
+}
+
+export const connectQZ = () => {
+    signingQZ()
+    if (!qz.websocket.isActive()) {
+        qz.websocket.connect().catch((err: any) => console.error(err));
+    }
 }

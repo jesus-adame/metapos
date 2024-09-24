@@ -7,7 +7,6 @@ import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 import axios from 'axios';
 import { reactive } from 'vue';
-import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import Checkbox from 'primevue/checkbox';
 
 const page = usePage();
