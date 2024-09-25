@@ -4,7 +4,9 @@ import { onMounted, onUnmounted } from 'vue';
 import qz from 'qz-tray';
 import Button from 'primevue/button';
 import { connectQZ, disconnectQZ } from '@/helpers';
+import { useToast } from 'primevue/usetoast';
 
+const toast = useToast()
 const props = defineProps<{
     pdfUrl: string,
     printer: string
@@ -28,7 +30,7 @@ const print = () => {
 
         // Enviar a imprimir
         qz.print(config, data).then(() => {
-            console.log("Impresión exitosa");
+            toast.add({ severity: 'success', summary: 'Correcto', detail: 'Imprimiendo documento', life: 1100 });
         }).catch((err: any) => console.error("Error de impresión:", err));
     }).catch(error => {
         console.error("Error al obtener el PDF:", error);

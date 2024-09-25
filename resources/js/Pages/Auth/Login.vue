@@ -8,8 +8,11 @@ import InputText from 'primevue/inputtext';
 import axios from 'axios';
 import { reactive } from 'vue';
 import Checkbox from 'primevue/checkbox';
+import Password from 'primevue/password';
+import { useToast } from 'primevue/usetoast';
 
 const page = usePage();
+const toast = useToast();
 
 defineProps({
     canResetPassword: {
@@ -45,6 +48,7 @@ const submit = async () => {
         router.visit(route('home'));
     } catch (error) {
         if (error.response && error.response.data.errors) {
+            toast.add({ summary: 'Error', detail: error.response?.data.message, severity: 'error', life: 1500 })
             form.errors = error.response.data.errors;
         } else {
             console.error('Error logging in:', error);
@@ -80,11 +84,13 @@ const submit = async () => {
 
                 <div class="mt-4">
                     <InputLabel for="password" value="Contraseña" />
-                    <InputText
+                    <Password
                         id="password"
-                        type="password"
-                        class="mt-1 block w-full"
+                        class="mt-1 block"
+                        :feedback="false"
+                        fluid
                         v-model="form.password"
+                        toggleMask
                     />
                     <InputError class="mt-2" :message="form.errors.password" />
                 </div>

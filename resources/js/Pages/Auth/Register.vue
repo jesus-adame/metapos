@@ -4,11 +4,11 @@ import InputLabel from '@/Components/InputLabel.vue';
 import { Head, Link, router, usePage } from '@inertiajs/vue3';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
-import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import { reactive } from 'vue';
 import { useToast } from 'primevue/usetoast';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { ErrorResponse, SuccessResponse } from '@/types';
+import Password from 'primevue/password';
 
 const page = usePage();
 const toast = useToast();
@@ -56,9 +56,8 @@ const submit = () => {
 
         <div class="w-full sm:max-w-lg mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
             <div class="w-full flex justify-center">
-                <Link href="/">
-                    <ApplicationLogo class="w-20 h-20 fill-current text-gray-600" />
-                    <h1 class="font-bold text-xl text-gray-600 mt-3 mb-1">META POS</h1>
+                <Link href="/" class="w-1/3">
+                    <img src="/logos/logo-2-black.png" alt="Logo">
                 </Link>
             </div>
             <h1 class="font-bold uppercase text-lg mb-2">Ingresa tus datos</h1>
@@ -112,21 +111,23 @@ const submit = () => {
                 <div class="flex">
                     <div class="mt-4 w-1/2 mr-2">
                         <InputLabel for="password" value="Contraseña" />
-                        <InputText
+                        <Password
                             id="password"
-                            type="password"
-                            class="mt-1 block w-full"
+                            class="mt-1 block"
+                            fluid
                             v-model="form.password"
+                            toggleMask
                             autocomplete="new-password"
                         />
                     </div>
                     <div class="mt-4 w-1/2">
                         <InputLabel for="password_confirmation" value="Confirmar Contraseña" />
-                        <InputText
+                        <Password
                             id="password_confirmation"
-                            type="password"
-                            class="mt-1 block w-full"
+                            class="mt-1 block"
+                            fluid
                             v-model="form.password_confirmation"
+                            toggleMask
                             autocomplete="new-password"
                         />
                     </div>
@@ -138,7 +139,7 @@ const submit = () => {
                     >
                         ¿Ya está registrado?
                     </Link>
-                    <Button class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing" label="Registrar" type="submit"></Button>
+                    <Button raised class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing" label="Registrar" type="submit"></Button>
                 </div>
             </form>
         </div>
