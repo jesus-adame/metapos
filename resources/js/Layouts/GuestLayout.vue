@@ -14,7 +14,7 @@ import Toast from 'primevue/toast';
 <style lang="scss" scoped>
 /* En un archivo CSS */
 .background-image {
-  background-image: url('/background/vecteezy_white.jpg');
+  background-image: url('/assets/background/vecteezy_white.jpg');
   background-size: cover;
   background-position: center;
 }

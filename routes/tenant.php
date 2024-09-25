@@ -9,6 +9,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\QzController;
 use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ProfileController;
@@ -54,6 +55,7 @@ Route::middleware([
         Route::post('/cash-registers/select', [CashRegisterController::class, 'select'])->name('cash-registers.select');
         Route::get('/barcodes', [BarcodeController::class, 'index'])->name('barcodes.index');
         Route::get('/barcodes/{productId}/{quantity}', [BarcodeController::class, 'show'])->name('barcodes.show');
+        Route::get('/qz/sign-message', [QzController::class, 'index'])->name('qz.sign-message');
 
         Route::resource('users', UserController::class);
         Route::resource('settings', SettingController::class);

@@ -3,7 +3,7 @@
 /node_modules
 /public/build
 /public/hot
-/public/assets/signing/keys/*
+/public/assets/signing/*
 /public/storage
 /storage/*.key
 /storage/tenant*
