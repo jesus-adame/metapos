@@ -6,7 +6,7 @@
             margin: 0%;
             padding: 0%;
             box-sizing: border-box;
-            font-family: Arial, Helvetica, sans-serif
+            font-family: Arial, Helvetica, sans-serif;
         }
         .content {
         }
@@ -22,10 +22,15 @@
             width: 75%;
         }
         .barcode .name {
-            font-size: 70px
+            line-height: 4rem;
+            font-size: 70px;
+            display: block;
+            width: 100%;
+            overflow: hidden;
         }
         .barcode .price {
-            font-size: 180px
+            font-size: 180px;
+            line-height: 12rem;
         }
         .barcode .code {
             font-size: 50px
@@ -41,7 +46,7 @@
         @foreach ($barcodes as $index => $barcode)
             <div class="barcode" style="display: {{ $style }}">
                 <p class="location">{{ $barcode['location'] }}</p>
-                <span class="name">{{ $barcode['name'] }}</span>
+                <p class="name">{{ $barcode['name'] }}</p>
                 <p class="price">{{ $barcode['price'] }}</p>
                 <div class="bars">
                     <img src="data:image/png;base64,{{ base64_encode($barcode['bars']) }}">
