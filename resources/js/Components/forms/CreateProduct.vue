@@ -102,7 +102,7 @@ onMounted(() => {
 })
 </script>
 <template>
-    <form @submit.prevent="submit" class="grid grid-cols-1 lg:grid-cols-2 gap-2">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-2">
         <div class="flex flex-col gap-2">
             <div>
                 <label for="name" class="block">Nombre</label>
@@ -177,8 +177,10 @@ onMounted(() => {
                 </div>
             </div>
             <div>
-                <Button :style="{ width: '100%' }" type="submit" severity="success" label="Registrar" raised></Button>
+                <form @submit.prevent="submit" >
+                    <Button :style="{ width: '100%' }" type="submit" severity="success" label="Registrar" raised></Button>
+                </form>
             </div>
         </div>
-    </form>
+    </div>
 </template>
