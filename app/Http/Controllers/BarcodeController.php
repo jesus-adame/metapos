@@ -45,7 +45,7 @@ class BarcodeController extends Controller
 
         $barcode = [
             'location' => Auth::user()->location->name,
-            'bars' => $generator->getBarcode($product->code, $generator::TYPE_CODE_128, 3, 70),
+            'bars' => $generator->getBarcode($product->code, $generator::TYPE_CODE_128, 3, 65),
             'code' => $product->code,
             'name' => $product->name,
             'price' => MathNumberHelper::formatMoneyFormat($product->final_price),

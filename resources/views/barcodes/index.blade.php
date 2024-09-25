@@ -25,12 +25,12 @@
             line-height: 4rem;
             font-size: 70px;
             display: block;
-            width: 100%;
+            width: 95%;
             overflow: hidden;
         }
         .barcode .price {
-            font-size: 180px;
-            line-height: 12rem;
+            font-size: 170px;
+            line-height: 11rem;
         }
         .barcode .code {
             font-size: 50px
@@ -45,7 +45,7 @@
     <div class="content">
         @foreach ($barcodes as $index => $barcode)
             <div class="barcode" style="display: {{ $style }}">
-                <p class="location">{{ $barcode['location'] }}</p>
+                {{-- <p class="location">{{ $barcode['location'] }}</p> --}}
                 <p class="name">{{ $barcode['name'] }}</p>
                 <p class="price">{{ $barcode['price'] }}</p>
                 <div class="bars">
