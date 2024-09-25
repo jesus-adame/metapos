@@ -12,6 +12,7 @@ import CashRegisterIcon from '../icons/CashRegisterIcon.vue';
 import { useToast } from 'primevue/usetoast';
 import { useConfirm } from 'primevue/useconfirm';
 import { useAuthStore } from '@/stores/AuthStore';
+import UserIcon from '../icons/UserIcon.vue';
 
 const page = ref<number>(1)
 const rows = ref<number>(6)
@@ -104,38 +105,59 @@ watch(() => authStore.cashRegister, () => {
                 </div>
             </template>
         </Column>
+        <Column field="" header="Responsable">
+            <template #body="{data}">
+                <UserIcon>
+                    {{ data.user.name }} {{ data.user.lastname }}
+                </UserIcon>
+            </template>
+        </Column>
         <Column field="cash_amount" header="Efectivo">
             <template #body="{data}">
-                <Tag severity="info">{{ formatMoneyNumber(data.cash_amount) }}</Tag>
+                <div class="flex justify-end text-right">
+                    <Tag >{{ formatMoneyNumber(data.cash_amount) }}</Tag>
+                </div>
             </template>
         </Column>
         <Column field="card_amount" header="Tarjeta">
             <template #body="{data}">
-                <Tag severity="info">{{ formatMoneyNumber(data.card_amount) }}</Tag>
+                <div class="flex justify-end text-right">
+                    <Tag >{{ formatMoneyNumber(data.card_amount) }}</Tag>
+                </div>
             </template>
         </Column>
         <Column field="transfer_amount" header="Transferencia">
             <template #body="{data}">
-                <Tag severity="info">{{ formatMoneyNumber(data.transfer_amount) }}</Tag>
+                <div class="flex justify-end text-right">
+                    <Tag>{{ formatMoneyNumber(data.transfer_amount) }}</Tag>
+                </div>
             </template>
         </Column>
-        <Column field="total_entries" header="Total de entradas">
+        <Column field="" header="Total esperado">
             <template #body="{data}">
-                <Tag severity="success">
-                    {{ formatMoneyNumber(data.total_entries) }}
-                </Tag>
+                <div class="flex justify-end text-right">
+                    <Tag severity="info">{{ formatMoneyNumber(data.final_balance) }}</Tag>
+                </div>
             </template>
         </Column>
-        <Column field="total_exits" header="Total de salidas">
+        <Column field="" header="Total en caja">
             <template #body="{data}">
-                <Tag severity="danger">
-                    {{ formatMoneyNumber(data.total_exits) }}
-                </Tag>
+                <div class="flex justify-end text-right">
+                    <Tag severity="info">
+                        {{ formatMoneyNumber(data.real_total) }}
+                    </Tag>
+                </div>
             </template>
         </Column>
-        <Column field="card_amount" header="Balance">
+        <Column field="" header="Balance">
             <template #body="{data}">
-                <Tag severity="info">{{ formatMoneyNumber(data.final_balance) }}</Tag>
+                <div class="flex justify-end text-right">
+                    <Tag v-tooltip.left="'Discrepancias / Faltantes / Sobrantes'"
+                        :severity="data.real_final_balance > 0 || data.real_final_balance < 0 ? 'warn' : 'success'"
+                    >
+                        {{ data.real_final_balance }}
+                    </Tag>
+                </div>
             </template>
         </Column>
         <Column field="" header="">

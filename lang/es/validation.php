@@ -156,6 +156,9 @@ return [
         'cost' => 'costo',
         'amount' => 'monto',
         'password' => 'contraseña',
+        'cash' => 'efectivo',
+        'card' => 'tarjeta',
+        'transfer' => 'transferencia',
     ],
 
 ];

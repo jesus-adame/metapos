@@ -5,12 +5,17 @@ import axios from 'axios';
 import { useToast } from 'primevue/usetoast';
 import { ref } from 'vue';
 import moment from 'moment-timezone';
+import InputText from 'primevue/inputtext';
+import InputNumber from 'primevue/inputnumber';
 
 const toast = useToast();
 const emit = defineEmits(['cancel', 'save']);
 const form = ref({
     cut_date: '',
     cut_end_date: '',
+    cash: null,
+    card: null,
+    transfer: null,
     timezone: moment.tz.guess(),
     processing: false
 });
@@ -39,21 +44,33 @@ const submit = () => {
 };
 </script>
 <template>
-    <form @submit.prevent="submit">
-        <div class="my-4">
-            <div class="flex">
-                <div class="w-1/2 mr-2">
-                    <label>Desde</label>
-                    <DatePicker class="w-full" v-model="form.cut_date" dateFormat="dd/mm/yy" iconDisplay="input" showIcon></DatePicker>
-                </div>
-                <div class="w-1/2">
-                    <label>Hasta</label>
-                    <DatePicker class="w-full" v-model="form.cut_end_date" dateFormat="dd/mm/yy" iconDisplay="input" showIcon></DatePicker>
-                </div>
+    <div class="grid gap-2">
+        <div class="flex">
+            <div class="w-1/2 mr-2">
+                <label>Desde</label>
+                <DatePicker class="w-full" v-model="form.cut_date" dateFormat="dd/mm/yy" iconDisplay="input" showIcon placeholder="dd/mm/yyyy"></DatePicker>
+            </div>
+            <div class="w-1/2">
+                <label>Hasta</label>
+                <DatePicker class="w-full" v-model="form.cut_end_date" dateFormat="dd/mm/yy" iconDisplay="input" showIcon placeholder="dd/mm/yyyy"></DatePicker>
             </div>
         </div>
-        <div class="flex items-center justify-end mt-4">
-            <Button label="Guardar" type="submit" class="ms-4" severity="success" raised></Button>
+        <div class="w-full">
+            <label>Efectivo</label>
+            <InputNumber v-model="form.cash" fluid showButtons placeholder="0.00"></InputNumber>
         </div>
-    </form>
+        <div class="w-full">
+            <label>Tarjeta</label>
+            <InputNumber v-model="form.card" fluid showButtons placeholder="0.00"></InputNumber>
+        </div>
+        <div class="w-full">
+            <label>Transferencia</label>
+            <InputNumber v-model="form.transfer" fluid showButtons placeholder="0.00"></InputNumber>
+        </div>
+    </div>
+    <div class="flex items-center justify-end mt-4">
+        <form @submit.prevent="submit">
+            <Button label="Guardar" type="submit" class="ms-4" severity="success" raised></Button>
+        </form>
+    </div>
 </template>

@@ -4,7 +4,6 @@ import UserLayout from '@/Layouts/UserLayout.vue';
 import Button from 'primevue/button';
 import ListCashFlows from '@/Components/tables/ListCashFlows.vue';
 import ListCashCuts from '@/Components/tables/ListCashCuts.vue';
-import CashResume from '@/Components/blocks/CashResume.vue';
 import { useAuthStore } from '@/stores/AuthStore';
 
 const authStore = useAuthStore()
@@ -20,9 +19,6 @@ const authStore = useAuthStore()
             <Link :href="route('sales.create')">
                 <Button raised label="Vender" icon="pi pi-shopping-cart" severity="success"></Button>
             </Link>
-        </div>
-        <div class="">
-            <CashResume></CashResume>
         </div>
         <div class="my-4">
             <h3 class="text-xl font-bold my-4">Cortes de Caja</h3>
