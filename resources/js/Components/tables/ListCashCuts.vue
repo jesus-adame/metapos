@@ -107,9 +107,10 @@ watch(() => authStore.cashRegister, () => {
         </Column>
         <Column field="" header="Responsable">
             <template #body="{data}">
-                <UserIcon>
-                    {{ data.user.name }} {{ data.user.lastname }}
+                <UserIcon v-if="data.user">
+                    {{ data.user?.name }} {{ data.user?.lastname }}
                 </UserIcon>
+                <div v-else>Sin asignar</div>
             </template>
         </Column>
         <Column field="cash_amount" header="Efectivo">

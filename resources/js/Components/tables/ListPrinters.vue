@@ -43,13 +43,13 @@ onUnmounted(() => {
 })
 </script>
 <template>
-    <div class="py-4 px-6 bg-white">
+    <div class="py-4 px-6 bg-white grid gap-2">
         <div class="flex items-center mb-4 gap-4">
             <h2 class="text-xl font-bold">Impresoras</h2>
             <Button raised rounded label="Buscar impresoras" severity="info" @click="findPrinters"></Button>
         </div>
 
-        <p class="pb-2">Impresora de tickets</p>
+        <p>Impresora de tickets</p>
         <div class="flex gap-2 mb-4">
             <span class="p-2 flex gap-2 items-center border bg-gray-100">
                 <i class="pi pi-print"></i>
@@ -58,7 +58,7 @@ onUnmounted(() => {
             <span class="flex items-center">Connected: {{ qz.websocket.isActive() }}</span>
             <Button icon="pi pi-undo" rounded raised severity="success" @click="connectQZ"></Button>
         </div>
-        <div class="mb-4 flex items-center gap-2">
+        <div class="flex items-center gap-2">
             <span>Cambiar impresora</span>
         </div>
         <div class="flex gap-2 mb-4">
@@ -70,7 +70,7 @@ onUnmounted(() => {
             </select>
         </div>
 
-        <p class="pb-2">Impresora de etiquetas</p>
+        <p>Impresora de etiquetas</p>
         <div class="flex gap-2 mb-4">
             <span class="p-2 flex gap-2 items-center border bg-gray-100">
                 <i class="pi pi-print"></i>
@@ -79,7 +79,7 @@ onUnmounted(() => {
             <span class="flex items-center">Connected: {{ qz.websocket.isActive() }}</span>
             <Button icon="pi pi-undo" rounded raised severity="success" @click="connectQZ"></Button>
         </div>
-        <div class="mb-4 flex items-center gap-2">
+        <div class="flex items-center gap-2">
             <span>Cambiar impresora</span>
         </div>
         <div class="flex gap-2">
@@ -89,6 +89,9 @@ onUnmounted(() => {
                     {{ printer }}
                 </option>
             </select>
+        </div>
+        <div>
+            <Button severity="info" as="a" label="Plugins y recursos" href="https://drive.google.com/drive/folders/1g46fzytBNDeAYPe8JVo0Rd3wFEWHoP3g?usp=drive_link" text target="_blank" rel="noopener" />
         </div>
   </div>
 </template>

@@ -112,6 +112,7 @@
         <div class="footer">
             <p>¡Gracias por su compra!</p>
             <p>Lo esperamos nuevamente</p>
+            <div style="margin-top: 20px">_</div>
         </div>
     </div>
 </body>
