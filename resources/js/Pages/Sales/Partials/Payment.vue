@@ -80,15 +80,17 @@ const applyPayment = () => {
   .then(response => {
     const data = response.data
 
-    printer.print(route('sales.ticket', {id: saleId}), getPrinter())
+    printer.print(route('sales.ticket', {id: data.sale.id}), getPrinter())
 
     saleStatus.value = 'paid';
     saleId.value = data.sale.id
     dialogResponseData.value = data;
     modalResponse.value = true
   })
-  .catch(({response}) => {
-    dialogResponseData.value = response.data
+  .catch((error: any) => {
+    console.log(error);
+
+    dialogResponseData.value = error.response.data
     modalResponse.value = true
   })
 };

@@ -187,7 +187,7 @@ export function getLabelPrinter() {
 
 export const signingQZ = () => {
     qz.security.setCertificatePromise(function (resolve, reject) {
-        fetch("assets/signing/digital-certificate.txt", { cache: 'no-store', headers: { 'Content-Type': 'text/plain' } })
+        fetch("/assets/signing/digital-certificate.txt", { cache: 'no-store', headers: { 'Content-Type': 'text/plain' } })
             .then(function (data: any) { data.ok ? resolve(data.text()) : reject(data.text()); });
     });
 
