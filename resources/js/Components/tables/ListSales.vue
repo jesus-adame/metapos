@@ -61,9 +61,8 @@ onMounted(() => {
 </script>
 <template>
     <Dialog v-model:visible="modalTicket" modal :header="'Venta #' + saleId">
-        <PDFObject :url="route('sales.ticket', {id: saleId})" :options="{ height: '100vh', width: '30vw', border: '1px', solid: '#ccc' }" />
-        <div class="flex w-full justify-end pt-2">
-            <PrintTicketButton :pdf-url="pdfUrl" :printer="getPrinter()"></PrintTicketButton>
+        <div class="flex gap-4 w-full items-center justify-end pt-2">
+            Mandar a imprimir <PrintTicketButton :pdf-url="pdfUrl" :printer="getPrinter()"></PrintTicketButton>
         </div>
     </Dialog>
 

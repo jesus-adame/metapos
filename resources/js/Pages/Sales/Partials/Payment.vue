@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import PrintTicketButton from '@/Components/prints/PrintTicketButton.vue';
 import { formatMoneyNumber, getPrinter } from '@/helpers';
+import PrinterService from '@/Services/PrinterService';
 import axios from 'axios';
 import Button from 'primevue/button';
-import { computed, ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 
 const emit = defineEmits(['cancel', 'save']);
 const selectedPayment = ref('Efectivo');
@@ -15,6 +16,7 @@ const props = defineProps<{
   form: any,
 }>();
 
+const printer = new PrinterService();
 const modalResponse = ref(false);
 const dialogResponseData = ref({
     content: null,
@@ -78,6 +80,8 @@ const applyPayment = () => {
   .then(response => {
     const data = response.data
 
+    printer.print(route('sales.ticket', {id: saleId}), getPrinter())
+
     saleStatus.value = 'paid';
     saleId.value = data.sale.id
     dialogResponseData.value = data;
@@ -100,6 +104,14 @@ const closeDialogResponse = () => {
     submitPayment();
   }
 }
+
+onMounted(() => {
+  printer.connect()
+})
+
+onUnmounted(() => {
+  printer.disconect()
+})
 </script>
 
 <template>

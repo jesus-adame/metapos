@@ -38,7 +38,7 @@
             margin: 0;
         }
         .products table {
-            width: 100%;
+            width: 95%;
             border-collapse: collapse;
             margin-bottom: 10px;
         }
