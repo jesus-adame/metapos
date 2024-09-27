@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('location_id');
             $table->unsignedBigInteger('product_id');
             $table->enum('type', ['entry', 'exit']);
-            $table->integer('quantity');
+            $table->decimal('quantity', 10, 2);
             $table->dateTime('applicated_at');
             $table->string('description')->nullable();
             $table->timestamps();

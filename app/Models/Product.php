@@ -30,7 +30,7 @@ class Product extends Model implements Auditable
         'price' => 'float',
         'wholesale_price' => 'float',
         'cost' => 'float',
-        'stock' => 'integer',
+        'stock' => 'float',
         'tax' => 'float',
     ];
 

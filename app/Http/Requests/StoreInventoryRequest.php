@@ -26,7 +26,7 @@ class StoreInventoryRequest extends FormRequest
         return [
             'product_id' => 'required|exists:products,id',
             'type' => 'required|in:entry,exit',
-            'quantity' => 'required|integer|min:1',
+            'quantity' => 'required|decimal:0,2|min:1',
             'applicated_at' => 'required|date',
             'description' => 'nullable|string|max:255',
             'location_id' => 'required|integer',

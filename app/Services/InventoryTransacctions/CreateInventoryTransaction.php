@@ -12,7 +12,7 @@ class CreateInventoryTransaction
         Location $location,
         string $type,
         int $productId,
-        int $amount,
+        float $amount,
         mixed $date,
         ?string $description = null
     ) {

@@ -28,7 +28,7 @@ class StoreQuotationRequest extends FormRequest
             'wholesale' => 'required|boolean',
             'products' => 'required|array',
             'products.*.id' => 'required|exists:products,id',
-            'products.*.quantity' => 'required|integer|min:1',
+            'products.*.quantity' => 'required|decimal:0,2|min:1',
             'products.*.price' => 'required|decimal:0,4',
             'products.*.tax' => 'required|decimal:0,2',
             'discount' => 'nullable|array',

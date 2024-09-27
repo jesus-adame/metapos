@@ -8,7 +8,6 @@ import { AxiosResponse } from 'axios';
 import { Link } from '@inertiajs/vue3';
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
-import PDFObject from '../PDFObject.vue';
 import { useConfirm } from 'primevue/useconfirm';
 import { useToast } from 'primevue/usetoast';
 import Tag from 'primevue/tag';
@@ -61,7 +60,7 @@ onMounted(() => {
 </script>
 <template>
     <Dialog v-model:visible="modalTicket" modal :header="'Venta #' + saleId">
-        <div class="flex gap-4 w-full items-center justify-end pt-2">
+        <div class="flex gap-3 w-full items-center justify-end pt-2">
             Mandar a imprimir <PrintTicketButton :pdf-url="pdfUrl" :printer="getPrinter()"></PrintTicketButton>
         </div>
     </Dialog>

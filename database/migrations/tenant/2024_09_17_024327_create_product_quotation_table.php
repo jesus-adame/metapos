@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('quotation_id');
             $table->unsignedBigInteger('sale_id');
-            $table->integer('quantity');
+            $table->decimal('quantity', 10, 2);
             $table->decimal('price', 10, 2);
             $table->decimal('tax', 5, 2)->default(0); // 5, 2 means max value 999.99
             $table->timestamps();

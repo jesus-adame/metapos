@@ -40,7 +40,7 @@ const removeProduct = (index: number) => {
             </Column>
             <Column header="Cant">
                 <template #body="{data}">
-                    <InputNumber v-model="data.quantity" showButtons buttonLayout="vertical" :min="1" :max="data.stock"></InputNumber>
+                    <InputNumber v-model="data.quantity" showButtons buttonLayout="vertical" :min="1" :maxFractionDigits="2" :max="data.stock"></InputNumber>
                     <!-- <span class="text-center block">{{data.quantity}}</span> -->
                 </template>
             </Column>

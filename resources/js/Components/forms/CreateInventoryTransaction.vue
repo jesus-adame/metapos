@@ -96,7 +96,7 @@ const types = ref([
         <div class="flex gap-2 my-2">
             <div class="w-1/2">
                 <label for="quantity" class="block">Cantidad</label>
-                <InputNumber v-model="form.quantity" :min="0" :step="1" class="w-full" showButtons placeholder="0"></InputNumber>
+                <InputNumber v-model="form.quantity" :min="0" :step="1" :maxFractionDigits="2" class="w-full" showButtons placeholder="0"></InputNumber>
             </div>
             <div class="w-1/2">
                 <label for="applicated_at" class="block">Fecha de transacción</label>

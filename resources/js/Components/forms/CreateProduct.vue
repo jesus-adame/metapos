@@ -23,11 +23,19 @@ let isUpdatingPriceWithTax = false;
 const unities = ref([
     {label: 'Unidad', value: 'unity'},
     {label: 'Bolsa', value: 'bag'},
+    {label: 'Costal', value: 'sack'},
+    {label: 'Cubeta', value: 'bucket'},
     {label: 'Caja', value: 'box'},
     {label: 'Kilo', value: 'kg'},
-    {label: 'Litro', value: 'l'},
     {label: 'Gramos', value: 'g'},
+    {label: 'Litro', value: 'l'},
+    {label: 'Mililitros', value: 'ml'},
     {label: 'Metros', value: 'meters'},
+    {label: 'Centímetos', value: 'cm'},
+    {label: 'Horas', value: 'hrs'},
+    {label: 'Días', value: 'days'},
+    {label: 'Semanas', value: 'weeks'},
+    {label: 'Meses', value: 'months'},
 ])
 
 const form = ref<Product>({

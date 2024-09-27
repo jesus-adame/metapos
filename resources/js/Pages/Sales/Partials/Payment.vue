@@ -124,8 +124,8 @@ onUnmounted(() => {
     </p>
     <div class="flex justify-end w-full">
       <PrintTicketButton v-if="saleStatus == 'paid'" :pdf-url="route('sales.ticket', {id: saleId})" :printer="getPrinter()"></PrintTicketButton>
-      <Button v-if="saleStatus == 'paid'" severity="success" label="Continuar" class="ml-2" @click="closeDialogResponse"></Button>
-      <Button v-if="saleStatus != 'paid'" class="ml-2" label="Aceptar" @click="closeDialogResponse"></Button>
+      <Button raised v-if="saleStatus == 'paid'" severity="success" label="Continuar" class="ml-2" @click="closeDialogResponse"></Button>
+      <Button raised v-if="saleStatus != 'paid'" severity="info" class="ml-2" label="Aceptar" @click="closeDialogResponse"></Button>
     </div>
   </Dialog>
 
@@ -177,8 +177,8 @@ onUnmounted(() => {
       </div>
     </div>
     <div class="flex justify-end">
-      <Button @click="applyPayment" class="mr-1" severity="success" icon="pi pi-dollar" label="PAGAR"></Button>
-      <Button @click="cancelPayment" label="CANCELAR"></Button>
+      <Button raised @click="applyPayment" class="mr-1" severity="success" icon="pi pi-dollar" label="PAGAR"></Button>
+      <Button raised @click="cancelPayment" label="CANCELAR"></Button>
     </div>
   </div>
 </template>

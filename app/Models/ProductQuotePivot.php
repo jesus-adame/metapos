@@ -9,6 +9,6 @@ class ProductQuotePivot extends Pivot
     protected $casts = [
         'price' => 'float',
         'tax' => 'float',
-        'quantity' => 'int',
+        'quantity' => 'float',
     ];
 }
