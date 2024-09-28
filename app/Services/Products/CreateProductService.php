@@ -15,8 +15,6 @@ class CreateProductService
         $currency = Currency::where('name', 'MXN')->first();
 
         if ($hasImage) {
-            // $file = $attrs->file('image'); // Add name file
-            // $imageName = $file->hashName();
             $imagePath = $image->store('images', 'public');
             $imageUrl = asset($imagePath);
         } else {

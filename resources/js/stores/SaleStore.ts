@@ -74,6 +74,17 @@ export const useSaleStore = defineStore('sale', {
                 })
         },
 
+        resetFilters() {
+            this.selectedCashRegister = null;
+            this.sales = [];
+            this.totalRecords = 0;
+            this.totalSales = 0;
+            this.rows = 10;
+            this.page = 1;
+            this.dates = [];
+            this.status = null;
+        },
+
         deleteItem(url: string) {
             return saleService.deleteItem(url)
         }

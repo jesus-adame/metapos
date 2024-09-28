@@ -56,6 +56,7 @@ Route::middleware([
         Route::get('/barcodes', [BarcodeController::class, 'index'])->name('barcodes.index');
         Route::get('/barcodes/{productId}/{quantity}', [BarcodeController::class, 'show'])->name('barcodes.show');
         Route::get('/qz/sign-message', [QzController::class, 'index'])->name('qz.sign-message');
+        Route::get('/sales/export/', [SaleController::class, 'export'])->name('sales.export');
 
         Route::resource('users', UserController::class);
         Route::resource('settings', SettingController::class);
