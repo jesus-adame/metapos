@@ -15,6 +15,7 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "maatwebsite/excel": "^3.1",
+        "maestroerror/php-heic-to-jpg": "^1.0",
         "owen-it/laravel-auditing": "^13.6",
         "picqer/php-barcode-generator": "^2.4",
         "silviolleite/laravelpwa": "^2.0",

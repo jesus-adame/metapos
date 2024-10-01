@@ -84,7 +84,7 @@ class ProductController extends Controller
 
     public function update(UpdateProductRequest $request, Product $product, UpdateProductService $service): JsonResponse
     {
-        $service->execute($product, $request);
+        $service->execute($product, $request, $request->hasFile('image'), $request->file('image'));
 
         return response()->json([
             'message' => 'Producto editado correctamente',

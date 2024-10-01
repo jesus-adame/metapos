@@ -2,25 +2,40 @@
 
 namespace App\Services\Products;
 
+use Maestroerror\HeicToJpg;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Currency;
 
 class UpdateProductService
 {
-    public function execute(Product $product, $attrs)
+    public function execute(Product $product, Request $attrs, $hasImage, $image)
     {
         $currency = Currency::where('name', 'MXN')->first();
 
-        if ($attrs->hasFile('image')) {
-            // $file = $attrs->file('image'); // Add name file
-            // $imageName = $file->hashName();
+        if ($hasImage) {
             $disk = Storage::disk('public');
+            $extension = strtolower($image->getClientOriginalExtension());
 
             if ($product->image && $disk->exists($product->image)) {
                 $disk->delete($product->image);
             }
-            $imagePath = $attrs->file('image')->store('images', 'public');
+
+            if ($extension === 'heic') {
+                // Convertir HEIC a JPG en memoria
+                $heicConverter = new HeicToJpg();
+                $jpgContent = $heicConverter->convert($image->getPathname());
+                $jpgFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME) . '.jpg';
+
+                // Guardar la imagen JPG
+                $imagePath = 'images/' . $jpgFilename;
+                Storage::disk('public')->put($imagePath, $jpgContent);
+            } else {
+                // Si no es HEIC, guardamos la imagen directamente
+                $imagePath = $image->store('images', 'public');
+            }
+
             $imageUrl = asset($imagePath);
         } else {
             $imagePath = $product->image;

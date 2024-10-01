@@ -2,6 +2,8 @@
 
 namespace App\Services\Products;
 
+use Maestroerror\HeicToJpg;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Product;
 use App\Models\Location;
 use App\Models\Inventory;
@@ -15,8 +17,24 @@ class CreateProductService
         $currency = Currency::where('name', 'MXN')->first();
 
         if ($hasImage) {
-            $imagePath = $image->store('images', 'public');
-            $imageUrl = asset($imagePath);
+            // Obtener la extensión original del archivo
+            $extension = strtolower($image->getClientOriginalExtension());
+
+            // Si la imagen es HEIC, la convertimos a JPG
+            if ($extension === 'heic') {
+                $heicConverter = new HeicToJpg();
+                $jpgContent = $heicConverter->convert($image->getPathname());
+                $jpgFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME) . '.jpg';
+
+                // Guardar la imagen JPG en la carpeta 'images'
+                $imagePath = 'images/' . $jpgFilename;
+                Storage::disk('public')->put($imagePath, $jpgContent);
+            } else {
+                // Si no es HEIC, guardamos la imagen directamente
+                $imagePath = $image->store('images', 'public');
+            }
+
+            $imageUrl = asset('storage/' . $imagePath);
         } else {
             $imagePath = null;
             $imageUrl = null;
