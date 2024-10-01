@@ -30,6 +30,6 @@ declare module 'pdfobject-vue' {
 
 declare module 'mousetrap' {
     interface MousetrapStatic {
-        bindGlobal(keys: string, callback: (event: Event) => void): void;
+        bindGlobal(keys: string | Array, callback: (event: Event) => void): void;
     }
 }

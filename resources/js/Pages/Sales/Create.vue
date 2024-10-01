@@ -206,14 +206,14 @@ watch(() => form.wholesale, () => {
 })
 
 onMounted(() => {
-    Mousetrap.bindGlobal('ctrl+enter', (e: Event) => {
+    Mousetrap.bindGlobal('enter', (e: Event) => {
         e.preventDefault()
         if (paymentButton.value) {
             paymentButton.value.$el.click()
         }
     })
 
-    Mousetrap.bind('ctrl+a', (e: Event) => {
+    Mousetrap.bindGlobal(['ctrl+a', 'f2'], (e: Event) => {
         e.preventDefault()
         if (searchInput.value) {
             searchInput.value.$el.focus()
@@ -264,7 +264,7 @@ onUnmounted(() => {
                 <form @submit.prevent="addSearchedProduct" class="flex items-center">
                     <IconField iconPosition="left" class="w-full">
                         <InputIcon class="pi pi-search"></InputIcon>
-                        <InputText ref="searchInput" type="text" v-model="searchQuery" class="w-full" placeholder="Producto (ctrl+A)" autofocus/>
+                        <InputText ref="searchInput" type="text" v-model="searchQuery" class="w-full" placeholder="Producto (F2)" autofocus/>
                     </IconField>
                 </form>
             </div>
@@ -334,7 +334,7 @@ onUnmounted(() => {
                             severity="success"
                             icon="pi pi-dollar"
                             type="submit"
-                            label="Pagar (ctrl+enter)"
+                            label="Pagar (enter)"
                             class="w-full text-xl"/>
                     </div>
                     <div class="flex mt-3 w-full">
