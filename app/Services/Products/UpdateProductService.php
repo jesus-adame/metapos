@@ -25,7 +25,7 @@ class UpdateProductService
             if ($extension === 'heic') {
                 // Convertir HEIC a JPG en memoria
                 $heicConverter = new HeicToJpg();
-                $jpgContent = $heicConverter->convert($image->getPathname());
+                $jpgContent = $heicConverter->convert($image->getPathname())->get();
                 $jpgFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME) . '.jpg';
 
                 // Guardar la imagen JPG

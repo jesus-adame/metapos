@@ -41,10 +41,23 @@ class Permission extends ModelsPermission
     const UPDATE_CATEGORIES = 'update categories';
     const DELETE_CATEGORIES = 'delete categories';
 
+    const VIEW_PERMISSIONS = 'view permissions';
     const CREATE_PERMISSIONS = 'create permissions';
-    const UPDATE_PERMISSION = 'update permissions';
+    const UPDATE_PERMISSIONS = 'update permissions';
     const DELETE_PERMISSIONS = 'delete permissions';
+
+    const VIEW_LOCATIONS = 'view locations';
+    const CREATE_LOCATIONS = 'create locations';
+    const UPDATE_LOCATIONS = 'update locations';
+    const DELETE_LOCATIONS = 'delete locations';
+
+    const VIEW_EXPENSES = 'view expenses';
+    const CREATE_EXPENSES = 'create expenses';
+    const UPDATE_EXPENSES = 'update expenses';
+    const DELETE_EXPENSES = 'delete expenses';
 
     const VIEW_SETTINGS = 'view settings';
     const VIEW_FINANCES = 'view finances';
+
+    const VIEW_REPORTS = 'view reports';
 }

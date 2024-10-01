@@ -9,6 +9,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\QzController;
 use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\PurchaseController;
@@ -74,6 +75,7 @@ Route::middleware([
         Route::resource('categories', CategoryController::class);
         Route::resource('quotations', QuotationController::class);
         Route::resource('currencies', CurrencyController::class)->only(['index']);
+        Route::resource('reports', ReportController::class)->only(['index']);
     });
 
     Route::get('/offline', function () {

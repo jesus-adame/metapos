@@ -120,7 +120,7 @@ const confirmDelete = (url: string) => {
         </Column>
         <Column field="" header="">
             <template #header>
-                <div class="w-full flex justify-center">
+                <div v-if="can('create categories')" class="w-full flex justify-center">
                     <Button icon="pi pi-plus" rounded severity="success" raised @click="showModalCreate"></Button>
                 </div>
             </template>

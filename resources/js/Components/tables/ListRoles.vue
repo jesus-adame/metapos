@@ -131,8 +131,8 @@ const confirmDelete = (url: string) => {
             </template>
             <template #body="{ data }">
                 <div class="flex gap-1 justify-center">
-                    <Button v-if="can('update.permissions')" raised icon="pi pi-pencil" severity="warn" @click="openModalEdit(data)"></Button>
-                    <Button v-if="can('delete.permissions')" raised icon="pi pi-trash" severity="danger" @click="confirmDelete(route('api.roles.destroy', {role: data.id }))"></Button>
+                    <Button v-if="can('update permissions')" raised icon="pi pi-pencil" severity="warn" @click="openModalEdit(data)"></Button>
+                    <Button v-if="can('delete permissions')" raised icon="pi pi-trash" severity="danger" @click="confirmDelete(route('api.roles.destroy', {role: data.id }))"></Button>
                 </div>
             </template>
         </Column>

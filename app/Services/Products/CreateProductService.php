@@ -23,7 +23,7 @@ class CreateProductService
             // Si la imagen es HEIC, la convertimos a JPG
             if ($extension === 'heic') {
                 $heicConverter = new HeicToJpg();
-                $jpgContent = $heicConverter->convert($image->getPathname());
+                $jpgContent = $heicConverter->convert($image->getPathname())->get();
                 $jpgFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME) . '.jpg';
 
                 // Guardar la imagen JPG en la carpeta 'images'

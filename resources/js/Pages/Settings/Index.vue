@@ -84,12 +84,14 @@ const items = ref([
             {
                 label: 'Sucursales',
                 icon: 'pi pi-building',
-                module: 'locations'
+                module: 'locations',
+                permissions: 'view locations'
             },
             {
                 label: 'Cajas',
                 icon: 'pi pi-shopping-cart',
-                module: 'cashRegisters'
+                module: 'cashRegisters',
+                permissions: 'view locations'
             }
         ]
     }
@@ -132,7 +134,7 @@ const updateSettings = () => {
                         <Button label="Guardar cambios" type="submit"></Button>
                     </form>
                 </div>
-                <div v-if="activePage == 'roles'">
+                <div v-if="activePage == 'roles'" class="w-full shadow-md">
                     <ListRoles></ListRoles>
                 </div>
                 <div v-if="activePage == 'users'" class="w-full shadow-md">

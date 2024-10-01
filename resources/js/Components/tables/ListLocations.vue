@@ -7,7 +7,7 @@ import LocationService from "@/Services/LocationService";
 import axios, { AxiosResponse } from 'axios';
 import { DataTablePageEvent } from 'primevue/datatable';
 import Tag from 'primevue/tag';
-import { locationIcon } from '@/helpers';
+import { can, locationIcon } from '@/helpers';
 import { useToast } from 'primevue/usetoast';
 import { useConfirm } from 'primevue/useconfirm';
 import EditLocation from '../forms/EditLocation.vue';
@@ -136,14 +136,14 @@ const confirmDelete = (url: string) => {
         </Column>
         <Column field="" header="">
             <template #header>
-                <div class="w-full flex justify-center">
+                <div v-if="can('update locations')" class="w-full flex justify-center">
                     <Button icon="pi pi-plus" rounded severity="success" raised @click="showModalCreate"></Button>
                 </div>
             </template>
             <template #body="{data}">
                 <div class="w-full flex gap-1 justify-center">
-                    <Button icon="pi pi-pencil" raised severity="warn" @click="showModalEdit(data)"></Button>
-                    <Button icon="pi pi-trash" raised severity="danger" @click="confirmDelete(route('api.locations.destroy', {location: data.id}))"></Button>
+                    <Button v-if="can('update locations')" icon="pi pi-pencil" raised severity="warn" @click="showModalEdit(data)"></Button>
+                    <Button v-if="can('update locations')" icon="pi pi-trash" raised severity="danger" @click="confirmDelete(route('api.locations.destroy', {location: data.id}))"></Button>
                 </div>
             </template>
         </Column>

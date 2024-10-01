@@ -47,7 +47,7 @@ const tabItems: TabItem[] = [
     label: 'Gastos',
     route: route('expenses.index'),
     active: route().current('expenses.index'),
-    permission: 'view purchases'
+    permission: 'view expenses'
   },
   {
     icon: 'fi fi-sr-boxes',
@@ -69,6 +69,13 @@ const tabItems: TabItem[] = [
     route: route('categories.index'),
     active: route().current('categories.index'),
     permission: 'view categories'
+  },
+  {
+    icon: 'fi fi-sr-ballot-check',
+    label: 'Reportes',
+    route: route('reports.index'),
+    active: route().current('reports.index'),
+    permission: 'view reports'
   },
 ];
 
@@ -101,7 +108,7 @@ function handleMouseLeave() {
               <span class="ml-3 font-black text-lg text-gray-200">METAPOS</span>
             </div>
           </div>
-          <div class="mt-6 space-y-2 tracking-wide text-gray-100 reveal-menu">
+          <div class="mt-4 space-y-2 tracking-wide text-gray-100 reveal-menu">
             <VirtualScroller :items="tabItems" :itemSize="10" style="height: 65vh; overflow-x: hidden;" :class="{ 'overflow-hidden': !isHovered }" orientation="vertical">
               <template v-slot:item="{ item }">
                 <div class="min-w-max">
@@ -114,9 +121,9 @@ function handleMouseLeave() {
             </VirtualScroller>
           </div>
         </div>
-        <div class="w-max -mb-3" v-if="can('view settings')">
-          <Link :href="route('settings.index')" class="group flex items-center space-x-4 px-4 py-3 text-gray-100">
-            <i class="pi pi-cog w-6 ml-1"></i>
+        <div v-if="can('view settings')">
+          <Link :href="route('settings.index')" class="group flex gap-2 items-center space-x-4 px-5 py-3 text-gray-100">
+            <i class="pi pi-cog"></i>
             <span class="group-hover:text-gray-300">Ajustes</span>
           </Link>
         </div>

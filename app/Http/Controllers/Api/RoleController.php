@@ -54,7 +54,7 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
-        Gate::authorize(Permission::UPDATE_PERMISSION);
+        Gate::authorize(Permission::UPDATE_PERMISSIONS);
 
         $request->validate([
             'name' => 'required',
