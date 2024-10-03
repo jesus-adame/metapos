@@ -48,7 +48,7 @@ class ChartController extends Controller
             'labels' => $labels,
             'datasets' => [
                 [
-                    'label' => 'Periodo anterior',
+                    'label' => 'Semana anterior',
                     'backgroundColor' => '#a0a0a0',
                     'borderColor' => 'gray',
                     'tension' => 0.4,
@@ -56,7 +56,7 @@ class ChartController extends Controller
                     'data' => $pastSales,
                 ],
                 [
-                    'label' => 'Periodo actual',
+                    'label' => 'Semana actual',
                     'backgroundColor' => '#ff5151',
                     'borderColor' => 'red',
                     'tension' => 0.4,

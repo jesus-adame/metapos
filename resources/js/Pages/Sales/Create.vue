@@ -206,7 +206,7 @@ watch(() => form.wholesale, () => {
 })
 
 onMounted(() => {
-    Mousetrap.bindGlobal('enter', (e: Event) => {
+    Mousetrap.bindGlobal('f3', (e: Event) => {
         e.preventDefault()
         if (paymentButton.value) {
             paymentButton.value.$el.click()
@@ -334,7 +334,7 @@ onUnmounted(() => {
                             severity="success"
                             icon="pi pi-dollar"
                             type="submit"
-                            label="Pagar (enter)"
+                            label="Pagar (F3)"
                             class="w-full text-xl"/>
                     </div>
                     <div class="flex mt-3 w-full">

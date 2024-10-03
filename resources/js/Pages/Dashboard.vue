@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import CashResume from '@/Components/blocks/CashResume.vue';
 import ResumeData from '@/Components/blocks/ResumeData.vue';
 import SaleCategories from '@/Components/charts/SaleCategories.vue';
 import WeekSales from '@/Components/charts/WeekSales.vue';
@@ -22,10 +23,14 @@ const authStore = useAuthStore()
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg my-4">
             <div class="p-6 text-gray-900 text-lg">
                 <p>Buen día {{ authStore.user?.name }}</p>
+
             </div>
         </div>
-        <div v-if="can('view finances')" class="grid md:grid-cols-2 py-4 my-6">
+        <div v-if="can('view finances')" class="grid md:grid-cols-2 gap-2 py-4 my-6">
             <WeekSales></WeekSales>
+            <div>
+                <CashResume></CashResume>
+            </div>
             <!-- <SaleCategories></SaleCategories> -->
         </div>
     </UserLayout>

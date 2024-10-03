@@ -32,40 +32,63 @@ onMounted(() => {
 })
 </script>
 <template>
-    <div class="flex items-end rounded flex-end text-right text-lg text-gray-600 w-full p-2">
-        <div class="">
-            <p class="font-bold p-1 rounded m-1">Entradas</p>
-            <p class="font-bold p-1 rounded m-1">Salidas</p>
-            <span class="text-gray-700">-------</span>
-            <p class="font-bold p-1 rounded m-1">Saldo</p>
-        </div>
-        <div class="">
-            <p class="font-bold">Efectivo</p>
-            <p class="p-1 rounded m-1 bg-green-200">{{ formatMoneyNumber(cash?.entries) }}</p>
-            <p class="p-1 rounded m-1 bg-red-200">{{ formatMoneyNumber(cash?.exits) }}</p>
-            <span class="text-gray-700">-----------------</span>
-            <p class="p-1 rounded m-1 bg-blue-200">{{ formatMoneyNumber(cash?.balance) }}</p>
-        </div>
-        <div class="">
-            <p class="font-bold">Tarjeta</p>
-            <p class="p-1 rounded m-1 bg-green-200">{{ formatMoneyNumber(card?.entries) }}</p>
-            <p class="p-1 rounded m-1 bg-red-200">{{ formatMoneyNumber(card?.exits) }}</p>
-            <span class="text-gray-700">-----------------</span>
-            <p class="p-1 rounded m-1 bg-blue-200">{{ formatMoneyNumber(card?.balance) }}</p>
-        </div>
-        <div class="">
-            <p class="font-bold">Transferencia</p>
-            <p class="p-1 rounded m-1 bg-green-200">{{ formatMoneyNumber(transfer?.entries) }}</p>
-            <p class="p-1 rounded m-1 bg-red-200">{{ formatMoneyNumber(transfer?.exits) }}</p>
-            <span class="text-gray-700">-----------------</span>
-            <p class="p-1 rounded m-1 bg-blue-200">{{ formatMoneyNumber(transfer?.balance) }}</p>
-        </div>
-        <div class="">
-            <p class="font-bold">Totales</p>
-            <p class="p-1 rounded m-1 bg-green-200">{{ formatMoneyNumber(global?.entries) }}</p>
-            <p class="p-1 rounded m-1 bg-red-200">{{ formatMoneyNumber(global?.exits) }}</p>
-            <span class="text-gray-700">-----------------</span>
-            <p class="p-1 rounded m-1 bg-blue-200">{{ formatMoneyNumber(global?.balance) }}</p>
-        </div>
-    </div>
+    <table class="w-full text-right bg-white">
+        <tr>
+            <td class="p-2 border">
+            </td>
+            <td class="p-2 border">
+                <span class="font-bold">
+                    Efectivo
+                </span>
+            </td>
+            <td class="p-2 border">
+                <span class="font-bold">
+                    Tarjeta
+                </span>
+            </td>
+            <td class="p-2 border">
+                <span class="font-bold">
+                    Tranferencias
+                </span>
+            </td>
+            <td class="p-2 border">
+                <span class="font-bold">
+                    Totales
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td class="p-2 border">
+                <span class="font-bold">
+                    Entradas
+                </span>
+            </td>
+            <td class="p-2 border">{{ formatMoneyNumber(cash?.entries) }}</td>
+            <td class="p-2 border">{{ formatMoneyNumber(card?.entries) }}</td>
+            <td class="p-2 border">{{ formatMoneyNumber(transfer?.entries) }}</td>
+            <td class="p-2 border">{{ formatMoneyNumber(global?.entries) }}</td>
+        </tr>
+        <tr>
+            <td class="p-2 border bg-white">
+                <span class="font-bold">
+                    Salidas
+                </span>
+            </td>
+            <td class="p-2 border">{{ formatMoneyNumber(cash?.exits) }}</td>
+            <td class="p-2 border">{{ formatMoneyNumber(card?.exits) }}</td>
+            <td class="p-2 border">{{ formatMoneyNumber(transfer?.exits) }}</td>
+            <td class="p-2 border">{{ formatMoneyNumber(global?.exits) }}</td>
+        </tr>
+        <tr>
+            <td class="p-2 border bg-white">
+                <span class="font-bold">
+                    Saldo
+                </span>
+            </td>
+            <td class="p-2 border">{{ formatMoneyNumber(cash?.balance) }}</td>
+            <td class="p-2 border">{{ formatMoneyNumber(card?.balance) }}</td>
+            <td class="p-2 border">{{ formatMoneyNumber(transfer?.balance) }}</td>
+            <td class="p-2 border">{{ formatMoneyNumber(global?.balance) }}</td>
+        </tr>
+    </table>
 </template>
