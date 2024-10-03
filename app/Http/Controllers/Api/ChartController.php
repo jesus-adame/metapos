@@ -49,19 +49,28 @@ class ChartController extends Controller
             'datasets' => [
                 [
                     'label' => 'Periodo anterior',
-                    'backgroundColor' => 'gray',
+                    'backgroundColor' => '#a0a0a0',
                     'borderColor' => 'gray',
-                    'data' => $pastSales
+                    'tension' => 0.4,
+                    'fill' => false,
+                    'data' => $pastSales,
                 ],
                 [
                     'label' => 'Periodo actual',
-                    'backgroundColor' => 'red',
+                    'backgroundColor' => '#ff5151',
                     'borderColor' => 'red',
-                    'data' => $currentSales
+                    'tension' => 0.4,
+                    'fill' => true,
+                    'data' => $currentSales,
                 ]
             ]
         ];
 
         return response()->json($chartData);
+    }
+
+    public function salesByCategory()
+    {
+        return response()->json([]);
     }
 }

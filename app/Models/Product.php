@@ -71,4 +71,12 @@ class Product extends Model implements Auditable
     {
         return $this->belongsTo(Currency::class);
     }
+
+    public function sales()
+    {
+        return $this->belongsToMany(Sale::class, 'product_sale')
+            ->withPivot('quantity', 'price', 'tax', 'tax_rate', 'subtotal', 'line_total')
+            ->withTimestamps()
+            ->using(ProductSalePivot::class);
+    }
 }

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import ResumeData from '@/Components/blocks/ResumeData.vue';
 import SaleCategories from '@/Components/charts/SaleCategories.vue';
-import YearSales from '@/Components/charts/YearSales.vue';
+import WeekSales from '@/Components/charts/WeekSales.vue';
 import { can } from '@/helpers';
 import UserLayout from '@/Layouts/UserLayout.vue';
 import { useAuthStore } from '@/stores/AuthStore';
@@ -25,7 +25,7 @@ const authStore = useAuthStore()
             </div>
         </div>
         <div v-if="can('view finances')" class="grid md:grid-cols-2 py-4 my-6">
-            <YearSales></YearSales>
+            <WeekSales></WeekSales>
             <!-- <SaleCategories></SaleCategories> -->
         </div>
     </UserLayout>

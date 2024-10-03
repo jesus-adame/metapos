@@ -17,15 +17,13 @@ const chartData = ref();
 const chartOptions = ref(null);
 
 const setChartData = () => {
-    const documentStyle = getComputedStyle(document.body);
-
     return {
         labels: ['A', 'B', 'C'],
         datasets: [
             {
-                data: [540, 325, 702],
                 backgroundColor: ['#EF64AA', '#41D477', '#F37524'],
-                hoverBackgroundColor: ['#DF3280', '#1EAC53', '#ED6013']
+                hoverBackgroundColor: ['#DF3280', '#1EAC53', '#ED6013'],
+                data: [540, 325, 702],
             }
         ]
     };
