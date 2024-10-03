@@ -149,7 +149,23 @@ export const calculateMetodIcon = (payment: PaymentMethod) => {
 }
 
 export function roundBank(num: number) {
-    return num % 1 === 0.5 ? (num % 2 === 0 ? num : num + 1) : Math.round(num);
+    // Multiplicamos por 100 para trabajar con centésimas
+    const scaled = num * 100;
+
+    // Obtenemos la parte decimal de las centésimas
+    const decimal = scaled - Math.floor(scaled);
+
+    let rounded: number;
+    if (decimal === 0.5) {
+        // Si termina en .5, mantenemos el valor
+        rounded = scaled;
+    } else {
+        // En otro caso, redondeamos
+        rounded = Math.round(scaled);
+    }
+
+    // Dividimos por 100 para volver a la escala original y fijamos a 2 decimales
+    return Number((rounded / 100).toFixed(2));
 }
 
 export function getPercentage(number: number, percentage: number) {

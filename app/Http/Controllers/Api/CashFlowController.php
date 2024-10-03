@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Models\Sale;
+use App\Models\Purchase;
+use App\Models\Expense;
 use App\Models\CashFlow;
 use App\Http\Controllers\Controller;
 
@@ -46,7 +49,14 @@ class CashFlowController extends Controller
         $transferEntries = CashFlow::getEntriesByMethod($cashRegisterId, 'transfer');
         $transferExits = CashFlow::getExitsByMethod($cashRegisterId, 'transfer');
 
+        $sales = Sale::sum('total');
+        $purchases = Purchase::sum('total');
+        $expenses = Expense::sum('amount');
+
         return response()->json([
+            'sales' => $sales,
+            'purchases' => $purchases,
+            'expenses' => $expenses,
             'global' => [
                 'entries' => $entries,
                 'exits' => $exits,

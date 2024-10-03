@@ -11,6 +11,9 @@ const cash = ref<any>(null)
 const card = ref<any>(null)
 const transfer = ref<any>(null)
 const authStore = useAuthStore()
+const expenses = ref<any>(null)
+const purchases = ref<any>(null)
+const sales = ref<any>(null)
 
 const fetchItems = () => {
     cashFlowService.resume()
@@ -19,6 +22,9 @@ const fetchItems = () => {
         cash.value = response.data.cash
         card.value = response.data.card
         transfer.value = response.data.transfer
+        expenses.value = response.data.expenses
+        purchases.value = response.data.purchases
+        sales.value = response.data.sales
     })
 }
 
@@ -33,7 +39,7 @@ onMounted(() => {
 </script>
 <template>
     <table class="w-full text-right bg-white">
-        <tr>
+        <!-- <tr>
             <td class="p-2 border">
             </td>
             <td class="p-2 border">
@@ -56,39 +62,39 @@ onMounted(() => {
                     Totales
                 </span>
             </td>
-        </tr>
+        </tr> -->
         <tr>
             <td class="p-2 border">
                 <span class="font-bold">
-                    Entradas
+                    Ventas
                 </span>
             </td>
-            <td class="p-2 border">{{ formatMoneyNumber(cash?.entries) }}</td>
-            <td class="p-2 border">{{ formatMoneyNumber(card?.entries) }}</td>
+            <td class="p-2 border">{{ formatMoneyNumber(sales) }}</td>
+            <!-- <td class="p-2 border">{{ formatMoneyNumber(card?.entries) }}</td>
             <td class="p-2 border">{{ formatMoneyNumber(transfer?.entries) }}</td>
-            <td class="p-2 border">{{ formatMoneyNumber(global?.entries) }}</td>
+            <td class="p-2 border">{{ formatMoneyNumber(global?.entries) }}</td> -->
         </tr>
         <tr>
             <td class="p-2 border bg-white">
                 <span class="font-bold">
-                    Salidas
+                    Compras
                 </span>
             </td>
-            <td class="p-2 border">{{ formatMoneyNumber(cash?.exits) }}</td>
-            <td class="p-2 border">{{ formatMoneyNumber(card?.exits) }}</td>
+            <td class="p-2 border">{{ formatMoneyNumber(purchases) }}</td>
+            <!-- <td class="p-2 border">{{ formatMoneyNumber(card?.exits) }}</td>
             <td class="p-2 border">{{ formatMoneyNumber(transfer?.exits) }}</td>
-            <td class="p-2 border">{{ formatMoneyNumber(global?.exits) }}</td>
+            <td class="p-2 border">{{ formatMoneyNumber(global?.exits) }}</td> -->
         </tr>
         <tr>
             <td class="p-2 border bg-white">
                 <span class="font-bold">
-                    Saldo
+                    Gastos
                 </span>
             </td>
-            <td class="p-2 border">{{ formatMoneyNumber(cash?.balance) }}</td>
-            <td class="p-2 border">{{ formatMoneyNumber(card?.balance) }}</td>
+            <td class="p-2 border">{{ formatMoneyNumber(expenses) }}</td>
+            <!-- <td class="p-2 border">{{ formatMoneyNumber(card?.balance) }}</td>
             <td class="p-2 border">{{ formatMoneyNumber(transfer?.balance) }}</td>
-            <td class="p-2 border">{{ formatMoneyNumber(global?.balance) }}</td>
+            <td class="p-2 border">{{ formatMoneyNumber(global?.balance) }}</td> -->
         </tr>
     </table>
 </template>
