@@ -85,6 +85,8 @@ class CreateRolesAndPermissionsSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'view settings']);
         Permission::firstOrCreate(['name' => 'update settings']);
 
+        Permission::firstOrCreate(['name' => 'view reports']);
+
         $manager->givePermissionTo('view finances');
         $manager->givePermissionTo('view settings');
         $manager->givePermissionTo('update settings');

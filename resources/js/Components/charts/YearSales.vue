@@ -1,42 +1,31 @@
 
 <template>
-    <div class="card">
+    <div class="bg-white py-2 px-4 rounded">
+        <h4 class="text-lg font-bold text-gray-700">Ventas semanales</h4>
         <Chart type="bar" :data="chartData" :options="chartOptions" class="h-[30rem]"  />
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import axios from "axios";
+import { AxiosResponse } from "axios";
 import { ref, onMounted } from "vue";
 
 onMounted(() => {
-    chartData.value = setChartData();
+    loadChartsData();
     chartOptions.value = setChartOptions();
 });
 
 const chartData = ref();
 const chartOptions = ref();
 
-const setChartData = () => {
-    const documentStyle = getComputedStyle(document.documentElement);
+const loadChartsData = () => {
+    axios.get(route('api.charts.week-sales'))
+    .then((response: AxiosResponse) => {
+        chartData.value = response.data
+    })
+}
 
-    return {
-        labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio'],
-        datasets: [
-            {
-                label: 'Periodo anterior',
-                backgroundColor: documentStyle.getPropertyValue('--p-cyan-500'),
-                borderColor: documentStyle.getPropertyValue('--p-cyan-500'),
-                data: [65, 59, 80, 81, 56, 55, 40]
-            },
-            {
-                label: 'Periodo actual',
-                backgroundColor: documentStyle.getPropertyValue('--p-gray-500'),
-                borderColor: documentStyle.getPropertyValue('--p-gray-500'),
-                data: [28, 48, 40, 19, 86, 27, 90]
-            }
-        ]
-    };
-};
 const setChartOptions = () => {
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--p-text-color');

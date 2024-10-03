@@ -12,7 +12,6 @@ const purchasesAmount = ref(0)
 const fetchData = () => {
     axios.get(route('api.dashboard.resume'))
     .then((response: AxiosResponse) => {
-        console.log(response.data);
         salesAmount.value = response.data.salesAmount
         purchasesAmount.value = response.data.purchasesAmount
         customersAmount.value = response.data.customersAmount

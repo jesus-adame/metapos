@@ -220,7 +220,7 @@ onMounted(() => {
         }
     })
 
-    Mousetrap.bind('ctrl+c', (e: Event) => {
+    Mousetrap.bindGlobal('ctrl+c', (e: Event) => {
         e.preventDefault()
         if (customerInput.value) {
             customerInput.value.$el.querySelector('input').focus()
