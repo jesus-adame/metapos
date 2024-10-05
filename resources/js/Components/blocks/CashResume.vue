@@ -6,25 +6,19 @@ import { AxiosResponse } from 'axios';
 import { onMounted, ref, watch } from 'vue';
 
 const cashFlowService = new CashFlowService;
-const global = ref<any>(null)
-const cash = ref<any>(null)
-const card = ref<any>(null)
-const transfer = ref<any>(null)
 const authStore = useAuthStore()
 const expenses = ref<any>(null)
 const purchases = ref<any>(null)
 const sales = ref<any>(null)
+const balance = ref<any>(null)
 
 const fetchItems = () => {
     cashFlowService.resume()
     .then((response: AxiosResponse) => {
-        global.value = response.data.global
-        cash.value = response.data.cash
-        card.value = response.data.card
-        transfer.value = response.data.transfer
         expenses.value = response.data.expenses
         purchases.value = response.data.purchases
         sales.value = response.data.sales
+        balance.value = response.data.balance
     })
 }
 
@@ -39,30 +33,15 @@ onMounted(() => {
 </script>
 <template>
     <table class="w-full text-right bg-white">
-        <!-- <tr>
+        <tr>
             <td class="p-2 border">
             </td>
             <td class="p-2 border">
                 <span class="font-bold">
-                    Efectivo
+                    {{authStore.location?.name}}
                 </span>
             </td>
-            <td class="p-2 border">
-                <span class="font-bold">
-                    Tarjeta
-                </span>
-            </td>
-            <td class="p-2 border">
-                <span class="font-bold">
-                    Tranferencias
-                </span>
-            </td>
-            <td class="p-2 border">
-                <span class="font-bold">
-                    Totales
-                </span>
-            </td>
-        </tr> -->
+        </tr>
         <tr>
             <td class="p-2 border">
                 <span class="font-bold">
@@ -92,6 +71,17 @@ onMounted(() => {
                 </span>
             </td>
             <td class="p-2 border">{{ formatMoneyNumber(expenses) }}</td>
+            <!-- <td class="p-2 border">{{ formatMoneyNumber(card?.balance) }}</td>
+            <td class="p-2 border">{{ formatMoneyNumber(transfer?.balance) }}</td>
+            <td class="p-2 border">{{ formatMoneyNumber(global?.balance) }}</td> -->
+        </tr>
+        <tr>
+            <td class="p-2 border bg-white">
+                <span class="font-bold">
+                    Ingresos - egresos
+                </span>
+            </td>
+            <td class="p-2 border">{{ formatMoneyNumber(balance) }}</td>
             <!-- <td class="p-2 border">{{ formatMoneyNumber(card?.balance) }}</td>
             <td class="p-2 border">{{ formatMoneyNumber(transfer?.balance) }}</td>
             <td class="p-2 border">{{ formatMoneyNumber(global?.balance) }}</td> -->

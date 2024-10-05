@@ -13,7 +13,7 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
-        $perPage = $request->input('rows', 10);
+        $perPage = $request->input('rows', 80);
         $categories = Category::orderBy('created_at', 'desc')->paginate($perPage);
 
         return response()->json($categories);
