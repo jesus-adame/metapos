@@ -26,12 +26,12 @@ const removeProduct = (index: number) => {
         <DataTable :value="products" v-if="products.length">
             <Column header="Producto">
                 <template #body="{data}">
-                    <div class="flex items-center">
-                        <div v-if="data.image" class="overflow-hidden hidden xl:block shadow-lg rounded-md max-w-16 max-h-16">
+                    <div class="flex gap-2 items-center">
+                        <div v-if="data.image" class="overflow-hidden hidden xl:block shadow-lg rounded-md min-w-14 max-w-14 max-h-14">
                             <Image :src="data.image_url" :alt="data.name" />
                         </div>
-                        <div class="text-left ml-2">
-                            <span class="font-bold">{{ data.name }}</span>
+                        <div class="text-left max-w-48">
+                            <p class="font-bold truncate">{{ data.name }}</p>
                             <p class="text-sm font-medium text-gray-500">{{ data.code }}</p>
                             <p class="text-sm font-medium text-gray-500">SKU: {{ data.sku || 'N/A' }}</p>
                         </div>
@@ -40,7 +40,7 @@ const removeProduct = (index: number) => {
             </Column>
             <Column header="Cant">
                 <template #body="{data}">
-                    <InputNumber v-model="data.quantity" showButtons buttonLayout="vertical" :min="0.1" :maxFractionDigits="2" :max="data.stock"></InputNumber>
+                    <InputNumber v-model="data.quantity" showButtons buttonLayout="vertical" style="width: 3rem" :min="0.1" :maxFractionDigits="2" :max="data.stock"></InputNumber>
                     <!-- <span class="text-center block">{{data.quantity}}</span> -->
                 </template>
             </Column>

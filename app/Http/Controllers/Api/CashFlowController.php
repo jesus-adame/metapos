@@ -30,8 +30,6 @@ class CashFlowController extends Controller
 
     public function resume()
     {
-        $cashRegisterId = Auth::user()->cashRegister->id;
-
         $sales = Sale::sum('total');
         $purchases = Purchase::sum('total');
         $expenses = Expense::sum('amount');

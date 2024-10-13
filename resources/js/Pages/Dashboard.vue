@@ -31,7 +31,7 @@ const authStore = useAuthStore()
             <div>
                 <CashResume></CashResume>
             </div>
-            <!-- <SaleCategories></SaleCategories> -->
+            <SaleCategories></SaleCategories>
         </div>
     </UserLayout>
 </template>

@@ -5,7 +5,8 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import axios from "axios";
 import { ref, onMounted } from "vue";
 
 onMounted(() => {
@@ -17,6 +18,9 @@ const chartData = ref();
 const chartOptions = ref(null);
 
 const setChartData = () => {
+    // axios.get(route('api.charts.category-sales'))
+    // .then()
+
     return {
         labels: ['A', 'B', 'C'],
         datasets: [

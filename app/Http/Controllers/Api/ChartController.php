@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Carbon\CarbonPeriod;
 use Carbon\Carbon;
 use App\Models\Sale;
+use App\Models\Product;
+use App\Models\Category;
 use App\Http\Controllers\Controller;
 
 class ChartController extends Controller
@@ -71,6 +74,20 @@ class ChartController extends Controller
 
     public function salesByCategory()
     {
-        return response()->json([]);
+        $today = Carbon::today();
+
+        // $categories = Category::with();
+
+        $products = Product::whereHas('sales', function ($query) use ($today) {
+            $query->whereDate('sales.created_at', $today);
+        })
+            ->with(['sales' => function ($query) use ($today) {
+                $query->whereDate('sales.created_at', $today)
+                    ->select('sales.*', DB::raw('SUM(product_sale.quantity) as total_quantity'))
+                    ->groupBy('sales.id');
+            }])
+            ->get();
+
+        return response()->json($products);
     }
 }

@@ -11,9 +11,8 @@ use App\Models\Currency;
 
 class CreateProductService
 {
-    public function execute($attrs, $author, $hasImage, $image)
+    public function execute($attrs, $hasImage, $image)
     {
-        $locationId = $author->location_id;
         $currency = Currency::where('name', 'MXN')->first();
 
         if ($hasImage) {
@@ -50,7 +49,6 @@ class CreateProductService
             'cost' => $attrs->cost,
             'image' => $imagePath,
             'image_url' => $imageUrl,
-            'location_id' => $locationId,
             'unit_type' => $attrs->unit_type,
             'tax' => $attrs->tax,
         ]);

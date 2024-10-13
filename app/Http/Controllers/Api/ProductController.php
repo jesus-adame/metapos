@@ -46,9 +46,12 @@ class ProductController extends Controller
             return response()->json([]);
         }
 
+        $query = '%' . $request->code . '%';
+
         $products = Product::withStock()
-            ->where('code', $request->code)
-            ->orWhere('name', $request->code)
+            ->where('code', 'like', '%' . $query)
+            ->orWhere('name', 'like', $query)
+            ->limit(10)
             ->get();
 
         return response()->json($products);
@@ -74,7 +77,7 @@ class ProductController extends Controller
 
     public function store(CreateProductRequest $request, CreateProductService $service): JsonResponse
     {
-        $product = $service->execute($request, Auth::user(), $request->hasFile('image'), $request->file('image'));
+        $product = $service->execute($request, $request->hasFile('image'), $request->file('image'));
 
         return response()->json([
             'message' => 'Producto registrado correctamente',

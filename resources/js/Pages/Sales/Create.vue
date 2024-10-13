@@ -20,6 +20,7 @@ import CreateCustomer from '@/Components/forms/CreateCustomer.vue';
 import UserIcon from '@/Components/icons/UserIcon.vue';
 import Mousetrap from 'mousetrap';
 import 'mousetrap-global-bind';
+import Image from 'primevue/image';
 
 // Retrieve customers and products from the server
 const productService = new ProductService();
@@ -32,6 +33,7 @@ const modalPayments = ref(false)
 const modalCashMovements = ref(false)
 const modalDiscount = ref(false)
 const modalCreateCustomer = ref(false)
+const filteredProducts = ref<Product[]>([]);
 
 // Inputs for shortcuts
 const searchInput = ref();
@@ -54,14 +56,17 @@ const form = reactive<{
     wholesale: false,
 });
 
-const addSearchedProduct = () => {
+const addSearchedProduct = (selected: any) => {
+    console.log(selected.value);
+    searchQuery.value = '';
+    pushProduct(selected.value)
+}
+
+const searchProduct = () => {
     productService.findByCode(searchQuery.value)
     .then(response => {
-        searchQuery.value = '';
-
         if (response.data.length > 0) {
-            const product = response.data[0];
-            pushProduct(product);
+            filteredProducts.value = [...response.data]
         } else {
             toast.add({ severity: 'warn', summary: 'Atención', detail: 'No se encontró el producto', life: 3000 });
         }
@@ -215,8 +220,9 @@ onMounted(() => {
 
     Mousetrap.bindGlobal(['ctrl+a', 'f2'], (e: Event) => {
         e.preventDefault()
+
         if (searchInput.value) {
-            searchInput.value.$el.focus()
+            searchInput.value.rootEl.firstChild.focus()
         }
     })
 
@@ -261,12 +267,37 @@ onUnmounted(() => {
 
         <div class="flex flex-wrap gap-2 items-baseline justify-between mb-3 mt-3 w-full">
             <div class="search w-full md:w-1/3">
-                <form @submit.prevent="addSearchedProduct" class="flex items-center">
-                    <IconField iconPosition="left" class="w-full">
-                        <InputIcon class="pi pi-search"></InputIcon>
-                        <InputText ref="searchInput" type="text" v-model="searchQuery" class="w-full" placeholder="Producto (F2)" autofocus/>
-                    </IconField>
-                </form>
+                <div class="flex items-center">
+                    <AutoComplete
+                        ref="searchInput"
+                        :autofocus="true"
+                        fluid
+                        :forceSelection="true"
+                        v-model="searchQuery"
+                        @complete="searchProduct"
+                        @item-select="addSearchedProduct"
+                        option-label="name"
+                        option-value="code"
+                        class="w-full"
+                        :suggestions="filteredProducts"
+                        placeholder="Producto (F2)">
+                        <template #option="{option}">
+                            <div class="flex gap-2 items-center">
+                                <Image
+                                :src="`${option.image_url}`"
+                                :alt="option.image"
+                                v-if="option.image"
+                                class="min-w-10 max-w-10 max-h-10 text-white shadow-md rounded-md overflow-hidden"
+                                preview
+                                />
+                                <div>
+                                    <p>{{ option.name }}</p>
+                                    <p class="text-sm text-gray-500">{{ formatMoneyNumber(option.price * (1 + (option.tax / 100))) }}</p>
+                                </div>
+                            </div>
+                        </template>
+                    </AutoComplete>
+                </div>
             </div>
             <div class="customer w-full md:w-1/2">
                 <div class="flex gap-2 justify-end w-full">
@@ -284,7 +315,7 @@ onUnmounted(() => {
                             inputClass="w-full"
                             placeholder="Cliente (ctrl+C)">
                             <template #option="{option}">
-                                <div class="flex align-options-center">
+                                <div class="flex align-items-center">
                                     <div>
                                         {{ option.name }} {{ option.lastname }} | {{ option.phone }}
                                     </div>
