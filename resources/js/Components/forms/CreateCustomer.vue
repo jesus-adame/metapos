@@ -34,31 +34,31 @@ const submit = () => {
 };
 </script>
 <template>
-    <form @submit.prevent="submit">
-        <div class="flex">
-            <div class="w-full mr-2">
-                <label for="name" class="block">Nombre</label>
-                <InputText name="name" class="w-full" v-model="form.name"></InputText>
-            </div>
-            <div class="w-full">
-                <label for="lastname" class="block">Apellidos</label>
-                <InputText name="lastname" class="w-full" v-model="form.lastname"></InputText>
-            </div>
+    <div class="flex">
+        <div class="w-full mr-2">
+            <label for="name" class="block">Nombre</label>
+            <InputText name="name" class="w-full" v-model="form.name"></InputText>
         </div>
-        <div>
-            <label for="email" class="block">Email</label>
-            <InputText type="email" class="w-full" v-model="form.email"></InputText>
+        <div class="w-full">
+            <label for="lastname" class="block">Apellidos</label>
+            <InputText name="lastname" class="w-full" v-model="form.lastname"></InputText>
         </div>
-        <div>
-            <label for="phone" class="block">Telefono</label>
-            <InputText name="phone" class="w-full" v-model="form.phone"></InputText>
-        </div>
-        <div>
-            <label for="address" class="block">Dirección</label>
-            <InputText name="address" class="w-full" v-model="form.address"></InputText>
-        </div>
-        <div class="mt-4 flex justify-end">
+    </div>
+    <div>
+        <label for="email" class="block">Email</label>
+        <InputText type="email" class="w-full" v-model="form.email"></InputText>
+    </div>
+    <div>
+        <label for="phone" class="block">Telefono</label>
+        <InputText name="phone" class="w-full" v-model="form.phone"></InputText>
+    </div>
+    <div>
+        <label for="address" class="block">Dirección</label>
+        <InputText name="address" class="w-full" v-model="form.address"></InputText>
+    </div>
+    <div class="mt-4 flex justify-end">
+        <form @submit.prevent="submit">
             <Button type="submit" :disabled="form.processing" label="Registrar" severity="success" raised></Button>
-        </div>
-    </form>
+        </form>
+    </div>
 </template>
