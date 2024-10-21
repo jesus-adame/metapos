@@ -2,11 +2,9 @@
 import { computed, onMounted, onUnmounted, reactive, ref, watch } from 'vue';
 import { Head, Link } from '@inertiajs/vue3';
 import UserLayout from '@/Layouts/UserLayout.vue';
-import ProductService from '@/Services/ProductService';
 import CustomerService from "@/Services/CustomerService";
 import { useToast } from 'primevue/usetoast';
 import Button from 'primevue/button';
-import IconField from 'primevue/iconfield';
 import Dialog from 'primevue/dialog';
 import { formatMoneyNumber, getPercentage, percentageNumber, roundBank } from '@/helpers';
 import ProductsList from './Partials/ProductsList.vue';
@@ -20,12 +18,10 @@ import CreateCustomer from '@/Components/forms/CreateCustomer.vue';
 import UserIcon from '@/Components/icons/UserIcon.vue';
 import Mousetrap from 'mousetrap';
 import 'mousetrap-global-bind';
-import Image from 'primevue/image';
+import SearchProduct from '@/Components/autocomplete/SearchProduct.vue';
 
 // Retrieve customers and products from the server
-const productService = new ProductService();
 const customerService = new CustomerService();
-const searchQuery = ref('');
 const toast = useToast();
 const selectedCustomer = ref();
 const filteredCustomers = ref<Customer[]>([]);
@@ -33,7 +29,6 @@ const modalPayments = ref(false)
 const modalCashMovements = ref(false)
 const modalDiscount = ref(false)
 const modalCreateCustomer = ref(false)
-const filteredProducts = ref<Product[]>([]);
 
 // Inputs for shortcuts
 const searchInput = ref();
@@ -56,21 +51,10 @@ const form = reactive<{
     wholesale: false,
 });
 
-const addSearchedProduct = (selected: any) => {
-    console.log(selected.value);
-    searchQuery.value = '';
-    pushProduct(selected.value)
-}
 
-const searchProduct = () => {
-    productService.findByCode(searchQuery.value)
-    .then(response => {
-        if (response.data.length > 0) {
-            filteredProducts.value = [...response.data]
-        } else {
-            toast.add({ severity: 'warn', summary: 'Atención', detail: 'No se encontró el producto', life: 3000 });
-        }
-    })
+const search = (product: Product) => {
+    console.log('Hola mundo');
+    pushProduct(product)
 }
 
 const pushProduct = (product: Product) => {
@@ -268,35 +252,7 @@ onUnmounted(() => {
         <div class="flex flex-wrap gap-2 items-baseline justify-between mb-3 mt-3 w-full">
             <div class="search w-full md:w-1/3">
                 <div class="flex items-center">
-                    <AutoComplete
-                        ref="searchInput"
-                        :autofocus="true"
-                        fluid
-                        :forceSelection="true"
-                        v-model="searchQuery"
-                        @complete="searchProduct"
-                        @item-select="addSearchedProduct"
-                        option-label="name"
-                        option-value="code"
-                        class="w-full"
-                        :suggestions="filteredProducts"
-                        placeholder="Producto (F2)">
-                        <template #option="{option}">
-                            <div class="flex gap-2 items-center">
-                                <Image
-                                :src="`${option.image_url}`"
-                                :alt="option.image"
-                                v-if="option.image"
-                                class="min-w-10 max-w-10 max-h-10 text-white shadow-md rounded-md overflow-hidden"
-                                preview
-                                />
-                                <div>
-                                    <p>{{ option.name }}</p>
-                                    <p class="text-sm text-gray-500">{{ formatMoneyNumber(option.price * (1 + (option.tax / 100))) }}</p>
-                                </div>
-                            </div>
-                        </template>
-                    </AutoComplete>
+                    <SearchProduct @searched="search"></SearchProduct>
                 </div>
             </div>
             <div class="customer w-full md:w-1/2">
