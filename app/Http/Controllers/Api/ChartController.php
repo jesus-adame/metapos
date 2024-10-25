@@ -8,6 +8,7 @@ use Carbon\CarbonPeriod;
 use Carbon\Carbon;
 use App\Models\Sale;
 use App\Models\Product;
+use App\Models\Inventory;
 use App\Models\Category;
 use App\Http\Controllers\Controller;
 
@@ -93,10 +94,14 @@ class ChartController extends Controller
 
     public function inventoryValues()
     {
-        $products = Product::all();
+        $products = Product::with('inventories')->get();
 
         $totalValue = $products->sum(function (Product $product) {
-            return $product->price;
+            $inventories = $product->inventories->sum(function (Inventory $inventory) {
+                return $inventory->quantity;
+            });
+
+            return $product->price * $inventories;
         });
 
         $totalCost = $products->sum(function (Product $product) {
