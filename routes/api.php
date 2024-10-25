@@ -67,6 +67,7 @@ Route::middleware(['auth:sanctum', InitializeTenancyByDomain::class])->name('api
     Route::get('/dashboard/resume', [DashboardController::class, 'resume'])->name('dashboard.resume');
     Route::get('/charts/week-sales', [ChartController::class, 'salesByWeek'])->name('charts.week-sales');
     Route::get('/charts/category-sales', [ChartController::class, 'salesByCategory'])->name('charts.category-sales');
+    Route::get('/charts/inventory-values', [ChartController::class, 'inventoryValues'])->name('charts.inventory-values');
     Route::post('/currencies/convert', [CurrencyController::class, 'convert'])->name('currencies.convert');
     Route::post('/currencies/refresh-rates', [CurrencyController::class, 'refreshRates'])->name('currencies.refresh-rates');
     Route::put('/currencies/update-rate', [CurrencyController::class, 'updateRate'])->name('currencies.updateRate');

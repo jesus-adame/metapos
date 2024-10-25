@@ -90,4 +90,25 @@ class ChartController extends Controller
 
         return response()->json($products);
     }
+
+    public function inventoryValues()
+    {
+        $products = Product::all();
+
+        $totalValue = $products->sum(function (Product $product) {
+            return $product->price;
+        });
+
+        $totalCost = $products->sum(function (Product $product) {
+            return $product->cost;
+        });
+
+        $totalMargin = $totalValue - $totalCost;
+
+        return response()->json([
+            'totalValue' => $totalValue,
+            'totalCost' => $totalCost,
+            'totalMargin' => $totalMargin,
+        ]);
+    }
 }
