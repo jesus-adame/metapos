@@ -105,7 +105,11 @@ class ChartController extends Controller
         });
 
         $totalCost = $products->sum(function (Product $product) {
-            return $product->cost;
+            $inventories = $product->inventories->sum(function (Inventory $inventory) {
+                return $inventory->quantity;
+            });
+
+            return $product->cost * $inventories;
         });
 
         $totalMargin = $totalValue - $totalCost;
