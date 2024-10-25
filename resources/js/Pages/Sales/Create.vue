@@ -31,7 +31,6 @@ const modalDiscount = ref(false)
 const modalCreateCustomer = ref(false)
 
 // Inputs for shortcuts
-const searchInput = ref();
 const customerInput = ref();
 const paymentButton = ref();
 
@@ -202,14 +201,6 @@ onMounted(() => {
         }
     })
 
-    Mousetrap.bindGlobal(['ctrl+a', 'f2'], (e: Event) => {
-        e.preventDefault()
-
-        if (searchInput.value) {
-            searchInput.value.rootEl.firstChild.focus()
-        }
-    })
-
     Mousetrap.bindGlobal('ctrl+c', (e: Event) => {
         e.preventDefault()
         if (customerInput.value) {
@@ -335,20 +326,3 @@ onUnmounted(() => {
         </div>
     </UserLayout>
 </template>
-
-<style lang="scss" scoped>
-.fullscreen-wrapper {
-  width: 100%;
-  height: 100%;
-  background: #333;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-
-  .button {
-    margin-bottom: 20px;
-  }
-}
-</style>

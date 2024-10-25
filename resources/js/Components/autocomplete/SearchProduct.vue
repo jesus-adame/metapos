@@ -2,14 +2,16 @@
 import { formatMoneyNumber } from '@/helpers';
 import ProductService from '@/Services/ProductService';
 import { Product } from '@/types';
+import Mousetrap from 'mousetrap';
 import Image from 'primevue/image';
 import { useToast } from 'primevue/usetoast';
-import { ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 
 const searchQuery = ref('');
 const filteredProducts = ref<Product[]>([]);
 const toast = useToast();
 const productService = new ProductService();
+const searchInput = ref();
 
 const emit = defineEmits(['searched'])
 
@@ -37,12 +39,25 @@ const searchProduct = () => {
         }
     })
 }
+
+onMounted(() => {
+    Mousetrap.bindGlobal(['ctrl+a', 'f2'], (e: Event) => {
+        e.preventDefault()
+
+        if (searchInput.value) {
+            searchInput.value.rootEl.firstChild.focus()
+        }
+    })
+})
+
+onUnmounted(() => {
+    Mousetrap.reset()
+})
 </script>
 <template>
     <form @submit.prevent="searchByInput" class="w-full">
         <AutoComplete
             ref="searchInput"
-            :autofocus="true"
             fluid
             :forceSelection="true"
             v-model="searchQuery"
