@@ -30,10 +30,8 @@ const authStore = useAuthStore()
         <div v-if="can('view finances')" class="grid md:grid-cols-2 gap-2 py-4 my-6">
             <WeekSales></WeekSales>
             <div>
-                <CashResume></CashResume>
+                <InventoryValues></InventoryValues>
             </div>
-            <InventoryValues></InventoryValues>
-            <SaleCategories></SaleCategories>
         </div>
     </UserLayout>
 </template>
