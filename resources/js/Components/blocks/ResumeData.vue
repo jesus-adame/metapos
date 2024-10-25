@@ -3,6 +3,7 @@ import { onMounted, ref } from 'vue';
 import SalesIcon from '../icons/SalesIcon.vue';
 import axios, { AxiosResponse } from 'axios';
 import { formatMoneyNumber } from '@/helpers';
+import moment from 'moment/min/moment-with-locales';
 
 const salesAmount = ref(0)
 const usersAmount = ref(0)
@@ -19,6 +20,7 @@ const fetchData = () => {
     })
 }
 onMounted(() => {
+    moment.locale('es')
     fetchData()
 })
 </script>
@@ -34,7 +36,7 @@ onMounted(() => {
             </div>
             <div class="border-t border-blue-gray-50 p-4">
                 <p class="block antialiased font-sans text-base leading-relaxed font-normal text-blue-gray-600">
-                    <strong class="text-green-500">0%</strong> que la última semana
+                    Ventas del mes actual (<span class="capitalize">{{ moment().format('MMMM') }}</span>)
                 </p>
             </div>
         </div>
@@ -50,7 +52,7 @@ onMounted(() => {
             </div>
             <div class="border-t border-blue-gray-50 p-4">
                 <p class="block antialiased font-sans text-base leading-relaxed font-normal text-blue-gray-600">
-                    <strong class="text-green-500">0%</strong> que la última semana
+                    Compras del mes actual
                 </p>
             </div>
         </div>
@@ -66,7 +68,7 @@ onMounted(() => {
             </div>
             <div class="border-t border-blue-gray-50 p-4">
                 <p class="block antialiased font-sans text-base leading-relaxed font-normal text-blue-gray-600">
-                    <strong class="text-red-500">0%</strong> que la última semana
+                    Clientes registrados en el sistema
                 </p>
             </div>
         </div>
@@ -82,7 +84,7 @@ onMounted(() => {
             </div>
             <div class="border-t border-blue-gray-50 p-4">
                 <p class="block antialiased font-sans text-base leading-relaxed font-normal text-blue-gray-600">
-                <strong class="text-green-500">0%</strong> que la última semana
+                    Total de usuarios registrados
                 </p>
             </div>
         </div>

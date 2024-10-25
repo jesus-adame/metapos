@@ -86,7 +86,10 @@ onMounted(() => {
         <Column header="Cliente">
             <template #body="{data}">
                 <UserIcon>
-                    {{ data.customer?.name || '-' }} {{ data.customer?.lastname }}
+                    <div class="flex flex-col">
+                        <span>{{ data.customer?.name || '-' }} {{ data.customer?.lastname }}</span>
+                        <span class="text-xs">{{ data.customer?.phone }}</span>
+                    </div>
                 </UserIcon>
             </template>
         </Column>

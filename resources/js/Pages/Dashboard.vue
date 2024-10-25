@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import CashResume from '@/Components/blocks/CashResume.vue';
 import ResumeData from '@/Components/blocks/ResumeData.vue';
 import InventoryValues from '@/Components/charts/InventoryValues.vue';
-import SaleCategories from '@/Components/charts/SaleCategories.vue';
 import WeekSales from '@/Components/charts/WeekSales.vue';
 import { can } from '@/helpers';
 import UserLayout from '@/Layouts/UserLayout.vue';

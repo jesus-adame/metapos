@@ -1,6 +1,4 @@
 import axios from 'axios';
-import 'moment/locale/es';
-import moment from 'moment-timezone';
 
 window.axios = axios;
 
@@ -21,5 +19,3 @@ window.axios.interceptors.request.use(config => {
 }, error => {
     return Promise.reject(error);
 });
-
-moment.locale('es-mx')
