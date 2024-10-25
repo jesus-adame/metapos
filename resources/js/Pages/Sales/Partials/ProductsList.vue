@@ -24,7 +24,7 @@ const removeProduct = (index: number) => {
 
     <Card width="full" padding="0">
         <DataTable :value="products" v-if="products.length">
-            <Column header="Producto">
+            <Column header="Concepto">
                 <template #body="{data}">
                     <div class="flex gap-2 items-center">
                         <div v-if="data.image" class="overflow-hidden hidden xl:block shadow-lg rounded-md min-w-14 max-w-14 max-h-14">
@@ -38,7 +38,7 @@ const removeProduct = (index: number) => {
                     </div>
                 </template>
             </Column>
-            <Column header="Cant">
+            <Column header="Cantidad">
                 <template #body="{data}">
                     <InputNumber v-model="data.quantity" showButtons buttonLayout="vertical" style="width: 3rem" :min="0.1" :maxFractionDigits="2" :max="data.stock"></InputNumber>
                     <!-- <span class="text-center block">{{data.quantity}}</span> -->
@@ -48,13 +48,7 @@ const removeProduct = (index: number) => {
                 <template #body="{data}">
                     <span class="block text-end font-medium">
                         {{ formatMoneyNumber(data.price) }}
-                    </span>
-                </template>
-            </Column>
-            <Column header="IVA">
-                <template #body="{data}">
-                    <span class="font-medium">
-                        {{ percentageNumber(data.tax ?? 0) }}
+                        <p>IVA {{ percentageNumber(data.tax ?? 0) }}</p>
                     </span>
                 </template>
             </Column>
