@@ -7,9 +7,10 @@ use Illuminate\Http\Request;
 use Carbon\CarbonPeriod;
 use Carbon\Carbon;
 use App\Models\Sale;
+use App\Models\Purchase;
 use App\Models\Product;
 use App\Models\Inventory;
-use App\Models\Category;
+use App\Models\Expense;
 use App\Http\Controllers\Controller;
 
 class ChartController extends Controller
@@ -118,6 +119,53 @@ class ChartController extends Controller
             'totalValue' => $totalValue,
             'totalCost' => $totalCost,
             'totalMargin' => $totalMargin,
+        ]);
+    }
+
+    public function utilityBalance(Request $request)
+    {
+        $since = $request->dates[0] ?? null;
+        $until = $request->dates[1] ?? null;
+        $location = $request->user()->location;
+
+        if (is_null($since) || is_null($until)) {
+            return response()->json([
+                'sales' => 0,
+                'purchases' => 0,
+                'expenses' => 0,
+                'utility' => 0,
+            ]);
+        }
+
+        $splitSince = explode('T', $since);
+        $splitUntil = explode('T', $until);
+
+        $sinceStr = $splitSince[0] . ' 00:00:00 ' . $location->timezone;
+        $untilStr = $splitUntil[0] . ' 23:59:59 ' . $location->timezone;
+
+        $since = Carbon::parse($sinceStr);
+        $until = Carbon::parse($untilStr);
+
+        $salesAmount = Sale::where('created_at', '>=', $since->utc())
+            ->where('created_at', '<=', $until->utc())
+            ->sum('total');
+
+        $purchasesAmount = Purchase::where('created_at', '>=', $since->utc())
+            ->where('created_at', '<=', $until->utc())
+            ->sum('total');
+
+        $expensesAmount = Expense::where('created_at', '>=', $since->utc())
+            ->where('created_at', '<=', $until->utc())
+            ->sum('amount');
+
+        $totalExpenses = $purchasesAmount + $expensesAmount;
+        $utilityAmount = $salesAmount - $totalExpenses;
+
+        return response()->json([
+            'sales' => $salesAmount,
+            'purchases' => $purchasesAmount,
+            'expenses' => $expensesAmount,
+            'utility' => $utilityAmount,
         ]);
     }
 }

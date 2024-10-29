@@ -51,7 +51,7 @@ const submit = async () => {
             toast.add({ summary: 'Error', detail: error.response?.data.message, severity: 'error', life: 1500 })
             form.errors = error.response.data.errors;
         } else {
-            console.error('Error logging in:', error);
+            toast.add({ summary: 'Error de conexión', detail: error.message, severity: 'error', life: 2000 })
         }
     } finally {
         form.processing = false;

@@ -2,7 +2,7 @@
 <template>
     <div class="bg-white py-2 px-4 rounded">
         <h4 class="text-lg font-bold text-gray-700">Ventas semanales</h4>
-        <Chart type="bar" :data="chartData" :options="chartOptions" class="h-[30rem]"  />
+        <Chart type="bar" :data="chartData" :options="chartOptions" class="h-[25rem]"  />
     </div>
 </template>
 

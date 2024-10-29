@@ -38,7 +38,7 @@ onMounted(() => {
             </td>
             <td class="p-2 border">
                 <span class="font-bold">
-                    {{authStore.location?.name}}
+                    {{ authStore.location?.name }}
                 </span>
             </td>
         </tr>

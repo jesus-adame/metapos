@@ -1,3 +1,4 @@
+import { ROLES } from '@/consts/role_permissions';
 import { Location, PaymentMethod } from '@/types';
 import { usePage } from '@inertiajs/vue3';
 import moment from 'moment-timezone';
@@ -181,11 +182,10 @@ export function hardReload() {
 }
 
 export function can(ability: string) {
-    const page = usePage();
-    const superAdmin = 'Super Admin'
+    const { props } = usePage();
 
-    return page.props.permissions.some((value: string) => value == ability)
-        || page.props.roles.some((role: string) => role == superAdmin);
+    return props.permissions.some((value: string) => value === ability)
+        || props.roles.some((role: string) => role === ROLES.SUPER_ADMIN);
 }
 
 export function hasRole(name: string) {

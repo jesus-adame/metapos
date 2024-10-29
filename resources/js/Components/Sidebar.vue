@@ -5,6 +5,7 @@ import { ref } from 'vue';
 import { TabItem } from '@/types';
 import { can } from '@/helpers';
 import FloatMenu from './menus/FloatMenu.vue';
+import { PERMISSIONS } from '@/consts/role_permissions';
 
 const tabItems: TabItem[] = [
   {
@@ -12,70 +13,70 @@ const tabItems: TabItem[] = [
     label: 'Panel',
     route: route('home'),
     active: route().current('home'),
-    permission: 'view finances'
+    permission: PERMISSIONS.VIEW_FINANCES
   },
   {
     icon: 'fi fi-sr-shopping-cart',
     label: 'POS',
     route: route('sales.create'),
     active: route().current('sales.create'),
-    permission: 'create sales'
+    permission: PERMISSIONS.CREATE_SALES
   },
   {
     icon: 'fi fi-sr-drawer-empty',
     label: 'Caja',
     route: route('cash-flows.index'),
     active: route().current('cash-flows.index'),
-    permission: 'view sales'
+    permission: PERMISSIONS.VIEW_SALES
   },
   {
     icon: 'fi fi-ss-receipt',
     label: 'Ventas',
     route: route('sales.index'),
     active: route().current('sales.index'),
-    permission: 'view sales'
+    permission: PERMISSIONS.VIEW_SALES
   },
   {
     icon: 'fi fi-sr-bags-shopping',
     label: 'Compras',
     route: route('purchases.index'),
     active: route().current('purchases.index'),
-    permission: 'view purchases'
+    permission: PERMISSIONS.VIEW_PURCHASES
   },
   {
     icon: 'fi fi-ss-expense',
     label: 'Gastos',
     route: route('expenses.index'),
     active: route().current('expenses.index'),
-    permission: 'view expenses'
+    permission: PERMISSIONS.VIEW_EXPENSES
   },
   {
     icon: 'fi fi-sr-boxes',
     label: 'Inventario',
     route: route('products.index'),
     active: route().current('products.index'),
-    permission: 'view products'
+    permission: PERMISSIONS.VIEW_PRODUCTS
   },
   {
     icon: 'fi fi-sr-user',
     label: 'Cientes',
     route: route('customers.index'),
     active: route().current('customers.index'),
-    permission: 'view customers'
+    permission: PERMISSIONS.VIEW_CUSTOMERS
   },
   {
     icon: 'fi fi-sr-tags',
     label: 'Categorías',
     route: route('categories.index'),
     active: route().current('categories.index'),
-    permission: 'view categories'
+    permission: PERMISSIONS.VIEW_CATEGORIES
   },
   {
     icon: 'fi fi-sr-ballot-check',
     label: 'Reportes',
     route: route('reports.index'),
     active: route().current('reports.index'),
-    permission: 'view reports'
+    permission: PERMISSIONS.VIEW_FINANCES
   },
 ];
 
