@@ -2,6 +2,8 @@ import axios from "axios";
 import { ref } from 'vue';
 
 export default class PurchaseService {
+    private purchases;
+
     constructor() {
         this.purchases = ref([]);
     }
@@ -10,7 +12,7 @@ export default class PurchaseService {
         return this.purchases;
     }
 
-    async findByCode(code) {
+    async findByCode(code: any) {
         const url = '/api/purchases/search';
         const response = await axios.post(url, { code: code });
         this.purchases.value = response.data
@@ -18,7 +20,7 @@ export default class PurchaseService {
         return response
     }
 
-    async paginate(page, rows) {
+    async paginate(page: any, rows: any) {
         const url = route('api.purchases.index');
         const response = await axios.get(url, { params: { page: page, rows: rows } });
         this.purchases.value = response.data

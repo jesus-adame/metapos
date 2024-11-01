@@ -2,6 +2,8 @@ import axios from "axios";
 import { ref } from 'vue';
 
 export default class SaleService {
+    private sales;
+
     constructor() {
         this.sales = ref([]);
     }
@@ -10,7 +12,7 @@ export default class SaleService {
         return this.sales;
     }
 
-    async findByCode(code) {
+    async findByCode(code: any) {
         const url = '/api/sales/search';
         const response = await axios.post(url, { code: code });
         this.sales.value = response.data
@@ -18,7 +20,7 @@ export default class SaleService {
         return response
     }
 
-    async paginate(params) {
+    async paginate(params: any) {
         const url = route('api.sales.index');
         const response = await axios.get(url, { params });
         this.sales.value = response.data
@@ -34,7 +36,7 @@ export default class SaleService {
         return response
     }
 
-    async deleteItem(url) {
+    async deleteItem(url: any) {
         const response = axios.post(url, { _method: 'delete' })
 
         return response

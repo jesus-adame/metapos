@@ -2,6 +2,8 @@ import axios from "axios";
 import { ref } from 'vue';
 
 export default class RoleService {
+    private roles;
+
     constructor() {
         this.roles = ref([]);
     }
@@ -10,7 +12,7 @@ export default class RoleService {
         return this.roles;
     }
 
-    async findByCode(code) {
+    async findByCode(code: any) {
         const url = '/api/roles/search';
         const response = await axios.post(url, { code: code });
         this.roles.value = response.data
@@ -18,7 +20,7 @@ export default class RoleService {
         return response
     }
 
-    async paginate(page, rows) {
+    async paginate(page: any, rows: any) {
         const url = `/api/roles`;
         const response = await axios.get(url, { params: { page, rows: rows } });
         this.roles.value = response.data

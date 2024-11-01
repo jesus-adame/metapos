@@ -2,6 +2,8 @@ import axios from "axios";
 import { ref } from 'vue';
 
 export default class UserService {
+    private users;
+
     constructor() {
         this.users = ref([]);
     }
@@ -10,7 +12,7 @@ export default class UserService {
         return this.users;
     }
 
-    async findByCode(code) {
+    async findByCode(code: any) {
         const url = '/api/users/search';
         const response = await axios.post(url, { code: code });
         this.users.value = response.data
@@ -18,7 +20,7 @@ export default class UserService {
         return response
     }
 
-    async paginate(page, rows) {
+    async paginate(page: any, rows: any) {
         const url = `/api/users`;
         const response = await axios.get(url, { params: { page, rows: rows } });
         this.users.value = response.data

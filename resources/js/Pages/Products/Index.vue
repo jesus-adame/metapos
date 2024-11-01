@@ -33,9 +33,11 @@ const saved = () => {
 }
 </script>
 <template>
+
     <Head title="Inventarios" />
 
-    <Dialog v-model:visible="modalCreateMovement" modal header="Nuevo movimiento" :style="{ width: '35rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
+    <Dialog v-model:visible="modalCreateMovement" modal header="Nuevo movimiento" :style="{ width: '35rem' }"
+        :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
         <CreateInventoryTransaction @save="saved"></CreateInventoryTransaction>
     </Dialog>
 
@@ -46,11 +48,12 @@ const saved = () => {
 
         <div class="flex mb-4 mt-6">
             <Link :href="route('inventory-transactions.index')" class="mr-2">
-                <Button raised label="Historial de movimientos" icon="pi pi-list"></Button>
+            <Button raised label="Historial de movimientos" icon="pi pi-list"></Button>
             </Link>
-            <Button raised v-if="can('update products')" class="mr-2" label="Registrar movimiento" icon="pi pi-sort-alt" severity="info" @click="openModalCreate"></Button>
+            <Button raised v-if="can('update products')" class="mr-2" label="Registrar movimiento" icon="pi pi-sort-alt"
+                severity="info" @click="openModalCreate"></Button>
             <Link v-if="can('create purchases')" :href="route('purchases.create')">
-                <Button raised label="Nueva compra" icon="pi pi-plus" severity="success"></Button>
+            <Button raised label="Nueva compra" icon="pi pi-plus" severity="success"></Button>
             </Link>
         </div>
         <ListInventory></ListInventory>

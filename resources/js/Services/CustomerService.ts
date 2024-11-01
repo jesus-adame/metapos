@@ -2,34 +2,36 @@ import axios from "axios";
 import { ref } from 'vue';
 
 export default class CustomerService {
+    private customers;
+
     constructor() {
-        this.categories = ref([]);
+        this.customers = ref([]);
     }
 
     getCustomers() {
-        return this.categories;
+        return this.customers;
     }
 
-    async findByCode(code) {
-        const url = '/api/categories/search';
+    async findByCode(code: any) {
+        const url = '/api/customers/search';
         const response = await axios.post(url, { code: code });
-        this.categories.value = response.data
+        this.customers.value = response.data
 
         return response
     }
 
-    async paginate(page, rows) {
-        const url = route('api.categories.index');
+    async paginate(page: any, rows: any) {
+        const url = `/api/customers`;
         const response = await axios.get(url, { params: { page, rows: rows } });
-        this.categories.value = response.data
+        this.customers.value = response.data
 
         return response
     }
 
     async fetchAll() {
-        const url = route('api.categories.index');
+        const url = '/api/customers';
         const response = await axios.get(url);
-        this.categories.value = response.data
+        this.customers.value = response.data
 
         return response
     }

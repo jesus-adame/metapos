@@ -2,6 +2,8 @@ import axios from "axios";
 import { ref } from 'vue';
 
 export default class CurrencyService {
+    private currencies;
+
     constructor() {
         this.currencies = ref([]);
     }
@@ -10,7 +12,7 @@ export default class CurrencyService {
         return this.currencies;
     }
 
-    async findByCode(code) {
+    async findByCode(code: any) {
         const url = '/api/currencies/search';
         const response = await axios.post(url, { code: code });
         this.currencies.value = response.data
@@ -18,7 +20,7 @@ export default class CurrencyService {
         return response
     }
 
-    async paginate(page, rows) {
+    async paginate(page: any, rows: any) {
         const url = route('api.currencies.index');
         const response = await axios.get(url, { params: { page, rows: rows } });
         this.currencies.value = response.data

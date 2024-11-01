@@ -2,6 +2,8 @@ import axios from "axios";
 import { ref } from 'vue';
 
 export default class CashRegisterService {
+    private cashRegisters;
+
     constructor() {
         this.cashRegisters = ref([]);
     }
@@ -10,7 +12,7 @@ export default class CashRegisterService {
         return this.cashRegisters;
     }
 
-    async search(params) {
+    async search(params: any) {
         const url = '/api/cash-registers/search';
         const response = await axios.post(url, { params: params });
         this.cashRegisters.value = response.data
@@ -18,7 +20,7 @@ export default class CashRegisterService {
         return response
     }
 
-    async paginate(page, rows) {
+    async paginate(page: any, rows: any) {
         const url = `/api/cash-registers`;
         const response = await axios.get(url, { params: { page, rows: rows } });
         this.cashRegisters.value = response.data

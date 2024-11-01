@@ -7,6 +7,7 @@ import ListExpenseCategories from '@/Components/tables/ListExpenseCategories.vue
 </script>
 
 <template>
+
     <Head title="Expenses" />
 
     <UserLayout>

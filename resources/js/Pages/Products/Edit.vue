@@ -10,6 +10,7 @@ const { product } = defineProps<{
 </script>
 
 <template>
+
     <Head :title="product?.name" />
 
     <UserLayout>
