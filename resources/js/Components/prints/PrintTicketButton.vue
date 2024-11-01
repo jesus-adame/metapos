@@ -19,5 +19,5 @@ onUnmounted(() => {
 })
 </script>
 <template>
-    <Button raised icon="pi pi-print" @click="printer.print(props.pdfUrl, props.printer)" label="Ticket"></Button>
+    <Button raised icon="pi pi-print" @click="printer.print(props.pdfUrl, props.printer)"></Button>
 </template>
