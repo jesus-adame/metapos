@@ -6,6 +6,8 @@ import CurrencyService from "@/Services/CurrencyService";
 const currencyService = new CurrencyService()
 
 interface CurrencyState {
+    rows: number,
+    page: number,
     selected: Currency | null,
     currencies: Currency[],
     totalRecords: number,
@@ -13,6 +15,8 @@ interface CurrencyState {
 
 export const useCurrencyStore = defineStore('currency', {
     state: (): CurrencyState => ({
+        rows: 10,
+        page: 1,
         selected: null,
         currencies: [],
         totalRecords: 0,
@@ -34,7 +38,7 @@ export const useCurrencyStore = defineStore('currency', {
         },
 
         fetchItems() {
-            currencyService.paginate()
+            currencyService.paginate(this.page, this.rows)
                 .then((response: AxiosResponse) => {
                     const pagination = response.data
                     this.currencies = [...pagination.data]

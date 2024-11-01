@@ -32,7 +32,7 @@ const closeModalCreate = () => {
 }
 
 const fetchItems = (pageNumber: number) => {
-    inventoryTransactionService.paginate(pageNumber)
+    inventoryTransactionService.paginate(pageNumber, rows.value)
     .then((response: AxiosResponse) => {
         const paginate = response.data.paginate
 

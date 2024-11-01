@@ -6,6 +6,8 @@ import ExpenseService from "@/Services/ExpenseService";
 const expenseService = new ExpenseService()
 
 interface ExpenseState {
+    rows: number,
+    page: number,
     selected: Expense | null,
     expenses: Expense[],
     totalRecords: number,
@@ -14,6 +16,8 @@ interface ExpenseState {
 
 export const useExpenseStore = defineStore('expense', {
     state: (): ExpenseState => ({
+        rows: 10,
+        page: 1,
         selected: null,
         expenses: [],
         totalRecords: 0,
@@ -36,7 +40,7 @@ export const useExpenseStore = defineStore('expense', {
         },
 
         fetchItems() {
-            expenseService.paginate()
+            expenseService.paginate(this.page, this.rows)
                 .then((response: AxiosResponse) => {
                     const pagination = response.data
                     this.expenses = [...pagination.data]

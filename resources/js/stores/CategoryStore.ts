@@ -6,6 +6,8 @@ import CategoryService from "@/Services/CategoryService";
 const categoryService = new CategoryService()
 
 interface CategoryState {
+    rows: number,
+    page: number,
     selected: Category | null,
     categories: Category[],
     totalRecords: number,
@@ -14,6 +16,8 @@ interface CategoryState {
 
 export const useCategoryStore = defineStore('category', {
     state: (): CategoryState => ({
+        rows: 10,
+        page: 1,
         selected: null,
         categories: [],
         totalRecords: 0,
@@ -36,7 +40,7 @@ export const useCategoryStore = defineStore('category', {
         },
 
         fetchItems() {
-            categoryService.paginate()
+            categoryService.paginate(this.page, this.rows)
                 .then((response: AxiosResponse) => {
                     const pagination = response.data
                     this.categories = [...pagination.data]
